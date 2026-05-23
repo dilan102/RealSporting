@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "title": "Convocatoria abierta para nuevos talentos",
+    "date": "2026-05-18",
+    "category": "Cantera",
+    "summary": "El club abre espacios de observación para niños y jóvenes de Usme que quieran iniciar proceso formativo.",
+    "body": "Real Sporting de Usme invita a las familias de la localidad a participar en las jornadas de observación para nuevos talentos. El proceso prioriza disciplina, asistencia, actitud y compromiso familiar, con seguimiento deportivo por categorías y acompañamiento del cuerpo técnico.",
+    "image": "/banner.png"
+  },
+  {
+    "id": "2",
+    "title": "Microciclo enfocado en presión alta",
+    "date": "2026-05-14",
+    "category": "Entrenamiento",
+    "summary": "Las categorías formativas trabajaron recuperación rápida, cierres coordinados y salida limpia tras robo.",
+    "body": "Durante la semana se desarrolló un microciclo dedicado a la presión alta. Los jugadores practicaron basculaciones, coberturas y decisiones de primer pase para transformar recuperaciones en ataques organizados. El objetivo es sostener intensidad sin perder orden.",
+    "image": "/trainings/3.svg"
+  },
+  {
+    "id": "3",
+    "title": "Familias y jugadores fortalecen el proyecto",
+    "date": "2026-05-10",
+    "category": "Comunidad",
+    "summary": "La comunidad del club acompañó una jornada de integración alrededor del deporte y los valores.",
+    "body": "El encuentro reunió a jugadores, familias y cuerpo técnico en una jornada pensada para reforzar pertenencia, respeto y trabajo en equipo. Estos espacios sostienen la identidad del club y recuerdan que el proceso deportivo también se construye fuera de la cancha.",
+    "image": "/logo.png"
+  },
+  {
+    "id": "4",
+    "title": "Preparación para torneo local",
+    "date": "2026-05-06",
+    "category": "Competencia",
+    "summary": "El equipo ajusta detalles tácticos y físicos antes de los próximos compromisos competitivos.",
+    "body": "Real Sporting de Usme prepara sus próximas presentaciones con énfasis en pelota quieta, repliegue defensivo y definición. El cuerpo técnico evalúa convocatorias por asistencia, rendimiento y comportamiento para representar al club con responsabilidad.",
+    "image": "/trainings/6.svg"
+  }
+]
