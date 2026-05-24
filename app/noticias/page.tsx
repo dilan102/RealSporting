@@ -54,7 +54,7 @@ function NewsImage({
       fill
       priority={priority}
       sizes={sizes}
-      className="object-cover transition-transform duration-500 group-hover:scale-105"
+      className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
     />
   );
 }
@@ -98,7 +98,7 @@ export default async function NoticiasPage() {
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.6fr)]">
             <article className="group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
-              <div className="relative aspect-[16/9] min-h-[290px] overflow-hidden bg-surface">
+              <div className="relative aspect-[16/10] min-h-[220px] overflow-hidden bg-surface sm:aspect-[16/9] sm:min-h-[290px]">
                 <NewsImage
                   item={leadNews}
                   sizes="(min-width: 1024px) 66vw, 100vw"
@@ -128,9 +128,9 @@ export default async function NoticiasPage() {
               {secondaryNews.map((item) => (
                 <article
                   key={item.id}
-                  className="group grid min-h-36 grid-cols-[116px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm sm:block lg:grid"
+                  className="group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm sm:block sm:min-h-36 lg:grid lg:grid-cols-[116px_minmax(0,1fr)]"
                 >
-                  <div className="relative min-h-36 overflow-hidden bg-surface sm:aspect-[16/10] lg:aspect-auto">
+                  <div className="relative min-h-32 overflow-hidden bg-surface sm:aspect-[16/10] sm:min-h-36 lg:aspect-auto">
                     <NewsImage
                       item={item}
                       sizes="(min-width: 1024px) 116px, (min-width: 640px) 30vw, 116px"

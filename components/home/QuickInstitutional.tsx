@@ -113,12 +113,12 @@ export function QuickInstitutional() {
           </div>
 
           <div className="mt-20 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:items-center">
-            <div className="relative min-h-[460px] overflow-hidden rounded-lg border border-border bg-bg-elevated">
+            <div className="relative aspect-[16/10] min-h-[230px] overflow-hidden rounded-lg border border-border bg-bg-elevated sm:min-h-[460px] lg:aspect-auto">
               <Image
                 src="/banner.png"
                 alt="Entrenamiento de Real Sporting de Usme"
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 sizes="(min-width: 1024px) 56vw, 100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#101811]/75 via-[#101811]/20 to-transparent" />

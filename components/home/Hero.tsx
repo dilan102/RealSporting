@@ -8,7 +8,7 @@ export function Hero() {
     <section className="relative isolate overflow-hidden bg-bg text-text">
       <div className="pointer-events-none absolute inset-0 grid-overlay" />
 
-      <div className="relative mx-auto grid min-h-[96vh] max-w-7xl gap-12 px-4 pb-16 pt-32 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-center lg:px-8">
+      <div className="relative mx-auto grid min-h-[96vh] max-w-7xl gap-10 px-4 pb-14 pt-28 sm:gap-12 sm:px-6 sm:pb-16 sm:pt-32 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-center lg:px-8">
         <div>
           <div
             className="inline-flex items-center gap-3 rounded-lg border border-border bg-bg-elevated/80 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-accent"
@@ -25,7 +25,7 @@ export function Hero() {
           </div>
 
           <h1
-            className="mt-8 max-w-4xl text-5xl font-black leading-[0.9] tracking-tight text-text sm:text-7xl lg:text-8xl"
+            className="mt-7 max-w-4xl text-5xl font-black leading-[0.9] tracking-tight text-text sm:mt-8 sm:text-7xl lg:text-8xl"
           >
             Desde Usme.
             <br />
@@ -61,14 +61,14 @@ export function Hero() {
         </div>
 
         <div
-          className="relative min-h-[430px] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-2xl lg:min-h-[620px]"
+          className="relative aspect-[16/10] min-h-[240px] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-2xl sm:min-h-[430px] lg:aspect-auto lg:min-h-[620px]"
         >
           <Image
             src="/banner.png"
             alt={`Jugadores de ${club.name}`}
             fill
             priority
-            className="object-cover"
+            className="object-cover object-center"
             sizes="(min-width: 1024px) 43vw, 100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#101811]/85 via-transparent to-transparent" />

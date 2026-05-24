@@ -76,12 +76,12 @@ export function NewsCircleShowcase({ items }: Props) {
             href="/noticias"
             className="group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50"
           >
-            <div className="relative aspect-[16/9] min-h-[300px] overflow-hidden">
+            <div className="relative aspect-[16/10] min-h-[220px] overflow-hidden sm:aspect-[16/9] sm:min-h-[300px]">
               <Image
                 src={leadNews.image}
                 alt=""
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 sizes="(min-width: 1024px) 62vw, 100vw"
               />
               <span className="absolute left-4 top-4 rounded-lg bg-bg-elevated px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-accent shadow-sm">
@@ -106,14 +106,14 @@ export function NewsCircleShowcase({ items }: Props) {
               <Link
                 key={item.id}
                 href="/noticias"
-                className="group grid min-h-36 grid-cols-[120px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50"
+                className="group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50 sm:min-h-36 sm:grid-cols-[120px_minmax(0,1fr)]"
               >
-                <span className="relative min-h-36 overflow-hidden">
+                <span className="relative min-h-32 overflow-hidden sm:min-h-36">
                   <Image
                     src={item.image}
                     alt=""
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                     sizes="120px"
                   />
                 </span>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SitePreloader } from "@/components/ui/SitePreloader";
 import { club } from "@/lib/content";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="es" className="light" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
+        <SitePreloader />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

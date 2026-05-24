@@ -53,13 +53,13 @@ export default function ClubPage() {
             </div>
           </div>
 
-          <div className="relative min-h-[360px] overflow-hidden rounded-lg border border-border bg-bg shadow-xl lg:min-h-[520px]">
+          <div className="relative aspect-[16/10] min-h-[230px] overflow-hidden rounded-lg border border-border bg-bg shadow-xl sm:min-h-[360px] lg:aspect-auto lg:min-h-[520px]">
             <Image
               src="/banner.png"
               alt={`Jugadores de ${club.name}`}
               fill
               priority
-              className="object-cover"
+              className="object-cover object-center"
               sizes="(min-width: 1024px) 52vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
