@@ -4,7 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const introText = "Equipo Real Sporting de Usme";
+const introText = "Club deportivo Real Sporting de Usme";
 const welcomeText = "Bienvenidos";
 
 function AnimatedWords({ text }: { text: string }) {
@@ -62,8 +62,8 @@ export function SitePreloader() {
   const [phase, setPhase] = useState<"intro" | "welcome" | "done">("intro");
 
   useEffect(() => {
-    const welcomeTimer = window.setTimeout(() => setPhase("welcome"), 1750);
-    const doneTimer = window.setTimeout(() => setPhase("done"), 3300);
+    const welcomeTimer = window.setTimeout(() => setPhase("welcome"), 2150);
+    const doneTimer = window.setTimeout(() => setPhase("done"), 4100);
 
     return () => {
       window.clearTimeout(welcomeTimer);
@@ -77,9 +77,9 @@ export function SitePreloader() {
         <motion.div
           role="status"
           aria-live="polite"
-          className="fixed inset-0 z-[80] grid place-items-center overflow-hidden bg-bg text-text"
+          className="pointer-events-none fixed inset-0 z-[80] grid place-items-center overflow-hidden bg-bg text-text"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.45, ease: "easeInOut" } }}
+          exit={{ opacity: 0, transition: { duration: 0.85, ease: "easeInOut" } }}
         >
           <motion.div
             aria-hidden="true"
@@ -97,7 +97,7 @@ export function SitePreloader() {
               width={640}
               height={640}
               priority
-              className="w-[72vw] max-w-[560px] object-contain opacity-[0.14] sm:w-[48vw]"
+              className="w-[74vw] max-w-[560px] object-contain opacity-[0.14] sm:w-[48vw]"
             />
           </motion.div>
 
@@ -105,7 +105,7 @@ export function SitePreloader() {
             <AnimatePresence mode="wait">
               <motion.h2
                 key={phase}
-                className="text-balance text-[clamp(2.25rem,11vw,5.8rem)] font-black leading-[1.02] text-text drop-shadow-2xl"
+                className="text-balance text-[clamp(1.9rem,8.5vw,5.1rem)] font-black leading-[1.04] text-text drop-shadow-2xl"
                 initial={{ opacity: 0, y: 18, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -18, scale: 1.02 }}

@@ -15,6 +15,7 @@ export function RevealSection({ children, className, delay = 0 }: Props) {
   const inView = useInView(ref, {
     amount: 0.16,
     margin: "-6% 0px -6% 0px",
+    once: true,
   });
 
   return (
