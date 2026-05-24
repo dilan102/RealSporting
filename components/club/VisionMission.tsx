@@ -37,13 +37,13 @@ export function VisionMission() {
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: false, margin: "-60px" }}
     >
       {cards.map(({ icon: Icon, title, text, image }) => (
         <motion.article
           key={title}
           variants={fadeUpItem}
-          className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
+          className="mobile-card-lift overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
         >
           <div className="relative aspect-[16/9] bg-surface">
             <Image
@@ -75,7 +75,7 @@ export function ValuesGrid() {
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: false, margin: "-60px" }}
     >
       {club.values.map((value, index) => {
         const Icon = valueIcons[index] || Flag;
@@ -84,7 +84,7 @@ export function ValuesGrid() {
           <motion.article
             key={value.title}
             variants={fadeUpItem}
-            className="rounded-lg border border-border bg-bg-elevated p-5 transition-colors duration-300 hover:border-accent/40"
+            className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5 transition-colors duration-300 hover:border-accent/40"
           >
             <div className="mb-4 grid size-11 place-items-center rounded-lg bg-accent/15 text-accent">
               <Icon size={20} aria-hidden="true" />
@@ -105,13 +105,13 @@ export function Timeline() {
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true }}
+      viewport={{ once: false }}
     >
       {club.milestones.map((m) => (
         <motion.li
           key={`${m.year}-${m.event}`}
           variants={fadeUpItem}
-          className="rounded-lg border border-border bg-bg-elevated p-5"
+          className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5"
         >
           <p className="text-sm font-black text-accent">{m.year}</p>
           <p className="mt-2 text-sm leading-6 text-muted">{m.event}</p>

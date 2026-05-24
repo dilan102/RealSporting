@@ -31,7 +31,7 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
   return (
     <motion.article
       variants={fadeUpItem}
-      className={`overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-sm transition-all duration-300 hover:border-accent/50 ${
+      className={`mobile-card-lift overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-sm transition-all duration-300 hover:border-accent/50 ${
         expanded ? "sm:col-span-2 lg:col-span-3" : ""
       }`}
     >

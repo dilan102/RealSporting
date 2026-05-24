@@ -7,13 +7,14 @@ import { easeOut } from "@/lib/motion";
 type Props = {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
 };
 
-export function RevealSection({ children, className }: Props) {
+export function RevealSection({ children, className, delay = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, {
-    amount: 0.18,
-    margin: "-8% 0px -8% 0px",
+    amount: 0.16,
+    margin: "-6% 0px -6% 0px",
   });
 
   return (
@@ -34,7 +35,7 @@ export function RevealSection({ children, className }: Props) {
           y: 0,
           scale: 1,
           filter: "blur(0px)",
-          transition: { duration: 0.62, ease: easeOut },
+          transition: { duration: 0.68, delay, ease: easeOut },
         },
       }}
     >

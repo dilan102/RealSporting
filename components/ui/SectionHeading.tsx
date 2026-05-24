@@ -21,9 +21,9 @@ export function SectionHeading({
   return (
     <motion.div
       className={`max-w-2xl ${alignClass}`}
-      initial={false}
+      initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: false, margin: "-80px" }}
       variants={fadeUpItem}
     >
       {eyebrow && (

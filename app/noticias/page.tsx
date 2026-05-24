@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { NewsManager } from "@/components/news/NewsManager";
+import { RevealSection } from "@/components/ui/RevealSection";
 import { club, type News } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
 
@@ -68,23 +69,25 @@ export default async function NoticiasPage() {
 
   return (
     <main className="bg-bg pt-20 text-text">
-      <section className="border-b border-border bg-bg-elevated">
+      <RevealSection>
+      <section className="relative overflow-hidden border-b border-border bg-bg-elevated">
+        <div className="pointer-events-none absolute inset-0 grid-overlay opacity-60" />
         <div className="mx-auto max-w-7xl px-4 pb-7 pt-10 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-end justify-between gap-5">
-            <div>
+          <div className="relative flex flex-wrap items-end justify-between gap-5">
+            <div className="mobile-reveal">
               <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
                 Real Sporting de Usme
               </p>
-              <h1 className="mt-3 text-4xl font-black tracking-tight sm:text-6xl">
+              <h1 className="mt-3 text-[clamp(3rem,16vw,5rem)] font-black leading-[0.9] tracking-tight sm:text-6xl">
                 Noticias
               </h1>
             </div>
-            <nav aria-label="Categorías de noticias" className="flex flex-wrap gap-2">
+            <nav aria-label="Categorías de noticias" className="mobile-reveal mobile-reveal-delay-1 -mx-4 flex gap-2 overflow-x-auto px-4 mobile-scrollbar-none sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
               {featuredCategories.map((category) => (
                 <a
                   key={category}
                   href={`#${category.toLowerCase()}`}
-                  className="rounded-lg border border-border bg-bg px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-muted transition-colors hover:border-accent/50 hover:text-accent"
+                  className="rounded-full border border-border bg-bg px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-muted transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
                 >
                   {category}
                 </a>
@@ -93,11 +96,13 @@ export default async function NoticiasPage() {
           </div>
         </div>
       </section>
+      </RevealSection>
 
       {leadNews && (
+        <RevealSection>
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.6fr)]">
-            <article className="group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
+            <article className="mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
               <div className="relative aspect-[16/10] min-h-[220px] overflow-hidden bg-surface sm:aspect-[16/9] sm:min-h-[290px]">
                 <NewsImage
                   item={leadNews}
@@ -128,7 +133,7 @@ export default async function NoticiasPage() {
               {secondaryNews.map((item) => (
                 <article
                   key={item.id}
-                  className="group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm sm:block sm:min-h-36 lg:grid lg:grid-cols-[116px_minmax(0,1fr)]"
+                  className="mobile-card-lift group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm sm:block sm:min-h-36 lg:grid lg:grid-cols-[116px_minmax(0,1fr)]"
                 >
                   <div className="relative min-h-32 overflow-hidden bg-surface sm:aspect-[16/10] sm:min-h-36 lg:aspect-auto">
                     <NewsImage
@@ -152,14 +157,16 @@ export default async function NoticiasPage() {
             </aside>
           </div>
         </section>
+        </RevealSection>
       )}
 
+      <RevealSection>
       <section className="mx-auto grid max-w-7xl gap-8 px-4 pb-10 sm:px-6 lg:grid-cols-4 lg:px-8">
         {featuredCategories.map((category) => {
           const categoryItems = getCategoryItems(orderedNews, category);
 
           return (
-            <section key={category} id={category.toLowerCase()} className="scroll-mt-28">
+            <section key={category} id={category.toLowerCase()} className="mobile-card-lift scroll-mt-28 rounded-lg border border-border bg-bg-elevated/70 p-4 sm:border-0 sm:bg-transparent sm:p-0">
               <div className="flex items-center justify-between border-b border-border pb-3">
                 <h2 className="text-2xl font-black">{category}</h2>
                 <ArrowRight size={18} className="text-accent" aria-hidden="true" />
@@ -194,7 +201,9 @@ export default async function NoticiasPage() {
           );
         })}
       </section>
+      </RevealSection>
 
+      <RevealSection>
       <section className="border-t border-border bg-bg-elevated">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <h2 className="border-b border-border pb-3 text-3xl font-black">
@@ -227,10 +236,13 @@ export default async function NoticiasPage() {
           </div>
         </div>
       </section>
+      </RevealSection>
 
+      <RevealSection>
       <section className="mx-auto max-w-6xl px-4 pb-24 pt-4 sm:px-6 lg:px-8">
         <NewsManager initialItems={orderedNews} showList={false} />
       </section>
+      </RevealSection>
     </main>
   );
 }

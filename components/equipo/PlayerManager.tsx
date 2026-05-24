@@ -287,7 +287,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
   return (
     <>
       {formOpen && (
-        <section ref={formRef} className="glass mt-8 scroll-mt-28 rounded-lg p-5 sm:p-6">
+        <section ref={formRef} className="glass mobile-card-lift mt-8 scroll-mt-28 rounded-lg p-5 sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h3 className="text-xl font-bold">
@@ -483,7 +483,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         />
       </div>
 
-      <section className="glass mt-8 rounded-lg p-5 sm:p-6">
+      <section className="glass mobile-card-lift mt-8 rounded-lg p-5 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-2 rounded-lg bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">

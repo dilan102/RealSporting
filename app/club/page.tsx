@@ -7,6 +7,7 @@ import {
   ValuesGrid,
   VisionMission,
 } from "@/components/club/VisionMission";
+import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -23,30 +24,32 @@ const clubStats = [
 export default function ClubPage() {
   return (
     <main className="bg-bg pt-24 text-text">
-      <section className="border-b border-border bg-bg-elevated">
+      <RevealSection>
+        <section className="relative overflow-hidden border-b border-border bg-bg-elevated">
+          <div className="pointer-events-none absolute inset-0 grid-overlay opacity-60" />
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] lg:items-center lg:px-8">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-accent">
+          <div className="mobile-reveal relative z-10">
+            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-accent backdrop-blur-md sm:rounded-lg">
               <Shield size={15} aria-hidden="true" />
               Institucional
             </p>
-            <h1 className="mt-6 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+            <h1 className="mt-6 text-[clamp(2.8rem,14vw,4.6rem)] font-black leading-[0.92] tracking-tight sm:text-6xl">
               Un club para crecer con el barrio.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
+            <p className="mobile-reveal mobile-reveal-delay-1 mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
               {club.history}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mobile-reveal mobile-reveal-delay-2 mt-8 grid gap-3 sm:flex sm:flex-wrap">
               <Link
                 href="/contacto"
-                className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-bold text-bg transition-colors hover:bg-accent/90"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-bg transition-colors hover:bg-accent/90 sm:rounded-lg"
               >
                 Inscripción
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
                 href="/equipo"
-                className="inline-flex min-h-12 items-center gap-2 rounded-lg border border-border bg-bg px-5 text-sm font-bold text-text transition-colors hover:border-accent/50 hover:text-accent"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-bg px-5 text-sm font-bold text-text transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
               >
                 Ver equipo
               </Link>
@@ -75,18 +78,22 @@ export default function ClubPage() {
           </div>
         </div>
       </section>
+      </RevealSection>
 
+      <RevealSection>
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid overflow-hidden rounded-lg border border-border bg-bg-elevated sm:grid-cols-3">
           {clubStats.map((stat) => (
-            <div key={stat.label} className="border-b border-border p-6 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+            <div key={stat.label} className="mobile-card-lift border-b border-border p-6 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
               <p className="text-3xl font-black text-accent">{stat.value}</p>
               <p className="mt-2 text-sm font-semibold text-muted">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
+      </RevealSection>
 
+      <RevealSection>
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -102,7 +109,9 @@ export default function ClubPage() {
         <VisionMission />
         <ValuesGrid />
       </section>
+      </RevealSection>
 
+      <RevealSection>
       <section className="mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[320px_minmax(0,1fr)]">
           <div>
@@ -119,6 +128,7 @@ export default function ClubPage() {
           <Timeline />
         </div>
       </section>
+      </RevealSection>
     </main>
   );
 }

@@ -23,15 +23,15 @@ export function PlayerGrid({
     <motion.div
       className="space-y-8"
       variants={staggerContainer}
-      initial={false}
+      initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: false, margin: "-40px" }}
     >
       {sections.map((section) => (
         <motion.section
           key={section.id}
           variants={fadeUpItem}
-          className="glass overflow-hidden rounded-lg"
+          className="glass mobile-card-lift overflow-hidden rounded-lg"
         >
           <div className="border-b border-border bg-bg-elevated/50 px-5 py-5 sm:px-6">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">

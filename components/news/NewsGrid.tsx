@@ -19,7 +19,7 @@ export function NewsGrid({ items, canManage = false, onEdit, onDelete }: Props) 
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: false, margin: "-40px" }}
     >
       {items.map((item) => (
         <NewsCard

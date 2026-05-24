@@ -96,7 +96,7 @@ export function TrainingCard({
     <>
       <motion.article
         variants={fadeUpItem}
-        className="glass group overflow-hidden rounded-lg transition-colors duration-300 hover:border-accent/30"
+        className="glass mobile-card-lift group overflow-hidden rounded-lg transition-colors duration-300 hover:border-accent/30"
       >
         <button
           type="button"
