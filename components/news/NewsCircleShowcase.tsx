@@ -52,19 +52,19 @@ export function NewsCircleShowcase({ items }: Props) {
 
   return (
     <section className="border-y border-border bg-bg text-text">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-5 border-b border-border pb-6">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mobile-reveal flex flex-wrap items-end justify-between gap-5 border-b border-border pb-6">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
               Actualidad
             </p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+            <h2 className="mt-3 text-[clamp(2.7rem,13vw,4.5rem)] font-black leading-none tracking-tight sm:text-5xl">
               Noticias
             </h2>
           </div>
           <Link
             href="/noticias"
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-bg-elevated px-4 text-sm font-bold text-text transition-colors hover:border-accent/50 hover:text-accent"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-bg-elevated px-4 text-sm font-bold text-text transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
           >
             Ver todas las noticias
             <ArrowRight size={16} aria-hidden="true" />
@@ -74,9 +74,9 @@ export function NewsCircleShowcase({ items }: Props) {
         <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1.34fr)_minmax(300px,0.66fr)]">
           <Link
             href="/noticias"
-            className="group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50"
+            className="mobile-card-lift group overflow-hidden rounded-[1.75rem] border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50 sm:rounded-lg"
           >
-            <div className="relative aspect-[16/10] min-h-[220px] overflow-hidden sm:aspect-[16/9] sm:min-h-[300px]">
+            <div className="relative aspect-[0.95] min-h-[340px] overflow-hidden sm:aspect-[16/9] sm:min-h-[300px]">
               <Image
                 src={leadNews.image}
                 alt=""
@@ -84,7 +84,7 @@ export function NewsCircleShowcase({ items }: Props) {
                 className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                 sizes="(min-width: 1024px) 62vw, 100vw"
               />
-              <span className="absolute left-4 top-4 rounded-lg bg-bg-elevated px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-accent shadow-sm">
+              <span className="absolute left-4 top-4 rounded-full bg-bg-elevated/90 px-3 py-1 text-xs font-black uppercase tracking-[0.12em] text-accent shadow-sm backdrop-blur-md sm:rounded-lg">
                 {leadNews.category}
               </span>
             </div>
@@ -92,7 +92,7 @@ export function NewsCircleShowcase({ items }: Props) {
               <time className="text-xs font-bold uppercase tracking-[0.14em] text-muted">
                 {formatDate(leadNews.date)}
               </time>
-              <h3 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+              <h3 className="mt-3 text-3xl font-black leading-[0.98] tracking-tight sm:text-4xl">
                 {leadNews.title}
               </h3>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-muted sm:text-base">
@@ -101,12 +101,12 @@ export function NewsCircleShowcase({ items }: Props) {
             </div>
           </Link>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <div className="mobile-snap-x mobile-scrollbar-none grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {secondaryNews.map((item) => (
               <Link
                 key={item.id}
                 href="/noticias"
-                className="group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50 sm:min-h-36 sm:grid-cols-[120px_minmax(0,1fr)]"
+                className="mobile-card-lift group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-[1.4rem] border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50 sm:min-h-36 sm:rounded-lg sm:grid-cols-[120px_minmax(0,1fr)]"
               >
                 <span className="relative min-h-32 overflow-hidden sm:min-h-36">
                   <Image
@@ -133,12 +133,12 @@ export function NewsCircleShowcase({ items }: Props) {
           </div>
         </div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
+        <div className="mobile-snap-x mobile-scrollbar-none mt-12 grid gap-8 lg:grid-cols-3">
           {categories.map((category) => {
             const categoryItems = getCategoryItems(displayItems, category);
 
             return (
-              <section key={category}>
+              <section key={category} className="mobile-card-lift rounded-[1.5rem] border border-border bg-bg-elevated p-4 sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0">
                 <div className="flex items-center justify-between border-b border-border pb-3">
                   <h3 className="text-2xl font-black">{category}</h3>
                   <Link
@@ -156,7 +156,7 @@ export function NewsCircleShowcase({ items }: Props) {
                       className="group border-b border-border pb-4 last:border-b-0"
                     >
                       {index === 0 && (
-                        <span className="relative mb-4 block aspect-[16/9] overflow-hidden rounded-lg bg-white">
+                        <span className="relative mb-4 block aspect-[16/9] overflow-hidden rounded-[1.2rem] bg-white sm:rounded-lg">
                           <Image
                             src={item.image}
                             alt=""
@@ -180,7 +180,7 @@ export function NewsCircleShowcase({ items }: Props) {
           })}
         </div>
 
-        <section className="mt-14">
+        <section className="mobile-reveal mt-14">
           <h3 className="border-b border-border pb-3 text-3xl font-black">
             Más noticias
           </h3>

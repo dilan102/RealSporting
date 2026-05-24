@@ -29,8 +29,8 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "glass border-b py-3"
-          : "border-b border-border bg-bg/90 py-4 text-text backdrop-blur"
+          ? "glass border-b py-2.5 sm:py-3"
+          : "border-b border-border bg-bg/85 py-3 text-text backdrop-blur-xl sm:py-4"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@ export function Navbar() {
             alt={`Logo ${club.name}`}
             width={44}
             height={44}
-            className="object-contain"
+            className="size-10 object-contain sm:size-11"
           />
           <span className="hidden text-sm font-semibold tracking-tight sm:block">
             <span className="text-gradient">
@@ -82,7 +82,7 @@ export function Navbar() {
           <ThemeToggle />
           <button
             type="button"
-            className="glass rounded-lg p-2 md:hidden"
+            className="glass rounded-full p-2.5 shadow-sm md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
@@ -95,18 +95,18 @@ export function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="glass overflow-hidden border-t md:hidden"
+            initial={{ opacity: 0, y: -18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -14, scale: 0.98 }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-3 mt-2 overflow-hidden rounded-[1.75rem] border border-border bg-bg-elevated/92 shadow-2xl backdrop-blur-2xl md:hidden"
           >
-            <ul className="flex flex-col gap-1 px-4 py-4">
+            <ul className="flex flex-col gap-1 p-3">
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`block rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                    className={`block rounded-full px-4 py-3 text-sm font-bold transition-colors ${
                       pathname === link.href
                         ? "bg-accent/10 text-accent"
                         : "text-muted hover:bg-surface hover:text-text"

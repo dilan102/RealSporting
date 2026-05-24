@@ -66,17 +66,17 @@ export function TrainingLoopShowcase({ items }: Props) {
   };
 
   return (
-    <section className="relative isolate overflow-hidden px-4 py-20 sm:px-6 lg:px-8">
+    <section className="relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <div className="absolute inset-x-0 top-0 h-px bg-border" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-border" />
 
       <div className="relative mx-auto max-w-6xl">
-        <div className="flex flex-wrap items-end justify-between gap-5">
+        <div className="mobile-reveal flex flex-wrap items-end justify-between gap-5">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">
               Entrenamientos
             </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-3 text-[clamp(2.35rem,11vw,3.6rem)] font-black leading-none tracking-tight sm:text-4xl">
               Últimas sesiones del proceso
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
@@ -85,7 +85,7 @@ export function TrainingLoopShowcase({ items }: Props) {
           </div>
           <Link
             href="/entrenamientos"
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border px-4 text-sm font-semibold transition-colors hover:border-accent/50 hover:text-accent"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-bg-elevated/70 px-4 text-sm font-bold transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
           >
             Ver todos
             <ArrowRight size={16} aria-hidden="true" />
@@ -93,7 +93,7 @@ export function TrainingLoopShowcase({ items }: Props) {
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-[minmax(280px,0.78fr)_minmax(0,1.42fr)]">
-          <div className="order-2 grid gap-4 sm:grid-cols-2 lg:order-1 lg:grid-cols-1">
+          <div className="mobile-snap-x mobile-scrollbar-none order-2 grid gap-4 sm:grid-cols-2 lg:order-1 lg:grid-cols-1">
             {orderedItems.slice(0, 3).map((item, index) => {
               const selected = item.id === activeTraining.id;
 
@@ -105,7 +105,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                     setActiveIndex(index);
                     setExpanded(item);
                   }}
-                  className={`group grid min-h-32 grid-cols-[112px_minmax(0,1fr)] overflow-hidden rounded-lg border bg-bg/70 text-left transition-colors ${
+                  className={`mobile-card-lift group grid min-h-32 grid-cols-[112px_minmax(0,1fr)] overflow-hidden rounded-[1.4rem] border bg-bg/70 text-left transition-colors sm:rounded-lg ${
                     selected
                       ? "border-accent/60"
                       : "border-border hover:border-accent/40"
@@ -139,15 +139,15 @@ export function TrainingLoopShowcase({ items }: Props) {
 
           <div className="order-1 overflow-hidden lg:order-2">
             <AnimatePresence mode="wait">
-              <motion.button
+            <motion.button
                 key={activeTraining.id}
                 type="button"
                 onClick={() => setExpanded(activeTraining)}
-                className="group relative min-h-[410px] w-full overflow-hidden rounded-lg border border-accent/40 bg-bg text-left shadow-2xl"
-                initial={{ opacity: 0, x: -110, scale: 0.98 }}
+                className="mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-[2rem] border border-accent/40 bg-bg text-left shadow-2xl sm:min-h-[410px] sm:rounded-lg"
+                initial={{ opacity: 0, x: -54, scale: 0.96 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 140, scale: 0.98 }}
-                transition={{ duration: 0.48, ease: "easeOut" }}
+                exit={{ opacity: 0, x: 64, scale: 0.97 }}
+                transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
                 aria-label={`Expandir entrenamiento: ${activeTraining.title}`}
               >
                 <Image
@@ -159,20 +159,20 @@ export function TrainingLoopShowcase({ items }: Props) {
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-transparent" />
                 <span className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                  <span className="mb-4 inline-flex items-center gap-2 rounded-lg bg-accent px-3 py-1 text-xs font-bold text-bg">
+                  <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-bg sm:rounded-lg">
                     <Dumbbell size={14} aria-hidden="true" />
                     Entrenamiento
                   </span>
                   <time className="block text-sm font-semibold text-accent-secondary">
                     {formatDate(activeTraining.date)}
                   </time>
-                  <span className="mt-3 block max-w-2xl text-3xl font-bold leading-tight sm:text-4xl">
+                  <span className="mt-3 block max-w-2xl text-3xl font-black leading-[0.98] sm:text-4xl">
                     {activeTraining.title}
                   </span>
                   <span className="mt-4 block max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
                     {activeTraining.description}
                   </span>
-                  <span className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent px-4 text-sm font-bold text-bg">
+                  <span className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-bg sm:rounded-lg">
                     Expandir entrenamiento
                     <ArrowRight size={16} aria-hidden="true" />
                   </span>
@@ -193,7 +193,7 @@ export function TrainingLoopShowcase({ items }: Props) {
             onClick={closeExpanded}
           >
             <motion.article
-              className="max-h-[calc(100vh-3rem)] w-full max-w-3xl overflow-y-auto rounded-lg border border-border bg-bg-elevated shadow-2xl"
+              className="max-h-[calc(100vh-3rem)] w-full max-w-3xl overflow-y-auto rounded-[1.75rem] border border-border bg-bg-elevated shadow-2xl sm:rounded-lg"
               initial={{ opacity: 0, x: -60, scale: 0.94 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 80, scale: 0.96 }}
@@ -209,7 +209,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 <button
                   type="button"
                   onClick={closeExpanded}
-                  className="absolute right-4 top-4 rounded-lg border border-white/20 bg-bg/80 p-2 text-white backdrop-blur transition-colors hover:border-accent"
+                  className="absolute right-4 top-4 rounded-full border border-white/20 bg-bg/80 p-2 text-white backdrop-blur transition-colors hover:border-accent sm:rounded-lg"
                   aria-label="Cerrar entrenamiento"
                 >
                   <X size={20} aria-hidden="true" />
@@ -227,7 +227,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 </p>
                 <Link
                   href="/entrenamientos"
-                  className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-bold text-bg transition-colors hover:bg-accent/90"
+                  className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-bg transition-colors hover:bg-accent/90 sm:rounded-lg"
                 >
                   Ir a entrenamientos
                   <ArrowRight size={17} aria-hidden="true" />
