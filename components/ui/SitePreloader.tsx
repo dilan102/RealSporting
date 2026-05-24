@@ -7,51 +7,51 @@ import { useEffect, useState } from "react";
 const introText = "Equipo Real Sporting de Usme";
 const welcomeText = "Bienvenidos";
 
-function AnimatedLetters({ text }: { text: string }) {
+function AnimatedWords({ text }: { text: string }) {
+  const words = text.split(" ");
+
   return (
     <motion.span
       aria-label={text}
-      className="block"
+      className="flex flex-wrap justify-center gap-x-4 gap-y-3"
       initial="hidden"
       animate="visible"
       exit="exit"
       variants={{
         hidden: {},
-        visible: { transition: { staggerChildren: 0.035 } },
-        exit: { transition: { staggerChildren: 0.018, staggerDirection: -1 } },
+        visible: { transition: { staggerChildren: 0.12 } },
+        exit: { transition: { staggerChildren: 0.07, staggerDirection: -1 } },
       }}
     >
-      {text.split("").map((letter, index) => (
+      {words.map((word, index) => (
         <motion.span
-          key={`${letter}-${index}`}
+          key={`${word}-${index}`}
           aria-hidden="true"
-          className="inline-block"
+          className="inline-block whitespace-nowrap"
           variants={{
             hidden: {
               opacity: 0,
-              y: 34,
-              scale: 0.78,
-              rotateX: -70,
-              filter: "blur(8px)",
+              y: 28,
+              scale: 0.92,
+              filter: "blur(10px)",
             },
             visible: {
               opacity: 1,
               y: 0,
               scale: 1,
-              rotateX: 0,
               filter: "blur(0px)",
-              transition: { type: "spring", stiffness: 460, damping: 24 },
+              transition: { type: "spring", stiffness: 360, damping: 28 },
             },
             exit: {
               opacity: 0,
-              y: -26,
-              scale: 1.08,
-              filter: "blur(8px)",
-              transition: { duration: 0.22 },
+              y: -22,
+              scale: 0.96,
+              filter: "blur(10px)",
+              transition: { duration: 0.24 },
             },
           }}
         >
-          {letter === " " ? "\u00a0" : letter}
+          {word}
         </motion.span>
       ))}
     </motion.span>
@@ -105,13 +105,13 @@ export function SitePreloader() {
             <AnimatePresence mode="wait">
               <motion.h2
                 key={phase}
-                className="text-balance text-5xl font-black leading-[0.95] text-text drop-shadow-2xl sm:text-7xl lg:text-8xl"
+                className="text-balance text-[clamp(2.25rem,11vw,5.8rem)] font-black leading-[1.02] text-text drop-shadow-2xl"
                 initial={{ opacity: 0, y: 18, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -18, scale: 1.02 }}
                 transition={{ duration: 0.28, ease: "easeOut" }}
               >
-                <AnimatedLetters text={phase === "intro" ? introText : welcomeText} />
+                <AnimatedWords text={phase === "intro" ? introText : welcomeText} />
               </motion.h2>
             </AnimatePresence>
             <motion.div
