@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -13,6 +13,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [adminActive, setAdminActive] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -24,6 +25,25 @@ export function Navbar() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    const syncAdminAccess = () => {
+      setAdminActive(Boolean(window.sessionStorage.getItem("cdrs-admin-key")));
+    };
+
+    syncAdminAccess();
+    window.addEventListener("cdrs-admin-login", syncAdminAccess);
+    window.addEventListener("cdrs-admin-logout", syncAdminAccess);
+
+    return () => {
+      window.removeEventListener("cdrs-admin-login", syncAdminAccess);
+      window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
+    };
+  }, []);
+
+  const toggleAdmin = () => {
+    window.dispatchEvent(new Event("cdrs-admin-toggle"));
+  };
 
   return (
     <header
@@ -79,6 +99,19 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleAdmin}
+            className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-lg border shadow-sm transition-colors ${
+              adminActive
+                ? "border-accent bg-accent text-bg hover:bg-accent/90"
+                : "border-border bg-bg-elevated text-muted hover:border-accent/40 hover:text-text"
+            }`}
+            aria-label={adminActive ? "Abrir panel de administrador" : "Abrir modo administrador"}
+            title={adminActive ? "Panel administrador" : "Modo administrador"}
+          >
+            <UserRound size={18} aria-hidden="true" />
+          </button>
           <ThemeToggle />
           <button
             type="button"

@@ -7,7 +7,6 @@ import {
   Pencil,
   Save,
   ShieldCheck,
-  UserRound,
   X,
 } from "lucide-react";
 
@@ -151,6 +150,21 @@ export function AdminPortal() {
     };
   }, [adminMode, editableSelector]);
 
+  useEffect(() => {
+    const handleAdminToggle = () => {
+      if (adminMode) {
+        setPanelOpen((value) => !value);
+        return;
+      }
+
+      setModalOpen(true);
+    };
+
+    window.addEventListener("cdrs-admin-toggle", handleAdminToggle);
+
+    return () => window.removeEventListener("cdrs-admin-toggle", handleAdminToggle);
+  }, [adminMode]);
+
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSaving(true);
@@ -226,15 +240,6 @@ export function AdminPortal() {
 
   return (
     <div data-admin-ignore>
-      <button
-        type="button"
-        aria-label="Abrir modo administrador"
-        onClick={() => (adminMode ? setPanelOpen((value) => !value) : setModalOpen(true))}
-        className="fixed right-4 top-24 z-[70] grid size-12 place-items-center rounded-full border border-border bg-bg-elevated/88 text-text shadow-2xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent sm:right-6"
-      >
-        <UserRound size={22} aria-hidden="true" />
-      </button>
-
       {modalOpen && (
         <div className="fixed inset-0 z-[90] grid place-items-center bg-black/55 px-4 backdrop-blur-md">
           <form
