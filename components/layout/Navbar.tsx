@@ -47,11 +47,15 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? "glass border-b py-2.5 sm:py-3"
-          : "border-b border-border bg-bg/85 py-3 text-text backdrop-blur-xl sm:py-4"
+          ? "border-border py-2.5 shadow-lg shadow-black/5 backdrop-blur-xl sm:py-3"
+          : "border-transparent bg-transparent py-3 text-text backdrop-blur-0 sm:py-4"
       }`}
+      style={{
+        backgroundColor: scrolled ? "var(--nav-bg)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
+      }}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3">
@@ -99,12 +103,18 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/contacto"
+            className="btn-gold hidden min-h-10 items-center justify-center rounded-lg px-4 text-sm font-black md:inline-flex"
+          >
+            Inscríbete
+          </Link>
           <button
             type="button"
             onClick={toggleAdmin}
             className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-lg border shadow-sm transition-colors ${
               adminActive
-                ? "border-accent bg-accent text-bg hover:bg-accent/90"
+                ? "border-accent bg-accent text-[var(--button-text)] hover:bg-accent/90"
                 : "border-border bg-bg-elevated text-muted hover:border-accent/40 hover:text-text"
             }`}
             aria-label={adminActive ? "Abrir panel de administrador" : "Abrir modo administrador"}
@@ -115,7 +125,7 @@ export function Navbar() {
           <ThemeToggle />
           <button
             type="button"
-            className="glass rounded-full p-2.5 shadow-sm md:hidden"
+            className="glass rounded-lg p-2.5 shadow-sm md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
@@ -132,7 +142,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -14, scale: 0.98 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-3 mt-2 overflow-hidden rounded-[1.75rem] border border-border bg-bg-elevated/92 shadow-2xl backdrop-blur-2xl md:hidden"
+            className="mx-3 mt-2 overflow-hidden rounded-lg border border-border bg-bg-elevated/92 shadow-2xl backdrop-blur-2xl md:hidden"
           >
             <ul className="flex flex-col gap-1 p-3">
               {navLinks.map((link) => (
@@ -149,6 +159,14 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/contacto"
+                  className="btn-gold mt-1 flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-black"
+                >
+                  Inscríbete
+                </Link>
+              </li>
             </ul>
           </motion.div>
         )}

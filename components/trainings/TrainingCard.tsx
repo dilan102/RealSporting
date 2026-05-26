@@ -41,6 +41,23 @@ function getTrainingMedia(training: Training) {
   ];
 }
 
+function TrainingPlaceholder() {
+  return (
+    <div className="absolute inset-0 grid place-items-center bg-[linear-gradient(135deg,var(--accent-green),var(--accent-gold),#111111)]">
+      <div className="grid size-24 place-items-center rounded-lg border border-white/25 bg-black/20 p-4 shadow-2xl backdrop-blur-md">
+        <Image
+          src="/logo.png"
+          alt=""
+          width={68}
+          height={68}
+          className="object-contain"
+          aria-hidden="true"
+        />
+      </div>
+    </div>
+  );
+}
+
 type TrainingCardProps = {
   training: Training;
   canManage?: boolean;
@@ -88,15 +105,11 @@ export function TrainingCard({
     setActiveMedia((current) => (current === mediaCount - 1 ? 0 : current + 1));
   };
 
-  if (!mainMedia) {
-    return null;
-  }
-
   return (
     <>
       <motion.article
         variants={fadeUpItem}
-        className="glass mobile-card-lift group overflow-hidden rounded-lg transition-colors duration-300 hover:border-accent/30"
+        className="glass mobile-card-lift group overflow-hidden rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
       >
         <button
           type="button"
@@ -107,7 +120,9 @@ export function TrainingCard({
           className="relative block aspect-[16/10] w-full overflow-hidden text-left"
           aria-label={`Abrir entrenamiento ${training.title}`}
         >
-          {mainMedia.type === "image" ? (
+          {!mainMedia ? (
+            <TrainingPlaceholder />
+          ) : mainMedia.type === "image" ? (
             <Image
               src={mainMedia.src}
               alt={training.title}
@@ -171,12 +186,20 @@ export function TrainingCard({
 
       {open && (
         <div
-          className="fixed inset-0 z-[80] bg-black/70 p-4 backdrop-blur-sm sm:p-6"
+          className="fixed inset-0 z-[80] bg-black/82 p-4 backdrop-blur-sm sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-labelledby={`training-${training.id}-title`}
         >
-          <div className="mx-auto flex max-h-[calc(100vh-2rem)] max-w-6xl flex-col overflow-hidden rounded-lg border border-border bg-bg text-text shadow-2xl sm:max-h-[calc(100vh-3rem)]">
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-lg border border-white/20 bg-black/45 text-white backdrop-blur transition-colors hover:border-accent hover:text-accent sm:right-6 sm:top-6"
+            aria-label="Cerrar entrenamiento"
+          >
+            <X size={22} aria-hidden="true" />
+          </button>
+          <div className="mx-auto flex max-h-[calc(100vh-2rem)] max-w-6xl flex-col overflow-hidden rounded-lg border border-white/15 bg-black/35 text-white shadow-2xl backdrop-blur-md sm:max-h-[calc(100vh-3rem)]">
             <div className="flex items-start justify-between gap-4 border-b border-border p-4 sm:p-5">
               <div>
                 <time className="text-xs font-bold uppercase tracking-[0.14em] text-accent">
@@ -189,19 +212,13 @@ export function TrainingCard({
                   {training.title}
                 </h2>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="grid size-10 shrink-0 place-items-center rounded-lg border border-border text-muted transition-colors hover:border-accent/40 hover:text-text"
-                aria-label="Cerrar entrenamiento"
-              >
-                <X size={20} aria-hidden="true" />
-              </button>
             </div>
 
             <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
               <div className="relative min-h-[280px] bg-black sm:min-h-[420px] lg:min-h-[620px]">
-                {media[activeMedia].type === "image" ? (
+                {mediaCount === 0 ? (
+                  <TrainingPlaceholder />
+                ) : media[activeMedia].type === "image" ? (
                   <Image
                     src={media[activeMedia].src}
                     alt={`${training.title} ${activeMedia + 1}`}
@@ -223,7 +240,7 @@ export function TrainingCard({
                     <button
                       type="button"
                       onClick={showPrevious}
-                      className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-bg"
+                      className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-[var(--button-text)]"
                       aria-label="Imagen anterior"
                     >
                       <ChevronLeft size={22} aria-hidden="true" />
@@ -231,7 +248,7 @@ export function TrainingCard({
                     <button
                       type="button"
                       onClick={showNext}
-                      className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-bg"
+                      className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-[var(--button-text)]"
                       aria-label="Imagen siguiente"
                     >
                       <ChevronRight size={22} aria-hidden="true" />

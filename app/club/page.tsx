@@ -42,7 +42,7 @@ export default function ClubPage() {
             <div className="mobile-reveal mobile-reveal-delay-2 mt-8 grid gap-3 sm:flex sm:flex-wrap">
               <Link
                 href="/contacto"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-bg transition-colors hover:bg-accent/90 sm:rounded-lg"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90 sm:rounded-lg"
               >
                 Inscripción
                 <ArrowRight size={16} aria-hidden="true" />

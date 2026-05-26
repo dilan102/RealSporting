@@ -15,8 +15,9 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-bg-elevated">
+      <div className="h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0A0A0A)]" />
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-[1fr_0.75fr_1fr]">
           <div>
             <div className="flex items-center gap-3">
               <Image
@@ -36,7 +37,7 @@ export function Footer() {
             </p>
           </div>
 
-          <div>
+          <div className="border-y border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] py-6 md:border-x md:border-y-0 md:px-8 md:py-0">
             <p className="text-xs font-semibold uppercase tracking-widest text-accent">
               Navegación
             </p>
@@ -74,7 +75,7 @@ export function Footer() {
                   href={social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent-secondary"
+                  className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
                   <Facebook size={16} /> Facebook
                 </a>
@@ -99,7 +100,17 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-6 text-center text-xs text-muted">
+        <div className="mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
+          <iframe
+            title="Ubicación Real Sporting en Usme, Bogotá"
+            src="https://www.google.com/maps?q=Usme%2C%20Bogot%C3%A1%2C%20Colombia&output=embed"
+            className="h-64 w-full"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+
+        <div className="mt-12 border-t border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] pt-6 text-center text-xs text-muted">
           © {year} {club.name}. Todos los derechos reservados.
         </div>
       </div>

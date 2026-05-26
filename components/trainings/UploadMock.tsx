@@ -67,7 +67,7 @@ export function UploadMock() {
           <button
             type="button"
             disabled
-            className="w-full cursor-not-allowed rounded-lg bg-accent/30 px-6 py-3 text-sm font-semibold text-bg/70 sm:w-auto"
+            className="w-full cursor-not-allowed rounded-lg bg-accent/30 px-6 py-3 text-sm font-semibold text-black/70 sm:w-auto"
           >
             Publicar entrenamiento (próximamente)
           </button>

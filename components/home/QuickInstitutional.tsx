@@ -76,7 +76,7 @@ export function QuickInstitutional() {
               </h2>
               <Link
                 href="/contacto"
-                className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-bg shadow-lg shadow-accent/20 transition-colors hover:bg-accent/90 sm:rounded-lg"
+                className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-[var(--button-text)] shadow-lg shadow-accent/20 transition-colors hover:bg-accent/90 sm:rounded-lg"
               >
                 Solicitar inscripción
                 <ArrowRight size={16} aria-hidden="true" />
@@ -90,7 +90,7 @@ export function QuickInstitutional() {
                   href={href}
                   className="mobile-card-lift group grid gap-5 rounded-[1.6rem] border border-border bg-bg-elevated p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 sm:rounded-lg sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
                 >
-                  <span className="grid size-14 place-items-center rounded-2xl bg-accent text-bg sm:rounded-lg">
+                  <span className="grid size-14 place-items-center rounded-2xl bg-accent text-[var(--button-text)] sm:rounded-lg">
                     <Icon size={24} aria-hidden="true" />
                   </span>
                   <span>
@@ -147,10 +147,10 @@ export function QuickInstitutional() {
             </div>
           </div>
 
-          <div className="mobile-card-lift mt-16 rounded-[1.75rem] bg-accent p-6 text-bg sm:mt-20 sm:rounded-lg sm:p-8 lg:p-10">
+          <div className="mobile-card-lift mt-16 rounded-[1.75rem] bg-accent p-6 text-[var(--button-text)] sm:mt-20 sm:rounded-lg sm:p-8 lg:p-10">
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-bg/70">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-black/70">
                   &quot;Nunca caminarás solo&quot;
                 </p>
                 <h2 className="mt-4 max-w-3xl text-3xl font-black leading-tight sm:text-5xl">

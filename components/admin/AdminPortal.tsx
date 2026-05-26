@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
   ImagePlus,
   LogOut,
@@ -288,7 +289,7 @@ export function AdminPortal() {
             <button
               type="submit"
               disabled={saving}
-              className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 text-sm font-black text-bg transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-accent px-5 text-sm font-black text-[var(--button-text)] transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <ShieldCheck size={18} aria-hidden="true" />
               {saving ? "Validando..." : "Activar administrador"}
@@ -339,17 +340,17 @@ export function AdminPortal() {
           </div>
 
           <div className="grid gap-2 border-t border-border p-4 sm:grid-cols-2">
-            <a
+            <Link
               href="/noticias"
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm font-black transition-colors hover:border-accent hover:text-accent"
             >
               <ImagePlus size={17} aria-hidden="true" />
               Medios y noticias
-            </a>
+            </Link>
             <button
               type="button"
               onClick={handleSave}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm font-black text-bg transition-colors hover:bg-accent/90"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-accent px-4 text-sm font-black text-[var(--button-text)] transition-colors hover:bg-accent/90"
             >
               <Save size={17} aria-hidden="true" />
               Guardar cambios

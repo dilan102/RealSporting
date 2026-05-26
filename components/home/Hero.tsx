@@ -1,18 +1,102 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { CountUp } from "countup.js";
 import { ArrowRight, MapPin } from "lucide-react";
 import { club } from "@/lib/content";
 
-export function Hero() {
-  return (
-    <section className="relative isolate overflow-hidden bg-bg text-text">
-      <div className="pointer-events-none absolute inset-0 grid-overlay" />
+const heroImages = ["/banner.png", "/trainings/3.svg", "/trainings/6.svg"];
 
-      <div className="relative mx-auto grid min-h-[92vh] max-w-7xl gap-8 px-4 pb-16 pt-24 sm:gap-12 sm:px-6 sm:pb-20 sm:pt-32 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)] lg:items-center lg:px-8">
-        <div className="mobile-reveal relative z-10">
-          <div
-            className="inline-flex items-center gap-3 rounded-full border border-border bg-bg-elevated/80 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-accent shadow-sm backdrop-blur-md sm:rounded-lg"
-          >
+const stats = [
+  { value: 7, suffix: "", label: "Categorías" },
+  { value: 20, suffix: "+", label: "Espacios" },
+  { value: 2026, suffix: "", label: "Proyección" },
+];
+
+function AnimatedStat({
+  value,
+  suffix,
+  label,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const counter = new CountUp(ref.current, value, {
+      duration: 1.7,
+      suffix,
+      separator: "",
+    });
+
+    if (!counter.error) {
+      counter.start();
+    }
+  }, [suffix, value]);
+
+  return (
+    <div className="rounded-lg border border-border bg-bg-elevated/72 p-4 shadow-sm backdrop-blur-md">
+      <span ref={ref} className="block text-4xl font-black leading-none text-accent" />
+      <span className="mt-2 block text-xs font-black uppercase tracking-[0.14em] text-muted">
+        {label}
+      </span>
+    </div>
+  );
+}
+
+export function Hero() {
+  const [activeImage, setActiveImage] = useState(0);
+  const [parallax, setParallax] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveImage((current) => (current + 1) % heroImages.length);
+    }, 5200);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setParallax(Math.min(window.scrollY * 0.16, 90));
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <section className="relative isolate min-h-[92vh] overflow-hidden bg-bg text-text">
+      <div className="absolute inset-0">
+        {heroImages.map((image, index) => (
+          <Image
+            key={image}
+            src={image}
+            alt={index === 0 ? `Jugadores de ${club.name}` : ""}
+            fill
+            priority={index === 0}
+            sizes="100vw"
+            className={`object-cover object-center transition-opacity duration-700 ${
+              activeImage === index ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ transform: `translate3d(0, ${parallax}px, 0) scale(1.08)` }}
+          />
+        ))}
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--hero-overlay)] via-[color-mix(in_srgb,var(--bg-primary)_42%,transparent)] to-[color-mix(in_srgb,var(--bg-primary)_88%,transparent)]" />
+      <div className="pointer-events-none absolute inset-0 grid-overlay opacity-50" />
+
+      <div className="relative mx-auto flex min-h-[92vh] max-w-7xl items-end px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
+        <div className="max-w-5xl">
+          <div className="animate-[mobile-reveal_760ms_cubic-bezier(0.22,1,0.36,1)_both] inline-flex items-center gap-3 rounded-lg border border-border bg-bg-elevated/80 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-accent shadow-sm backdrop-blur-md">
             <Image
               src="/logo.png"
               alt=""
@@ -24,9 +108,7 @@ export function Hero() {
             Club deportivo
           </div>
 
-          <h1
-            className="mt-6 max-w-4xl text-[clamp(2.55rem,12.5vw,4.35rem)] font-black leading-[0.92] tracking-tight text-text sm:mt-8 sm:text-[4.9rem] sm:leading-[0.9] lg:text-8xl"
-          >
+          <h1 className="mt-6 max-w-5xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_90ms_both] text-[4rem] font-black leading-[0.82] text-white drop-shadow-xl sm:text-[5rem] lg:text-[6rem]">
             Desde Usme.
             <br />
             Con disciplina.
@@ -34,50 +116,37 @@ export function Hero() {
             Hacia el futuro.
           </h1>
 
-          <p
-            className="mobile-reveal mobile-reveal-delay-1 mt-6 max-w-2xl text-[0.98rem] font-semibold leading-7 text-muted sm:text-lg sm:leading-8 lg:text-xl"
-          >
+          <p className="mt-6 max-w-2xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_180ms_both] text-base font-semibold leading-8 text-white/90 sm:text-xl">
             {club.tagline}. Formamos jugadores con método, valores y sentido
             de pertenencia.
           </p>
 
-          <div
-            className="mobile-reveal mobile-reveal-delay-2 mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center"
-          >
+          <div className="mt-8 grid animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_270ms_both] gap-3 sm:flex sm:flex-wrap sm:items-center">
             <Link
               href="/contacto"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-bg shadow-lg shadow-accent/20 transition-colors hover:bg-accent/90 sm:rounded-lg"
+              className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-black"
             >
-              Inscripción
+              Inscríbete
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/club"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-bg-elevated/80 px-5 text-sm font-bold text-text backdrop-blur-md transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-black/20 px-6 text-sm font-bold text-white backdrop-blur-md transition-all hover:scale-[1.03] hover:border-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/20"
             >
               Proyecto deportivo
             </Link>
           </div>
-        </div>
 
-        <div
-          className="relative hidden aspect-auto min-h-[620px] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-2xl lg:block"
-        >
-          <Image
-            src="/banner.png"
-            alt={`Jugadores de ${club.name}`}
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="43vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#101811]/90 via-[#101811]/12 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent">
-              <MapPin size={15} aria-hidden="true" />
-              Usme · Bogotá
-            </p>
+          <div className="mt-9 grid max-w-2xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_360ms_both] gap-3 sm:grid-cols-3">
+            {stats.map((stat) => (
+              <AnimatedStat key={stat.label} {...stat} />
+            ))}
           </div>
+
+          <p className="mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-white/85">
+            <MapPin size={15} aria-hidden="true" />
+            Usme · Bogotá
+          </p>
         </div>
       </div>
     </section>

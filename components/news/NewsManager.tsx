@@ -72,6 +72,7 @@ export function NewsManager({
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setItems(initialItems);
@@ -80,6 +81,7 @@ export function NewsManager({
   useEffect(() => {
     let active = true;
 
+    setLoading(true);
     fetchNews()
       .then((nextItems) => {
         if (active && nextItems.length > 0) {
@@ -89,6 +91,11 @@ export function NewsManager({
       .catch(() => {
         if (active) {
           setMessage("No se pudieron cargar las noticias guardadas.");
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setLoading(false);
         }
       });
 
@@ -282,12 +289,27 @@ export function NewsManager({
     <>
       {(showList || unlocked) && (
       <div className="mt-12">
-        <NewsGrid
-          items={orderedItems}
-          canManage={unlocked}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+        {loading && orderedItems.length === 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="overflow-hidden rounded-lg border border-border bg-bg-elevated">
+                <div className="skeleton aspect-[16/10]" />
+                <div className="space-y-3 p-6">
+                  <div className="skeleton h-4 w-24 rounded" />
+                  <div className="skeleton h-7 w-4/5 rounded" />
+                  <div className="skeleton h-4 w-full rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <NewsGrid
+            items={orderedItems}
+            canManage={unlocked}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
       )}
 
@@ -429,7 +451,7 @@ export function NewsManager({
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-bold text-bg transition-colors hover:bg-accent/90"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90"
               >
                 {editingId ? <Save size={18} /> : <Plus size={18} />}
                 {editingId ? "Guardar cambios" : "Publicar noticia"}

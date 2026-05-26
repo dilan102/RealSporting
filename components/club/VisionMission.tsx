@@ -54,7 +54,7 @@ export function VisionMission() {
               sizes="(min-width: 768px) 50vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <span className="absolute bottom-4 left-4 grid size-11 place-items-center rounded-lg bg-accent text-bg">
+            <span className="absolute bottom-4 left-4 grid size-11 place-items-center rounded-lg bg-accent text-[var(--button-text)]">
               <Icon size={22} aria-hidden="true" />
             </span>
           </div>
@@ -71,26 +71,29 @@ export function VisionMission() {
 export function ValuesGrid() {
   return (
     <motion.div
-      className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5"
+      className="mt-10 grid gap-5 sm:grid-cols-2"
       variants={staggerContainer}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: false, margin: "-60px" }}
     >
-      {club.values.map((value, index) => {
+      {club.values.slice(0, 4).map((value, index) => {
         const Icon = valueIcons[index] || Flag;
 
         return (
           <motion.article
             key={value.title}
             variants={fadeUpItem}
-            className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5 transition-colors duration-300 hover:border-accent/40"
+            className="mobile-card-lift group relative overflow-hidden rounded-lg border border-border bg-bg-elevated p-7 transition-all duration-300 hover:border-accent hover:bg-[color-mix(in_srgb,var(--accent-green)_9%,var(--card-bg))]"
           >
-            <div className="mb-4 grid size-11 place-items-center rounded-lg bg-accent/15 text-accent">
-              <Icon size={20} aria-hidden="true" />
+            <span className="pointer-events-none absolute right-5 top-3 font-display text-7xl leading-none text-[color-mix(in_srgb,var(--accent-gold)_20%,transparent)]">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <div className="mb-6 grid size-14 place-items-center rounded-lg bg-accent/15 text-accent">
+              <Icon size={44} aria-hidden="true" strokeWidth={1.6} />
             </div>
-            <h3 className="font-black">{value.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-muted">{value.description}</p>
+            <h3 className="relative text-3xl font-black">{value.title}</h3>
+            <p className="relative mt-3 text-sm leading-7 text-muted">{value.description}</p>
           </motion.article>
         );
       })}

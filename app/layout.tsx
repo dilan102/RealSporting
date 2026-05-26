@@ -3,6 +3,7 @@ import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SitePreloader } from "@/components/ui/SitePreloader";
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { club } from "@/lib/content";
 import "./globals.css";
 
@@ -37,13 +38,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="light" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
-        <SitePreloader />
-        <Navbar />
-        <AdminPortal />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <SitePreloader />
+          <Navbar />
+          <AdminPortal />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -159,7 +159,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-transparent" />
                 <span className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                  <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-bg sm:rounded-lg">
+                  <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-[var(--button-text)] sm:rounded-lg">
                     <Dumbbell size={14} aria-hidden="true" />
                     Entrenamiento
                   </span>
@@ -172,7 +172,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                   <span className="mt-4 block max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
                     {activeTraining.description}
                   </span>
-                  <span className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-bg sm:rounded-lg">
+                  <span className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-[var(--button-text)] sm:rounded-lg">
                     Expandir entrenamiento
                     <ArrowRight size={16} aria-hidden="true" />
                   </span>
@@ -227,7 +227,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 </p>
                 <Link
                   href="/entrenamientos"
-                  className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-bg transition-colors hover:bg-accent/90 sm:rounded-lg"
+                  className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90 sm:rounded-lg"
                 >
                   Ir a entrenamientos
                   <ArrowRight size={17} aria-hidden="true" />

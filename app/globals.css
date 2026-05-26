@@ -1,47 +1,85 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @theme {
-  --color-bg: #050706;
-  --color-bg-elevated: #0d1110;
-  --color-surface: rgba(255, 255, 255, 0.035);
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-text: #f4f4f5;
-  --color-muted: #a6adab;
-  --color-accent: #35d07f;
-  --color-accent-secondary: #8fb8c7;
-  --font-sans: "Outfit", system-ui, sans-serif;
+  --color-bg: var(--bg-primary);
+  --color-bg-elevated: var(--bg-secondary);
+  --color-surface: color-mix(in srgb, var(--card-bg) 78%, transparent);
+  --color-border: var(--border);
+  --color-text: var(--text-primary);
+  --color-muted: var(--text-secondary);
+  --color-accent: var(--accent-gold);
+  --color-accent-secondary: var(--accent-green);
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Bebas Neue", Impact, sans-serif;
 }
 
 @layer base {
+  :root {
+    --bg-primary: #F8F8F8;
+    --bg-secondary: #FFFFFF;
+    --text-primary: #0A0A0A;
+    --text-secondary: #444444;
+    --accent-gold: #C9A227;
+    --accent-green: #1A472A;
+    --card-bg: #FFFFFF;
+    --border: #E5E5E5;
+    --button-text: #0A0A0A;
+    --nav-bg: rgba(248, 248, 248, 0.82);
+    --hero-overlay: color-mix(in srgb, var(--accent-green) 74%, transparent);
+  }
+
+  [data-theme="dark"] {
+    --bg-primary: #0A0A0A;
+    --bg-secondary: #111111;
+    --text-primary: #F8F8F8;
+    --text-secondary: #AAAAAA;
+    --accent-gold: #D4AF37;
+    --accent-green: #2D6A4F;
+    --card-bg: #1A1A1A;
+    --border: #2A2A2A;
+    --button-text: #0A0A0A;
+    --nav-bg: rgba(10, 10, 10, 0.78);
+    --hero-overlay: color-mix(in srgb, #15391f 82%, transparent);
+  }
+
   html {
     scroll-behavior: smooth;
   }
 
-  html.light {
-    --color-bg: #eef3ef;
-    --color-bg-elevated: #f8faf7;
-    --color-surface: rgba(255, 255, 255, 0.68);
-    --color-border: rgba(33, 48, 40, 0.16);
-    --color-text: #17211b;
-    --color-muted: #44534b;
-    --color-accent: #17683f;
-    --color-accent-secondary: #345f6c;
+  *,
+  *::before,
+  *::after {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease,
+      transform 0.3s ease;
   }
 
   body {
     @apply bg-bg text-text antialiased;
     font-family: var(--font-sans);
     background:
-      radial-gradient(circle at 12% -8%, color-mix(in srgb, var(--color-accent) 16%, transparent), transparent 28rem),
-      radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--color-accent-secondary) 18%, transparent), transparent 26rem),
-      var(--color-bg);
-    transition: background-color 250ms ease, color 250ms ease;
+      radial-gradient(circle at 12% -8%, color-mix(in srgb, var(--accent-gold) 13%, transparent), transparent 28rem),
+      radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--accent-green) 14%, transparent), transparent 26rem),
+      var(--bg-primary);
+    transition: all 0.3s ease;
   }
 
-  html.light body {
+  [data-theme="light"] body {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.58), transparent 360px),
-      var(--color-bg);
+      var(--bg-primary);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0;
   }
 
   ::selection {
@@ -52,11 +90,12 @@
 
 @layer utilities {
   .glass {
-    @apply border border-border bg-surface backdrop-blur-sm;
+    @apply border border-border bg-surface;
+    backdrop-filter: blur(12px);
     box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
   }
 
-  .light .glass {
+  [data-theme="light"] .glass {
     box-shadow: 0 14px 34px rgba(35, 50, 42, 0.08);
   }
 
@@ -68,8 +107,8 @@
     background: linear-gradient(
       135deg,
       var(--color-text),
-      var(--color-accent) 52%,
-      var(--color-accent-secondary)
+      var(--accent-gold) 52%,
+      var(--accent-green)
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -83,7 +122,7 @@
     background-size: 72px 72px;
   }
 
-  .light .grid-overlay {
+  [data-theme="light"] .grid-overlay {
     background-image:
       linear-gradient(rgba(23, 33, 27, 0.035) 1px, transparent 1px),
       linear-gradient(90deg, rgba(23, 33, 27, 0.035) 1px, transparent 1px);
@@ -115,11 +154,29 @@
   }
 
   .preload-glow {
-    background: radial-gradient(
-      circle at 50% 50%,
-      color-mix(in srgb, var(--color-accent) 18%, transparent),
-      transparent 34rem
+    background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent-gold) 18%, transparent), transparent 34rem);
+  }
+
+  .btn-gold {
+    background: var(--accent-gold);
+    color: var(--button-text);
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-gold) 22%, transparent);
+  }
+
+  .btn-gold:hover {
+    box-shadow: 0 16px 38px color-mix(in srgb, var(--accent-gold) 34%, transparent);
+    transform: scale(1.03);
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--card-bg) 82%, var(--text-primary) 6%),
+      color-mix(in srgb, var(--accent-gold) 14%, var(--card-bg)),
+      color-mix(in srgb, var(--card-bg) 82%, var(--text-primary) 6%)
     );
+    background-size: 240% 100%;
+    animation: skeleton-pulse 1.25s ease-in-out infinite;
   }
 
   .admin-mode [data-admin-editable="true"] {
@@ -166,7 +223,7 @@
     transform: translateZ(0);
   }
 
-  .light .mobile-card-lift {
+  [data-theme="light"] .mobile-card-lift {
     box-shadow: 0 22px 60px rgba(26, 40, 32, 0.12);
   }
 
@@ -185,6 +242,16 @@
   .mobile-snap-x > * {
     min-width: min(84vw, 22rem);
     scroll-snap-align: start;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0% {
+    background-position: 120% 0;
+  }
+
+  100% {
+    background-position: -120% 0;
   }
 }
 

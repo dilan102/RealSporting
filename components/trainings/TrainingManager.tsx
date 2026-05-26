@@ -68,6 +68,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
   const [fileName, setFileName] = useState("");
   const [videoFileName, setVideoFileName] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setItems(initialItems);
@@ -76,6 +77,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
   useEffect(() => {
     let active = true;
 
+    setLoading(true);
     fetchTrainings()
       .then((nextItems) => {
         if (active && nextItems.length > 0) {
@@ -85,6 +87,11 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
       .catch(() => {
         if (active) {
           setMessage("No se pudieron cargar los entrenamientos guardados.");
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setLoading(false);
         }
       });
 
@@ -195,11 +202,6 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
 
     if (!form.title.trim() || !form.date || !form.description.trim()) {
       setMessage("Completa título, fecha y descripción.");
-      return;
-    }
-
-    if (!editingId && form.files.length === 0 && form.videoFiles.length === 0) {
-      setMessage("Sube al menos una foto o un video para el entrenamiento.");
       return;
     }
 
@@ -319,12 +321,27 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
   return (
     <>
       <div className="mt-12">
-        <TrainingGrid
-          items={orderedItems}
-          canManage={unlocked}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+        {loading && orderedItems.length === 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="overflow-hidden rounded-lg border border-border bg-bg-elevated">
+                <div className="skeleton aspect-[16/10]" />
+                <div className="space-y-3 p-6">
+                  <div className="skeleton h-4 w-28 rounded" />
+                  <div className="skeleton h-6 w-4/5 rounded" />
+                  <div className="skeleton h-4 w-full rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <TrainingGrid
+            items={orderedItems}
+            canManage={unlocked}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
 
       <section className="glass mobile-card-lift mt-16 rounded-lg border-dashed p-6 sm:p-8">
@@ -516,7 +533,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-bold text-bg transition-colors hover:bg-accent/90"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90"
               >
                 {editingId ? (
                   <>

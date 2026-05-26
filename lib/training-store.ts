@@ -176,10 +176,6 @@ export async function createTraining(input: TrainingInput) {
   const imageFiles = input.images || [];
   const videoFiles = input.videos || [];
 
-  if (imageFiles.length === 0 && videoFiles.length === 0) {
-    throw new Error("Sube al menos una foto o un video para el entrenamiento.");
-  }
-
   const images = await Promise.all(imageFiles.map((file) => saveImage(file)));
   const videos = await Promise.all(videoFiles.map((file) => saveVideo(file)));
   const current = await readTrainings();

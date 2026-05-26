@@ -454,7 +454,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-bold text-bg transition-colors hover:bg-accent/90"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-accent px-6 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90"
               >
                 <Save size={18} aria-hidden="true" />
                 Guardar jugador

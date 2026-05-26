@@ -1,8 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { easeOut } from "@/lib/motion";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -12,35 +10,42 @@ type Props = {
 
 export function RevealSection({ children, className, delay = 0 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, {
-    amount: 0.16,
-    margin: "-6% 0px -6% 0px",
-    once: true,
-  });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+
+    if (!element) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "-6% 0px -6% 0px", threshold: 0.16 },
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      className={className}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      variants={{
-        hidden: {
-          opacity: 0,
-          y: 36,
-          scale: 0.985,
-          filter: "blur(10px)",
-        },
-        visible: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          transition: { duration: 0.68, delay, ease: easeOut },
-        },
-      }}
+      className={`${className || ""} group/reveal`}
+      data-visible={visible}
     >
-      {children}
-    </motion.div>
+      <div
+        className="translate-y-9 scale-[0.985] opacity-0 blur-sm transition-all duration-700 ease-out group-data-[visible=true]/reveal:translate-y-0 group-data-[visible=true]/reveal:scale-100 group-data-[visible=true]/reveal:opacity-100 group-data-[visible=true]/reveal:blur-0"
+        style={{ transitionDelay: `${delay}s` }}
+      >
+        {children}
+      </div>
+    </div>
   );
 }
