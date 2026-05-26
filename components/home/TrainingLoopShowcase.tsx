@@ -158,7 +158,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 key={activeTraining.id}
                 type="button"
                 onClick={() => setExpanded(activeTraining)}
-                className="mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-[2rem] border border-accent/40 bg-bg text-left shadow-2xl sm:min-h-[410px] sm:rounded-lg"
+                className="mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-[2rem] border border-accent/40 bg-bg text-left text-white shadow-2xl sm:min-h-[410px] sm:rounded-lg"
                 initial={{ opacity: 0, x: -54, scale: 0.96 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 64, scale: 0.97 }}
@@ -175,19 +175,19 @@ export function TrainingLoopShowcase({ items }: Props) {
                   placeholder="blur"
                   blurDataURL={trainingBlurDataURL}
                 />
-                <span className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-transparent" />
+                <span className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/48 to-black/12" />
                 <span className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
                   <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-xs font-bold text-[var(--button-text)] sm:rounded-lg">
                     <Dumbbell size={14} aria-hidden="true" />
                     Entrenamiento
                   </span>
-                  <time className="block text-sm font-semibold text-accent-secondary">
+                  <time className="block text-sm font-semibold text-[#f3c548]">
                     {formatDate(activeTraining.date)}
                   </time>
                   <span className="mt-3 block max-w-2xl text-3xl font-black leading-[0.98] sm:text-4xl">
                     {sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}
                   </span>
-                  <span className="mt-4 block max-w-2xl overflow-wrap-anywhere text-sm leading-relaxed text-muted sm:text-base">
+                  <span className="mt-4 block max-w-2xl overflow-wrap-anywhere text-sm leading-relaxed text-white/90 sm:text-base">
                     {sanitizeVisibleTextOrDefault(activeTraining.description, TRAINING_TEXT_PLACEHOLDER)}
                   </span>
                   <span className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-[var(--button-text)] sm:rounded-lg">
@@ -231,7 +231,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 <button
                   type="button"
                   onClick={closeExpanded}
-                  className="absolute right-4 top-4 rounded-full border border-white/20 bg-bg/80 p-2 text-white backdrop-blur transition-colors hover:border-accent sm:rounded-lg"
+                  className="absolute right-4 top-4 rounded-full border border-white/20 bg-black/65 p-2 text-white backdrop-blur transition-colors hover:border-accent sm:rounded-lg"
                   aria-label="Cerrar entrenamiento"
                 >
                   <X size={20} aria-hidden="true" />

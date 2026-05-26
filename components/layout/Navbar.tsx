@@ -67,7 +67,7 @@ export function Navbar() {
             className="size-10 object-contain sm:size-11"
           />
           <span className="hidden text-sm font-semibold tracking-tight sm:block">
-            <span className="text-gradient">
+            <span className={scrolled ? "text-gradient" : "text-white drop-shadow"}>
               {club.name}
             </span>
           </span>
@@ -85,7 +85,7 @@ export function Navbar() {
                       ? "text-accent"
                       : scrolled
                         ? "text-muted hover:text-text"
-                        : "text-muted hover:text-text"
+                        : "text-white/88 hover:text-white"
                   }`}
                 >
                   {link.label}

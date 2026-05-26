@@ -39,7 +39,7 @@ export function QuickInstitutional() {
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
               Club Deportivo Real Sporting
             </p>
-            <h2 className="mt-5 text-[clamp(2.55rem,12vw,4.4rem)] font-black leading-[0.92] tracking-tight sm:text-6xl">
+            <h2 className="mt-5 max-w-3xl text-[clamp(2rem,8vw,3.8rem)] font-black leading-[1.04] tracking-tight">
               Formación deportiva con identidad, método y proyección.
             </h2>
           </div>
@@ -52,7 +52,7 @@ export function QuickInstitutional() {
           {[
             ["7", "categorías formativas"],
             ["20+", "espacios por categoría"],
-                ["2026", "modelo deportivo renovado"],
+            ["2026", "modelo deportivo renovado"],
           ].map(([value, label]) => (
             <div key={label} className="mobile-card-lift bg-bg p-6 sm:p-8">
               <p className="text-5xl font-black text-accent">{value}</p>
@@ -71,7 +71,7 @@ export function QuickInstitutional() {
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
                 Tres caminos
               </p>
-              <h2 className="mt-4 text-[clamp(2.45rem,12vw,4.3rem)] font-black leading-[0.95] tracking-tight sm:text-6xl">
+              <h2 className="mt-4 text-[clamp(2rem,8vw,3.6rem)] font-black leading-[1.05] tracking-tight">
                 Inicia, entrena y evoluciona dentro del proceso.
               </h2>
               <Link
@@ -121,12 +121,12 @@ export function QuickInstitutional() {
                 className="object-cover object-center"
                 sizes="(min-width: 1024px) 56vw, 100vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#101811]/75 via-[#101811]/20 to-transparent" />
+              <div className="image-readable-dark absolute inset-0" />
               <div className="absolute bottom-0 left-0 max-w-lg p-5 text-white sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#f3c548]">
                   Método formativo
                 </p>
-                <h3 className="mt-4 text-3xl font-black leading-tight sm:text-4xl">
+                <h3 className="mt-4 text-3xl font-black leading-tight text-white sm:text-4xl">
                   Evaluar, corregir, competir y evolucionar.
                 </h3>
               </div>

@@ -19,28 +19,28 @@
     --bg-primary: #F8F8F8;
     --bg-secondary: #FFFFFF;
     --text-primary: #0A0A0A;
-    --text-secondary: #444444;
-    --accent-gold: #C9A227;
-    --accent-green: #1A472A;
+    --text-secondary: #2F3A34;
+    --accent-gold: #B8860B;
+    --accent-green: #174A2F;
     --card-bg: #FFFFFF;
-    --border: #E5E5E5;
+    --border: #D8DED9;
     --button-text: #0A0A0A;
     --nav-bg: rgba(248, 248, 248, 0.82);
-    --hero-overlay: color-mix(in srgb, var(--accent-green) 74%, transparent);
+    --hero-overlay: rgba(10, 26, 17, 0.78);
   }
 
   [data-theme="dark"] {
     --bg-primary: #0A0A0A;
     --bg-secondary: #111111;
     --text-primary: #F8F8F8;
-    --text-secondary: #AAAAAA;
+    --text-secondary: #D3D8D4;
     --accent-gold: #D4AF37;
     --accent-green: #2D6A4F;
     --card-bg: #1A1A1A;
     --border: #2A2A2A;
     --button-text: #0A0A0A;
     --nav-bg: rgba(10, 10, 10, 0.78);
-    --hero-overlay: color-mix(in srgb, #15391f 82%, transparent);
+    --hero-overlay: rgba(7, 19, 12, 0.84);
   }
 
   html {
@@ -78,7 +78,7 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-sans);
     letter-spacing: 0;
   }
 
@@ -90,7 +90,7 @@
 
 @layer utilities {
   .glass {
-    @apply border border-border bg-surface;
+    @apply border border-border bg-bg-elevated/95;
     backdrop-filter: blur(12px);
     box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
   }
@@ -104,15 +104,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(
-      135deg,
-      var(--color-text),
-      var(--accent-gold) 52%,
-      var(--accent-green)
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--color-text);
   }
 
   .grid-overlay {
@@ -120,6 +112,23 @@
       linear-gradient(color-mix(in srgb, var(--color-text) 4%, transparent) 1px, transparent 1px),
       linear-gradient(90deg, color-mix(in srgb, var(--color-text) 4%, transparent) 1px, transparent 1px);
     background-size: 72px 72px;
+  }
+
+  .readable-panel {
+    background: color-mix(in srgb, var(--card-bg) 94%, transparent);
+    border: 1px solid var(--border);
+    box-shadow: 0 18px 48px rgba(17, 24, 20, 0.1);
+  }
+
+  [data-theme="dark"] .readable-panel {
+    background: color-mix(in srgb, var(--card-bg) 92%, black 8%);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  }
+
+  .image-readable-dark {
+    background:
+      linear-gradient(90deg, rgba(5, 14, 9, 0.9), rgba(5, 14, 9, 0.56) 48%, rgba(5, 14, 9, 0.22)),
+      linear-gradient(0deg, rgba(5, 14, 9, 0.42), rgba(5, 14, 9, 0.42));
   }
 
   [data-theme="light"] .grid-overlay {
