@@ -87,23 +87,16 @@ export function SitePreloader() {
             transition={{ duration: 2.6, ease: "easeInOut" }}
           />
 
-          <motion.div
-            aria-hidden="true"
-            className="preload-ball absolute left-0 top-0"
-            initial={{ x: "8vw", y: "72vh", scale: 1.05, rotate: 0, opacity: 1 }}
-            animate={{
-              x: ["8vw", "76vw", "18vw", "64vw", "50vw"],
-              y: ["72vh", "18vh", "34vh", "70vh", "50vh"],
-              rotate: [0, 520, 1020, 1480, 1880],
-              scale: [1.05, 0.95, 1.08, 0.92, 0.08],
-              opacity: [1, 1, 1, 0.95, 0],
-            }}
-            transition={{
-              duration: 2.85,
-              ease: [0.16, 1, 0.3, 1],
-              times: [0, 0.28, 0.52, 0.78, 1],
-            }}
-          />
+          <div aria-hidden="true" className="preload-ball-stage absolute inset-x-0 bottom-[18vh]">
+            <span className="preload-ball-shadow" />
+            <span className="preload-ball-realistic">
+              <span className="preload-ball-panel preload-ball-panel-center" />
+              <span className="preload-ball-panel preload-ball-panel-top" />
+              <span className="preload-ball-panel preload-ball-panel-right" />
+              <span className="preload-ball-panel preload-ball-panel-bottom" />
+              <span className="preload-ball-panel preload-ball-panel-left" />
+            </span>
+          </div>
 
           <div className="relative z-10 grid min-h-screen place-items-center px-4 text-center">
             <motion.div

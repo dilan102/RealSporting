@@ -136,21 +136,117 @@
     display: none;
   }
 
-  .preload-ball {
-    width: clamp(54px, 12vw, 108px);
+  .overflow-wrap-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .preload-ball-stage {
+    height: clamp(150px, 32vh, 270px);
+    perspective: 900px;
+  }
+
+  .preload-ball-realistic {
+    position: absolute;
+    left: calc(50% - clamp(42px, 8vw, 74px));
+    bottom: 30px;
+    width: clamp(84px, 16vw, 148px);
     aspect-ratio: 1;
     border-radius: 999px;
+    overflow: hidden;
     background:
-      radial-gradient(circle at 50% 42%, #111 0 10%, transparent 10.5%),
-      radial-gradient(circle at 28% 25%, #111 0 8%, transparent 8.5%),
-      radial-gradient(circle at 72% 25%, #111 0 8%, transparent 8.5%),
-      radial-gradient(circle at 30% 74%, #111 0 8%, transparent 8.5%),
-      radial-gradient(circle at 72% 74%, #111 0 8%, transparent 8.5%),
-      conic-gradient(from 18deg, #f9fafb 0 12%, #d7ded9 12% 20%, #ffffff 20% 34%, #dfe6e1 34% 44%, #ffffff 44% 64%, #d7ded9 64% 76%, #ffffff 76% 100%);
+      radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.95), transparent 17%),
+      radial-gradient(circle at 68% 76%, rgba(0, 0, 0, 0.42), transparent 30%),
+      radial-gradient(circle at 50% 52%, #f8faf6 0 35%, #d7ded4 58%, #8b938a 100%);
     box-shadow:
-      0 0 0 2px color-mix(in srgb, var(--color-text) 16%, transparent),
-      0 20px 55px rgba(0, 0, 0, 0.38),
-      0 0 55px color-mix(in srgb, var(--color-accent) 36%, transparent);
+      inset -22px -28px 38px rgba(0, 0, 0, 0.33),
+      inset 16px 12px 26px rgba(255, 255, 255, 0.72),
+      0 24px 48px rgba(0, 0, 0, 0.34),
+      0 0 42px color-mix(in srgb, var(--accent-gold) 30%, transparent);
+    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.2));
+    transform-style: preserve-3d;
+    animation:
+      football-bounce 1.08s cubic-bezier(0.2, 0.72, 0.26, 1) infinite,
+      football-roll 2.16s linear infinite;
+  }
+
+  .preload-ball-realistic::before,
+  .preload-ball-realistic::after {
+    content: "";
+    position: absolute;
+    inset: 6%;
+    border-radius: 999px;
+    background:
+      linear-gradient(32deg, transparent 0 44%, rgba(12, 12, 12, 0.34) 45% 47%, transparent 48% 100%),
+      linear-gradient(112deg, transparent 0 43%, rgba(12, 12, 12, 0.28) 44% 46%, transparent 47% 100%),
+      linear-gradient(155deg, transparent 0 50%, rgba(12, 12, 12, 0.2) 51% 53%, transparent 54% 100%);
+    mix-blend-mode: multiply;
+  }
+
+  .preload-ball-realistic::after {
+    inset: 0;
+    background:
+      radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.72), transparent 18%),
+      radial-gradient(circle at 70% 72%, rgba(0, 0, 0, 0.38), transparent 34%);
+    mix-blend-mode: normal;
+    pointer-events: none;
+  }
+
+  .preload-ball-panel {
+    position: absolute;
+    display: block;
+    width: 28%;
+    aspect-ratio: 1;
+    clip-path: polygon(50% 0, 98% 35%, 80% 100%, 20% 100%, 2% 35%);
+    background:
+      radial-gradient(circle at 34% 25%, #383838, #080808 72%),
+      #0d0d0d;
+    box-shadow:
+      inset 4px 5px 8px rgba(255, 255, 255, 0.12),
+      inset -6px -8px 12px rgba(0, 0, 0, 0.62),
+      0 0 0 2px rgba(20, 20, 20, 0.65);
+  }
+
+  .preload-ball-panel-center {
+    left: 36%;
+    top: 34%;
+    width: 30%;
+  }
+
+  .preload-ball-panel-top {
+    left: 22%;
+    top: 10%;
+    transform: rotate(-24deg) scale(0.78);
+  }
+
+  .preload-ball-panel-right {
+    right: 10%;
+    top: 30%;
+    transform: rotate(28deg) scale(0.82);
+  }
+
+  .preload-ball-panel-bottom {
+    bottom: 10%;
+    left: 42%;
+    transform: rotate(18deg) scale(0.8);
+  }
+
+  .preload-ball-panel-left {
+    left: 9%;
+    top: 48%;
+    transform: rotate(-42deg) scale(0.76);
+  }
+
+  .preload-ball-shadow {
+    position: absolute;
+    left: calc(50% - clamp(50px, 9vw, 90px));
+    bottom: 18px;
+    width: clamp(100px, 18vw, 180px);
+    height: clamp(18px, 3.4vw, 34px);
+    border-radius: 999px;
+    background: radial-gradient(ellipse, rgba(0, 0, 0, 0.42) 0 42%, transparent 72%);
+    filter: blur(4px);
+    animation: football-shadow 1.08s cubic-bezier(0.2, 0.72, 0.26, 1) infinite;
   }
 
   .preload-glow {
@@ -275,6 +371,63 @@
 
   50% {
     transform: translateY(-10px);
+  }
+}
+
+@keyframes football-bounce {
+  0%,
+  100% {
+    transform: translate3d(-34vw, 0, 0) rotateX(16deg) rotateZ(0deg) scaleY(0.94) scaleX(1.04);
+  }
+
+  14% {
+    transform: translate3d(-23vw, -72px, 0) rotateX(24deg) rotateZ(86deg) scale(1);
+  }
+
+  36% {
+    transform: translate3d(-7vw, -176px, 24px) rotateX(36deg) rotateZ(210deg) scale(1.03);
+  }
+
+  58% {
+    transform: translate3d(12vw, -78px, 0) rotateX(20deg) rotateZ(330deg) scale(1);
+  }
+
+  74% {
+    transform: translate3d(23vw, 0, 0) rotateX(14deg) rotateZ(430deg) scaleY(0.92) scaleX(1.06);
+  }
+
+  88% {
+    transform: translate3d(31vw, -58px, 0) rotateX(22deg) rotateZ(520deg) scale(0.99);
+  }
+}
+
+@keyframes football-roll {
+  to {
+    background-position: 160px 80px, 0 0, 0 0;
+  }
+}
+
+@keyframes football-shadow {
+  0%,
+  74%,
+  100% {
+    opacity: 0.58;
+    transform: translateX(-34vw) scaleX(0.72);
+  }
+
+  36% {
+    opacity: 0.16;
+    transform: translateX(-7vw) scaleX(0.36);
+  }
+
+  58% {
+    opacity: 0.28;
+    transform: translateX(12vw) scaleX(0.48);
+  }
+
+  88% {
+    opacity: 0.22;
+    transform: translateX(31vw) scaleX(0.42);
   }
 }
 

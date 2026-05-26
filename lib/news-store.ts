@@ -3,7 +3,13 @@ import { mkdir, readFile, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { News } from "@/lib/content";
 import { news as defaultNews } from "@/lib/content";
-import { sanitizeText, validateTextField } from "@/lib/validators";
+import {
+  NEWS_TEXT_PLACEHOLDER,
+  NEWS_TITLE_PLACEHOLDER,
+  sanitizeText,
+  sanitizeTextOrDefault,
+  validateCleanTextField,
+} from "@/lib/validators";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "news");
@@ -50,11 +56,11 @@ function isNews(value: unknown): value is News {
 }
 
 function normalizeInput(input: NewsInput) {
-  const title = validateTextField(input.title, "título");
+  const title = validateCleanTextField(input.title, "título");
   const date = input.date.trim();
   const category = sanitizeText(input.category);
-  const summary = validateTextField(input.summary, "resumen corto");
-  const body = validateTextField(input.body, "texto de la noticia");
+  const summary = validateCleanTextField(input.summary, "resumen corto");
+  const body = validateCleanTextField(input.body, "texto de la noticia");
 
   if (!date) {
     throw new Error("La fecha no puede estar vacía.");
@@ -118,13 +124,23 @@ export async function readNews() {
     const parsed = JSON.parse(raw) as unknown;
 
     if (Array.isArray(parsed) && parsed.every(isNews)) {
-      return parsed;
+      return parsed.map((item) => ({
+        ...item,
+        title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
+        summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+        body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+      }));
     }
   } catch {
     // Missing or invalid storage falls back to starter content.
   }
 
-  return defaultNews;
+  return defaultNews.map((item) => ({
+    ...item,
+    title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
+    summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+    body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+  }));
 }
 
 async function writeNews(items: News[]) {

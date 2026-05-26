@@ -14,6 +14,13 @@ import {
 } from "lucide-react";
 import type { Training } from "@/lib/content";
 import { fadeUpItem } from "@/lib/motion";
+import {
+  TRAINING_TEXT_PLACEHOLDER,
+  sanitizeVisibleTextOrDefault,
+} from "@/lib/validators";
+
+const trainingBlurDataURL =
+  "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEwIiB3aWR0aD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZyI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMUE0NzJBIi8+PGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjQiIGZpbGw9IiNDOUEyMjciIG9wYWNpdHk9Ii41Ii8+PC9zdmc+";
 
 function formatDate(dateStr: string) {
   const [year, month, day] = dateStr.split("-").map(Number);
@@ -76,6 +83,11 @@ export function TrainingCard({
   const media = getTrainingMedia(training);
   const mainMedia = media[0];
   const mediaCount = media.length;
+  const title = sanitizeVisibleTextOrDefault(training.title, "Entrenamiento Real Sporting");
+  const description = sanitizeVisibleTextOrDefault(
+    training.description,
+    TRAINING_TEXT_PLACEHOLDER,
+  );
 
   useEffect(() => {
     if (!open) {
@@ -118,17 +130,20 @@ export function TrainingCard({
             setOpen(true);
           }}
           className="relative block aspect-[16/10] w-full overflow-hidden text-left"
-          aria-label={`Abrir entrenamiento ${training.title}`}
+          aria-label={`Abrir entrenamiento ${title}`}
         >
           {!mainMedia ? (
             <TrainingPlaceholder />
           ) : mainMedia.type === "image" ? (
             <Image
               src={mainMedia.src}
-              alt={training.title}
+              alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL={trainingBlurDataURL}
             />
           ) : (
             <video
@@ -157,9 +172,9 @@ export function TrainingCard({
         </button>
 
         <div className="p-6">
-          <h3 className="text-lg font-semibold">{training.title}</h3>
-          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
-            {training.description}
+          <h3 className="line-clamp-2 overflow-wrap-anywhere text-lg font-semibold">{title}</h3>
+          <p className="mt-2 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
+            {description}
           </p>
           {canManage && (
             <div className="mt-5 flex flex-wrap gap-2 border-t border-border pt-4">
@@ -209,7 +224,7 @@ export function TrainingCard({
                   id={`training-${training.id}-title`}
                   className="mt-2 text-2xl font-black leading-tight sm:text-3xl"
                 >
-                  {training.title}
+                  {title}
                 </h2>
               </div>
             </div>
@@ -221,10 +236,13 @@ export function TrainingCard({
                 ) : media[activeMedia].type === "image" ? (
                   <Image
                     src={media[activeMedia].src}
-                    alt={`${training.title} ${activeMedia + 1}`}
+                    alt={`${title} ${activeMedia + 1}`}
                     fill
                     className="object-contain"
                     sizes="(min-width: 1024px) 65vw, 100vw"
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL={trainingBlurDataURL}
                   />
                 ) : (
                   <video
@@ -258,7 +276,7 @@ export function TrainingCard({
               </div>
 
               <aside className="p-5 sm:p-6">
-                <p className="text-sm leading-7 text-muted">{training.description}</p>
+                <p className="overflow-wrap-anywhere text-sm leading-7 text-muted">{description}</p>
                 {mediaCount > 1 && (
                   <div className="mt-6 grid grid-cols-4 gap-2">
                     {media.map((item, index) => (
@@ -280,6 +298,9 @@ export function TrainingCard({
                             fill
                             className="object-cover"
                             sizes="96px"
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={trainingBlurDataURL}
                           />
                         ) : (
                           <>

@@ -6,6 +6,11 @@ import { NewsBadge, NewsVisual } from "@/components/news/NewsVisual";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
+import {
+  NEWS_TEXT_PLACEHOLDER,
+  NEWS_TITLE_PLACEHOLDER,
+  sanitizeVisibleTextOrDefault,
+} from "@/lib/validators";
 
 export const metadata: Metadata = {
   title: "Noticias",
@@ -82,10 +87,10 @@ export default async function NoticiasPage() {
                   {formatDate(leadNews.date)}
                 </time>
                 <h2 className="mt-4 text-4xl font-black leading-none sm:text-6xl">
-                  {leadNews.title}
+                  {sanitizeVisibleTextOrDefault(leadNews.title, NEWS_TITLE_PLACEHOLDER)}
                 </h2>
-                <span className="mt-5 block max-w-3xl text-base leading-7 text-muted">
-                  {leadNews.summary}
+                <span className="mt-5 block max-w-3xl overflow-wrap-anywhere text-base leading-7 text-muted">
+                  {sanitizeVisibleTextOrDefault(leadNews.summary, NEWS_TEXT_PLACEHOLDER)}
                 </span>
                 <span className="mt-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-accent">
                   Leer noticia completa
@@ -122,11 +127,11 @@ export default async function NoticiasPage() {
                   <time className="text-xs font-bold uppercase tracking-[0.14em] text-muted">
                     {formatDate(item.date)}
                   </time>
-                  <span className="mt-3 line-clamp-2 block text-2xl font-black leading-none">
-                    {item.title}
+                  <span className="mt-3 line-clamp-2 block overflow-wrap-anywhere text-2xl font-black leading-none">
+                    {sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)}
                   </span>
-                  <span className="mt-3 line-clamp-3 block text-sm leading-6 text-muted">
-                    {item.summary}
+                  <span className="mt-3 line-clamp-3 block overflow-wrap-anywhere text-sm leading-6 text-muted">
+                    {sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER)}
                   </span>
                 </span>
               </Link>

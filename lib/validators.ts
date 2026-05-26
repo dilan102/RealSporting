@@ -12,18 +12,30 @@ const JUNK_PATTERNS = [
   /lñmñl/i,
   /hjh/i,
   /jhj/i,
+  /jaja(?:ja){3,}/i,
   /asdf+/i,
   /qwe+/i,
+  /qwerty/i,
   /1234+/i,
   /zxczx/i,
   /nmnm/i,
   /kjsj/i,
   /kkkk+/i,
   /llll+/i,
+  /(?:[bcdfghjklmnpqrstvwxyzñ]{6,})/i,
   /(.)\1{5,}/i,
 ];
 
 const MINIMUM_MEANINGFUL_LENGTH = 5;
+const MAX_VISIBLE_TEXT_LENGTH = 180;
+
+export const TRAINING_TEXT_PLACEHOLDER =
+  "Detalles del entrenamiento en proceso de actualización...";
+
+export const NEWS_TITLE_PLACEHOLDER = "Actualización oficial del club";
+
+export const NEWS_TEXT_PLACEHOLDER =
+  "Información en proceso de actualización por el equipo de comunicaciones.";
 
 export function normalizeText(value: string): string {
   return value
@@ -37,6 +49,16 @@ export function escapeHtml(value: string): string {
 
 export function sanitizeText(value: string): string {
   return escapeHtml(normalizeText(value));
+}
+
+export function normalizeVisibleText(value: string, maxLength = MAX_VISIBLE_TEXT_LENGTH): string {
+  const cleaned = normalizeText(value);
+
+  if (cleaned.length <= maxLength) {
+    return cleaned;
+  }
+
+  return `${cleaned.slice(0, maxLength - 1).trim()}…`;
 }
 
 export function isLikelyJunkText(value: string): boolean {
@@ -82,6 +104,12 @@ export function sanitizeTextOrDefault(value: string, placeholder: string): strin
   return cleaned && !isLikelyJunkText(cleaned) ? cleaned : placeholder;
 }
 
+export function sanitizeVisibleTextOrDefault(value: string, placeholder: string): string {
+  const cleaned = normalizeVisibleText(value);
+
+  return cleaned && !isLikelyJunkText(cleaned) ? cleaned : placeholder;
+}
+
 export function validateTextField(value: string, label: string): string {
   const cleaned = sanitizeText(value);
 
@@ -94,4 +122,18 @@ export function validateTextField(value: string, label: string): string {
   }
 
   return cleaned;
+}
+
+export function validateCleanTextField(value: string, label: string): string {
+  const cleaned = normalizeVisibleText(value, 800);
+
+  if (!cleaned) {
+    throw new Error(`El campo ${label} no puede estar vacío.`);
+  }
+
+  if (isLikelyJunkText(cleaned)) {
+    throw new Error(`El campo ${label} contiene texto no válido.`);
+  }
+
+  return escapeHtml(cleaned);
 }

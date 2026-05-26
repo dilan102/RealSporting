@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import type { Training } from "@/lib/content";
+import { isLikelyJunkText, normalizeText } from "@/lib/validators";
 import { TrainingGrid } from "./TrainingGrid";
 
 type TrainingForm = {
@@ -39,6 +40,26 @@ type ApiResponse = {
   error?: string;
   items?: Training[];
 };
+
+function readableFileList(files: File[]) {
+  return files
+    .map((file) => normalizeText(file.name).slice(0, 42))
+    .join(", ");
+}
+
+function validateDraftText(value: string, label: string) {
+  const cleaned = normalizeText(value);
+
+  if (!cleaned) {
+    return `Completa ${label}.`;
+  }
+
+  if (isLikelyJunkText(cleaned)) {
+    return `El campo ${label} contiene texto repetitivo o no válido.`;
+  }
+
+  return "";
+}
 
 async function parseTrainingResponse(response: Response) {
   const payload = (await response.json()) as ApiResponse;
@@ -151,7 +172,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
           images: [...current.images, ...images],
         };
       });
-      setFileName(selectedFiles.map((file) => file.name).join(", "));
+      setFileName(readableFileList(selectedFiles));
       setMessage(
         selectedFiles.length === 1
           ? "Imagen agregada al formulario."
@@ -181,7 +202,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
         videoFiles: [...current.videoFiles, ...selectedFiles],
         videos: [...current.videos, ...videos],
       }));
-      setVideoFileName(selectedFiles.map((file) => file.name).join(", "));
+      setVideoFileName(readableFileList(selectedFiles));
       setMessage(
         selectedFiles.length === 1
           ? "Video agregado al formulario."
@@ -200,8 +221,11 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
       return;
     }
 
-    if (!form.title.trim() || !form.date || !form.description.trim()) {
-      setMessage("Completa título, fecha y descripción.");
+    const titleError = validateDraftText(form.title, "el título");
+    const descriptionError = validateDraftText(form.description, "la descripción");
+
+    if (titleError || descriptionError || !form.date) {
+      setMessage(titleError || descriptionError || "Completa la fecha.");
       return;
     }
 
@@ -209,9 +233,9 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     setMessage(editingId ? "Guardando cambios..." : "Publicando entrenamiento...");
 
     const body = new FormData();
-    body.set("title", form.title.trim());
-    body.set("date", form.date);
-    body.set("description", form.description.trim());
+    body.set("title", normalizeText(form.title));
+    body.set("date", normalizeText(form.date));
+    body.set("description", normalizeText(form.description));
 
     form.files.forEach((file) => {
       body.append("images", file);
@@ -379,6 +403,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
                   setForm((current) => ({ ...current, title: event.target.value }))
                 }
                 placeholder="Ej. Sesión técnica de definición"
+                maxLength={110}
                 className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
             </div>
@@ -409,6 +434,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
                   }))
                 }
                 placeholder="Describe los ejercicios, objetivos y resultados de la sesión..."
+                maxLength={800}
                 className="mt-2 w-full resize-none rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
             </div>
@@ -437,6 +463,10 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
                             alt={`Vista previa ${index + 1}`}
                             fill
                             className="object-cover"
+                            sizes="(min-width: 640px) 33vw, 50vw"
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEwIiB3aWR0aD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZyI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMUE0NzJBIi8+PC9zdmc+"
                           />
                         )}
                       </span>
@@ -464,7 +494,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
               </label>
               {fileName && (
                 <p className="mt-2 text-xs text-muted">
-                  Nuevas imágenes: {fileName}
+                  Nuevas imágenes: <span className="break-all">{fileName}</span>
                 </p>
               )}
               {editingId && (
@@ -520,7 +550,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
               </label>
               {videoFileName && (
                 <p className="mt-2 text-xs text-muted">
-                  Nuevos videos: {videoFileName}
+                  Nuevos videos: <span className="break-all">{videoFileName}</span>
                 </p>
               )}
               {editingId && (

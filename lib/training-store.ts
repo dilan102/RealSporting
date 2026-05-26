@@ -3,7 +3,11 @@ import { mkdir, readFile, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { Training } from "@/lib/content";
 import { trainings as defaultTrainings } from "@/lib/content";
-import { sanitizeText, validateTextField } from "@/lib/validators";
+import {
+  TRAINING_TEXT_PLACEHOLDER,
+  sanitizeTextOrDefault,
+  validateCleanTextField,
+} from "@/lib/validators";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "trainings");
@@ -59,9 +63,9 @@ function isTraining(value: unknown): value is Training {
 }
 
 function normalizeInput(input: TrainingInput) {
-  const title = validateTextField(input.title, "título");
+  const title = validateCleanTextField(input.title, "título");
   const date = input.date.trim();
-  const description = validateTextField(input.description, "descripción");
+  const description = validateCleanTextField(input.description, "descripción");
 
   if (!date) {
     throw new Error("La fecha no puede estar vacía.");
@@ -158,13 +162,21 @@ export async function readTrainings() {
     const parsed = JSON.parse(raw) as unknown;
 
     if (Array.isArray(parsed) && parsed.every(isTraining)) {
-      return parsed;
+      return parsed.map((item) => ({
+        ...item,
+        title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
+        description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
+      }));
     }
   } catch {
     // Missing or invalid storage falls back to the curated starter content.
   }
 
-  return defaultTrainings;
+  return defaultTrainings.map((item) => ({
+    ...item,
+    title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
+    description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
+  }));
 }
 
 async function writeTrainings(items: Training[]) {

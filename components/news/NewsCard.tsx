@@ -5,6 +5,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Pencil, Trash2 } from "lucide-react";
 import type { News } from "@/lib/content";
 import { fadeUpItem } from "@/lib/motion";
+import {
+  NEWS_TEXT_PLACEHOLDER,
+  NEWS_TITLE_PLACEHOLDER,
+  sanitizeVisibleTextOrDefault,
+} from "@/lib/validators";
 import { NewsBadge, NewsVisual } from "./NewsVisual";
 
 function formatDate(dateStr: string) {
@@ -26,6 +31,9 @@ type Props = {
 };
 
 export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
+  const title = sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER);
+  const summary = sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER);
+
   return (
     <motion.article
       variants={fadeUpItem}
@@ -43,9 +51,9 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
           <time className="text-xs font-bold uppercase tracking-[0.14em] text-muted">
             {formatDate(item.date)}
           </time>
-          <h3 className="mt-3 text-xl font-black leading-tight">{item.title}</h3>
-          <p className="mt-3 text-sm leading-relaxed text-muted">
-            {item.summary}
+          <h3 className="mt-3 line-clamp-2 overflow-wrap-anywhere text-xl font-black leading-tight">{title}</h3>
+          <p className="mt-3 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
+            {summary}
           </p>
           <span className="mt-5 inline-flex items-center gap-1 text-xs font-black uppercase tracking-[0.12em] text-accent transition-colors group-hover:text-text">
             Leer noticia completa

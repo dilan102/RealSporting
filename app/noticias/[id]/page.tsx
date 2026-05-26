@@ -6,6 +6,11 @@ import { NewsBadge, NewsVisual } from "@/components/news/NewsVisual";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
+import {
+  NEWS_TEXT_PLACEHOLDER,
+  NEWS_TITLE_PLACEHOLDER,
+  sanitizeVisibleTextOrDefault,
+} from "@/lib/validators";
 
 export const dynamic = "force-dynamic";
 
@@ -36,8 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: item.title,
-    description: item.summary,
+    title: sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
+    description: sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
   };
 }
 
@@ -65,13 +70,13 @@ export default async function NoticiaDetallePage({ params }: Props) {
           <header className="mt-8">
             <NewsBadge category={item.category} />
             <h1 className="mt-5 text-[4rem] font-black leading-[0.86] sm:text-[6rem]">
-              {item.title}
+              {sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)}
             </h1>
             <time className="mt-5 block text-xs font-bold uppercase tracking-[0.16em] text-muted">
               {formatDate(item.date)} · {club.name}
             </time>
             <p className="mt-6 max-w-3xl text-xl font-semibold leading-8 text-muted">
-              {item.summary}
+              {sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER)}
             </p>
           </header>
 
@@ -80,7 +85,9 @@ export default async function NoticiaDetallePage({ params }: Props) {
           </div>
 
           <div className="prose prose-lg mt-10 max-w-none text-text">
-            <p className="text-lg leading-9 text-muted">{item.body}</p>
+            <p className="overflow-wrap-anywhere text-lg leading-9 text-muted">
+              {sanitizeVisibleTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER)}
+            </p>
           </div>
         </article>
       </RevealSection>

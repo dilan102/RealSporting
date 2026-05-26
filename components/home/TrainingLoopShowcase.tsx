@@ -6,10 +6,17 @@ import { MouseEvent, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Dumbbell, X } from "lucide-react";
 import type { Training } from "@/lib/content";
+import {
+  TRAINING_TEXT_PLACEHOLDER,
+  sanitizeVisibleTextOrDefault,
+} from "@/lib/validators";
 
 type Props = {
   items: Training[];
 };
+
+const trainingBlurDataURL =
+  "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEwIiB3aWR0aD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZyI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMUE0NzJBIi8+PGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjQiIGZpbGw9IiNDOUEyMjciIG9wYWNpdHk9Ii41Ii8+PC9zdmc+";
 
 function formatDate(dateStr: string) {
   const [year, month, day] = dateStr.split("-").map(Number);
@@ -96,6 +103,11 @@ export function TrainingLoopShowcase({ items }: Props) {
           <div className="mobile-snap-x mobile-scrollbar-none order-2 grid gap-4 sm:grid-cols-2 lg:order-1 lg:grid-cols-1">
             {orderedItems.slice(0, 3).map((item, index) => {
               const selected = item.id === activeTraining.id;
+              const title = sanitizeVisibleTextOrDefault(item.title, "Entrenamiento Real Sporting");
+              const description = sanitizeVisibleTextOrDefault(
+                item.description,
+                TRAINING_TEXT_PLACEHOLDER,
+              );
 
               return (
                 <button
@@ -110,7 +122,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                       ? "border-accent/60"
                       : "border-border hover:border-accent/40"
                   }`}
-                  aria-label={`Expandir entrenamiento: ${item.title}`}
+                  aria-label={`Expandir entrenamiento: ${title}`}
                 >
                   <span className="relative block h-full min-h-32 overflow-hidden">
                     <Image
@@ -119,6 +131,9 @@ export function TrainingLoopShowcase({ items }: Props) {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="112px"
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL={trainingBlurDataURL}
                     />
                   </span>
                   <span className="flex min-w-0 flex-col justify-center p-4">
@@ -126,10 +141,10 @@ export function TrainingLoopShowcase({ items }: Props) {
                       {formatDate(item.date)}
                     </time>
                     <span className="mt-2 line-clamp-2 text-sm font-bold leading-snug text-text">
-                      {item.title}
+                      {title}
                     </span>
                     <span className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted">
-                      {item.description}
+                      {description}
                     </span>
                   </span>
                 </button>
@@ -148,7 +163,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 64, scale: 0.97 }}
                 transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
-                aria-label={`Expandir entrenamiento: ${activeTraining.title}`}
+                aria-label={`Expandir entrenamiento: ${sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}`}
               >
                 <Image
                   src={activeTraining.image}
@@ -156,6 +171,9 @@ export function TrainingLoopShowcase({ items }: Props) {
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(min-width: 1024px) 62vw, 100vw"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL={trainingBlurDataURL}
                 />
                 <span className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-transparent" />
                 <span className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
@@ -167,10 +185,10 @@ export function TrainingLoopShowcase({ items }: Props) {
                     {formatDate(activeTraining.date)}
                   </time>
                   <span className="mt-3 block max-w-2xl text-3xl font-black leading-[0.98] sm:text-4xl">
-                    {activeTraining.title}
+                    {sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}
                   </span>
-                  <span className="mt-4 block max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-                    {activeTraining.description}
+                  <span className="mt-4 block max-w-2xl overflow-wrap-anywhere text-sm leading-relaxed text-muted sm:text-base">
+                    {sanitizeVisibleTextOrDefault(activeTraining.description, TRAINING_TEXT_PLACEHOLDER)}
                   </span>
                   <span className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-4 text-sm font-bold text-[var(--button-text)] sm:rounded-lg">
                     Expandir entrenamiento
@@ -202,9 +220,13 @@ export function TrainingLoopShowcase({ items }: Props) {
               <div className="relative aspect-[16/9]">
                 <Image
                   src={expanded.image}
-                  alt={expanded.title}
+                  alt={sanitizeVisibleTextOrDefault(expanded.title, "Entrenamiento Real Sporting")}
                   fill
                   className="object-cover"
+                  sizes="(min-width: 768px) 768px, 100vw"
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL={trainingBlurDataURL}
                 />
                 <button
                   type="button"
@@ -220,10 +242,10 @@ export function TrainingLoopShowcase({ items }: Props) {
                   Entrenamiento · {formatDate(expanded.date)}
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight">
-                  {expanded.title}
+                  {sanitizeVisibleTextOrDefault(expanded.title, "Entrenamiento Real Sporting")}
                 </h2>
-                <p className="mt-5 whitespace-pre-line text-base leading-8 text-muted">
-                  {expanded.description}
+                <p className="mt-5 whitespace-pre-line overflow-wrap-anywhere text-base leading-8 text-muted">
+                  {sanitizeVisibleTextOrDefault(expanded.description, TRAINING_TEXT_PLACEHOLDER)}
                 </p>
                 <Link
                   href="/entrenamientos"
