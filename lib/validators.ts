@@ -1,0 +1,97 @@
+const HTML_ENTITY_MAP: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+};
+
+const JUNK_PATTERNS = [
+  /bjhbhjhj/i,
+  /lñmñl/i,
+  /hjh/i,
+  /jhj/i,
+  /asdf+/i,
+  /qwe+/i,
+  /1234+/i,
+  /zxczx/i,
+  /nmnm/i,
+  /kjsj/i,
+  /kkkk+/i,
+  /llll+/i,
+  /(.)\1{5,}/i,
+];
+
+const MINIMUM_MEANINGFUL_LENGTH = 5;
+
+export function normalizeText(value: string): string {
+  return value
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function escapeHtml(value: string): string {
+  return value.replace(/[&<>"'\/]/g, (character) => HTML_ENTITY_MAP[character]);
+}
+
+export function sanitizeText(value: string): string {
+  return escapeHtml(normalizeText(value));
+}
+
+export function isLikelyJunkText(value: string): boolean {
+  const text = normalizeText(value);
+
+  if (text.length < MINIMUM_MEANINGFUL_LENGTH) {
+    return true;
+  }
+
+  if (JUNK_PATTERNS.some((pattern) => pattern.test(text))) {
+    return true;
+  }
+
+  const normalized = text
+    .toLowerCase()
+    .replace(/[^a-z0-9áéíóúüñ]/gi, '');
+
+  if (normalized.length === 0) {
+    return true;
+  }
+
+  const repeatedCharMatch = normalized.match(/(.)\1{4,}/i);
+  if (repeatedCharMatch) {
+    return true;
+  }
+
+  const vowelCount = (normalized.match(/[aeiouáéíóúü]/gi) || []).length;
+  if (normalized.length >= 8 && vowelCount / normalized.length < 0.18) {
+    return true;
+  }
+
+  const uniqueRatio = new Set(normalized).size / normalized.length;
+  if (normalized.length >= 9 && uniqueRatio < 0.28) {
+    return true;
+  }
+
+  return false;
+}
+
+export function sanitizeTextOrDefault(value: string, placeholder: string): string {
+  const cleaned = sanitizeText(value);
+
+  return cleaned && !isLikelyJunkText(cleaned) ? cleaned : placeholder;
+}
+
+export function validateTextField(value: string, label: string): string {
+  const cleaned = sanitizeText(value);
+
+  if (!cleaned) {
+    throw new Error(`El campo ${label} no puede estar vacío.`);
+  }
+
+  if (isLikelyJunkText(cleaned)) {
+    throw new Error(`El campo ${label} contiene texto no válido.`);
+  }
+
+  return cleaned;
+}

@@ -2,6 +2,9 @@ import Image from "next/image";
 import { Dumbbell, HeartHandshake, Shield, Trophy } from "lucide-react";
 import type { News } from "@/lib/content";
 
+const defaultBlurDataURL =
+  "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEwIiB3aWR0aD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjNzc3Nzc3Ii8+PC9zdmc+";
+
 export function getCategoryClass(category: string) {
   const normalized = category.toLowerCase();
 
@@ -74,6 +77,9 @@ export function NewsVisual({
         fill
         priority={priority}
         sizes={sizes}
+        loading={priority ? "eager" : "lazy"}
+        placeholder="blur"
+        blurDataURL={defaultBlurDataURL}
         className={`object-cover object-center transition-transform duration-500 group-hover:scale-105 ${className}`}
       />
     );

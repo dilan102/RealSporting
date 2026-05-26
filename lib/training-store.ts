@@ -3,6 +3,7 @@ import { mkdir, readFile, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { Training } from "@/lib/content";
 import { trainings as defaultTrainings } from "@/lib/content";
+import { sanitizeText, validateTextField } from "@/lib/validators";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "trainings");
@@ -58,12 +59,12 @@ function isTraining(value: unknown): value is Training {
 }
 
 function normalizeInput(input: TrainingInput) {
-  const title = input.title.trim();
+  const title = validateTextField(input.title, "título");
   const date = input.date.trim();
-  const description = input.description.trim();
+  const description = validateTextField(input.description, "descripción");
 
-  if (!title || !date || !description) {
-    throw new Error("Completa título, fecha y descripción.");
+  if (!date) {
+    throw new Error("La fecha no puede estar vacía.");
   }
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {

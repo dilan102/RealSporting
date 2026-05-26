@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sanitizeText } from "@/lib/validators";
 import {
   createTraining,
   deleteTraining,
@@ -41,9 +42,9 @@ async function trainingInputFromFormData(request: NextRequest) {
   }
 
   return {
-    title: String(formData.get("title") || ""),
-    date: String(formData.get("date") || ""),
-    description: String(formData.get("description") || ""),
+    title: sanitizeText(String(formData.get("title") || "")),
+    date: sanitizeText(String(formData.get("date") || "")),
+    description: sanitizeText(String(formData.get("description") || "")),
     images,
     videos,
   };

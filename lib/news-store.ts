@@ -3,6 +3,7 @@ import { mkdir, readFile, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { News } from "@/lib/content";
 import { news as defaultNews } from "@/lib/content";
+import { sanitizeText, validateTextField } from "@/lib/validators";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "news");
@@ -49,14 +50,14 @@ function isNews(value: unknown): value is News {
 }
 
 function normalizeInput(input: NewsInput) {
-  const title = input.title.trim();
+  const title = validateTextField(input.title, "título");
   const date = input.date.trim();
-  const category = input.category.trim();
-  const summary = input.summary.trim();
-  const body = input.body.trim();
+  const category = sanitizeText(input.category);
+  const summary = validateTextField(input.summary, "resumen corto");
+  const body = validateTextField(input.body, "texto de la noticia");
 
-  if (!title || !date || !category || !summary || !body) {
-    throw new Error("Completa título, fecha, categoría, resumen y noticia.");
+  if (!date) {
+    throw new Error("La fecha no puede estar vacía.");
   }
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {

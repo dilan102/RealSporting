@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sanitizeText } from "@/lib/validators";
 import {
   createNews,
   deleteNews,
@@ -31,11 +32,11 @@ async function newsInputFromFormData(request: NextRequest) {
   const image = formData.get("image");
 
   return {
-    title: String(formData.get("title") || ""),
-    date: String(formData.get("date") || ""),
-    category: String(formData.get("category") || ""),
-    summary: String(formData.get("summary") || ""),
-    body: String(formData.get("body") || ""),
+    title: sanitizeText(String(formData.get("title") || "")),
+    date: sanitizeText(String(formData.get("date") || "")),
+    category: sanitizeText(String(formData.get("category") || "")),
+    summary: sanitizeText(String(formData.get("summary") || "")),
+    body: sanitizeText(String(formData.get("body") || "")),
     image: image instanceof File && image.size > 0 ? image : null,
   };
 }
