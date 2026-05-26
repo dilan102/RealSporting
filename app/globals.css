@@ -266,11 +266,28 @@
     background: var(--accent-gold);
     color: var(--button-text);
     box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-gold) 22%, transparent);
+    transition: all 0.3s ease-in-out;
   }
 
   .btn-gold:hover {
-    box-shadow: 0 16px 38px color-mix(in srgb, var(--accent-gold) 34%, transparent);
-    transform: scale(1.03);
+    background: var(--accent-green);
+    color: #ffffff;
+    box-shadow: 0 16px 38px color-mix(in srgb, var(--accent-green) 28%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .btn-green {
+    background: var(--accent-green);
+    color: #ffffff;
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-green) 20%, transparent);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .btn-green:hover {
+    background: var(--accent-gold);
+    color: var(--button-text);
+    box-shadow: 0 16px 38px color-mix(in srgb, var(--accent-gold) 30%, transparent);
+    transform: translateY(-1px);
   }
 
   .skeleton {

@@ -5,13 +5,13 @@ import {
   ClipboardCheck,
   Download,
   Dumbbell,
-  FileText,
   HeartHandshake,
   MapPin,
   MessageCircle,
   Target,
   UsersRound,
 } from "lucide-react";
+import { RegistrationForm } from "@/components/contact/RegistrationForm";
 import { SocialLinks } from "@/components/contact/SocialLinks";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -92,90 +92,120 @@ const documents = [
 
 export default function ContactoPage() {
   return (
-    <div className="bg-bg pt-24 text-text transition-colors sm:pt-28">
+    <div className="bg-white pt-24 text-zinc-900 transition-colors sm:pt-28">
       <RevealSection>
-      <section className="relative overflow-hidden border-b border-border bg-bg-elevated">
-        <div className="pointer-events-none absolute inset-0 grid-overlay opacity-60" />
-        <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Proceso de ingreso"
-          title="Inscripción"
-          description="Ingreso al proceso deportivo, social y formativo del Club Deportivo Real Sporting, construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM."
-          align="center"
-        />
-        </div>
-      </section>
+        <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(135deg,#ffffff_0%,#f3f8f5_56%,#fff7d7_100%)]">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0a0a0a)]" />
+          <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,1.08fr)] lg:items-center lg:px-8 lg:py-16">
+            <div>
+              <p className="mb-3 inline-flex rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,transparent)] bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)] shadow-sm">
+                Proceso de ingreso
+              </p>
+              <h1 className="text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl lg:text-6xl">
+                Inscripción Real Sporting
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-700 sm:text-lg">
+                Ingreso al proceso deportivo, social y formativo del Club Deportivo Real Sporting, construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#formulario-inscripcion"
+                  className="btn-gold inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
+                >
+                  Iniciar inscripción
+                </a>
+                <a
+                  href="#documentos"
+                  className="btn-green inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
+                >
+                  Ver documentos
+                </a>
+              </div>
+            </div>
+            <div className="rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-[var(--accent-green)] p-6 text-white shadow-xl sm:p-8">
+              <ClipboardCheck size={34} aria-hidden="true" className="text-[var(--accent-gold)]" />
+              <p className="mt-6 text-sm font-black uppercase tracking-[0.16em] text-white/72">
+                Formación deportiva integral
+              </p>
+              <p className="mt-3 text-3xl font-black leading-tight">
+                Futbol sala, valores, disciplina y comunidad desde Usme.
+              </p>
+            </div>
+          </div>
+        </section>
       </RevealSection>
 
-      <section className="mx-auto max-w-6xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
-        <RevealSection>
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <section className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-6 transition-colors sm:p-8">
-            <div className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent">
-                <ClipboardCheck size={22} aria-hidden="true" />
-              </span>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
-                  Sección
-                </p>
-                <h3 className="text-xl font-bold">Requisitos</h3>
-              </div>
-            </div>
-            <ul className="mt-6 space-y-3">
-              {requirements.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-lg border border-border bg-bg/50 px-4 py-3 text-sm leading-relaxed text-muted"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+          <RevealSection>
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(380px,1.1fr)] lg:items-start">
+              <section className="rounded-lg border border-border bg-white p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
+                    <ClipboardCheck size={22} aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                      Lista de ingreso
+                    </p>
+                    <h2 className="text-2xl font-black">Requisitos</h2>
+                  </div>
+                </div>
+                <ul className="mt-6 space-y-3">
+                  {requirements.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm leading-relaxed text-zinc-700 transition-all duration-300 ease-in-out hover:border-[var(--accent-gold)] hover:bg-white"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </section>
 
-          <section className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-6 transition-colors sm:p-8">
-            <div className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent">
-                <FileText size={22} aria-hidden="true" />
-              </span>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
-                  Sección
-                </p>
-                <h3 className="text-xl font-bold">Papeles</h3>
-              </div>
+              <section id="formulario-inscripcion" className="scroll-mt-28">
+                <RegistrationForm />
+              </section>
             </div>
-            <div className="mt-6 space-y-3">
+          </RevealSection>
+        </div>
+      </section>
+
+      <section id="documentos" className="scroll-mt-28 bg-zinc-50">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+          <RevealSection>
+            <SectionHeading
+              eyebrow="Documentación"
+              title="Descargas oficiales"
+              description="Consulta el modelo de entrenamiento y el proyecto deportivo institucional antes de completar el proceso."
+            />
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
               {documents.map((document) => (
                 <a
                   key={document.href}
                   href={document.href}
                   download
-                  className="flex items-start gap-3 rounded-lg border border-border bg-bg/55 p-4 text-left transition-colors hover:border-accent/40"
+                  className="group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-white p-6 text-zinc-900 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
                 >
-                  <Download
-                    className="mt-0.5 shrink-0 text-accent"
-                    size={18}
-                    aria-hidden="true"
-                  />
-                  <span>
-                    <span className="block text-sm font-semibold text-text">
-                      {document.title}
-                    </span>
-                    <span className="mt-1 block text-sm leading-relaxed text-muted">
+                  <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-zinc-950">
+                    <Download size={24} aria-hidden="true" />
+                  </span>
+                  <span className="mt-7 block">
+                    <span className="block text-xl font-black">{document.title}</span>
+                    <span className="mt-2 block text-sm leading-relaxed text-zinc-600">
                       {document.description}
                     </span>
                   </span>
                 </a>
               ))}
             </div>
-          </section>
+          </RevealSection>
         </div>
-        </RevealSection>
+      </section>
 
+      <section className="bg-[color-mix(in_srgb,var(--accent-green)_7%,white)]">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <RevealSection>
-        <section className="mt-12">
           <SectionHeading
             eyebrow="Proyecto CDRS 2026"
             title="Enfoque del programa"
@@ -185,19 +215,21 @@ export default function ContactoPage() {
             {programCards.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5 transition-colors hover:border-accent/30"
+                className="rounded-lg border border-border bg-white p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
               >
-                <Icon className="text-accent" size={22} aria-hidden="true" />
-                <h3 className="mt-4 font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
+                <Icon className="text-[var(--accent-green)]" size={24} aria-hidden="true" />
+                <h3 className="mt-4 font-black">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{text}</p>
               </article>
             ))}
           </div>
-        </section>
         </RevealSection>
+        </div>
+      </section>
 
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <RevealSection>
-        <section className="mt-12">
           <SectionHeading
             eyebrow="Modelo SCM"
             title="Cómo entrenamos"
@@ -207,39 +239,41 @@ export default function ContactoPage() {
             {trainingModel.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5 transition-colors hover:border-accent/30"
+                className="rounded-lg border border-border bg-white p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
               >
-                <Icon className="text-accent" size={22} aria-hidden="true" />
-                <h3 className="mt-4 font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
+                <Icon className="text-[var(--accent-gold)]" size={24} aria-hidden="true" />
+                <h3 className="mt-4 font-black">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{text}</p>
               </article>
             ))}
           </div>
-        </section>
         </RevealSection>
+        </div>
+      </section>
 
+      <section className="bg-zinc-50">
+        <div className="mx-auto max-w-6xl px-4 py-14 pb-24 sm:px-6 lg:px-8">
         <RevealSection>
-        <section className="mt-12">
           <div className="mb-6 flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent">
+            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
               <MessageCircle size={22} aria-hidden="true" />
             </span>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
-                Sección
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                Atención directa
               </p>
-              <h3 className="text-xl font-bold">Contáctenos</h3>
+              <h2 className="text-2xl font-black">Contáctenos</h2>
             </div>
           </div>
           <SocialLinks />
 
-          <div className="mobile-card-lift mx-auto mt-8 max-w-xl rounded-lg border border-border bg-bg-elevated p-8 text-center transition-colors">
-            <MapPin className="mx-auto text-accent" size={28} />
-            <p className="mt-4 font-semibold">Sede</p>
-            <p className="mt-2 text-sm text-muted">{social.location}</p>
+          <div className="mx-auto mt-8 max-w-xl rounded-lg border border-border bg-white p-8 text-center shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg">
+            <MapPin className="mx-auto text-[var(--accent-green)]" size={28} />
+            <p className="mt-4 font-black text-zinc-900">Sede</p>
+            <p className="mt-2 text-sm text-zinc-600">{social.location}</p>
           </div>
-        </section>
         </RevealSection>
+        </div>
       </section>
     </div>
   );
