@@ -313,6 +313,7 @@ export function NewsManager({
       </div>
       )}
 
+      {unlocked && (
       <section
         id="admin-noticias"
         className="glass mobile-card-lift mt-16 scroll-mt-28 rounded-lg border-dashed p-6 sm:p-8"
@@ -320,7 +321,7 @@ export function NewsManager({
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-2 rounded-lg bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">
-              {unlocked ? "Panel activo" : "Modo administrador requerido"}
+              Panel activo
             </span>
             <h3 className="mt-4 text-xl font-bold">Editar noticias</h3>
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">
@@ -331,14 +332,6 @@ export function NewsManager({
           <Upload className="text-accent/50" size={32} aria-hidden="true" />
         </div>
 
-        {!unlocked && (
-          <p className="mt-6 rounded-lg border border-border bg-bg/55 px-4 py-3 text-sm font-semibold text-muted">
-            Abre el icono de usuario en la esquina superior derecha para activar el
-            modo administrador.
-          </p>
-        )}
-
-        {unlocked && (
           <form className="mt-8 grid gap-6 sm:grid-cols-2" onSubmit={handleSubmit}>
             <div>
               <label className="text-xs font-medium uppercase tracking-wider text-muted">
@@ -479,7 +472,6 @@ export function NewsManager({
               </button>
             </div>
           </form>
-        )}
 
         {message && (
           <p className="mt-5 rounded-lg border border-border bg-bg/60 px-4 py-3 text-sm text-muted">
@@ -487,6 +479,7 @@ export function NewsManager({
           </p>
         )}
       </section>
+      )}
     </>
   );
 }

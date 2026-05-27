@@ -484,27 +484,22 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         />
       </div>
 
-      <section className="glass mobile-card-lift mt-8 rounded-lg p-5 sm:p-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-lg bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">
-              {unlocked ? "Panel activo" : "Modo administrador requerido"}
-            </span>
-            <h3 className="mt-4 text-xl font-bold">Administrar jugadores</h3>
-            <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">
-              Activa el acceso global para añadir, editar o borrar integrantes por
-              categoría.
-            </p>
+      {unlocked && (
+        <section className="glass mobile-card-lift mt-8 rounded-lg p-5 sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-lg bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">
+                Panel activo
+              </span>
+              <h3 className="mt-4 text-xl font-bold">Administrar jugadores</h3>
+              <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">
+                Añade, edita o borra integrantes por categoría desde los controles
+                del equipo.
+              </p>
+            </div>
           </div>
-        </div>
-
-        {!unlocked && (
-          <p className="mt-6 rounded-lg border border-border bg-bg/55 px-4 py-3 text-sm font-semibold text-muted">
-            Abre el icono de usuario en la esquina superior derecha para activar el
-            modo administrador.
-          </p>
-        )}
-      </section>
+        </section>
+      )}
 
       {message && (
         <p className="mt-5 rounded-lg border border-border bg-bg/60 px-4 py-3 text-sm text-muted">
