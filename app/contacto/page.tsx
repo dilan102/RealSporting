@@ -125,7 +125,7 @@ export default function ContactoPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:items-start">
-              <section className="rounded-lg border border-border bg-bg-elevated p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
+              <section className="light-panel rounded-lg border border-border bg-bg-elevated p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
                     <ClipboardCheck size={22} aria-hidden="true" />
@@ -149,7 +149,7 @@ export default function ContactoPage() {
                 </ul>
               </section>
 
-              <section className="rounded-lg border border-border bg-bg-elevated p-6 shadow-sm sm:p-8">
+              <section className="light-panel rounded-lg border border-border bg-bg-elevated p-6 shadow-sm sm:p-8">
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
                   Inscripcion en ventana emergente
                 </p>
@@ -181,7 +181,7 @@ export default function ContactoPage() {
                 <Link
                   key={document.href}
                   href={`/documentos?archivo=${encodeURIComponent(document.href)}`}
-                  className="group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
+                  className="light-panel group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
                 >
                   <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
                     <Download size={24} aria-hidden="true" />
@@ -214,7 +214,7 @@ export default function ContactoPage() {
             {programCards.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+                className="light-panel rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
               >
                 <Icon className="text-[var(--accent-green)]" size={24} aria-hidden="true" />
                 <h3 className="mt-4 font-black">{title}</h3>
@@ -238,7 +238,7 @@ export default function ContactoPage() {
             {trainingModel.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
+                className="light-panel rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
               >
                 <Icon className="text-[var(--accent-gold)]" size={24} aria-hidden="true" />
                 <h3 className="mt-4 font-black">{title}</h3>
@@ -266,7 +266,7 @@ export default function ContactoPage() {
           </div>
           <SocialLinks />
 
-          <div className="mx-auto mt-8 max-w-xl rounded-lg border border-border bg-bg p-8 text-center shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg">
+          <div className="light-panel mx-auto mt-8 max-w-xl rounded-lg border border-border bg-bg p-8 text-center shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg">
             <MapPin className="mx-auto text-[var(--accent-green)]" size={28} />
             <p className="mt-4 font-black text-text">Sede</p>
             <p className="mt-2 text-sm text-muted">{social.location}</p>

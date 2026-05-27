@@ -15,6 +15,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [adminActive, setAdminActive] = useState(false);
+  const onHomeHero = pathname === "/" && !scrolled;
+  const solidHeader = !onHomeHero;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -49,13 +51,13 @@ export function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
-        scrolled
+        solidHeader
           ? "border-border py-2.5 shadow-lg shadow-black/5 backdrop-blur-xl sm:py-3"
           : "border-transparent bg-transparent py-3 text-text backdrop-blur-0 sm:py-4"
       }`}
       style={{
-        backgroundColor: scrolled ? "var(--nav-bg)" : "transparent",
-        backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
+        backgroundColor: solidHeader ? "var(--nav-bg)" : "transparent",
+        backdropFilter: solidHeader ? "blur(12px)" : "blur(0px)",
       }}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -68,7 +70,7 @@ export function Navbar() {
             className="size-10 object-contain sm:size-11"
           />
           <span className="hidden text-sm font-semibold tracking-tight sm:block">
-            <span className={scrolled ? "text-gradient" : "text-white drop-shadow"}>
+            <span className={onHomeHero ? "nav-over-hero text-white" : "text-gradient"}>
               {club.name}
             </span>
           </span>
@@ -84,9 +86,9 @@ export function Navbar() {
                   className={`relative px-4 py-2 text-sm font-medium transition-colors ${
                     active
                       ? "text-accent"
-                      : scrolled
+                      : solidHeader
                         ? "text-muted hover:text-text"
-                        : "text-white/88 hover:text-white"
+                        : "nav-over-hero text-white/90 hover:text-white"
                   }`}
                 >
                   {link.label}

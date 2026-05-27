@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 import { social } from "@/lib/content";
+import { buildGmailComposeUrl } from "@/lib/email";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
 
 const links = [
@@ -20,7 +21,10 @@ const links = [
   },
   {
     label: "Correo",
-    href: `mailto:${social.email}`,
+    href: buildGmailComposeUrl({
+      to: social.email,
+      subject: "Contacto Real Sporting",
+    }),
     icon: Mail,
     description: social.email,
   },
@@ -48,14 +52,16 @@ export function SocialLinks() {
           target={href.startsWith("http") ? "_blank" : undefined}
           rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
           variants={fadeUpItem}
-          className="group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+          className="light-panel group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
         >
           <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
             <Icon size={24} aria-hidden="true" />
           </span>
           <div>
             <p className="font-black">{label}</p>
-            <p className="mt-1 text-sm leading-relaxed text-muted">{description}</p>
+            <p className="mt-1 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
+              {description}
+            </p>
           </div>
         </motion.a>
       ))}

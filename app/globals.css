@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap");
+@import "tailwindcss";
 
 @theme {
   --color-bg: var(--bg-primary);
@@ -123,6 +123,37 @@
   [data-theme="dark"] .readable-panel {
     background: color-mix(in srgb, var(--card-bg) 92%, black 8%);
     box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  }
+
+  .nav-over-hero {
+    text-shadow:
+      0 2px 12px rgba(0, 0, 0, 0.78),
+      0 0 1px rgba(0, 0, 0, 0.85);
+  }
+
+  .light-panel {
+    box-shadow: 0 16px 38px rgba(17, 24, 20, 0.1);
+  }
+
+  [data-theme="light"] .light-panel {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.9)),
+      var(--card-bg);
+    box-shadow:
+      0 24px 60px rgba(23, 74, 47, 0.14),
+      0 8px 20px rgba(184, 134, 11, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  [data-theme="light"] .light-panel:hover {
+    box-shadow:
+      0 28px 70px rgba(23, 74, 47, 0.17),
+      0 10px 26px rgba(184, 134, 11, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  .registration-modal-panel {
+    overscroll-behavior: contain;
   }
 
   .image-readable-dark {

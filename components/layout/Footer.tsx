@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
+import { buildGmailComposeUrl } from "@/lib/email";
 
 export function Footer() {
   const pathname = usePathname();
@@ -82,7 +83,12 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={`mailto:${social.email}`}
+                  href={buildGmailComposeUrl({
+                    to: social.email,
+                    subject: "Contacto Real Sporting",
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
                 >
                   <Mail size={16} /> {social.email}
