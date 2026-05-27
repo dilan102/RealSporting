@@ -475,7 +475,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         </section>
       )}
 
-      <div className="mt-8">
+      <div id="admin-equipo" className="mt-8 scroll-mt-28">
         <PlayerGrid
           sections={sections}
           canManage={unlocked}

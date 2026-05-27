@@ -16,16 +16,16 @@
 
 @layer base {
   :root {
-    --bg-primary: #F8F8F8;
-    --bg-secondary: #FFFFFF;
-    --text-primary: #0A0A0A;
-    --text-secondary: #2F3A34;
-    --accent-gold: #B8860B;
-    --accent-green: #174A2F;
-    --card-bg: #FFFFFF;
-    --border: #D8DED9;
+    --bg-primary: #EAF4ED;
+    --bg-secondary: #FFF8E6;
+    --text-primary: #142018;
+    --text-secondary: #415448;
+    --accent-gold: #B77B12;
+    --accent-green: #1F5D43;
+    --card-bg: #FFFCF2;
+    --border: #BBA86A;
     --button-text: #0A0A0A;
-    --nav-bg: rgba(248, 248, 248, 0.82);
+    --nav-bg: rgba(255, 248, 230, 0.88);
     --hero-overlay: rgba(10, 26, 17, 0.78);
   }
 
@@ -71,7 +71,11 @@
 
   [data-theme="light"] body {
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.58), transparent 360px),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--bg-secondary) 76%, transparent),
+        transparent 420px
+      ),
       var(--bg-primary);
   }
 
@@ -96,7 +100,10 @@
   }
 
   [data-theme="light"] .glass {
-    box-shadow: 0 14px 34px rgba(35, 50, 42, 0.08);
+    background: color-mix(in srgb, var(--bg-secondary) 94%, white 6%);
+    box-shadow:
+      0 18px 42px rgba(31, 93, 67, 0.11),
+      0 6px 18px rgba(183, 123, 18, 0.08);
   }
 
   .glow-accent {
@@ -137,18 +144,18 @@
 
   [data-theme="light"] .light-panel {
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.9)),
+      linear-gradient(180deg, rgba(255, 252, 242, 0.98), rgba(255, 248, 230, 0.92)),
       var(--card-bg);
     box-shadow:
-      0 24px 60px rgba(23, 74, 47, 0.14),
-      0 8px 20px rgba(184, 134, 11, 0.08),
+      0 24px 60px rgba(31, 93, 67, 0.13),
+      0 8px 20px rgba(183, 123, 18, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 
   [data-theme="light"] .light-panel:hover {
     box-shadow:
-      0 28px 70px rgba(23, 74, 47, 0.17),
-      0 10px 26px rgba(184, 134, 11, 0.1),
+      0 28px 70px rgba(31, 93, 67, 0.16),
+      0 10px 26px rgba(183, 123, 18, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 
@@ -366,16 +373,6 @@
     animation: skeleton-pulse 1.25s ease-in-out infinite;
   }
 
-  .admin-mode [data-admin-editable="true"] {
-    outline: 1px dashed color-mix(in srgb, var(--color-accent) 70%, transparent);
-    outline-offset: 4px;
-    transition: outline-color 180ms ease, background-color 180ms ease;
-  }
-
-  .admin-mode [data-admin-editable="true"]:hover {
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-    outline-color: var(--color-accent);
-  }
 }
 
 @media (max-width: 767px) {
