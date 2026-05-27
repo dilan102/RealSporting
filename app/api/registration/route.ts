@@ -30,17 +30,19 @@ export async function POST(request: Request) {
     );
   }
 
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpPort = Number(process.env.SMTP_PORT ?? 587);
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  const smtpHost = process.env.SMTP_HOST ?? (gmailUser ? "smtp.gmail.com" : undefined);
+  const smtpPort = Number(process.env.SMTP_PORT ?? (gmailUser ? 465 : 587));
+  const smtpUser = process.env.SMTP_USER ?? gmailUser;
+  const smtpPass = process.env.SMTP_PASS ?? gmailPass;
   const smtpFrom = process.env.SMTP_FROM ?? smtpUser;
 
   if (!smtpHost || !smtpUser || !smtpPass || !smtpFrom) {
     return NextResponse.json(
       {
         message:
-          "El envío de correo aún no está configurado en el servidor. Agrega SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS y SMTP_FROM.",
+          "El envío por Gmail aún no está configurado en el servidor. Agrega GMAIL_USER y GMAIL_APP_PASSWORD, o SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS y SMTP_FROM.",
       },
       { status: 503 }
     );

@@ -41,7 +41,7 @@ export function RegistrationModal({ children, className }: RegistrationModalProp
 
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/68 px-4 py-6 backdrop-blur-sm sm:py-10"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/68 px-4 py-6 backdrop-blur-sm sm:py-10"
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
@@ -52,7 +52,7 @@ export function RegistrationModal({ children, className }: RegistrationModalProp
             aria-label="Cerrar formulario"
             onClick={() => setOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-3xl">
+          <div className="relative z-10 w-full max-w-3xl py-4">
             <div className="mb-3 flex justify-end">
               <button
                 type="button"

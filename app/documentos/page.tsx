@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { Download, ExternalLink } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { getOfficialDocument, officialDocuments } from "@/lib/documents";
 
 export const metadata: Metadata = {
@@ -43,13 +43,11 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
             </div>
             <div className="flex flex-wrap gap-3">
               <a
-                href={document.href}
-                target="_blank"
-                rel="noreferrer"
+                href="#visor"
                 className="btn-green inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
               >
-                Abrir
-                <ExternalLink size={17} aria-hidden="true" />
+                Ver aqui
+                <Eye size={17} aria-hidden="true" />
               </a>
               <a
                 href={document.href}
@@ -64,7 +62,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <section id="visor" className="scroll-mt-28 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
           <iframe
             title={document.title}
@@ -75,8 +73,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
         {document.type === "docx" && (
           <p className="mt-4 rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm text-muted">
             La vista previa de Word usa el visor de Microsoft y necesita que el
-            archivo este disponible en una URL publica. En local puedes usar
-            Abrir o Descargar.
+            archivo este disponible en una URL publica. En local puedes usar Descargar.
           </p>
         )}
         <div className="mt-6">

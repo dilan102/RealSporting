@@ -131,6 +131,13 @@
       linear-gradient(0deg, rgba(5, 14, 9, 0.42), rgba(5, 14, 9, 0.42));
   }
 
+  .hero-main-image {
+    object-fit: contain;
+    background:
+      radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent-green) 34%, black), #050805 72%),
+      #050805;
+  }
+
   [data-theme="light"] .grid-overlay {
     background-image:
       linear-gradient(rgba(23, 33, 27, 0.035) 1px, transparent 1px),
@@ -308,7 +315,8 @@
   }
 
   [data-theme="dark"] .text-zinc-700,
-  [data-theme="dark"] .text-zinc-600 {
+  [data-theme="dark"] .text-zinc-600,
+  [data-theme="dark"] .text-black\/70 {
     color: var(--text-secondary) !important;
   }
 
@@ -376,20 +384,20 @@
   }
 
   .mobile-snap-x {
-    display: flex;
+    display: grid;
     gap: 1rem;
-    margin-left: -1rem;
-    margin-right: -1rem;
-    overflow-x: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    scroll-padding-inline: 1rem;
-    scroll-snap-type: x mandatory;
+    margin-left: 0;
+    margin-right: 0;
+    overflow: visible;
+    padding-left: 0;
+    padding-right: 0;
+    scroll-snap-type: none;
   }
 
   .mobile-snap-x > * {
-    min-width: min(84vw, 22rem);
-    scroll-snap-align: start;
+    min-width: 0;
+    width: 100%;
+    scroll-snap-align: none;
   }
 }
 

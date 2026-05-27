@@ -23,6 +23,7 @@ const securityHeaders = [
       "frame-ancestors 'none'",
       "object-src 'none'",
       "form-action 'self'",
+      "frame-src 'self' https://www.google.com https://www.google.com/maps https://view.officeapps.live.com",
       "img-src 'self' data: blob: https://images.unsplash.com",
       "media-src 'self' blob: data:",
       "font-src 'self' https://fonts.gstatic.com",

@@ -5,7 +5,7 @@ import { social } from "@/lib/content";
 export function SocialStrip() {
   return (
     <section className="border-y border-border bg-bg-elevated/50">
-      <div className="mobile-scrollbar-none mx-auto flex max-w-6xl items-center gap-3 overflow-x-auto px-4 py-6 sm:flex-wrap sm:justify-center sm:gap-10 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto flex max-w-6xl flex-col items-stretch gap-3 px-4 py-6 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-10 sm:px-6 sm:py-8 lg:px-8">
         <a
           href={social.instagram}
           target="_blank"

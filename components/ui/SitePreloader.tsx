@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const introText = "Club Deportivo Real Sporting";
+const welcomeText = "Bienvenido";
 const loaderDuration = 3300;
 
 function AnimatedWords({ text }: { text: string }) {
@@ -108,6 +109,15 @@ export function SitePreloader() {
               <h2 className="text-balance text-[clamp(1.75rem,7vw,5rem)] font-black leading-[1.04] text-text drop-shadow-2xl">
                 <AnimatedWords text={introText} />
               </h2>
+              <motion.p
+                className="mx-auto mt-4 text-[clamp(1.3rem,5vw,3rem)] font-black leading-none text-accent drop-shadow-xl"
+                initial={{ opacity: 0, y: 18, scale: 0.94, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -16, scale: 0.96, filter: "blur(10px)" }}
+                transition={{ delay: 0.58, type: "spring", stiffness: 300, damping: 26 }}
+              >
+                {welcomeText}
+              </motion.p>
               <p className="mx-auto mt-5 max-w-2xl text-sm font-bold uppercase tracking-[0.24em] text-accent sm:text-base">
                 Formación, identidad y alto rendimiento
               </p>

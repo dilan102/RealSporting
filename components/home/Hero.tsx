@@ -54,16 +54,7 @@ function AnimatedStat({
 }
 
 export function Hero() {
-  const [activeImage, setActiveImage] = useState(0);
   const [parallax, setParallax] = useState(0);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setActiveImage((current) => (current + 1) % heroImages.length);
-    }, 5200);
-
-    return () => window.clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setParallax(Math.min(window.scrollY * 0.16, 90));
@@ -77,20 +68,15 @@ export function Hero() {
   return (
     <section className="relative isolate min-h-[92vh] overflow-hidden bg-bg text-text">
       <div className="absolute inset-0">
-        {heroImages.map((image, index) => (
-          <Image
-            key={image}
-            src={image}
-            alt={index === 0 ? `Jugadores de ${club.name}` : ""}
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            className={`object-cover object-center transition-opacity duration-700 ${
-              activeImage === index ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ transform: `translate3d(0, ${parallax}px, 0) scale(1.08)` }}
-          />
-        ))}
+        <Image
+          src={heroImages[0]}
+          alt={`Jugadores de ${club.name}`}
+          fill
+          priority
+          sizes="100vw"
+          className="hero-main-image object-center"
+          style={{ transform: `translate3d(0, ${parallax}px, 0)` }}
+        />
       </div>
       <div className="absolute inset-0 bg-[var(--hero-overlay)]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/35 to-black/18" />

@@ -48,14 +48,14 @@ export function SocialLinks() {
           target={href.startsWith("http") ? "_blank" : undefined}
           rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
           variants={fadeUpItem}
-          className="group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-white p-6 text-zinc-900 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+          className="group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
         >
-          <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-zinc-950">
+          <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
             <Icon size={24} aria-hidden="true" />
           </span>
           <div>
             <p className="font-black">{label}</p>
-            <p className="mt-1 text-sm leading-relaxed text-zinc-600">{description}</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted">{description}</p>
           </div>
         </motion.a>
       ))}

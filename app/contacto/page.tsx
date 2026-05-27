@@ -85,13 +85,13 @@ export default function ContactoPage() {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0a0a0a)]" />
           <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,1.08fr)] lg:items-center lg:px-8 lg:py-16">
             <div>
-              <p className="mb-3 inline-flex rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,transparent)] bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)] shadow-sm">
+              <p className="mb-3 inline-flex rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,transparent)] bg-bg-elevated px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)] shadow-sm">
                 Proceso de ingreso
               </p>
-              <h1 className="text-4xl font-black tracking-tight text-zinc-950 sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-black tracking-tight text-text sm:text-5xl lg:text-6xl">
                 Inscripción Real Sporting
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-700 sm:text-lg">
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
                 Ingreso al proceso deportivo, social y formativo del Club Deportivo Real Sporting, construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -121,11 +121,11 @@ export default function ContactoPage() {
         </section>
       </RevealSection>
 
-      <section className="bg-white">
+      <section className="bg-bg">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:items-start">
-              <section className="rounded-lg border border-border bg-white p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
+              <section className="rounded-lg border border-border bg-bg-elevated p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
                     <ClipboardCheck size={22} aria-hidden="true" />
@@ -141,7 +141,7 @@ export default function ContactoPage() {
                   {requirements.map((item) => (
                     <li
                       key={item}
-                      className="rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm leading-relaxed text-zinc-700 transition-all duration-300 ease-in-out hover:border-[var(--accent-gold)] hover:bg-white"
+                      className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-muted transition-all duration-300 ease-in-out hover:border-[var(--accent-gold)] hover:bg-bg-elevated"
                     >
                       {item}
                     </li>
@@ -168,7 +168,7 @@ export default function ContactoPage() {
         </div>
       </section>
 
-      <section id="documentos" className="scroll-mt-28 bg-zinc-50">
+      <section id="documentos" className="scroll-mt-28 bg-bg-elevated">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
             <SectionHeading
@@ -181,14 +181,14 @@ export default function ContactoPage() {
                 <Link
                   key={document.href}
                   href={`/documentos?archivo=${encodeURIComponent(document.href)}`}
-                  className="group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-white p-6 text-zinc-900 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
+                  className="group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
                 >
-                  <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-zinc-950">
+                  <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
                     <Download size={24} aria-hidden="true" />
                   </span>
                   <span className="mt-7 block">
                     <span className="block text-xl font-black">{document.title}</span>
-                    <span className="mt-2 block text-sm leading-relaxed text-zinc-600">
+                    <span className="mt-2 block text-sm leading-relaxed text-muted">
                       {document.description}
                     </span>
                     <span className="mt-4 inline-flex text-sm font-black text-accent">
@@ -202,7 +202,7 @@ export default function ContactoPage() {
         </div>
       </section>
 
-      <section className="bg-[color-mix(in_srgb,var(--accent-green)_7%,white)]">
+      <section className="bg-[color-mix(in_srgb,var(--accent-green)_7%,var(--bg-primary))]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <RevealSection>
           <SectionHeading
@@ -214,11 +214,11 @@ export default function ContactoPage() {
             {programCards.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="rounded-lg border border-border bg-white p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+                className="rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
               >
                 <Icon className="text-[var(--accent-green)]" size={24} aria-hidden="true" />
                 <h3 className="mt-4 font-black">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{text}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
               </article>
             ))}
           </div>
@@ -226,7 +226,7 @@ export default function ContactoPage() {
         </div>
       </section>
 
-      <section className="bg-white">
+      <section className="bg-bg">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <RevealSection>
           <SectionHeading
@@ -238,11 +238,11 @@ export default function ContactoPage() {
             {trainingModel.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="rounded-lg border border-border bg-white p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
+                className="rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
               >
                 <Icon className="text-[var(--accent-gold)]" size={24} aria-hidden="true" />
                 <h3 className="mt-4 font-black">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-600">{text}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
               </article>
             ))}
           </div>
@@ -250,7 +250,7 @@ export default function ContactoPage() {
         </div>
       </section>
 
-      <section className="bg-zinc-50">
+      <section className="bg-bg-elevated">
         <div className="mx-auto max-w-6xl px-4 py-14 pb-24 sm:px-6 lg:px-8">
         <RevealSection>
           <div className="mb-6 flex items-center gap-3">
@@ -266,10 +266,10 @@ export default function ContactoPage() {
           </div>
           <SocialLinks />
 
-          <div className="mx-auto mt-8 max-w-xl rounded-lg border border-border bg-white p-8 text-center shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg">
+          <div className="mx-auto mt-8 max-w-xl rounded-lg border border-border bg-bg p-8 text-center shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg">
             <MapPin className="mx-auto text-[var(--accent-green)]" size={28} />
-            <p className="mt-4 font-black text-zinc-900">Sede</p>
-            <p className="mt-2 text-sm text-zinc-600">{social.location}</p>
+            <p className="mt-4 font-black text-text">Sede</p>
+            <p className="mt-2 text-sm text-muted">{social.location}</p>
           </div>
         </RevealSection>
         </div>
