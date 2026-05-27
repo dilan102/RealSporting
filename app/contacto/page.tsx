@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   Brain,
   CalendarDays,
@@ -11,11 +12,12 @@ import {
   Target,
   UsersRound,
 } from "lucide-react";
-import { RegistrationForm } from "@/components/contact/RegistrationForm";
+import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { SocialLinks } from "@/components/contact/SocialLinks";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { club, social } from "@/lib/content";
+import { officialDocuments } from "@/lib/documents";
 
 export const metadata: Metadata = {
   title: "Inscripción",
@@ -75,26 +77,11 @@ const trainingModel = [
   },
 ];
 
-const documents = [
-  {
-    title: "Modelo de Entrenamiento Deportivo SCM",
-    description:
-      "Metodología Sinergia Cognitivo-Motriz, sesión tipo, pilares de trabajo y macrociclo de 8 semanas.",
-    href: "/MODELO%20DE%20ENTRENAMIENTO%20DEPORTIVO%20SCM.pdf",
-  },
-  {
-    title: "Proyecto Deportivo CDRS 2026",
-    description:
-      "Proyecto social, misión, visión, objetivos ODS, metodología por edades y plan de trabajo deportivo.",
-    href: "/Proyecto%20Deportivo%20CDRS%202026.docx",
-  },
-];
-
 export default function ContactoPage() {
   return (
-    <div className="bg-white pt-24 text-zinc-900 transition-colors sm:pt-28">
+    <div className="bg-bg pt-24 text-text transition-colors sm:pt-28">
       <RevealSection>
-        <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(135deg,#ffffff_0%,#f3f8f5_56%,#fff7d7_100%)]">
+        <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(135deg,var(--bg-secondary)_0%,color-mix(in_srgb,var(--accent-green)_8%,var(--bg-secondary))_56%,color-mix(in_srgb,var(--accent-gold)_18%,var(--bg-secondary))_100%)]">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0a0a0a)]" />
           <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,1.08fr)] lg:items-center lg:px-8 lg:py-16">
             <div>
@@ -108,12 +95,11 @@ export default function ContactoPage() {
                 Ingreso al proceso deportivo, social y formativo del Club Deportivo Real Sporting, construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#formulario-inscripcion"
+                <RegistrationModal
                   className="btn-gold inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
                 >
                   Iniciar inscripción
-                </a>
+                </RegistrationModal>
                 <a
                   href="#documentos"
                   className="btn-green inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
@@ -138,7 +124,7 @@ export default function ContactoPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(380px,1.1fr)] lg:items-start">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:items-start">
               <section className="rounded-lg border border-border bg-white p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
@@ -163,8 +149,19 @@ export default function ContactoPage() {
                 </ul>
               </section>
 
-              <section id="formulario-inscripcion" className="scroll-mt-28">
-                <RegistrationForm />
+              <section className="rounded-lg border border-border bg-bg-elevated p-6 shadow-sm sm:p-8">
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                  Inscripcion en ventana emergente
+                </p>
+                <h2 className="mt-3 text-2xl font-black">Formulario rapido</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  Completa la solicitud sin salir de la pagina. El sistema la
+                  envia directamente al correo oficial del club cuando el
+                  servidor tiene configurado el SMTP.
+                </p>
+                <RegistrationModal className="btn-gold mt-6 inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black">
+                  Abrir formulario
+                </RegistrationModal>
               </section>
             </div>
           </RevealSection>
@@ -180,11 +177,10 @@ export default function ContactoPage() {
               description="Consulta el modelo de entrenamiento y el proyecto deportivo institucional antes de completar el proceso."
             />
             <div className="mt-8 grid gap-5 md:grid-cols-2">
-              {documents.map((document) => (
-                <a
+              {officialDocuments.map((document) => (
+                <Link
                   key={document.href}
-                  href={document.href}
-                  download
+                  href={`/documentos?archivo=${encodeURIComponent(document.href)}`}
                   className="group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-white p-6 text-zinc-900 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
                 >
                   <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-zinc-950">
@@ -195,8 +191,11 @@ export default function ContactoPage() {
                     <span className="mt-2 block text-sm leading-relaxed text-zinc-600">
                       {document.description}
                     </span>
+                    <span className="mt-4 inline-flex text-sm font-black text-accent">
+                      Visualizar y descargar
+                    </span>
                   </span>
-                </a>
+                </Link>
               ))}
             </div>
           </RevealSection>

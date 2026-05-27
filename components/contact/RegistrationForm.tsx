@@ -2,43 +2,60 @@
 
 import { FormEvent, useState } from "react";
 import { Send, ShieldCheck } from "lucide-react";
-import { club, social } from "@/lib/content";
 
 const fieldClass =
-  "mt-2 w-full rounded-lg border border-border bg-white px-4 py-3 text-sm font-medium text-zinc-900 outline-none transition-all duration-300 ease-in-out placeholder:text-zinc-400 focus:border-[var(--accent-green)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent-green)_16%,transparent)]";
+  "mt-2 w-full rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm font-medium text-text outline-none transition-all duration-300 ease-in-out placeholder:text-muted/65 focus:border-[var(--accent-green)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent-green)_16%,transparent)]";
 
-const labelClass = "text-sm font-black text-zinc-900";
+const labelClass = "text-sm font-black text-text";
 
 export function RegistrationForm() {
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setStatus("");
+    setError("");
+    setSending(true);
 
-    const formData = new FormData(event.currentTarget);
-    const body = [
-      `Nombre del aspirante: ${formData.get("aspirante")}`,
-      `Edad: ${formData.get("edad")}`,
-      `Nombre del acudiente: ${formData.get("acudiente")}`,
-      `Teléfono: ${formData.get("telefono")}`,
-      "",
-      `Mensaje: ${formData.get("mensaje")}`,
-    ].join("\n");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
-    const mailto = `mailto:${social.email}?subject=${encodeURIComponent(
-      `Inscripción - ${club.name}`
-    )}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch("/api/registration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      });
 
-    setStatus("Abriendo tu correo para enviar la solicitud de inscripción.");
-    window.location.href = mailto;
+      const payload = (await response.json()) as { message?: string };
+
+      if (!response.ok) {
+        throw new Error(payload.message ?? "No se pudo enviar la solicitud.");
+      }
+
+      setStatus(payload.message ?? "Solicitud enviada correctamente.");
+      form.reset();
+    } catch (submitError) {
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : "No se pudo enviar la solicitud. Inténtalo nuevamente."
+      );
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-white p-5 text-zinc-900 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
+      className="rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated p-5 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
     >
-      <div className="flex items-center gap-3 border-b border-zinc-200 pb-5">
+      <div className="flex items-center gap-3 border-b border-border pb-5">
         <span className="grid size-11 place-items-center rounded-lg bg-[var(--accent-green)] text-white">
           <ShieldCheck size={22} aria-hidden="true" />
         </span>
@@ -115,15 +132,22 @@ export function RegistrationForm() {
 
       <button
         type="submit"
-        className="btn-gold mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg px-5 text-sm font-black sm:w-auto"
+        disabled={sending}
+        className="btn-gold mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg px-5 text-sm font-black disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
       >
-        Enviar solicitud
+        {sending ? "Enviando..." : "Enviar solicitud"}
         <Send size={18} aria-hidden="true" />
       </button>
 
       {status && (
-        <p className="mt-4 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_24%,transparent)] bg-[color-mix(in_srgb,var(--accent-green)_7%,white)] px-4 py-3 text-sm font-semibold text-[var(--accent-green)]">
+        <p className="mt-4 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_24%,transparent)] bg-[color-mix(in_srgb,var(--accent-green)_10%,var(--card-bg))] px-4 py-3 text-sm font-semibold text-[var(--accent-green)]">
           {status}
+        </p>
+      )}
+
+      {error && (
+        <p className="mt-4 rounded-lg border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-600 dark:text-red-300">
+          {error}
         </p>
       )}
     </form>

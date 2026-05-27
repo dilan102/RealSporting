@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CountUp } from "countup.js";
 import { ArrowRight, MapPin } from "lucide-react";
+import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { club } from "@/lib/content";
 
 const heroImages = ["/banner.png", "/trainings/3.svg", "/trainings/6.svg"];
@@ -123,13 +124,12 @@ export function Hero() {
           </p>
 
           <div className="mt-8 grid animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_270ms_both] gap-3 sm:flex sm:flex-wrap sm:items-center">
-            <Link
-              href="/contacto"
+            <RegistrationModal
               className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-black"
             >
               Inscríbete
               <ArrowRight size={16} aria-hidden="true" />
-            </Link>
+            </RegistrationModal>
             <Link
               href="/club"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/45 bg-white/12 px-6 text-sm font-bold text-white backdrop-blur-md transition-all hover:scale-[1.03] hover:border-accent hover:bg-white/18 hover:shadow-lg hover:shadow-[var(--accent-gold)]/20"

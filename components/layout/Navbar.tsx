@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
+import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
@@ -103,12 +104,11 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/contacto"
+          <RegistrationModal
             className="btn-gold hidden min-h-10 items-center justify-center rounded-lg px-4 text-sm font-black md:inline-flex"
           >
             Inscríbete
-          </Link>
+          </RegistrationModal>
           <button
             type="button"
             onClick={toggleAdmin}
@@ -160,12 +160,11 @@ export function Navbar() {
                 </li>
               ))}
               <li>
-                <Link
-                  href="/contacto"
+                <RegistrationModal
                   className="btn-gold mt-1 flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-black"
                 >
                   Inscríbete
-                </Link>
+                </RegistrationModal>
               </li>
             </ul>
           </motion.div>
