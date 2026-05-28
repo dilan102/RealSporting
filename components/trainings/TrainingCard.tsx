@@ -158,7 +158,7 @@ export function TrainingCard({
           <time className="absolute left-4 top-4 rounded-lg bg-bg/80 px-3 py-1 text-xs font-medium text-accent backdrop-blur">
             {formatDate(training.date)}
           </time>
-          {mainMedia.type === "video" && (
+          {mainMedia?.type === "video" && (
             <span className="absolute left-1/2 top-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-bg/80 text-accent backdrop-blur">
               <Play size={22} aria-hidden="true" />
             </span>
@@ -232,7 +232,12 @@ export function TrainingCard({
             <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
               <div className="relative min-h-[280px] bg-black sm:min-h-[420px] lg:min-h-[620px]">
                 {mediaCount === 0 ? (
-                  <TrainingPlaceholder />
+                  <>
+                    <TrainingPlaceholder />
+                    <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/20 bg-black/55 px-4 py-3 text-center text-sm text-white/90 backdrop-blur">
+                      Este entrenamiento aun no tiene fotos o videos disponibles.
+                    </div>
+                  </>
                 ) : media[activeMedia].type === "image" ? (
                   <Image
                     src={media[activeMedia].src}
