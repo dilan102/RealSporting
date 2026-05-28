@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import {
   ChevronLeft,
@@ -80,6 +81,7 @@ export function TrainingCard({
 }: TrainingCardProps) {
   const [open, setOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const media = getTrainingMedia(training);
   const mainMedia = media[0];
   const mediaCount = media.length;
@@ -88,6 +90,10 @@ export function TrainingCard({
     training.description,
     TRAINING_TEXT_PLACEHOLDER,
   );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) {
@@ -100,11 +106,12 @@ export function TrainingCard({
       }
     };
 
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
@@ -199,137 +206,143 @@ export function TrainingCard({
         </div>
       </motion.article>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[80] bg-black/82 p-4 backdrop-blur-sm sm:p-6"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={`training-${training.id}-title`}
-        >
-          <button
-            type="button"
+      {mounted &&
+        open &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[90] bg-black/82 p-4 backdrop-blur-sm sm:p-6"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`training-${training.id}-title`}
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-lg border border-white/20 bg-black/45 text-white backdrop-blur transition-colors hover:border-accent hover:text-accent sm:right-6 sm:top-6"
-            aria-label="Cerrar entrenamiento"
           >
-            <X size={22} aria-hidden="true" />
-          </button>
-          <div className="mx-auto flex max-h-[calc(100vh-2rem)] max-w-6xl flex-col overflow-hidden rounded-lg border border-white/15 bg-black/35 text-white shadow-2xl backdrop-blur-md sm:max-h-[calc(100vh-3rem)]">
-            <div className="flex items-start justify-between gap-4 border-b border-border p-4 sm:p-5">
-              <div>
-                <time className="text-xs font-bold uppercase tracking-[0.14em] text-accent">
-                  {formatDate(training.date)}
-                </time>
-                <h2
-                  id={`training-${training.id}-title`}
-                  className="mt-2 text-2xl font-black leading-tight sm:text-3xl"
-                >
-                  {title}
-                </h2>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-lg border border-white/20 bg-black/45 text-white backdrop-blur transition-colors hover:border-accent hover:text-accent sm:right-6 sm:top-6"
+              aria-label="Cerrar entrenamiento"
+            >
+              <X size={22} aria-hidden="true" />
+            </button>
+            <div
+              className="mx-auto flex max-h-[calc(100vh-2rem)] max-w-6xl flex-col overflow-hidden rounded-lg border border-white/15 bg-black/35 text-white shadow-2xl backdrop-blur-md sm:max-h-[calc(100vh-3rem)]"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-4 border-b border-border p-4 sm:p-5">
+                <div>
+                  <time className="text-xs font-bold uppercase tracking-[0.14em] text-accent">
+                    {formatDate(training.date)}
+                  </time>
+                  <h2
+                    id={`training-${training.id}-title`}
+                    className="mt-2 text-2xl font-black leading-tight sm:text-3xl"
+                  >
+                    {title}
+                  </h2>
+                </div>
               </div>
-            </div>
-
-            <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
-              <div className="relative min-h-[280px] bg-black sm:min-h-[420px] lg:min-h-[620px]">
-                {mediaCount === 0 ? (
-                  <>
-                    <TrainingPlaceholder />
-                    <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/20 bg-black/55 px-4 py-3 text-center text-sm text-white/90 backdrop-blur">
-                      Este entrenamiento aun no tiene fotos o videos disponibles.
-                    </div>
-                  </>
-                ) : media[activeMedia].type === "image" ? (
-                  <Image
-                    src={media[activeMedia].src}
-                    alt={`${title} ${activeMedia + 1}`}
-                    fill
-                    className="object-contain"
-                    sizes="(min-width: 1024px) 65vw, 100vw"
-                    loading="lazy"
-                    placeholder="blur"
-                    blurDataURL={trainingBlurDataURL}
-                  />
-                ) : (
-                  <video
-                    key={media[activeMedia].src}
-                    src={media[activeMedia].src}
-                    className="h-full w-full object-contain"
-                    controls
-                    playsInline
-                  />
-                )}
-                {mediaCount > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={showPrevious}
-                      className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-[var(--button-text)]"
-                      aria-label="Imagen anterior"
-                    >
-                      <ChevronLeft size={22} aria-hidden="true" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={showNext}
-                      className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-[var(--button-text)]"
-                      aria-label="Imagen siguiente"
-                    >
-                      <ChevronRight size={22} aria-hidden="true" />
-                    </button>
-                  </>
-                )}
-              </div>
-
-              <aside className="p-5 sm:p-6">
-                <p className="overflow-wrap-anywhere text-sm leading-7 text-muted">{description}</p>
-                {mediaCount > 1 && (
-                  <div className="mt-6 grid grid-cols-4 gap-2">
-                    {media.map((item, index) => (
+              <div className="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
+                <div className="relative min-h-[280px] bg-black sm:min-h-[420px] lg:min-h-[620px]">
+                  {mediaCount === 0 ? (
+                    <>
+                      <TrainingPlaceholder />
+                      <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/20 bg-black/55 px-4 py-3 text-center text-sm text-white/90 backdrop-blur">
+                        Este entrenamiento aun no tiene fotos o videos disponibles.
+                      </div>
+                    </>
+                  ) : media[activeMedia].type === "image" ? (
+                    <Image
+                      src={media[activeMedia].src}
+                      alt={`${title} ${activeMedia + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="(min-width: 1024px) 65vw, 100vw"
+                      loading="lazy"
+                      placeholder="blur"
+                      blurDataURL={trainingBlurDataURL}
+                    />
+                  ) : (
+                    <video
+                      key={media[activeMedia].src}
+                      src={media[activeMedia].src}
+                      className="h-full w-full object-contain"
+                      controls
+                      playsInline
+                    />
+                  )}
+                  {mediaCount > 1 && (
+                    <>
                       <button
-                        key={`${item.src}-${index}`}
                         type="button"
-                        onClick={() => setActiveMedia(index)}
-                        className={`relative aspect-square overflow-hidden rounded-lg border transition-colors ${
-                          activeMedia === index
-                            ? "border-accent"
-                            : "border-border hover:border-accent/50"
-                        }`}
-                        aria-label={`Ver medio ${index + 1}`}
+                        onClick={showPrevious}
+                        className="absolute left-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-[var(--button-text)]"
+                        aria-label="Imagen anterior"
                       >
-                        {item.type === "image" ? (
-                          <Image
-                            src={item.src}
-                            alt=""
-                            fill
-                            className="object-cover"
-                            sizes="96px"
-                            loading="lazy"
-                            placeholder="blur"
-                            blurDataURL={trainingBlurDataURL}
-                          />
-                        ) : (
-                          <>
-                            <video
-                              src={item.src}
-                              className="h-full w-full object-cover"
-                              muted
-                              playsInline
-                              preload="metadata"
-                            />
-                            <span className="absolute inset-0 grid place-items-center bg-black/25 text-white">
-                              <Play size={18} aria-hidden="true" />
-                            </span>
-                          </>
-                        )}
+                        <ChevronLeft size={22} aria-hidden="true" />
                       </button>
-                    ))}
-                  </div>
-                )}
-              </aside>
+                      <button
+                        type="button"
+                        onClick={showNext}
+                        className="absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-lg bg-bg/80 text-text backdrop-blur transition-colors hover:bg-accent hover:text-[var(--button-text)]"
+                        aria-label="Imagen siguiente"
+                      >
+                        <ChevronRight size={22} aria-hidden="true" />
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                <aside className="p-5 sm:p-6">
+                  <p className="overflow-wrap-anywhere text-sm leading-7 text-muted">{description}</p>
+                  {mediaCount > 1 && (
+                    <div className="mt-6 grid grid-cols-4 gap-2">
+                      {media.map((item, index) => (
+                        <button
+                          key={`${item.src}-${index}`}
+                          type="button"
+                          onClick={() => setActiveMedia(index)}
+                          className={`relative aspect-square overflow-hidden rounded-lg border transition-colors ${
+                            activeMedia === index
+                              ? "border-accent"
+                              : "border-border hover:border-accent/50"
+                          }`}
+                          aria-label={`Ver medio ${index + 1}`}
+                        >
+                          {item.type === "image" ? (
+                            <Image
+                              src={item.src}
+                              alt=""
+                              fill
+                              className="object-cover"
+                              sizes="96px"
+                              loading="lazy"
+                              placeholder="blur"
+                              blurDataURL={trainingBlurDataURL}
+                            />
+                          ) : (
+                            <>
+                              <video
+                                src={item.src}
+                                className="h-full w-full object-cover"
+                                muted
+                                playsInline
+                                preload="metadata"
+                              />
+                              <span className="absolute inset-0 grid place-items-center bg-black/25 text-white">
+                                <Play size={18} aria-hidden="true" />
+                              </span>
+                            </>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </aside>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
