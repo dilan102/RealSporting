@@ -23,9 +23,9 @@ export default async function EquipoPage() {
         <div className="pointer-events-none absolute inset-0 grid-overlay opacity-60" />
         <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Plantilla"
-          title="Categorías del equipo"
-          description="Organización por edades y cuerpo técnico, con cupos totales y convocados en secciones desplegables."
+          eyebrow="Plantilla institucional"
+          title="Estructura por categorías"
+          description="Seguimiento técnico por edad, estado de convocatoria y proyección competitiva del proceso formativo Real Sporting."
           align="center"
         />
         </div>

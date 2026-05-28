@@ -15,6 +15,81 @@ type PlayerGridProps = {
   onEditPlayer?: (player: Player) => void;
 };
 
+const CATEGORY_NAMES: Record<string, string> = {
+  "2020-2019": "Pre-Benjamín",
+  "2018-2017": "Benjamín",
+  "2016-2015": "Alevín",
+  "2014-2013": "Infantil",
+  "2012-2011": "Cadete",
+  "2010-2009": "Juvenil",
+  "2008-2007": "Sub-20",
+  entrenadores: "Cuerpo Técnico",
+};
+
+const technicalDefinitions: Record<TeamCategoryId, string> = {
+  "2020-2019":
+    "Proceso de iniciación (6-7 años): prioriza diversión, psicomotricidad básica y familiarización con el balón. Microciclo de 45 a 60 minutos.",
+  "2018-2017":
+    "Formación base (8-9 años): consolidación de fundamentos técnicos, trabajo en equipo y comprensión reglamentaria. Microciclo de 60 a 75 minutos.",
+  "2016-2015":
+    "Etapa de perfeccionamiento (10-11 años): técnica específica, táctica elemental y toma de decisiones bajo presión. Microciclo de 75 a 90 minutos.",
+  "2014-2013":
+    "Consolidación técnica (12-13 años): introducción a sistemas tácticos y preparación física general. Microciclo de 90 a 105 minutos.",
+  "2012-2011":
+    "Especialización inicial (14-15 años): entrenamiento por puesto, táctica avanzada y rendimiento físico orientado. Microciclo de 90 a 120 minutos.",
+  "2010-2009":
+    "Alto rendimiento formativo (16-17 años): especialización de rol, lectura de juego y exigencia competitiva. Microciclo de 105 a 135 minutos.",
+  "2008-2007":
+    "Proyección competitiva (16-17 años): optimización física y táctica para exigencias de torneo. Microciclo de 105 a 135 minutos.",
+};
+
+function isConvocado(player: Player) {
+  return player.convocado === "SI";
+}
+
+function PlayerList({
+  players,
+  emptyMessage,
+  canManage,
+  onEditPlayer,
+}: {
+  players: Player[];
+  emptyMessage: string;
+  canManage?: boolean;
+  onEditPlayer?: (player: Player) => void;
+}) {
+  if (players.length === 0) {
+    return (
+      <p className="rounded-lg border border-dashed border-border bg-bg/60 p-4 text-sm text-muted">
+        {emptyMessage}
+      </p>
+    );
+  }
+
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      {players.map((player) => (
+        <div key={player.id} className="relative">
+          <PlayerCard player={player} />
+          {canManage && (
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                onEditPlayer?.(player);
+              }}
+              className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-md border border-border bg-bg/90 text-muted transition-colors hover:border-accent/50 hover:text-accent"
+              aria-label={`Editar ${player.name}`}
+            >
+              <Pencil size={12} aria-hidden="true" />
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function PlayerGrid({
   sections,
   canManage = false,
@@ -22,40 +97,6 @@ export function PlayerGrid({
   onEditPlayer,
 }: PlayerGridProps) {
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
-  const [activeTab, setActiveTab] = useState<Record<string, "jugadores" | "convocados">>({});
-
-  const technicalDefinitions: Record<TeamCategoryId, string> = {
-    "2020-2019":
-      "Pre-Benjamín (6-7 años): Centrado en la Diversión, el Desarrollo Psicomotor Básico y la Familiarización con el Balón. Sesiones de 45 a 60 minutos.",
-    "2018-2017":
-      "Benjamín (8-9 años): Centrado en los Fundamentos Técnicos Básicos, el Trabajo en Equipo Simple y el conocimiento de las Reglas. Sesiones de 60 a 75 minutos.",
-    "2016-2015":
-      "Alevín (10-11 años): Centrado en el Perfeccionamiento de la Técnica Específica, la Táctica Elemental y la Toma de Decisiones. Sesiones de 75 a 90 minutos.",
-    "2014-2013":
-      "Infantil (12-13 años): Centrado en la Consolidación Técnica, la Introducción a la Táctica Compleja y la Preparación Física General. Sesiones de 90 a 105 minutos.",
-    "2012-2011":
-      "Cadete (14-15 años): Centrado en el Entrenamiento Específico de Puesto, la Táctica Avanzada y la Preparación Física Orientada al Rendimiento. Sesiones de 90 a 120 minutos.",
-    "2010-2009":
-      "Juvenil (16-17 años): Centrado en el Alto Rendimiento, la Especialización Táctica en el Rol y la Preparación Física Profesionalizada. Sesiones de 105 a 135 minutos.",
-    "2008-2007":
-      "Juvenil (16-17 años): Centrado en el Alto Rendimiento, la Especialización Táctica en el Rol y la Preparación Física Profesionalizada. Sesiones de 105 a 135 minutos.",
-  };
-
-  const CATEGORY_NAMES: Record<string, string> = {
-    "2020-2019": "Pre-Benjamín",
-    "2018-2017": "Benjamín",
-    "2016-2015": "Alevín",
-    "2014-2013": "Infantil",
-    "2012-2011": "Cadete",
-    "2010-2009": "Juvenil",
-    "2008-2007": "Sub-20",
-    Entrenadores: "Cuerpo Técnico",
-    entrenadores: "Cuerpo Técnico",
-  };
-
-  const toggleCategory = (id: string) => {
-    setOpenCategories((current) => ({ ...current, [id]: !current[id] }));
-  };
 
   const sectionPlayers = useMemo(() => {
     return sections.reduce<Record<string, Player[]>>((acc, section) => {
@@ -72,6 +113,10 @@ export function PlayerGrid({
     }, {});
   }, [sections]);
 
+  const toggleCategory = (id: string) => {
+    setOpenCategories((current) => ({ ...current, [id]: !current[id] }));
+  };
+
   return (
     <motion.div
       className="space-y-8"
@@ -80,88 +125,58 @@ export function PlayerGrid({
       whileInView="visible"
       viewport={{ once: false, margin: "-40px" }}
     >
-      {sections.map((section) => (
-        <motion.section
-          key={section.id}
-          variants={fadeUpItem}
-          className="glass mobile-card-lift overflow-hidden rounded-lg"
-        >
-          {section.id !== "entrenadores" ? (
-            <>
-              <button
-                type="button"
-                className="flex w-full items-center justify-between gap-4 border-b border-border bg-bg-elevated/60 px-5 py-5 text-left transition-colors hover:bg-bg-elevated sm:px-6"
-                onClick={() => {
-                  toggleCategory(section.id);
-                  setActiveTab((current) => ({
-                    ...current,
-                    [section.id]: current[section.id] || "jugadores",
-                  }));
-                }}
-                aria-expanded={Boolean(openCategories[section.id])}
-              >
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
-                    {CATEGORY_NAMES[section.id] ?? section.title}
-                  </p>
-                  <h3 className="mt-1 text-2xl font-bold">{section.title}</h3>
-                </div>
-                <ChevronDown
-                  size={22}
-                  className={`text-muted transition-transform duration-300 ${openCategories[section.id] ? "rotate-180 text-accent" : ""}`}
-                  aria-hidden="true"
-                />
-              </button>
+      {sections.map((section) => {
+        const categoryName = CATEGORY_NAMES[section.id] ?? section.title;
+        const players = sectionPlayers[section.id] ?? [];
+        const convocados = players.filter(isConvocado);
 
-              <div
-                className={`grid transition-all duration-300 ${
-                  openCategories[section.id] ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
-                <div className="min-h-0 overflow-hidden">
-                  <div className="space-y-6 p-4 sm:p-6">
-                    {teamCategories.includes(section.id as TeamCategoryId) && (
-                      <article className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
-                        <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
-                          Definición técnica
-                        </p>
-                        <p className="mt-3 text-sm leading-7 text-muted">
-                          {technicalDefinitions[section.id as TeamCategoryId]}
-                        </p>
-                      </article>
-                    )}
+        return (
+          <motion.section
+            key={section.id}
+            variants={fadeUpItem}
+            className="glass mobile-card-lift overflow-hidden rounded-lg"
+          >
+            {section.id !== "entrenadores" ? (
+              <>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-4 border-b border-border bg-bg-elevated/60 px-5 py-5 text-left transition-colors hover:bg-bg-elevated sm:px-6"
+                  onClick={() => toggleCategory(section.id)}
+                  aria-expanded={Boolean(openCategories[section.id])}
+                >
+                  <div>
+                    <h3 className="text-2xl font-bold text-text">{categoryName}</h3>
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                      Rango {section.title} · {players.length} integrantes
+                    </p>
+                  </div>
+                  <ChevronDown
+                    size={22}
+                    className={`text-muted transition-transform duration-300 ${openCategories[section.id] ? "rotate-180 text-accent" : ""}`}
+                    aria-hidden="true"
+                  />
+                </button>
 
-                    <div className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
-                      <div className="mb-4 flex items-center justify-between gap-3 border-b border-border pb-3">
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setActiveTab((current) => ({ ...current, [section.id]: "jugadores" }))
-                            }
-                            className={`rounded-lg px-3 py-2 text-xs font-black uppercase tracking-[0.12em] transition-colors ${
-                              (activeTab[section.id] || "jugadores") === "jugadores"
-                                ? "bg-accent text-[var(--button-text)]"
-                                : "bg-bg text-muted hover:text-text"
-                            }`}
-                          >
-                            Jugadores
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setActiveTab((current) => ({ ...current, [section.id]: "convocados" }))
-                            }
-                            className={`rounded-lg px-3 py-2 text-xs font-black uppercase tracking-[0.12em] transition-colors ${
-                              (activeTab[section.id] || "jugadores") === "convocados"
-                                ? "bg-accent text-[var(--button-text)]"
-                                : "bg-bg text-muted hover:text-text"
-                            }`}
-                          >
-                            Convocados
-                          </button>
-                        </div>
-                        {canManage && section.id !== "entrenadores" && (
+                <div
+                  className={`grid transition-all duration-300 ${
+                    openCategories[section.id] ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="min-h-0 overflow-hidden">
+                    <div className="space-y-4 p-4 sm:p-6">
+                      {teamCategories.includes(section.id as TeamCategoryId) && (
+                        <article className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
+                          <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+                            Definición técnica
+                          </p>
+                          <p className="mt-3 text-sm leading-7 text-muted">
+                            {technicalDefinitions[section.id as TeamCategoryId]}
+                          </p>
+                        </article>
+                      )}
+
+                      {canManage && (
+                        <div className="flex justify-end">
                           <button
                             type="button"
                             onClick={() => onAddPlayer?.(section.id as TeamCategoryId)}
@@ -170,79 +185,62 @@ export function PlayerGrid({
                             <Plus size={14} aria-hidden="true" />
                             Añadir jugador
                           </button>
-                        )}
-                      </div>
-
-                      {(activeTab[section.id] || "jugadores") === "jugadores" && (
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                          {sectionPlayers[section.id]?.length ? (
-                            sectionPlayers[section.id].map((player) => (
-                              <div key={player.id} className="relative">
-                                <PlayerCard player={player} />
-                                {canManage && (
-                                  <button
-                                    type="button"
-                                    onClick={() => onEditPlayer?.(player)}
-                                    className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg/90 text-muted transition-colors hover:border-accent/50 hover:text-accent"
-                                    aria-label={`Editar ${player.name}`}
-                                  >
-                                    <Pencil size={14} aria-hidden="true" />
-                                  </button>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <p className="sm:col-span-2 lg:col-span-3 rounded-lg border border-dashed border-border bg-bg/60 p-4 text-sm text-muted">
-                              No hay jugadores registrados en esta categoría.
-                            </p>
-                          )}
                         </div>
                       )}
 
-                      {(activeTab[section.id] || "jugadores") === "convocados" && (
-                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                          {sectionPlayers[section.id]
-                            ?.filter((player) => player.convocado === "SI")
-                            .map((player) => (
-                              <div key={player.id} className="relative">
-                                <PlayerCard player={player} />
-                                {canManage && (
-                                  <button
-                                    type="button"
-                                    onClick={() => onEditPlayer?.(player)}
-                                    className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg/90 text-muted transition-colors hover:border-accent/50 hover:text-accent"
-                                    aria-label={`Editar ${player.name}`}
-                                  >
-                                    <Pencil size={14} aria-hidden="true" />
-                                  </button>
-                                )}
-                              </div>
-                            ))}
-                          {!sectionPlayers[section.id]?.some((player) => player.convocado === "SI") && (
-                            <p className="sm:col-span-2 lg:col-span-3 rounded-lg border border-dashed border-border bg-bg/60 p-4 text-sm text-muted">
-                              No hay jugadores convocados en esta categoría.
-                            </p>
-                          )}
+                      <details
+                        className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60"
+                        open
+                      >
+                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
+                          <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
+                            Jugadores
+                          </span>
+                          <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
+                            {players.length}
+                          </span>
+                        </summary>
+                        <div className="border-t border-border p-4 sm:p-5">
+                          <PlayerList
+                            players={players}
+                            emptyMessage="No hay jugadores registrados en esta categoría."
+                            canManage={canManage}
+                            onEditPlayer={onEditPlayer}
+                          />
                         </div>
-                      )}
+                      </details>
+
+                      <details className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60">
+                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
+                          <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
+                            Convocados
+                          </span>
+                          <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
+                            {convocados.length}
+                          </span>
+                        </summary>
+                        <div className="border-t border-border p-4 sm:p-5">
+                          <PlayerList
+                            players={convocados}
+                            emptyMessage="No hay jugadores convocados en esta categoría."
+                            canManage={canManage}
+                            onEditPlayer={onEditPlayer}
+                          />
+                        </div>
+                      </details>
                     </div>
                   </div>
                 </div>
+              </>
+            ) : (
+              <div className="border-b border-border bg-bg-elevated/50 px-5 py-5 sm:px-6">
+                <h3 className="text-2xl font-bold">{categoryName}</h3>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{section.description}</p>
               </div>
-            </>
-          ) : (
-            <div className="border-b border-border bg-bg-elevated/50 px-5 py-5 sm:px-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
-                {CATEGORY_NAMES.Entrenadores}
-              </p>
-              <h3 className="mt-1 text-2xl font-bold">{section.title}</h3>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-                {section.description}
-              </p>
-            </div>
-          )}
-        </motion.section>
-      ))}
+            )}
+          </motion.section>
+        );
+      })}
     </motion.div>
   );
 }

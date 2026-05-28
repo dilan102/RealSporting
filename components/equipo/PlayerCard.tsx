@@ -3,46 +3,98 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import type { Player } from "@/lib/content";
 import { fadeUpItem } from "@/lib/motion";
 
-export function PlayerCard({ player }: { player: Player }) {
+type PlayerCardProps = {
+  player: Player;
+};
+
+export function PlayerCard({ player }: PlayerCardProps) {
+  const [expanded, setExpanded] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
   const age = useMemo(() => {
     const categoryYear = Number(String(player.category).split("-")[0]);
     const currentYear = new Date().getFullYear();
     return Number.isFinite(categoryYear) ? Math.max(currentYear - categoryYear, 6) : null;
   }, [player.category]);
 
+  const isConvocado = player.convocado === "SI";
+
   return (
     <motion.article
       variants={fadeUpItem}
-      className="glass group overflow-hidden rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+      className={`overflow-hidden rounded-lg border bg-bg-elevated/80 transition-all duration-300 ${
+        expanded
+          ? "border-accent shadow-lg shadow-[var(--accent-gold)]/10"
+          : "border-border hover:border-accent/35"
+      }`}
     >
-      <div className="relative aspect-[4/5] overflow-hidden">
-        {!loaded && <div className="skeleton absolute inset-0 animate-pulse" aria-hidden="true" />}
-        <Image
-          src={player.image}
-          alt={player.name}
-          fill
-          className={`object-cover object-top transition-all duration-500 group-hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
-          onLoad={() => setLoaded(true)}
-        />
-        <span className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg bg-bg/90 text-lg font-bold text-accent backdrop-blur">
-          {player.number}
-        </span>
-      </div>
-      <div className="p-5">
-        <p className="text-xs font-semibold uppercase tracking-wider text-accent-secondary">
-          {player.position}
-        </p>
-        <h3 className="mt-1 text-lg font-bold">{player.name}</h3>
-        <div className="mt-3 grid gap-2 text-xs font-semibold text-muted">
-          <p>Edad: {age ? `${age} años` : "N/D"}</p>
-          <p>Categoría: {String(player.category)}</p>
-          <p>Estado: {player.convocado === "SI" ? "Convocado" : "En entrenamiento"}</p>
+      <button
+        type="button"
+        onClick={() => setExpanded((current) => !current)}
+        className="w-full text-left"
+        aria-expanded={expanded}
+        aria-label={`${expanded ? "Ocultar" : "Ver"} ficha de ${player.name}`}
+      >
+        <div className="relative aspect-[4/3] overflow-hidden bg-surface">
+          {!loaded && <div className="skeleton absolute inset-0 animate-pulse" aria-hidden="true" />}
+          <Image
+            src={player.image}
+            alt={player.name}
+            fill
+            sizes="(min-width: 1024px) 180px, 33vw"
+            className={`object-cover object-top transition-all duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${expanded ? "scale-105" : ""}`}
+            onLoad={() => setLoaded(true)}
+          />
+          <span className="absolute left-2 top-2 rounded-md bg-bg/90 px-2 py-0.5 text-xs font-black text-accent backdrop-blur">
+            #{player.number}
+          </span>
+          {isConvocado && (
+            <span className="absolute right-2 top-2 rounded-md bg-accent px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[var(--button-text)]">
+              Convocado
+            </span>
+          )}
         </div>
-        <p className="mt-3 text-sm leading-relaxed text-muted">{player.bio}</p>
+
+        <div className="flex items-start justify-between gap-2 p-3">
+          <div className="min-w-0">
+            <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-accent-secondary">
+              {player.position}
+            </p>
+            <h3 className="truncate text-sm font-bold">{player.name}</h3>
+          </div>
+          <ChevronDown
+            size={16}
+            className={`mt-1 shrink-0 text-muted transition-transform duration-300 ${expanded ? "rotate-180 text-accent" : ""}`}
+            aria-hidden="true"
+          />
+        </div>
+      </button>
+
+      <div
+        className={`grid transition-all duration-300 ${
+          expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="space-y-2 border-t border-border px-3 pb-3 pt-1 text-xs leading-relaxed text-muted">
+            <p>
+              <span className="font-semibold text-text">Edad estimada:</span>{" "}
+              {age ? `${age} años` : "No registrada"}
+            </p>
+            <p>
+              <span className="font-semibold text-text">Año de proceso:</span> {String(player.category)}
+            </p>
+            <p>
+              <span className="font-semibold text-text">Estado competitivo:</span>{" "}
+              {isConvocado ? "Convocado para competencia" : "En formación"}
+            </p>
+            <p className="pt-1 text-sm leading-6">{player.bio}</p>
+          </div>
+        </div>
       </div>
     </motion.article>
   );
