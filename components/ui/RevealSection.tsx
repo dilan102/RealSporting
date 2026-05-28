@@ -26,10 +26,10 @@ export function RevealSection({ children, className, delay = 0 }: Props) {
       animate={inView ? "visible" : "hidden"}
       variants={{
         hidden: {
-          opacity: 0,
-          y: 36,
-          scale: 0.985,
-          filter: "blur(10px)",
+          opacity: 1,
+          y: 24,
+          scale: 0.99,
+          filter: "blur(0px)",
         },
         visible: {
           opacity: 1,
