@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, Pencil, Plus } from "lucide-react";
+import { teamCategories } from "@/lib/content";
 import type { Player, TeamCategoryId, TeamSection } from "@/lib/content";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { PlayerCard } from "./PlayerCard";
@@ -22,7 +23,7 @@ export function PlayerGrid({
 }: PlayerGridProps) {
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
   const technicalDefinitions = useMemo(
-    () => ({
+    (): Record<TeamCategoryId, string> => ({
       "2020-2019":
         "Pre-Benjamin (6-7 anos): Centrado en la Diversion, el Desarrollo Psicomotor Basico y la Familiarizacion con el Balon. Sesiones de 45 a 60 minutos.",
       "2018-2017":
@@ -43,6 +44,14 @@ export function PlayerGrid({
 
   const toggleCategory = (id: string) => {
     setOpenCategories((current) => ({ ...current, [id]: !current[id] }));
+  };
+
+  const getTechnicalDefinition = (sectionId: string) => {
+    if (!teamCategories.includes(sectionId as TeamCategoryId)) {
+      return null;
+    }
+
+    return technicalDefinitions[sectionId as TeamCategoryId];
   };
 
   return (
@@ -92,7 +101,7 @@ export function PlayerGrid({
                         Definicion tecnica
                       </p>
                       <p className="mt-3 text-sm leading-7 text-muted">
-                        {technicalDefinitions[section.id] || section.description}
+                        {getTechnicalDefinition(section.id) || section.description}
                       </p>
                     </article>
 
