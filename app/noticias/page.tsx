@@ -92,8 +92,8 @@ export default async function NoticiasPage() {
                 <span className="mt-5 block max-w-3xl overflow-wrap-anywhere text-base leading-7 text-muted">
                   {sanitizeVisibleTextOrDefault(leadNews.summary, NEWS_TEXT_PLACEHOLDER)}
                 </span>
-                <span className="mt-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-accent">
-                  Leer noticia completa
+                <span className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-lg border border-accent/35 bg-accent/10 px-4 text-xs font-black uppercase tracking-[0.14em] text-accent transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-[var(--button-text)]">
+                  Leer más
                   <ArrowRight size={16} aria-hidden="true" />
                 </span>
               </span>

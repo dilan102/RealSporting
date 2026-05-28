@@ -12,7 +12,13 @@ export function Footer() {
   const year = new Date().getFullYear();
   const footerLinks = navLinks
     .map((link) => (link.href === "/contacto" ? { ...link, label: "Contáctenos" } : link))
-    .filter((link) => !(pathname === "/contacto" && link.href === "/contacto"));
+    .filter((link) => {
+      if (link.href === "/") {
+        return pathname !== "/";
+      }
+
+      return !(pathname === link.href || pathname.startsWith(`${link.href}/`));
+    });
 
   return (
     <footer className="border-t border-border bg-bg-elevated">

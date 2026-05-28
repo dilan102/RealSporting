@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -90,12 +91,18 @@ export function SitePreloader() {
 
           <div aria-hidden="true" className="preload-ball-stage absolute inset-x-0 bottom-[18vh]">
             <span className="preload-ball-shadow" />
-            <span className="preload-ball-realistic">
-              <span className="preload-ball-panel preload-ball-panel-center" />
-              <span className="preload-ball-panel preload-ball-panel-top" />
-              <span className="preload-ball-panel preload-ball-panel-right" />
-              <span className="preload-ball-panel preload-ball-panel-bottom" />
-              <span className="preload-ball-panel preload-ball-panel-left" />
+            <span
+              className="preload-ball-realistic"
+              style={{ background: "none", boxShadow: "none", filter: "none" }}
+            >
+              <Image
+                src="/balon.png"
+                alt=""
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 160px, 220px"
+                priority
+              />
             </span>
           </div>
 

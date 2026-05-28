@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, UserRound, X } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
 import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -50,14 +50,17 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+      className={`sticky inset-x-0 top-0 z-50 border-b transition-all duration-500 ${
         solidHeader
-          ? "border-border py-2.5 shadow-lg shadow-black/5 backdrop-blur-xl sm:py-3"
+          ? "border-border py-2.5 shadow-lg shadow-black/10 backdrop-blur-xl sm:py-3"
           : "border-transparent bg-transparent py-3 text-text backdrop-blur-0 sm:py-4"
       }`}
       style={{
-        backgroundColor: solidHeader ? "var(--nav-bg)" : "transparent",
-        backdropFilter: solidHeader ? "blur(12px)" : "blur(0px)",
+        backgroundColor: solidHeader
+          ? "var(--nav-bg)"
+          : "color-mix(in srgb, var(--nav-bg) 35%, transparent)",
+        backdropFilter: solidHeader ? "blur(14px)" : "blur(4px)",
+        opacity: solidHeader ? 1 : 0.98,
       }}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -127,12 +130,22 @@ export function Navbar() {
           <ThemeToggle />
           <button
             type="button"
-            className="glass rounded-lg p-2.5 shadow-sm md:hidden"
+            className="glass relative rounded-lg p-2.5 shadow-sm md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            <span className="relative block h-5 w-6">
+              <span
+                className={`absolute left-0 top-0 h-0.5 w-6 bg-current transition-all duration-300 ${open ? "translate-y-[9px] rotate-45" : ""}`}
+              />
+              <span
+                className={`absolute left-0 top-[9px] h-0.5 w-6 bg-current transition-all duration-300 ${open ? "opacity-0" : "opacity-100"}`}
+              />
+              <span
+                className={`absolute left-0 top-[18px] h-0.5 w-6 bg-current transition-all duration-300 ${open ? "-translate-y-[9px] -rotate-45" : ""}`}
+              />
+            </span>
           </button>
         </div>
       </nav>
@@ -156,6 +169,7 @@ export function Navbar() {
                         ? "bg-accent/10 text-accent"
                         : "text-muted hover:bg-surface hover:text-text"
                     }`}
+                    onClick={() => setOpen(false)}
                   >
                     {link.label}
                   </Link>

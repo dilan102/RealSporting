@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
+  ChevronDown,
   Eye,
   Flag,
   HeartHandshake,
@@ -121,5 +123,121 @@ export function Timeline() {
         </motion.li>
       ))}
     </motion.ol>
+  );
+}
+
+const odsItems = [
+  {
+    id: "ods-3",
+    code: "ODS 3",
+    title: "Salud y Bienestar",
+    shortText: "Salud fisica, mental y apoyo psicologico en el proceso formativo.",
+    detail:
+      "Promover la salud fisica y mental de los participantes a traves de actividades deportivas, educacion para la salud y apoyo psicologico.",
+  },
+  {
+    id: "ods-4",
+    code: "ODS 4",
+    title: "Educacion de Calidad",
+    shortText: "Formacion integral con habilidades para la vida y valores.",
+    detail:
+      "Proporcionar desarrollo integral incluyendo habilidades para la vida, educacion en valores y entrenamiento deportivo.",
+  },
+  {
+    id: "ods-5",
+    code: "ODS 5",
+    title: "Igualdad de Genero",
+    shortText: "Acceso igualitario a oportunidades deportivas para todos los generos.",
+    detail:
+      "Asegurar igualdad de acceso a oportunidades deportivas para ninos, ninas y adolescentes de todos los generos.",
+  },
+  {
+    id: "ods-10",
+    code: "ODS 10",
+    title: "Reduccion de Desigualdades",
+    shortText: "Inclusion social y no discriminacion para poblaciones diversas.",
+    detail:
+      "Promover inclusion social y no discriminacion ofreciendo oportunidades a poblaciones diversas incluyendo victimas del conflicto armado.",
+  },
+  {
+    id: "ods-11",
+    code: "ODS 11",
+    title: "Ciudades y Comunidades Sostenibles",
+    shortText: "Alianzas comunitarias para fortalecer tejido social local.",
+    detail:
+      "Fortalecer lazos con la comunidad local a traves de alianzas con organizaciones, escuelas y entidades gubernamentales.",
+  },
+  {
+    id: "ods-16",
+    code: "ODS 16",
+    title: "Paz, Justicia e Instituciones Solidas",
+    shortText: "Futbol como herramienta de dialogo, tolerancia y paz.",
+    detail:
+      "Utilizar el futbol para promover el dialogo, la tolerancia y una cultura de paz entre comunidades afectadas por el conflicto.",
+  },
+];
+
+export function OdsCommitment() {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  return (
+    <motion.div
+      className="grid gap-4 md:grid-cols-2"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: false, margin: "-60px" }}
+    >
+      {odsItems.map((item) => {
+        const open = expanded === item.id;
+
+        return (
+          <motion.article
+            key={item.id}
+            variants={fadeUpItem}
+            className={`group overflow-hidden rounded-lg border bg-bg-elevated/95 transition-all duration-300 ${
+              open
+                ? "border-accent shadow-xl shadow-[var(--accent-gold)]/15"
+                : "border-border hover:-translate-y-0.5 hover:border-accent/45"
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => setExpanded(open ? null : item.id)}
+              className="w-full px-5 py-5 text-left sm:px-6"
+              aria-expanded={open}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">
+                    {item.code}
+                  </p>
+                  <h3 className="mt-2 text-xl font-black leading-tight">{item.title}</h3>
+                </div>
+                <ChevronDown
+                  size={20}
+                  className={`mt-1 shrink-0 text-muted transition-transform duration-300 ${
+                    open ? "rotate-180 text-accent" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-muted transition-all duration-300 group-hover:text-text">
+                {item.shortText}
+              </p>
+            </button>
+            <div
+              className={`grid transition-all duration-300 ${
+                open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <div className="overflow-hidden border-t border-border px-5 sm:px-6">
+                <p className="py-4 text-sm leading-7 text-muted">{item.detail}</p>
+              </div>
+            </div>
+          </motion.article>
+        );
+      })}
+    </motion.div>
   );
 }

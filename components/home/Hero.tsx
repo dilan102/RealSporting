@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { CountUp } from "countup.js";
 import { ArrowRight, MapPin } from "lucide-react";
 import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { club } from "@/lib/content";
@@ -26,22 +25,51 @@ function AnimatedStat({
   label: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) {
+    if (!ref.current || started) {
       return;
     }
 
-    const counter = new CountUp(ref.current, value, {
-      duration: 1.7,
-      suffix,
-      separator: "",
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (!entry?.isIntersecting) {
+        return;
+      }
+
+      setStarted(true);
+      observer.disconnect();
+    }, {
+      threshold: 0.4,
     });
 
-    if (!counter.error) {
-      counter.start();
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [started]);
+
+  useEffect(() => {
+    if (!started || !ref.current) {
+      return;
     }
-  }, [suffix, value]);
+
+    const node = ref.current;
+    const duration = 1200;
+    const startAt = performance.now();
+
+    const render = (timestamp: number) => {
+      const progress = Math.min((timestamp - startAt) / duration, 1);
+      const eased = 1 - (1 - progress) * (1 - progress);
+      const current = Math.round(value * eased);
+      node.textContent = `${current}${suffix}`;
+
+      if (progress < 1) {
+        window.requestAnimationFrame(render);
+      }
+    };
+
+    window.requestAnimationFrame(render);
+  }, [started, suffix, value]);
 
   return (
     <div className="rounded-lg border border-white/20 bg-white/95 p-4 shadow-sm backdrop-blur-md">
@@ -57,7 +85,7 @@ export function Hero() {
   const [parallax, setParallax] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setParallax(Math.min(window.scrollY * 0.16, 90));
+    const onScroll = () => setParallax(Math.min(window.scrollY * 0.22, 120));
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, MapPin, Shield } from "lucide-react";
 import {
+  OdsCommitment,
   Timeline,
   ValuesGrid,
   VisionMission,
@@ -108,6 +109,20 @@ export default function ClubPage() {
         </div>
         <VisionMission />
         <ValuesGrid />
+      </section>
+      </RevealSection>
+
+      <RevealSection>
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mb-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
+            Sostenibilidad
+          </p>
+          <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+            Nuestro compromiso con el desarrollo sostenible
+          </h2>
+        </div>
+        <OdsCommitment />
       </section>
       </RevealSection>
 

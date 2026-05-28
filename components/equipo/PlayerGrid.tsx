@@ -1,10 +1,11 @@
 "use client";
 
-import Image from "next/image";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Pencil, Plus, UsersRound } from "lucide-react";
+import { ChevronDown, Pencil, Plus } from "lucide-react";
 import type { Player, TeamCategoryId, TeamSection } from "@/lib/content";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
+import { PlayerCard } from "./PlayerCard";
 
 type PlayerGridProps = {
   sections: TeamSection[];
@@ -19,6 +20,31 @@ export function PlayerGrid({
   onAddPlayer,
   onEditPlayer,
 }: PlayerGridProps) {
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
+  const technicalDefinitions = useMemo(
+    () => ({
+      "2020-2019":
+        "Pre-Benjamin (6-7 anos): Centrado en la Diversion, el Desarrollo Psicomotor Basico y la Familiarizacion con el Balon. Sesiones de 45 a 60 minutos.",
+      "2018-2017":
+        "Benjamin (8-9 anos): Centrado en los Fundamentos Tecnicos Basicos, el Trabajo en Equipo Simple y el conocimiento de las Reglas. Sesiones de 60 a 75 minutos.",
+      "2016-2015":
+        "Alevin (10-11 anos): Centrado en el Perfeccionamiento de la Tecnica Especifica, la Tactica Elemental y la Toma de Decisiones. Sesiones de 75 a 90 minutos.",
+      "2014-2013":
+        "Infantil (12-13 anos): Centrado en la Consolidacion Tecnica, la Introduccion a la Tactica Compleja y la Preparacion Fisica General. Sesiones de 90 a 105 minutos.",
+      "2012-2011":
+        "Cadete (14-15 anos): Centrado en el Entrenamiento Especifico de Puesto, la Tactica Avanzada y la Preparacion Fisica Orientada al Rendimiento. Sesiones de 90 a 120 minutos.",
+      "2010-2009":
+        "Juvenil (16-17 anos): Centrado en el Alto Rendimiento, la Especializacion Tactica en el Rol y la Preparacion Fisica Profesionalizada. Sesiones de 105 a 135 minutos.",
+      "2008-2007":
+        "Juvenil (16-17 anos): Centrado en el Alto Rendimiento, la Especializacion Tactica en el Rol y la Preparacion Fisica Profesionalizada. Sesiones de 105 a 135 minutos.",
+    }),
+    [],
+  );
+
+  const toggleCategory = (id: string) => {
+    setOpenCategories((current) => ({ ...current, [id]: !current[id] }));
+  };
+
   return (
     <motion.div
       className="space-y-8"
@@ -33,152 +59,121 @@ export function PlayerGrid({
           variants={fadeUpItem}
           className="glass mobile-card-lift overflow-hidden rounded-lg"
         >
-          <div className="border-b border-border bg-bg-elevated/50 px-5 py-5 sm:px-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
-              Categoría
-            </p>
-            <h3 className="mt-1 text-2xl font-bold">{section.title}</h3>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-              {section.description}
-            </p>
-          </div>
+          {section.id !== "entrenadores" ? (
+            <>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between gap-4 border-b border-border bg-bg-elevated/60 px-5 py-5 text-left transition-colors hover:bg-bg-elevated sm:px-6"
+                onClick={() => toggleCategory(section.id)}
+                aria-expanded={Boolean(openCategories[section.id])}
+              >
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
+                    Categoria
+                  </p>
+                  <h3 className="mt-1 text-2xl font-bold">{section.title}</h3>
+                </div>
+                <ChevronDown
+                  size={22}
+                  className={`text-muted transition-transform duration-300 ${openCategories[section.id] ? "rotate-180 text-accent" : ""}`}
+                  aria-hidden="true"
+                />
+              </button>
 
-          <div className="space-y-4 p-4 sm:p-6">
-            {section.groups.map((group) => {
-              const occupiedSlots = group.slots.filter((slot) => slot.player).length;
-              const playerSlots = group.slots.filter((slot) => slot.player);
-              const isPlayersGroup = group.id.endsWith("-jugadores");
+              <div
+                className={`grid transition-all duration-300 ${
+                  openCategories[section.id] ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="space-y-6 p-4 sm:p-6">
+                    <article className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
+                      <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+                        Definicion tecnica
+                      </p>
+                      <p className="mt-3 text-sm leading-7 text-muted">
+                        {technicalDefinitions[section.id] || section.description}
+                      </p>
+                    </article>
 
-              return (
-                <details
-                  key={group.id}
-                  className="group overflow-hidden rounded-lg border border-border bg-bg/70 transition-colors duration-300 open:bg-bg-elevated/60"
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 transition-colors duration-300 hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
-                    <div className="flex min-w-0 items-center gap-3">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent">
-                        <UsersRound size={20} aria-hidden="true" />
-                      </span>
-                      <div className="min-w-0">
-                        <h4 className="text-base font-bold text-text sm:text-lg">
-                          {group.title}
-                        </h4>
-                        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
-                          {group.description}
+                    <article className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+                          Jugadores en entrenamiento
                         </p>
-                      </div>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      <span className="rounded-lg border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-bold text-accent sm:text-sm">
-                        {occupiedSlots}/{group.slots.length}
-                      </span>
-                      <ChevronDown
-                        className="text-muted transition-transform duration-300 group-open:rotate-180"
-                        size={22}
-                        aria-hidden="true"
-                      />
-                    </div>
-                  </summary>
-
-                  <div className="border-t border-border bg-bg/65 p-3 sm:p-4">
-                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                      {playerSlots.length === 0 && (
-                        <div className="flex min-h-36 items-center justify-center rounded-lg border border-dashed border-border bg-bg-elevated/40 p-4 text-center sm:col-span-2 lg:col-span-4">
-                          <p className="text-sm font-semibold text-muted">
-                            En reclutamiento de categoria
-                          </p>
-                        </div>
-                      )}
-
-                      {playerSlots.map((slot, index) => {
-                        const player = slot.player;
-                        const initials = player?.name
-                          .split(" ")
-                          .filter(Boolean)
-                          .slice(0, 2)
-                          .map((part) => part[0])
-                          .join("")
-                          .toUpperCase();
-
-                        return (
-                          <article
-                            key={slot.id}
-                            className="relative min-h-36 rounded-lg border border-border bg-bg-elevated/60 p-4 transition-colors duration-300 hover:border-accent/30 hover:bg-bg-elevated"
+                        {canManage && (
+                          <button
+                            type="button"
+                            onClick={() => onAddPlayer?.(section.id as TeamCategoryId)}
+                            className="inline-flex items-center gap-2 rounded-lg border border-accent/40 bg-accent/10 px-3 py-2 text-xs font-bold text-accent transition-colors hover:bg-accent/15"
                           >
-                            {canManage && player && (
-                              <button
-                                type="button"
-                                onClick={() => onEditPlayer?.(player)}
-                                className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg/90 text-muted transition-colors hover:border-accent/50 hover:text-accent"
-                                aria-label={`Editar ${player.name}`}
-                              >
-                                <Pencil size={15} aria-hidden="true" />
-                              </button>
-                            )}
-                            <div className="flex items-start justify-between gap-3">
-                              <div className="flex min-w-0 items-center gap-3 pr-8">
-                                <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-surface text-sm font-bold text-accent">
-                                  {player?.image ? (
-                                    <Image
-                                      src={player.image}
-                                      alt={player.name}
-                                      fill
-                                      className="object-cover"
-                                    />
-                                  ) : (
-                                    initials || String(index + 1).padStart(2, "0")
-                                  )}
-                                </div>
-                                <div className="min-w-0">
-                                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-                                    Cupo {String(index + 1).padStart(2, "0")}
-                                  </p>
-                                  <h5 className="mt-1 truncate text-base font-bold">
-                                    {player?.name || "Disponible"}
-                                  </h5>
-                                </div>
-                              </div>
-                              {player && (
-                                <span className="rounded-lg bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
-                                  #{player.number}
-                                </span>
+                            <Plus size={14} aria-hidden="true" />
+                            Anadir jugador
+                          </button>
+                        )}
+                      </div>
+                      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {section.groups
+                          .find((group) => group.id.endsWith("-jugadores"))
+                          ?.slots.filter((slot) => slot.player && slot.player.convocado !== "SI")
+                          .map((slot) => (
+                            <div key={slot.id} className="relative">
+                              {slot.player && <PlayerCard player={slot.player} />}
+                              {canManage && slot.player && (
+                                <button
+                                  type="button"
+                                  onClick={() => onEditPlayer?.(slot.player as Player)}
+                                  className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg/90 text-muted transition-colors hover:border-accent/50 hover:text-accent"
+                                  aria-label={`Editar ${slot.player.name}`}
+                                >
+                                  <Pencil size={14} aria-hidden="true" />
+                                </button>
                               )}
                             </div>
-                            <div className="mt-4 border-t border-border pt-3">
-                              <p className="text-sm font-semibold text-accent-secondary">
-                                {player?.position || "Por definir"}
-                              </p>
-                              <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
-                                {player?.bio || "Espacio listo para añadir integrante."}
-                              </p>
-                            </div>
-                          </article>
-                        );
-                      })}
+                          ))}
+                      </div>
+                    </article>
 
-                      {canManage && isPlayersGroup && (
-                        <button
-                          type="button"
-                          onClick={() => onAddPlayer?.(section.id as TeamCategoryId)}
-                          className="flex min-h-36 flex-col items-center justify-center rounded-lg border border-dashed border-accent/40 bg-accent/5 p-4 text-center transition-colors duration-300 hover:border-accent hover:bg-accent/10"
-                        >
-                          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
-                            <Plus size={22} aria-hidden="true" />
-                          </span>
-                          <span className="mt-3 text-base font-bold text-text">
-                            Añadir jugador
-                          </span>
-                          <span className="mt-1 text-sm text-muted">
-                            Registrar en {section.title}
-                          </span>
-                        </button>
-                      )}
-                    </div>
+                    <article className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
+                      <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+                        Jugadores convocados
+                      </p>
+                      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {section.groups
+                          .find((group) => group.id.endsWith("-convocados"))
+                          ?.slots.filter((slot) => slot.player)
+                          .map((slot) => (
+                            <div key={slot.id} className="relative">
+                              {slot.player && <PlayerCard player={slot.player} />}
+                              {canManage && slot.player && (
+                                <button
+                                  type="button"
+                                  onClick={() => onEditPlayer?.(slot.player as Player)}
+                                  className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-bg/90 text-muted transition-colors hover:border-accent/50 hover:text-accent"
+                                  aria-label={`Editar ${slot.player.name}`}
+                                >
+                                  <Pencil size={14} aria-hidden="true" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                      </div>
+                    </article>
                   </div>
-                </details>
-              );
-            })}
-          </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="border-b border-border bg-bg-elevated/50 px-5 py-5 sm:px-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent-secondary">
+                Categoria
+              </p>
+              <h3 className="mt-1 text-2xl font-bold">{section.title}</h3>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+                {section.description}
+              </p>
+            </div>
+          )}
         </motion.section>
       ))}
     </motion.div>

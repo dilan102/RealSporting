@@ -55,8 +55,8 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
           <p className="mt-3 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
             {summary}
           </p>
-          <span className="mt-5 inline-flex items-center gap-1 text-xs font-black uppercase tracking-[0.12em] text-accent transition-colors group-hover:text-text">
-            Leer noticia completa
+          <span className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg border border-accent/35 bg-accent/10 px-4 text-xs font-black uppercase tracking-[0.12em] text-accent transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-[var(--button-text)]">
+            Leer más
             <ArrowRight size={14} aria-hidden="true" />
           </span>
         </div>

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SitePreloader } from "@/components/ui/SitePreloader";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { club } from "@/lib/content";
 import "./globals.css";
 
@@ -44,6 +45,7 @@ export default function RootLayout({
           <SitePreloader />
           <Navbar />
           <AdminPortal />
+          <WhatsAppFloat />
           <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>

@@ -1,8 +1,8 @@
 "use client";
 
-import { FormEvent, MouseEvent, useState } from "react";
-import { Mail, Send, ShieldCheck } from "lucide-react";
-import { club, social } from "@/lib/content";
+import { FormEvent, useMemo, useState } from "react";
+import { Mail, MessageCircle, ShieldCheck } from "lucide-react";
+import { social } from "@/lib/content";
 import { buildGmailComposeUrl, buildMailtoUrl } from "@/lib/email";
 
 const fieldClass =
@@ -11,116 +11,40 @@ const fieldClass =
 const labelClass = "text-sm font-black text-text";
 
 type RegistrationFields = {
-  aspirante: string;
-  edad: string;
+  nombre: string;
+  anioNacimiento: string;
   acudiente: string;
-  telefono: string;
-  mensaje: string;
 };
 
-function getRegistrationFields(form: HTMLFormElement): RegistrationFields {
-  const formData = new FormData(form);
-
-  return {
-    aspirante: String(formData.get("aspirante") ?? "").trim(),
-    edad: String(formData.get("edad") ?? "").trim(),
-    acudiente: String(formData.get("acudiente") ?? "").trim(),
-    telefono: String(formData.get("telefono") ?? "").trim(),
-    mensaje: String(formData.get("mensaje") ?? "").trim(),
-  };
-}
-
 function buildRegistrationDraft(fields: RegistrationFields) {
-  const subject = `Inscripcion - ${club.name}`;
+  const subject = "Nueva Inscripcion - Real Sporting";
+  const message = `Hola Real Sporting, quiero inscribir a mi hijo. Nombre: ${fields.nombre}, Año de nacimiento: ${fields.anioNacimiento}, Acudiente: ${fields.acudiente}`;
   const body = [
-    `Nombre del aspirante: ${fields.aspirante}`,
-    `Edad: ${fields.edad}`,
-    `Nombre del acudiente: ${fields.acudiente}`,
-    `Telefono: ${fields.telefono}`,
-    "",
-    `Mensaje: ${fields.mensaje}`,
+    "Hola Real Sporting, quiero inscribir a mi hijo.",
+    `Nombre: ${fields.nombre}`,
+    `Año de nacimiento: ${fields.anioNacimiento}`,
+    `Acudiente: ${fields.acudiente}`,
   ].join("\n");
+  const cleanedPhone = social.phone.replace(/\D/g, "");
 
   return {
+    whatsappUrl: `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`,
     gmailUrl: buildGmailComposeUrl({ to: social.email, subject, body }),
     mailtoUrl: buildMailtoUrl({ to: social.email, subject, body }),
   };
 }
 
 export function RegistrationForm() {
-  const [status, setStatus] = useState("");
-  const [error, setError] = useState("");
-  const [sending, setSending] = useState(false);
-  const [mailFallback, setMailFallback] = useState({
-    gmailUrl: buildGmailComposeUrl({
-      to: social.email,
-      subject: `Inscripcion - ${club.name}`,
-      body: "",
-    }),
-    mailtoUrl: buildMailtoUrl({
-      to: social.email,
-      subject: `Inscripcion - ${club.name}`,
-      body: "",
-    }),
+  const [fields, setFields] = useState<RegistrationFields>({
+    nombre: "",
+    anioNacimiento: "",
+    acudiente: "",
   });
+  const draft = useMemo(() => buildRegistrationDraft(fields), [fields]);
+  const isReady = Boolean(fields.nombre && fields.anioNacimiento && fields.acudiente);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus("");
-    setError("");
-    setSending(true);
-
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    setMailFallback(buildRegistrationDraft(getRegistrationFields(form)));
-
-    try {
-      const response = await fetch("/api/registration", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(Object.fromEntries(formData)),
-      });
-
-      const payload = (await response.json()) as { message?: string };
-
-      if (!response.ok) {
-        throw new Error(payload.message ?? "No se pudo enviar la solicitud.");
-      }
-
-      setStatus(payload.message ?? "Solicitud enviada correctamente.");
-      setMailFallback(
-        buildRegistrationDraft({
-          aspirante: "",
-          edad: "",
-          acudiente: "",
-          telefono: "",
-          mensaje: "",
-        })
-      );
-      form.reset();
-    } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "No se pudo enviar la solicitud. Inténtalo nuevamente."
-      );
-    } finally {
-      setSending(false);
-    }
-  };
-
-  const handleGmailClick = (event: MouseEvent<HTMLButtonElement>) => {
-    const form = event.currentTarget.form;
-
-    if (!form) {
-      return;
-    }
-
-    const draft = buildRegistrationDraft(getRegistrationFields(form));
-    setMailFallback(draft);
-    window.open(draft.gmailUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -134,41 +58,49 @@ export function RegistrationForm() {
         </span>
         <div>
           <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
-            Solicitud oficial
+            Inscripcion rapida
           </p>
           <h2 className="overflow-wrap-anywhere text-2xl font-black tracking-tight">
-            Formulario de inscripción
+            Ventana de registro interactiva
           </h2>
         </div>
       </div>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <label className="block">
-          <span className={labelClass}>Nombre del aspirante</span>
+          <span className={labelClass}>Nombre completo del aspirante</span>
           <input
             className={fieldClass}
-            name="aspirante"
+            name="nombre"
             type="text"
             autoComplete="name"
             required
             placeholder="Nombre completo"
+            value={fields.nombre}
+            onChange={(event) =>
+              setFields((current) => ({ ...current, nombre: event.target.value }))
+            }
           />
         </label>
 
         <label className="block">
-          <span className={labelClass}>Edad</span>
+          <span className={labelClass}>Año de nacimiento</span>
           <input
             className={fieldClass}
-            name="edad"
+            name="anioNacimiento"
             type="number"
-            min="4"
-            max="25"
+            min="1990"
+            max={new Date().getFullYear()}
             required
-            placeholder="Ej. 12"
+            placeholder="Ej. 2014"
+            value={fields.anioNacimiento}
+            onChange={(event) =>
+              setFields((current) => ({ ...current, anioNacimiento: event.target.value }))
+            }
           />
         </label>
 
-        <label className="block">
+        <label className="block sm:col-span-2">
           <span className={labelClass}>Nombre del acudiente</span>
           <input
             className={fieldClass}
@@ -177,80 +109,73 @@ export function RegistrationForm() {
             autoComplete="name"
             required
             placeholder="Nombre completo"
-          />
-        </label>
-
-        <label className="block">
-          <span className={labelClass}>Teléfono</span>
-          <input
-            className={fieldClass}
-            name="telefono"
-            type="tel"
-            autoComplete="tel"
-            required
-            placeholder="Número de contacto"
-          />
-        </label>
-
-        <label className="block sm:col-span-2">
-          <span className={labelClass}>Mensaje</span>
-          <textarea
-            className={`${fieldClass} min-h-32 resize-y`}
-            name="mensaje"
-            required
-            placeholder="Cuéntanos categoría, disponibilidad o información importante."
+            value={fields.acudiente}
+            onChange={(event) =>
+              setFields((current) => ({ ...current, acudiente: event.target.value }))
+            }
           />
         </label>
       </div>
 
-      <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
-        <button
-          type="submit"
-          disabled={sending}
-          className="btn-gold inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg px-5 text-sm font-black disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+      <div className="mt-6 grid gap-3">
+        <a
+          href={isReady ? draft.whatsappUrl : "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(event) => {
+            if (!isReady) {
+              event.preventDefault();
+            }
+          }}
+          className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-lg px-5 text-sm font-black transition-all ${
+            isReady
+              ? "bg-[#25D366] text-white shadow-lg shadow-[#25D366]/25 hover:scale-[1.01]"
+              : "cursor-not-allowed bg-[#25D366]/35 text-white/70"
+          }`}
         >
-          {sending ? "Enviando..." : "Enviar solicitud"}
-          <Send size={18} aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={handleGmailClick}
-          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-border bg-bg px-5 text-sm font-black text-text shadow-sm hover:border-[var(--accent-green)] hover:text-[var(--accent-green)] hover:shadow-lg sm:w-auto"
-        >
-          Enviar por Gmail
-          <Mail size={18} aria-hidden="true" />
-        </button>
-      </div>
-
-      {status && (
-        <p className="mt-4 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_24%,transparent)] bg-[color-mix(in_srgb,var(--accent-green)_10%,var(--card-bg))] px-4 py-3 text-sm font-semibold text-[var(--accent-green)]">
-          {status}
-        </p>
-      )}
-
-      {error && (
-        <div className="mt-4 rounded-lg border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-600 dark:text-red-300">
-          <p>{error}</p>
-          <div className="mt-3 flex flex-wrap gap-3">
-            <a
-              href={mailFallback.gmailUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-current px-3 py-2 text-xs font-black hover:bg-bg"
-            >
-              Abrir Gmail
-              <Mail size={15} aria-hidden="true" />
-            </a>
-            <a
-              href={mailFallback.mailtoUrl}
-              className="inline-flex items-center gap-2 rounded-lg border border-current px-3 py-2 text-xs font-black hover:bg-bg"
-            >
-              Usar correo
-              <Send size={15} aria-hidden="true" />
-            </a>
-          </div>
+          Enviar por WhatsApp
+          <MessageCircle size={18} aria-hidden="true" />
+        </a>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <a
+            href={isReady ? draft.gmailUrl : "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => {
+              if (!isReady) {
+                event.preventDefault();
+              }
+            }}
+            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black transition-all ${
+              isReady
+                ? "border border-[#EA4335] bg-white text-[#EA4335] hover:bg-[#EA4335] hover:text-white"
+                : "cursor-not-allowed border border-border bg-bg text-muted"
+            }`}
+          >
+            Gmail
+            <Mail size={18} aria-hidden="true" />
+          </a>
+          <a
+            href={isReady ? draft.mailtoUrl : "#"}
+            onClick={(event) => {
+              if (!isReady) {
+                event.preventDefault();
+              }
+            }}
+            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-black transition-all ${
+              isReady
+                ? "border-border bg-bg text-text hover:border-accent hover:text-accent"
+                : "cursor-not-allowed border border-border bg-bg text-muted"
+            }`}
+          >
+            Correo
+            <Mail size={18} aria-hidden="true" />
+          </a>
         </div>
-      )}
+      </div>
+      <p className="mt-4 text-xs font-semibold text-muted">
+        Completa los 3 datos para habilitar la redireccion automatica por WhatsApp o correo.
+      </p>
     </form>
   );
 }
