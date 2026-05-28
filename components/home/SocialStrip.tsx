@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 import { social } from "@/lib/content";
-import { buildGmailComposeUrl } from "@/lib/email";
 
 export function SocialStrip() {
   return (
@@ -24,18 +23,13 @@ export function SocialStrip() {
           <Facebook size={18} /> Facebook
         </a>
         <a
-          href={buildGmailComposeUrl({
-            to: social.email,
-            subject: "Contacto Real Sporting",
-          })}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`mailto:${social.email}`}
           className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-bg px-4 py-2 text-sm font-semibold text-muted transition-colors hover:text-text sm:border-0 sm:bg-transparent sm:px-0 sm:py-0"
         >
           <Mail size={18} /> {social.email}
         </a>
         <a
-          href={`tel:${social.phone.replace(/\s/g, "")}`}
+          href="tel:+573209059855"
           className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-bg px-4 py-2 text-sm font-semibold text-muted transition-colors hover:text-text sm:border-0 sm:bg-transparent sm:px-0 sm:py-0"
         >
           <Phone size={18} /> {social.phone}

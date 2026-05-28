@@ -6,7 +6,7 @@ import { social } from "@/lib/content";
 export function WhatsAppFloat() {
   const phone = social.phone.replace(/\D/g, "");
   const text = encodeURIComponent(
-    "Hola Real Sporting, quiero informacion sobre inscripciones generales.",
+    "Hola Real Sporting, quiero información sobre inscripciones generales.",
   );
 
   return (

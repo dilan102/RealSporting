@@ -12,16 +12,22 @@ import {
   Target,
   UsersRound,
 } from "lucide-react";
-import { RegistrationModal } from "@/components/contact/RegistrationModal";
+import { ContactFormSection } from "@/components/contact/ContactFormSection";
 import { SocialLinks } from "@/components/contact/SocialLinks";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { club, social } from "@/lib/content";
+import { social } from "@/lib/content";
 import { officialDocuments } from "@/lib/documents";
 
 export const metadata: Metadata = {
-  title: "Inscripción",
-  description: `Información de inscripción, requisitos y contacto de ${club.name}.`,
+  title: {
+    absolute: "Contacto e Inscripción | Club Deportivo Real Sporting",
+  },
+  description:
+    "Inscríbete en el Club Deportivo Real Sporting de Usme, Bogotá. Conoce los requisitos, descarga los documentos oficiales y contáctanos directamente.",
+  openGraph: {
+    images: ["https://real-sporting.vercel.app/logo.png"],
+  },
 };
 
 const requirements = [
@@ -95,11 +101,12 @@ export default function ContactoPage() {
                 Ingreso al proceso deportivo, social y formativo del Club Deportivo Real Sporting, construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <RegistrationModal
+                <a
+                  href="#formulario"
                   className="btn-gold inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
                 >
                   Iniciar inscripción
-                </RegistrationModal>
+                </a>
                 <a
                   href="#documentos"
                   className="btn-green inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
@@ -149,20 +156,7 @@ export default function ContactoPage() {
                 </ul>
               </section>
 
-              <section className="light-panel rounded-lg border border-border bg-bg-elevated p-6 shadow-sm sm:p-8">
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
-                  Inscripcion en ventana emergente
-                </p>
-                <h2 className="mt-3 text-2xl font-black">Formulario rapido</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
-                  Completa la solicitud sin salir de la pagina. El sistema la
-                  envia directamente al correo oficial del club cuando el
-                  servidor tiene configurado el SMTP.
-                </p>
-                <RegistrationModal className="btn-gold mt-6 inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black">
-                  Abrir formulario
-                </RegistrationModal>
-              </section>
+              <ContactFormSection />
             </div>
           </RevealSection>
         </div>
@@ -187,10 +181,10 @@ export default function ContactoPage() {
                     <Download size={24} aria-hidden="true" />
                   </span>
                   <span className="mt-7 block">
-                    <span className="block text-xl font-black">{document.title}</span>
-                    <span className="mt-2 block text-sm leading-relaxed text-muted">
+                    <h3 className="text-xl font-black">{document.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
                       {document.description}
-                    </span>
+                    </p>
                     <span className="mt-4 inline-flex text-sm font-black text-accent">
                       Visualizar y descargar
                     </span>
@@ -270,6 +264,18 @@ export default function ContactoPage() {
             <MapPin className="mx-auto text-[var(--accent-green)]" size={28} />
             <p className="mt-4 font-black text-text">Sede</p>
             <p className="mt-2 text-sm text-muted">{social.location}</p>
+          </div>
+          <div className="mt-8 overflow-hidden rounded-lg border border-border bg-bg">
+            <iframe
+              title="Ubicación Real Sporting en Usme, Bogotá"
+              src="https://www.google.com/maps?q=Usme%2C+Bogot%C3%A1%2C+Colombia&output=embed"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
           </div>
         </RevealSection>
         </div>

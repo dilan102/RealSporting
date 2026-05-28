@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     from: smtpFrom,
     to: social.email,
     replyTo: smtpFrom,
-    subject: `Inscripcion - ${club.name}`,
+    subject: `Inscripción - ${club.name}`,
     text: body,
   });
 

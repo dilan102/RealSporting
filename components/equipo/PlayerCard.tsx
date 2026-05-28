@@ -39,7 +39,7 @@ export function PlayerCard({ player }: { player: Player }) {
         <h3 className="mt-1 text-lg font-bold">{player.name}</h3>
         <div className="mt-3 grid gap-2 text-xs font-semibold text-muted">
           <p>Edad: {age ? `${age} años` : "N/D"}</p>
-          <p>Categoria: {String(player.category)}</p>
+          <p>Categoría: {String(player.category)}</p>
           <p>Estado: {player.convocado === "SI" ? "Convocado" : "En entrenamiento"}</p>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-muted">{player.bio}</p>

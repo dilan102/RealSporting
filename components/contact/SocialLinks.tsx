@@ -1,12 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Mail, Phone } from "lucide-react";
+import { Facebook, Instagram, Mail, MessageCircle, Phone } from "lucide-react";
 import { social } from "@/lib/content";
-import { buildGmailComposeUrl } from "@/lib/email";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
 
-const links = [
+const links: Array<{
+  label: string;
+  href: string;
+  icon: typeof Instagram;
+  description: string;
+  ariaLabel?: string;
+  accent?: boolean;
+}> = [
   {
     label: "Instagram",
     href: social.instagram,
@@ -21,18 +27,25 @@ const links = [
   },
   {
     label: "Correo",
-    href: buildGmailComposeUrl({
-      to: social.email,
-      subject: "Contacto Real Sporting",
-    }),
+    href: `mailto:${social.email}`,
     icon: Mail,
     description: social.email,
+    ariaLabel: "Enviar correo a Real Sporting",
   },
   {
     label: "Teléfono",
-    href: `tel:${social.phone.replace(/\s/g, "")}`,
+    href: "tel:+573209059855",
     icon: Phone,
     description: social.phone,
+    ariaLabel: "Llamar a Real Sporting",
+  },
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/573209059855?text=Hola%20Real%20Sporting%2C%20quiero%20informaci%C3%B3n%20sobre%20inscripciones.",
+    icon: MessageCircle,
+    description: "Escríbenos por WhatsApp",
+    ariaLabel: "Escribir a Real Sporting por WhatsApp",
+    accent: true,
   },
 ];
 
@@ -45,21 +58,43 @@ export function SocialLinks() {
       whileInView="visible"
       viewport={{ once: true }}
     >
-      {links.map(({ label, href, icon: Icon, description }) => (
+      {links.map(({ label, href, icon: Icon, description, ariaLabel, accent }) => (
         <motion.a
           key={label}
           href={href}
           target={href.startsWith("http") ? "_blank" : undefined}
           rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+          aria-label={
+            ariaLabel ||
+            (label === "Instagram"
+              ? "Seguir a Real Sporting en Instagram"
+              : label === "Facebook"
+                ? "Seguir a Real Sporting en Facebook"
+                : label)
+          }
           variants={fadeUpItem}
-          className="light-panel group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+          className={`group flex min-h-40 flex-col justify-between rounded-lg border p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg ${
+            accent
+              ? "border-[#25D366]/40 bg-[#25D366] text-white hover:border-[#25D366] hover:bg-[#1ebe5d]"
+              : "light-panel border-border bg-bg hover:border-[var(--accent-gold)]"
+          }`}
         >
-          <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
+          <span
+            className={`grid size-12 place-items-center rounded-lg transition-all duration-300 ease-in-out ${
+              accent
+                ? "bg-white/20 text-white"
+                : "bg-[var(--accent-green)] text-white group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]"
+            }`}
+          >
             <Icon size={24} aria-hidden="true" />
           </span>
           <div>
             <p className="font-black">{label}</p>
-            <p className="mt-1 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
+            <p
+              className={`mt-1 overflow-wrap-anywhere text-sm leading-relaxed ${
+                accent ? "text-white/90" : "text-muted"
+              }`}
+            >
               {description}
             </p>
           </div>

@@ -1,9 +1,9 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
-import { Mail, MessageCircle, ShieldCheck } from "lucide-react";
+import { FormEvent, useState } from "react";
+import emailjs from "@emailjs/browser";
+import { ShieldCheck } from "lucide-react";
 import { social } from "@/lib/content";
-import { buildGmailComposeUrl, buildMailtoUrl } from "@/lib/email";
 
 const fieldClass =
   "mt-2 w-full rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm font-medium text-text outline-none transition-all duration-300 ease-in-out placeholder:text-muted/65 focus:border-[var(--accent-green)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent-green)_16%,transparent)]";
@@ -11,40 +11,61 @@ const fieldClass =
 const labelClass = "text-sm font-black text-text";
 
 type RegistrationFields = {
-  nombre: string;
-  anioNacimiento: string;
-  acudiente: string;
+  nombreCompleto: string;
+  correo: string;
+  telefono: string;
+  categoria: string;
+  mensaje: string;
 };
 
-function buildRegistrationDraft(fields: RegistrationFields) {
-  const subject = "Nueva Inscripcion - Real Sporting";
-  const message = `Hola Real Sporting, quiero inscribir a mi hijo. Nombre: ${fields.nombre}, Año de nacimiento: ${fields.anioNacimiento}, Acudiente: ${fields.acudiente}`;
-  const body = [
-    "Hola Real Sporting, quiero inscribir a mi hijo.",
-    `Nombre: ${fields.nombre}`,
-    `Año de nacimiento: ${fields.anioNacimiento}`,
-    `Acudiente: ${fields.acudiente}`,
-  ].join("\n");
-  const cleanedPhone = social.phone.replace(/\D/g, "");
-
-  return {
-    whatsappUrl: `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(message)}`,
-    gmailUrl: buildGmailComposeUrl({ to: social.email, subject, body }),
-    mailtoUrl: buildMailtoUrl({ to: social.email, subject, body }),
-  };
-}
+type FormStatus = "idle" | "sending" | "enviado" | "error";
 
 export function RegistrationForm() {
   const [fields, setFields] = useState<RegistrationFields>({
-    nombre: "",
-    anioNacimiento: "",
-    acudiente: "",
+    nombreCompleto: "",
+    correo: "",
+    telefono: "",
+    categoria: "Pre-Benjamín",
+    mensaje: "",
   });
-  const draft = useMemo(() => buildRegistrationDraft(fields), [fields]);
-  const isReady = Boolean(fields.nombre && fields.anioNacimiento && fields.acudiente);
+  const [status, setStatus] = useState<FormStatus>("idle");
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      setStatus("error");
+      return;
+    }
+
+    try {
+      setStatus("sending");
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: fields.nombreCompleto,
+          from_email: fields.correo,
+          phone: fields.telefono || "No registrado",
+          message: `Categoría de interés: ${fields.categoria}\n${fields.mensaje || "Sin mensaje adicional."}`,
+        },
+        publicKey,
+      );
+      setStatus("enviado");
+      setFields({
+        nombreCompleto: "",
+        correo: "",
+        telefono: "",
+        categoria: "Pre-Benjamín",
+        mensaje: "",
+      });
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -58,124 +79,118 @@ export function RegistrationForm() {
         </span>
         <div>
           <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
-            Inscripcion rapida
+            Formulario rápido
           </p>
           <h2 className="overflow-wrap-anywhere text-2xl font-black tracking-tight">
-            Ventana de registro interactiva
+            Solicitud de inscripción
           </h2>
         </div>
       </div>
 
+      <p className="mt-5 text-sm text-muted">
+        Completa la solicitud y la recibiremos directamente en nuestro correo.
+      </p>
+
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <label className="block">
-          <span className={labelClass}>Nombre completo del aspirante</span>
+          <span className={labelClass}>Nombre completo</span>
           <input
             className={fieldClass}
-            name="nombre"
+            name="nombreCompleto"
             type="text"
             autoComplete="name"
             required
             placeholder="Nombre completo"
-            value={fields.nombre}
+            value={fields.nombreCompleto}
             onChange={(event) =>
-              setFields((current) => ({ ...current, nombre: event.target.value }))
+              setFields((current) => ({ ...current, nombreCompleto: event.target.value }))
             }
           />
         </label>
 
         <label className="block">
-          <span className={labelClass}>Año de nacimiento</span>
+          <span className={labelClass}>Correo electrónico</span>
           <input
             className={fieldClass}
-            name="anioNacimiento"
-            type="number"
-            min="1990"
-            max={new Date().getFullYear()}
+            name="correo"
+            type="email"
+            autoComplete="email"
             required
-            placeholder="Ej. 2014"
-            value={fields.anioNacimiento}
+            placeholder="nombre@correo.com"
+            value={fields.correo}
             onChange={(event) =>
-              setFields((current) => ({ ...current, anioNacimiento: event.target.value }))
+              setFields((current) => ({ ...current, correo: event.target.value }))
             }
           />
+        </label>
+
+        <label className="block">
+          <span className={labelClass}>Teléfono / WhatsApp (opcional)</span>
+          <input
+            className={fieldClass}
+            name="telefono"
+            type="tel"
+            placeholder="+57 320 905 9855"
+            value={fields.telefono}
+            onChange={(event) =>
+              setFields((current) => ({ ...current, telefono: event.target.value }))
+            }
+          />
+        </label>
+
+        <label className="block">
+          <span className={labelClass}>Categoría de interés</span>
+          <select
+            className={fieldClass}
+            name="categoria"
+            value={fields.categoria}
+            onChange={(event) =>
+              setFields((current) => ({ ...current, categoria: event.target.value }))
+            }
+          >
+            <option>Pre-Benjamín</option>
+            <option>Benjamín</option>
+            <option>Alevín</option>
+            <option>Infantil</option>
+            <option>Cadete</option>
+            <option>Juvenil</option>
+          </select>
         </label>
 
         <label className="block sm:col-span-2">
-          <span className={labelClass}>Nombre del acudiente</span>
-          <input
-            className={fieldClass}
-            name="acudiente"
-            type="text"
-            autoComplete="name"
-            required
-            placeholder="Nombre completo"
-            value={fields.acudiente}
+          <span className={labelClass}>Mensaje o comentario (opcional)</span>
+          <textarea
+            className={`${fieldClass} min-h-28`}
+            name="mensaje"
+            placeholder="Cuéntanos detalles sobre el aspirante o tus dudas."
+            value={fields.mensaje}
             onChange={(event) =>
-              setFields((current) => ({ ...current, acudiente: event.target.value }))
+              setFields((current) => ({ ...current, mensaje: event.target.value }))
             }
           />
         </label>
       </div>
 
-      <div className="mt-6 grid gap-3">
-        <a
-          href={isReady ? draft.whatsappUrl : "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(event) => {
-            if (!isReady) {
-              event.preventDefault();
-            }
-          }}
-          className={`inline-flex min-h-12 items-center justify-center gap-3 rounded-lg px-5 text-sm font-black transition-all ${
-            isReady
-              ? "bg-[#25D366] text-white shadow-lg shadow-[#25D366]/25 hover:scale-[1.01]"
-              : "cursor-not-allowed bg-[#25D366]/35 text-white/70"
-          }`}
+      <div className="mt-6">
+        <button
+          type="submit"
+          disabled={status === "sending"}
+          className="btn-gold inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 text-sm font-black disabled:cursor-not-allowed disabled:opacity-70"
         >
-          Enviar por WhatsApp
-          <MessageCircle size={18} aria-hidden="true" />
-        </a>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <a
-            href={isReady ? draft.gmailUrl : "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(event) => {
-              if (!isReady) {
-                event.preventDefault();
-              }
-            }}
-            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black transition-all ${
-              isReady
-                ? "border border-[#EA4335] bg-white text-[#EA4335] hover:bg-[#EA4335] hover:text-white"
-                : "cursor-not-allowed border border-border bg-bg text-muted"
-            }`}
-          >
-            Gmail
-            <Mail size={18} aria-hidden="true" />
-          </a>
-          <a
-            href={isReady ? draft.mailtoUrl : "#"}
-            onClick={(event) => {
-              if (!isReady) {
-                event.preventDefault();
-              }
-            }}
-            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-black transition-all ${
-              isReady
-                ? "border-border bg-bg text-text hover:border-accent hover:text-accent"
-                : "cursor-not-allowed border border-border bg-bg text-muted"
-            }`}
-          >
-            Correo
-            <Mail size={18} aria-hidden="true" />
-          </a>
-        </div>
+          {status === "sending" ? "Enviando..." : "Enviar solicitud"}
+        </button>
       </div>
-      <p className="mt-4 text-xs font-semibold text-muted">
-        Completa los 3 datos para habilitar la redireccion automatica por WhatsApp o correo.
-      </p>
+
+      {status === "enviado" && (
+        <p className="mt-4 rounded-lg border border-green-500/40 bg-green-500/10 px-4 py-3 text-sm font-semibold text-green-700 dark:text-green-300">
+          ¡Mensaje enviado! Te contactaremos pronto.
+        </p>
+      )}
+      {status === "error" && (
+        <p className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-700 dark:text-red-300">
+          Hubo un error. Escríbenos directamente a {social.email}
+        </p>
+      )}
     </form>
   );
 }

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
-import { buildGmailComposeUrl } from "@/lib/email";
 
 export function Footer() {
   const pathname = usePathname();
@@ -72,6 +71,7 @@ export function Footer() {
                   href={social.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Seguir a Real Sporting en Instagram"
                   className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
                   <Instagram size={16} /> Instagram
@@ -82,6 +82,7 @@ export function Footer() {
                   href={social.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Seguir a Real Sporting en Facebook"
                   className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
                   <Facebook size={16} /> Facebook
@@ -89,12 +90,8 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={buildGmailComposeUrl({
-                    to: social.email,
-                    subject: "Contacto Real Sporting",
-                  })}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`mailto:${social.email}`}
+                  aria-label="Enviar correo a Real Sporting"
                   className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
                 >
                   <Mail size={16} /> {social.email}
@@ -102,7 +99,8 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={`tel:${social.phone.replace(/\s/g, "")}`}
+                  href="tel:+573209059855"
+                  aria-label="Llamar a Real Sporting"
                   className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
                 >
                   <Phone size={16} /> {social.phone}
@@ -115,8 +113,11 @@ export function Footer() {
         <div className="mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
           <iframe
             title="Ubicación Real Sporting en Usme, Bogotá"
-            src="https://www.google.com/maps?q=Usme%2C%20Bogot%C3%A1%2C%20Colombia&output=embed"
-            className="h-64 w-full"
+            src="https://www.google.com/maps?q=Usme%2C+Bogot%C3%A1%2C+Colombia&output=embed"
+            width="100%"
+            height="400"
+            style={{ border: 0 }}
+            allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />

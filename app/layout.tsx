@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     description: club.tagline,
     locale: "es_CO",
     type: "website",
+    images: ["https://real-sporting.vercel.app/logo.png"],
   },
   icons: {
     icon: "/logo.png",

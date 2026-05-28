@@ -63,7 +63,7 @@ export function RegistrationModal({ children, className }: RegistrationModalProp
             <X size={20} aria-hidden="true" />
           </button>
           <h2 id={titleId} className="sr-only">
-            Formulario de inscripcion
+            Formulario de inscripción
           </h2>
           <RegistrationForm />
         </div>

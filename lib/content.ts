@@ -47,7 +47,7 @@ export const social = {
   instagram: "https://www.instagram.com/realsportingdeusme/",
   facebook: "https://www.facebook.com/profile.php?id=100091922545253",
   email: "realsportingdeusmeed@gmail.com",
-  phone: "3209059855",
+  phone: "+57 320 905 9855",
   location: "Usme, Bogotá D.C., Colombia",
 };
 

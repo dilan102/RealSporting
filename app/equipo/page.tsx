@@ -8,6 +8,9 @@ import { readPlayers } from "@/lib/player-store";
 export const metadata: Metadata = {
   title: "Equipo",
   description: `Plantilla y jugadores de ${club.name}.`,
+  openGraph: {
+    images: ["https://real-sporting.vercel.app/logo.png"],
+  },
 };
 
 export default async function EquipoPage() {

@@ -11,6 +11,7 @@
     "fotos:watch": "node scripts/optimize-fotos.mjs --watch"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@types/nodemailer": "^8.0.0",
     "countup.js": "^2.10.0",
     "framer-motion": "^12.15.0",

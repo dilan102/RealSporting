@@ -30,7 +30,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
       <section className="border-b border-border bg-bg-elevated">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
           <p className="text-xs font-black uppercase tracking-[0.16em] text-accent-secondary">
-            Documentacion oficial
+            Documentación oficial
           </p>
           <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -46,7 +46,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
                 href="#visor"
                 className="btn-green inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
               >
-                Ver aqui
+                Ver aquí
                 <Eye size={17} aria-hidden="true" />
               </a>
               <a
@@ -73,7 +73,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
         {document.type === "docx" && (
           <p className="mt-4 rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm text-muted">
             La vista previa de Word usa el visor de Microsoft y necesita que el
-            archivo este disponible en una URL publica. En local puedes usar Descargar.
+            archivo esté disponible en una URL pública. En local puedes usar Descargar.
           </p>
         )}
         <div className="mt-6">
