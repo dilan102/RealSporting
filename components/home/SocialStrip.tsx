@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 import { social } from "@/lib/content";
-import { PHONE_TEL } from "@/lib/site";
+import { PHONE_TEL } from "@/lib/constants";
 
 export function SocialStrip() {
   return (

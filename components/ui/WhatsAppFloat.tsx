@@ -1,6 +1,6 @@
 "use client";
 
-import { buildWhatsAppUrl } from "@/lib/site";
+import { WHATSAPP_URL } from "@/lib/constants";
 
 function WhatsAppIcon() {
   return (
@@ -13,11 +13,12 @@ function WhatsAppIcon() {
 export function WhatsAppFloat() {
   return (
     <a
-      href={buildWhatsAppUrl()}
+      href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-[75] inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-black text-white shadow-xl shadow-[#25D366]/30 transition-transform hover:scale-105"
-      aria-label="Contactar por WhatsApp"
+      role="link"
+      className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-black text-white shadow-xl shadow-[#25D366]/30 transition-transform hover:scale-105"
+      aria-label="Contactar al Club Deportivo Real Sporting por WhatsApp"
     >
       <WhatsAppIcon />
       <span className="hidden sm:inline">Escríbenos</span>

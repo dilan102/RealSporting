@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Facebook, Instagram, Mail, MessageCircle, Phone } from "lucide-react";
 import { social } from "@/lib/content";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
-import { buildWhatsAppUrl, PHONE_TEL } from "@/lib/site";
+import { PHONE_TEL, WHATSAPP_URL } from "@/lib/constants";
 
 const links: Array<{
   label: string;
@@ -42,7 +42,7 @@ const links: Array<{
   },
   {
     label: "WhatsApp",
-    href: buildWhatsAppUrl(),
+    href: WHATSAPP_URL,
     icon: MessageCircle,
     description: "Escríbenos por WhatsApp",
     ariaLabel: "Escribir a Real Sporting por WhatsApp",

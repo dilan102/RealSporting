@@ -64,13 +64,14 @@ export function Navbar() {
       }}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="group flex items-center gap-3">
+        <Link href="/" className="group flex items-center gap-3" aria-label={club.name}>
           <Image
             src="/logo.png"
-            alt={`Logo ${club.name}`}
+            alt="Logotipo Club Deportivo Real Sporting"
             width={44}
             height={44}
             className="size-10 object-contain sm:size-11"
+            sizes="96px"
           />
           <span className="hidden text-sm font-semibold tracking-tight sm:block">
             <span className={onHomeHero ? "nav-over-hero text-white" : "text-gradient"}>
