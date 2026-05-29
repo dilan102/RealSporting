@@ -36,7 +36,9 @@ async function playerInputFromFormData(request: NextRequest) {
     bio: String(formData.get("bio") || ""),
     category: String(formData.get("category") || ""),
     convocado: String(formData.get("convocado") || "NO"),
-    visible_publico: String(formData.get("visible_publico") || "false") === "true",
+    visible_publico:
+      String(formData.get("visible_publico") || formData.get("publicado") || "false") ===
+      "true",
     image: image instanceof File && image.size > 0 ? image : null,
   };
 }

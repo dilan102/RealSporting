@@ -62,7 +62,12 @@ function AnimatedWords({ text }: { text: string }) {
 
 export function SitePreloader() {
   const pathname = usePathname();
-  const [done, setDone] = useState(pathname !== "/");
+  const [done, setDone] = useState(() => {
+    if (typeof window === "undefined") {
+      return pathname !== "/";
+    }
+    return pathname !== "/" || sessionStorage.getItem("cdrs-splash-done") === "1";
+  });
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -70,8 +75,16 @@ export function SitePreloader() {
       return;
     }
 
+    if (sessionStorage.getItem("cdrs-splash-done") === "1") {
+      setDone(true);
+      return;
+    }
+
     setDone(false);
-    const doneTimer = window.setTimeout(() => setDone(true), loaderDuration);
+    const doneTimer = window.setTimeout(() => {
+      sessionStorage.setItem("cdrs-splash-done", "1");
+      setDone(true);
+    }, loaderDuration);
 
     return () => {
       window.clearTimeout(doneTimer);

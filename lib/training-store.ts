@@ -7,6 +7,7 @@ import {
   TRAINING_TEXT_PLACEHOLDER,
   sanitizeTextOrDefault,
   validateCleanTextField,
+  validateReadableText,
   validateTrainingDate,
   validateTrainingTitle,
 } from "@/lib/validators";
@@ -69,7 +70,7 @@ function isTraining(value: unknown): value is Training {
 function normalizeInput(input: TrainingInput) {
   const title = validateTrainingTitle(input.title);
   const date = validateTrainingDate(input.date);
-  const description = validateCleanTextField(input.description, "descripción");
+  const description = validateReadableText(input.description, "descripción", 10);
 
   return { title, date, description, hidden: input.hidden ?? false };
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
 import { QuickInstitutional } from "@/components/home/QuickInstitutional";
 import { RecentTrainings } from "@/components/home/RecentTrainings";
@@ -5,7 +6,15 @@ import { SocialStrip } from "@/components/home/SocialStrip";
 import { NewsCircleShowcase } from "@/components/news/NewsCircleShowcase";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { FloatingSectionArrow } from "@/components/ui/FloatingSectionArrow";
+import { club } from "@/lib/content";
+import { pageOpenGraph } from "@/lib/site";
 import { readNews } from "@/lib/news-store";
+
+export const metadata: Metadata = {
+  title: club.name,
+  description: club.tagline,
+  openGraph: pageOpenGraph(club.name, club.tagline),
+};
 
 export const dynamic = "force-dynamic";
 
