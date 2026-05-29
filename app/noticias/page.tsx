@@ -11,10 +11,15 @@ import {
   NEWS_TITLE_PLACEHOLDER,
   sanitizeVisibleTextOrDefault,
 } from "@/lib/validators";
+import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Noticias",
   description: `Noticias, comunicados y actualidad de ${club.name}.`,
+  openGraph: pageOpenGraph(
+    `Noticias | ${club.name}`,
+    `Noticias, comunicados y actualidad de ${club.name}.`,
+  ),
 };
 
 export const dynamic = "force-dynamic";

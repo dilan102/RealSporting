@@ -6,6 +6,7 @@ import { SitePreloader } from "@/components/ui/SitePreloader";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { club } from "@/lib/content";
+import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,10 +25,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: club.name,
     description: club.tagline,
-    locale: "es_CO",
-    type: "website",
-    images: ["https://real-sporting.vercel.app/logo.png"],
+    locale: siteMetadata.openGraph.locale,
+    type: siteMetadata.openGraph.type,
+    images: [OG_IMAGE_URL],
   },
+  twitter: siteMetadata.twitter,
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",

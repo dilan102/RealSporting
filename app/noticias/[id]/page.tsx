@@ -6,9 +6,11 @@ import { NewsBadge, NewsVisual } from "@/components/news/NewsVisual";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
+import { pageOpenGraph } from "@/lib/site";
 import {
   NEWS_TEXT_PLACEHOLDER,
   NEWS_TITLE_PLACEHOLDER,
+  normalizeText,
   sanitizeVisibleTextOrDefault,
 } from "@/lib/validators";
 
@@ -43,6 +45,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
     description: sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+    openGraph: pageOpenGraph(
+      `${sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)} | ${club.name}`,
+      sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+    ),
   };
 }
 
@@ -51,9 +57,16 @@ export default async function NoticiaDetallePage({ params }: Props) {
   const items = await readNews();
   const item = items.find((news) => news.id === id);
 
-  if (!item) {
+  if (!item || item.status === "draft") {
     notFound();
   }
+
+  const title = sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER);
+  const summary = sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER);
+  const body = sanitizeVisibleTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER);
+  const showBody =
+    normalizeText(body) !== normalizeText(summary) &&
+    !normalizeText(body).startsWith(normalizeText(summary));
 
   return (
     <main className="bg-bg pt-20 text-text">
@@ -70,13 +83,13 @@ export default async function NoticiaDetallePage({ params }: Props) {
           <header className="mt-8">
             <NewsBadge category={item.category} />
             <h1 className="mt-5 text-[4rem] font-black leading-[0.86] sm:text-[6rem]">
-              {sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)}
+              {title}
             </h1>
             <time className="mt-5 block text-xs font-bold uppercase tracking-[0.16em] text-muted">
               {formatDate(item.date)} · {club.name}
             </time>
             <p className="mt-6 max-w-3xl text-xl font-semibold leading-8 text-muted">
-              {sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER)}
+              {summary}
             </p>
           </header>
 
@@ -84,11 +97,11 @@ export default async function NoticiaDetallePage({ params }: Props) {
             <NewsVisual item={item} sizes="(min-width: 1024px) 896px, 100vw" priority />
           </div>
 
-          <div className="prose prose-lg mt-10 max-w-none text-text">
-            <p className="overflow-wrap-anywhere text-lg leading-9 text-muted">
-              {sanitizeVisibleTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER)}
-            </p>
-          </div>
+          {showBody && (
+            <div className="prose prose-lg mt-10 max-w-none text-text">
+              <p className="overflow-wrap-anywhere text-lg leading-9 text-muted">{body}</p>
+            </div>
+          )}
         </article>
       </RevealSection>
     </main>

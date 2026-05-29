@@ -4,10 +4,15 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { club } from "@/lib/content";
 import { readTrainings } from "@/lib/training-store";
+import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Entrenamientos",
   description: `Galería de sesiones de entrenamiento de ${club.name}.`,
+  openGraph: pageOpenGraph(
+    `Entrenamientos | ${club.name}`,
+    `Galería de sesiones de entrenamiento de ${club.name}.`,
+  ),
 };
 
 export const dynamic = "force-dynamic";

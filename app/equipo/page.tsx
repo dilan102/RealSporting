@@ -4,13 +4,15 @@ import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { club } from "@/lib/content";
 import { readPlayers } from "@/lib/player-store";
+import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Equipo",
   description: `Plantilla y jugadores de ${club.name}.`,
-  openGraph: {
-    images: ["https://real-sporting.vercel.app/logo.png"],
-  },
+  openGraph: pageOpenGraph(
+    `Equipo | ${club.name}`,
+    `Plantilla y jugadores de ${club.name}.`,
+  ),
 };
 
 export default async function EquipoPage() {

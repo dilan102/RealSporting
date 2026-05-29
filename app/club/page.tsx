@@ -10,10 +10,15 @@ import {
 } from "@/components/club/VisionMission";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
+import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "El Club",
   description: `Historia, misión, visión y valores de ${club.name}.`,
+  openGraph: pageOpenGraph(
+    `El Club | ${club.name}`,
+    `Historia, misión, visión y valores de ${club.name}.`,
+  ),
 };
 
 const clubStats = [

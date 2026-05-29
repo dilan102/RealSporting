@@ -17,17 +17,19 @@ import { SocialLinks } from "@/components/contact/SocialLinks";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { social } from "@/lib/content";
-import { officialDocuments } from "@/lib/documents";
+import { getOfficialDocumentHref, officialDocuments } from "@/lib/documents";
+import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Contacto e Inscripción | Club Deportivo Real Sporting",
+    absolute: "Inscripción | Club Deportivo Real Sporting",
   },
   description:
     "Inscríbete en el Club Deportivo Real Sporting de Usme, Bogotá. Conoce los requisitos, descarga los documentos oficiales y contáctanos directamente.",
-  openGraph: {
-    images: ["https://real-sporting.vercel.app/logo.png"],
-  },
+  openGraph: pageOpenGraph(
+    "Inscripción | Club Deportivo Real Sporting",
+    "Inscríbete en el Club Deportivo Real Sporting de Usme, Bogotá.",
+  ),
 };
 
 const requirements = [
@@ -104,6 +106,7 @@ export default function ContactoPage() {
                 <a
                   href="#formulario"
                   className="btn-gold inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
+                  aria-label="Ir al formulario de inscripción"
                 >
                   Iniciar inscripción
                 </a>
@@ -173,8 +176,8 @@ export default function ContactoPage() {
             <div className="mt-8 grid gap-5 md:grid-cols-2">
               {officialDocuments.map((document) => (
                 <Link
-                  key={document.href}
-                  href={`/documentos?archivo=${encodeURIComponent(document.href)}`}
+                  key={document.id}
+                  href={getOfficialDocumentHref(document.id)}
                   className="light-panel group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
                 >
                   <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
@@ -186,7 +189,7 @@ export default function ContactoPage() {
                       {document.description}
                     </p>
                     <span className="mt-4 inline-flex text-sm font-black text-accent">
-                      Visualizar y descargar
+                      Descargar
                     </span>
                   </span>
                 </Link>
