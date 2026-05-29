@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Facebook, Instagram, Mail, MessageCircle, Phone } from "lucide-react";
 import { social } from "@/lib/content";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
+import { buildWhatsAppUrl, PHONE_TEL } from "@/lib/site";
 
 const links: Array<{
   label: string;
@@ -34,14 +35,14 @@ const links: Array<{
   },
   {
     label: "Teléfono",
-    href: "tel:+573209059855",
+    href: PHONE_TEL,
     icon: Phone,
     description: social.phone,
     ariaLabel: "Llamar a Real Sporting",
   },
   {
     label: "WhatsApp",
-    href: "https://wa.me/573209059855?text=Hola%20Real%20Sporting%2C%20quiero%20informaci%C3%B3n%20sobre%20inscripciones.",
+    href: buildWhatsAppUrl(),
     icon: MessageCircle,
     description: "Escríbenos por WhatsApp",
     ariaLabel: "Escribir a Real Sporting por WhatsApp",

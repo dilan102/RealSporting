@@ -36,18 +36,33 @@ export const club = {
     },
   ],
   milestones: [
-    { year: "2022", event: "Consolidación del club y apertura del primer proceso formativo." },
-    { year: "2022", event: "Estructuración de categorías infantiles y juveniles." },
+    {
+      year: "Marzo 2022",
+      event: "Consolidación del club y apertura del primer proceso formativo.",
+    },
+    {
+      year: "Agosto 2022",
+      event: "Estructuración de categorías infantiles y juveniles.",
+    },
     { year: "2023", event: "Participación competitiva en torneos de proyección local." },
-    { year: "2026", event: "Renovación institucional, metodológica y digital del proyecto deportivo." },
+    {
+      year: "2024-2025",
+      event: "Continuidad del proceso formativo y consolidación de categorías competitivas.",
+    },
+    {
+      year: "2026",
+      event: "Renovación institucional, metodológica y digital del proyecto deportivo.",
+    },
   ],
 };
+
+import { CONTACT_EMAIL, PHONE_DISPLAY } from "@/lib/site";
 
 export const social = {
   instagram: "https://www.instagram.com/realsportingdeusme/",
   facebook: "https://www.facebook.com/profile.php?id=100091922545253",
-  email: "realsportingdeusmeed@gmail.com",
-  phone: "+57 320 905 9855",
+  email: CONTACT_EMAIL,
+  phone: PHONE_DISPLAY,
   location: "Usme, Bogotá D.C., Colombia",
 };
 
@@ -60,6 +75,7 @@ export type Player = {
   image: string;
   category: PlayerCategory;
   convocado: "SI" | "NO";
+  visible_publico?: boolean;
 };
 
 export type TeamBirthYear =
@@ -142,9 +158,10 @@ export const players: Player[] = [
     number: 1,
     position: "Portero",
     bio: "Reflejos rápidos y liderazgo bajo los tres palos.",
-    image: "/players/1.svg",
+    image: "/players/avatar.svg",
     category: 2010,
     convocado: "SI",
+    visible_publico: true,
   },
   {
     id: "2",
@@ -152,9 +169,10 @@ export const players: Player[] = [
     number: 4,
     position: "Cierre",
     bio: "Solidez defensiva y salida limpia de balón.",
-    image: "/players/2.svg",
+    image: "/players/avatar.svg",
     category: 2009,
     convocado: "SI",
+    visible_publico: true,
   },
   {
     id: "3",
@@ -162,9 +180,10 @@ export const players: Player[] = [
     number: 6,
     position: "Ala",
     bio: "Distribución precisa y recuperación constante.",
-    image: "/players/3.svg",
+    image: "/players/avatar.svg",
     category: 2008,
     convocado: "SI",
+    visible_publico: true,
   },
   {
     id: "4",
@@ -172,9 +191,10 @@ export const players: Player[] = [
     number: 8,
     position: "Ala",
     bio: "Creatividad y visión de juego en el último tercio.",
-    image: "/players/4.svg",
+    image: "/players/avatar.svg",
     category: 2008,
     convocado: "SI",
+    visible_publico: true,
   },
   {
     id: "5",
@@ -182,19 +202,21 @@ export const players: Player[] = [
     number: 7,
     position: "Ala",
     bio: "Instinto goleador y presión alta sin balón.",
-    image: "/players/5.svg",
+    image: "/players/avatar.svg",
     category: 2009,
     convocado: "SI",
+    visible_publico: true,
   },
   {
     id: "6",
     name: "Keiner valencia",
     number: 9,
     position: "Pivot",
-    bio: "Aguante de balon y definición clínica en el área rival.",
-    image: "/players/6.svg",
+    bio: "Aguante de balón y definición clínica en el área rival.",
+    image: "/players/avatar.svg",
     category: 2012,
     convocado: "SI",
+    visible_publico: true,
   },
 ];
 
@@ -289,7 +311,10 @@ export type Training = {
   image: string;
   images?: string[];
   videos?: string[];
+  hidden?: boolean;
 };
+
+export type NewsStatus = "published" | "draft";
 
 export type News = {
   id: string;
@@ -299,6 +324,7 @@ export type News = {
   summary: string;
   body: string;
   image: string;
+  status?: NewsStatus;
 };
 
 export const news: News[] = [
@@ -311,7 +337,8 @@ export const news: News[] = [
       "El club abre espacios de observación para niños, niñas y jóvenes de Usme interesados en iniciar un proceso deportivo estructurado.",
     body:
       "El Club Deportivo Real Sporting invita a las familias de la localidad a participar en jornadas de observación para nuevos talentos. El proceso prioriza disciplina, asistencia, actitud, compromiso familiar y seguimiento técnico por categorías.",
-    image: "/banner.png",
+    image: "/logo.png",
+    status: "published",
   },
   {
     id: "2",
@@ -322,7 +349,8 @@ export const news: News[] = [
       "Las categorías formativas trabajaron recuperación rápida, cierres coordinados y salida limpia tras robo.",
     body:
       "Durante la semana se desarrolló un microciclo dedicado a la presión alta. Los jugadores practicaron basculaciones, coberturas y decisiones de primer pase para transformar recuperaciones en ataques organizados. El objetivo es sostener intensidad sin perder orden.",
-    image: "/trainings/3.svg",
+    image: "/logo.png",
+    status: "published",
   },
   {
     id: "3",
@@ -334,6 +362,7 @@ export const news: News[] = [
     body:
       "El encuentro reunió a jugadores, familias y cuerpo técnico en una jornada pensada para reforzar pertenencia, respeto y trabajo en equipo. Estos espacios sostienen la identidad del club y recuerdan que el proceso deportivo también se construye fuera de la cancha.",
     image: "/logo.png",
+    status: "published",
   },
   {
     id: "4",
@@ -344,7 +373,8 @@ export const news: News[] = [
       "El equipo ajusta detalles tácticos y físicos antes de los próximos compromisos competitivos.",
     body:
       "El Club Deportivo Real Sporting prepara sus próximas presentaciones con énfasis en pelota quieta, repliegue defensivo y definición. El cuerpo técnico evalúa convocatorias por asistencia, rendimiento y comportamiento para representar a la institución con responsabilidad.",
-    image: "/trainings/6.svg",
+    image: "/logo.png",
+    status: "published",
   },
 ];
 
@@ -356,6 +386,7 @@ export const trainings: Training[] = [
     description:
       "Trabajo de rondo 4v2, circuitos de pase y finalización en espacios reducidos. Enfoque en primer toque y comunicación.",
     image: "/trainings/1.svg",
+    hidden: true,
   },
   {
     id: "2",
@@ -364,6 +395,7 @@ export const trainings: Training[] = [
     description:
       "Series de intervalos, trabajo de core y movilidad. Sesión orientada al rendimiento del segundo tiempo.",
     image: "/trainings/2.svg",
+    hidden: true,
   },
   {
     id: "3",
@@ -372,6 +404,7 @@ export const trainings: Training[] = [
     description:
       "Bloque compacto, salida desde el arco y triggers de presión en zona de creación rival.",
     image: "/trainings/3.svg",
+    hidden: true,
   },
   {
     id: "4",
@@ -380,6 +413,7 @@ export const trainings: Training[] = [
     description:
       "Partido de aplicación con rotaciones. Evaluación de decisiones bajo presión real.",
     image: "/trainings/4.svg",
+    hidden: true,
   },
   {
     id: "5",
@@ -388,6 +422,7 @@ export const trainings: Training[] = [
     description:
       "Estiramientos, hidratación y charla de análisis de video de la jornada anterior.",
     image: "/trainings/5.svg",
+    hidden: true,
   },
   {
     id: "6",
@@ -396,6 +431,7 @@ export const trainings: Training[] = [
     description:
       "Córners ofensivos, faltas laterales y transiciones rápidas post-rebote.",
     image: "/trainings/6.svg",
+    hidden: true,
   },
 ];
 

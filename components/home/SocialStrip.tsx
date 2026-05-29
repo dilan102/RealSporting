@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 import { social } from "@/lib/content";
+import { PHONE_TEL } from "@/lib/site";
 
 export function SocialStrip() {
   return (
@@ -29,7 +30,7 @@ export function SocialStrip() {
           <Mail size={18} /> {social.email}
         </a>
         <a
-          href="tel:+573209059855"
+          href={PHONE_TEL}
           className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-bg px-4 py-2 text-sm font-semibold text-muted transition-colors hover:text-text sm:border-0 sm:bg-transparent sm:px-0 sm:py-0"
         >
           <Phone size={18} /> {social.phone}
