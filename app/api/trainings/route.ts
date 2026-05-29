@@ -50,7 +50,7 @@ async function trainingInputFromFormData(request: NextRequest) {
 }
 
 export async function GET() {
-  const items = await readTrainings();
+  const items = await readTrainings({ includeHidden: true });
 
   return NextResponse.json({ items });
 }

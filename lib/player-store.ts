@@ -3,6 +3,10 @@ import { mkdir, readFile, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { Player, PlayerCategory } from "@/lib/content";
 import { getPlayerCategory, players as defaultPlayers } from "@/lib/content";
+import {
+  isReadableText,
+  validateReadableText,
+} from "@/lib/validators";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "players");
@@ -17,6 +21,7 @@ export type PlayerInput = {
   category: string;
   convocado: string;
   image?: File | null;
+  visible_publico?: boolean;
 };
 
 const allowedTypes = new Map([
@@ -46,7 +51,8 @@ function isPlayer(value: unknown): value is Player {
     typeof item.bio === "string" &&
     typeof item.image === "string" &&
     (typeof item.category === "string" || typeof item.category === "number") &&
-    (item.convocado === "SI" || item.convocado === "NO")
+    (item.convocado === "SI" || item.convocado === "NO") &&
+    (item.visible_publico === undefined || typeof item.visible_publico === "boolean")
   );
 }
 
@@ -63,22 +69,23 @@ function normalizeCategory(value: string): PlayerCategory {
 }
 
 function normalizeInput(input: PlayerInput) {
-  const name = input.name.trim();
-  const position = input.position.trim();
-  const bio = input.bio.trim();
+  const name = validateReadableText(input.name, "nombre", 3);
+  const position = validateReadableText(input.position, "posición", 2);
+  const bio = validateReadableText(input.bio, "descripción", 10);
   const number = Number(input.number);
   const category = normalizeCategory(input.category);
   const convocado: Player["convocado"] = input.convocado === "SI" ? "SI" : "NO";
+  const visible_publico = input.visible_publico ?? false;
 
-  if (!name || !position || !bio) {
-    throw new Error("Completa nombre, posición y descripción.");
+  if (!Number.isInteger(number) || number < 1 || number > 99) {
+    throw new Error("El número de camiseta debe estar entre 1 y 99.");
   }
 
-  if (!Number.isInteger(number) || number < 0 || number > 99) {
-    throw new Error("El número debe estar entre 0 y 99.");
+  if (!isReadableText(input.bio, 10)) {
+    throw new Error("La descripción debe tener al menos 10 caracteres legibles.");
   }
 
-  return { name, number, position, bio, category, convocado };
+  return { name, number, position, bio, category, convocado, visible_publico };
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -124,21 +131,26 @@ async function saveImage(file: File) {
   return `${publicUploadPrefix}${fileName}`;
 }
 
-export async function readPlayers() {
+export async function readPlayers(options?: { includeHidden?: boolean }) {
   await ensureStorage();
+  const includeHidden = options?.includeHidden ?? false;
 
   try {
     const raw = await readFile(dataFile, "utf8");
     const parsed = JSON.parse(raw) as unknown;
 
     if (Array.isArray(parsed) && parsed.every(isPlayer)) {
-      return parsed;
+      return parsed.filter(
+        (item) => includeHidden || item.visible_publico !== false,
+      );
     }
   } catch {
     // Missing or invalid storage falls back to the starter roster.
   }
 
-  return defaultPlayers;
+  return defaultPlayers.filter(
+    (item) => includeHidden || item.visible_publico !== false,
+  );
 }
 
 async function writePlayers(items: Player[]) {
@@ -154,7 +166,7 @@ export async function createPlayer(input: PlayerInput) {
   }
 
   const image = await saveImage(input.image);
-  const current = await readPlayers();
+  const current = await readPlayers({ includeHidden: true });
   const player: Player = {
     id: `jugador-${randomUUID()}`,
     ...clean,
@@ -168,7 +180,7 @@ export async function createPlayer(input: PlayerInput) {
 
 export async function updatePlayer(id: string, input: PlayerInput) {
   const clean = normalizeInput(input);
-  const current = await readPlayers();
+  const current = await readPlayers({ includeHidden: true });
   const existing = current.find((item) => item.id === id);
 
   if (!existing) {
@@ -189,7 +201,7 @@ export async function updatePlayer(id: string, input: PlayerInput) {
 }
 
 export async function deletePlayer(id: string) {
-  const current = await readPlayers();
+  const current = await readPlayers({ includeHidden: true });
   const existing = current.find((item) => item.id === id);
 
   if (!existing) {

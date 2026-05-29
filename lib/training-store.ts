@@ -7,6 +7,8 @@ import {
   TRAINING_TEXT_PLACEHOLDER,
   sanitizeTextOrDefault,
   validateCleanTextField,
+  validateTrainingDate,
+  validateTrainingTitle,
 } from "@/lib/validators";
 
 const dataDir = path.join(process.cwd(), "data");
@@ -20,6 +22,7 @@ export type TrainingInput = {
   description: string;
   images?: File[];
   videos?: File[];
+  hidden?: boolean;
 };
 
 const allowedImageTypes = new Map([
@@ -58,24 +61,17 @@ function isTraining(value: unknown): value is Training {
         item.images.every((image) => typeof image === "string"))) &&
     (item.videos === undefined ||
       (Array.isArray(item.videos) &&
-        item.videos.every((video) => typeof video === "string")))
+        item.videos.every((video) => typeof video === "string"))) &&
+    (item.hidden === undefined || typeof item.hidden === "boolean")
   );
 }
 
 function normalizeInput(input: TrainingInput) {
-  const title = validateCleanTextField(input.title, "título");
-  const date = input.date.trim();
+  const title = validateTrainingTitle(input.title);
+  const date = validateTrainingDate(input.date);
   const description = validateCleanTextField(input.description, "descripción");
 
-  if (!date) {
-    throw new Error("La fecha no puede estar vacía.");
-  }
-
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    throw new Error("La fecha no tiene un formato válido.");
-  }
-
-  return { title, date, description };
+  return { title, date, description, hidden: input.hidden ?? false };
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -154,29 +150,34 @@ function getTrainingVideos(training: Training) {
   return training.videos && training.videos.length > 0 ? training.videos : [];
 }
 
-export async function readTrainings() {
+export async function readTrainings(options?: { includeHidden?: boolean }) {
   await ensureStorage();
+  const includeHidden = options?.includeHidden ?? false;
 
   try {
     const raw = await readFile(dataFile, "utf8");
     const parsed = JSON.parse(raw) as unknown;
 
     if (Array.isArray(parsed) && parsed.every(isTraining)) {
-      return parsed.map((item) => ({
-        ...item,
-        title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
-        description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
-      }));
+      return parsed
+        .filter((item) => includeHidden || !item.hidden)
+        .map((item) => ({
+          ...item,
+          title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
+          description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
+        }));
     }
   } catch {
     // Missing or invalid storage falls back to the curated starter content.
   }
 
-  return defaultTrainings.map((item) => ({
-    ...item,
-    title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
-    description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
-  }));
+  return defaultTrainings
+    .filter((item) => includeHidden || !item.hidden)
+    .map((item) => ({
+      ...item,
+      title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
+      description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
+    }));
 }
 
 async function writeTrainings(items: Training[]) {
@@ -191,7 +192,7 @@ export async function createTraining(input: TrainingInput) {
 
   const images = await Promise.all(imageFiles.map((file) => saveImage(file)));
   const videos = await Promise.all(videoFiles.map((file) => saveVideo(file)));
-  const current = await readTrainings();
+  const current = await readTrainings({ includeHidden: true });
   const training: Training = {
     id: `entrenamiento-${randomUUID()}`,
     ...clean,
@@ -207,7 +208,7 @@ export async function createTraining(input: TrainingInput) {
 
 export async function updateTraining(id: string, input: TrainingInput) {
   const clean = normalizeInput(input);
-  const current = await readTrainings();
+  const current = await readTrainings({ includeHidden: true });
   const existing = current.find((item) => item.id === id);
 
   if (!existing) {
@@ -235,7 +236,7 @@ export async function updateTraining(id: string, input: TrainingInput) {
 }
 
 export async function deleteTraining(id: string) {
-  const current = await readTrainings();
+  const current = await readTrainings({ includeHidden: true });
   const existing = current.find((item) => item.id === id);
 
   if (!existing) {
@@ -251,7 +252,7 @@ export async function deleteTraining(id: string) {
 }
 
 export async function restoreDefaultTrainings() {
-  const current = await readTrainings();
+  const current = await readTrainings({ includeHidden: true });
 
   await Promise.all(
     current.flatMap((item) =>

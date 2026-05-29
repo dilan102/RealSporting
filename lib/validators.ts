@@ -137,3 +137,55 @@ export function validateCleanTextField(value: string, label: string): string {
 
   return escapeHtml(cleaned);
 }
+
+export function isReadableText(value: string, minLength = 3): boolean {
+  const text = normalizeText(value);
+  const letters = text.match(/[a-záéíóúüñA-ZÁÉÍÓÚÜÑ]/g);
+
+  return Boolean(letters && letters.length >= minLength && !isLikelyJunkText(text));
+}
+
+export function validateReadableText(value: string, label: string, minLength = 3): string {
+  const cleaned = normalizeText(value);
+
+  if (!cleaned || cleaned.length < minLength) {
+    throw new Error(`El campo ${label} debe tener al menos ${minLength} caracteres.`);
+  }
+
+  if (!isReadableText(cleaned, minLength)) {
+    throw new Error(`El campo ${label} debe contener texto legible.`);
+  }
+
+  return escapeHtml(cleaned);
+}
+
+export function validateTrainingTitle(value: string): string {
+  const title = validateCleanTextField(value, "título");
+
+  if (normalizeText(value).length < 5) {
+    throw new Error("El título debe tener al menos 5 caracteres.");
+  }
+
+  return title;
+}
+
+export function validateTrainingDate(date: string): string {
+  const clean = date.trim();
+
+  if (!clean) {
+    throw new Error("La fecha no puede estar vacía.");
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(clean)) {
+    throw new Error("La fecha no tiene un formato válido.");
+  }
+
+  const year = Number(clean.slice(0, 4));
+  const currentYear = new Date().getFullYear();
+
+  if (year < 2020 || year > currentYear + 1) {
+    throw new Error(`El año debe estar entre 2020 y ${currentYear + 1}.`);
+  }
+
+  return clean;
+}
