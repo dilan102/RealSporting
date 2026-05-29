@@ -63,7 +63,7 @@ export const social = {
   facebook: "https://www.facebook.com/profile.php?id=100091922545253",
   email: CONTACT_EMAIL,
   phone: PHONE_DISPLAY,
-  location: "Usme, Bogotá D.C., Colombia",
+  location: "Parque Ciudadela Nuevo Usme, Usme, Bogotá D.C., Colombia",
 };
 
 export type Player = {

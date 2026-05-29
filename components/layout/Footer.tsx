@@ -4,11 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
-import { PHONE_TEL } from "@/lib/site";
-
-const footerNavLinks = navLinks.map((link) =>
-  link.href === "/contacto" ? { ...link, label: "Contacto" } : link,
-);
+import { PHONE_TEL } from "@/lib/constants";
+import MapEmbed from "@/components/MapEmbed";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -41,7 +38,7 @@ export function Footer() {
               Navegación
             </p>
             <ul className="mt-4 space-y-2">
-              {footerNavLinks.map((link) => (
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -104,16 +101,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
-          <iframe
-            title="Ubicación Real Sporting en Usme, Bogotá"
-            src="https://www.google.com/maps?q=Usme%2C+Bogot%C3%A1%2C+Colombia&output=embed"
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <MapEmbed />
         </div>
 
         <div className="mt-12 border-t border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] pt-6 text-center text-xs text-muted">

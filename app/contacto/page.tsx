@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { ContactFormSection } from "@/components/contact/ContactFormSection";
 import { SocialLinks } from "@/components/contact/SocialLinks";
+import MapEmbed from "@/components/MapEmbed";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { social } from "@/lib/content";
@@ -269,16 +270,7 @@ export default function ContactoPage() {
             <p className="mt-2 text-sm text-muted">{social.location}</p>
           </div>
           <div className="mt-8 overflow-hidden rounded-lg border border-border bg-bg">
-            <iframe
-              title="Ubicación Real Sporting en Usme, Bogotá"
-              src="https://www.google.com/maps?q=Usme%2C+Bogot%C3%A1%2C+Colombia&output=embed"
-              width="100%"
-              height="400"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+            <MapEmbed />
           </div>
         </RevealSection>
         </div>
