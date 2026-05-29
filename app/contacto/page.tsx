@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   Brain,
   CalendarDays,
   ClipboardCheck,
-  Download,
   Dumbbell,
   HeartHandshake,
   MapPin,
@@ -13,11 +11,11 @@ import {
   UsersRound,
 } from "lucide-react";
 import { ContactFormSection } from "@/components/contact/ContactFormSection";
+import { OfficialDocumentsPanel } from "@/components/contact/OfficialDocumentsPanel";
 import { SocialLinks } from "@/components/contact/SocialLinks";
 import MapEmbed from "@/components/MapEmbed";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { getOfficialDocumentHref, officialDocuments } from "@/lib/documents";
 import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -173,28 +171,7 @@ export default function ContactoPage() {
               title="Descargas oficiales"
               description="Consulta el modelo de entrenamiento y el proyecto deportivo institucional antes de completar el proceso."
             />
-            <div className="mt-8 grid gap-5 md:grid-cols-2">
-              {officialDocuments.map((document) => (
-                <Link
-                  key={document.id}
-                  href={getOfficialDocumentHref(document.id)}
-                  className="light-panel group flex min-h-48 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg sm:p-7"
-                >
-                  <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
-                    <Download size={24} aria-hidden="true" />
-                  </span>
-                  <span className="mt-7 block">
-                    <h3 className="text-xl font-black">{document.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      {document.description}
-                    </p>
-                    <span className="mt-4 inline-flex text-sm font-black text-accent">
-                      Descargar
-                    </span>
-                  </span>
-                </Link>
-              ))}
-            </div>
+            <OfficialDocumentsPanel />
           </RevealSection>
         </div>
       </section>

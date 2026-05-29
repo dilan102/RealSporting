@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
 import { PHONE_TEL, VENUE_NAME } from "@/lib/constants";
 import MapEmbed from "@/components/MapEmbed";
 
 export function Footer() {
+  const pathname = usePathname();
   const year = new Date().getFullYear();
+  const visibleNavLinks = navLinks.filter((link) => link.href !== pathname);
 
   return (
     <footer className="border-t border-border bg-bg-elevated">
@@ -38,7 +41,7 @@ export function Footer() {
               Navegación
             </p>
             <ul className="mt-4 space-y-2">
-              {navLinks.map((link) => (
+              {visibleNavLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

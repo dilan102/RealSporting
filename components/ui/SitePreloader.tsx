@@ -70,24 +70,9 @@ export function SitePreloader() {
       return;
     }
 
-    try {
-      if (sessionStorage.getItem("cdrs-splash-done") === "1") {
-        setVisible(false);
-        return;
-      }
-    } catch {
-      setVisible(false);
-      return;
-    }
-
     setVisible(true);
 
     const doneTimer = window.setTimeout(() => {
-      try {
-        sessionStorage.setItem("cdrs-splash-done", "1");
-      } catch {
-        // sessionStorage unavailable
-      }
       setVisible(false);
     }, loaderDuration);
 

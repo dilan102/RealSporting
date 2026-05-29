@@ -72,22 +72,13 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
       </section>
 
       <section id="visor" className="scroll-mt-28 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        {document.type === "pdf" ? (
-          <div className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
-            <iframe
-              title={document.title}
-              src={viewerUrl}
-              className="h-[72vh] min-h-[520px] w-full bg-white"
-            />
-          </div>
-        ) : (
-          <div className="rounded-lg border border-border bg-bg-elevated px-6 py-10 text-center shadow-sm">
-            <p className="text-sm leading-relaxed text-muted">
-              Este documento está disponible en formato Word (.docx). Usa el botón
-              Descargar para abrirlo en tu dispositivo.
-            </p>
-          </div>
-        )}
+        <div className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
+          <iframe
+            title={document.title}
+            src={viewerUrl}
+            className="h-[72vh] min-h-[520px] w-full bg-white"
+          />
+        </div>
         <div className="mt-6">
           <Link href="/contacto#documentos" className="text-sm font-black text-accent">
             Volver a documentos
