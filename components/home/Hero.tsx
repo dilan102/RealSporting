@@ -11,7 +11,7 @@ const heroImages = ["/banner.png", "/trainings/3.svg", "/trainings/6.svg"];
 
 const stats = [
   { value: 7, suffix: "", label: "Categorías" },
-  { value: 20, suffix: "+", label: "Espacios" },
+  { value: 20, suffix: "+", label: "Cupos por categoría" },
   { value: 2026, suffix: "", label: "Proyección" },
 ];
 

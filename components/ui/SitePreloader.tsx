@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const introText = "Club Deportivo Real Sporting";
@@ -60,15 +61,26 @@ function AnimatedWords({ text }: { text: string }) {
 }
 
 export function SitePreloader() {
-  const [done, setDone] = useState(false);
+  const pathname = usePathname();
+  const [done, setDone] = useState(pathname !== "/");
 
   useEffect(() => {
+    if (pathname !== "/") {
+      setDone(true);
+      return;
+    }
+
+    setDone(false);
     const doneTimer = window.setTimeout(() => setDone(true), loaderDuration);
 
     return () => {
       window.clearTimeout(doneTimer);
     };
-  }, []);
+  }, [pathname]);
+
+  if (pathname !== "/") {
+    return null;
+  }
 
   return (
     <AnimatePresence>
