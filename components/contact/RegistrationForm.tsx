@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { MessageCircle, ShieldCheck } from "lucide-react";
 import { social } from "@/lib/content";
-import { buildWhatsAppUrl } from "@/lib/site";
+import { buildWhatsAppUrl, WHATSAPP_URL } from "@/lib/constants";
 
 const fieldClass =
   "mt-2 w-full rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm font-medium text-text outline-none transition-all duration-300 ease-in-out placeholder:text-muted/65 focus:border-[var(--accent-green)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent-green)_16%,transparent)]";
@@ -75,6 +75,7 @@ export function RegistrationForm() {
             edad: fields.categoria,
             acudiente: fields.nombreCompleto,
             telefono: fields.telefono || "No registrado",
+            correo: fields.correo,
             mensaje: `Categoría: ${fields.categoria}. ${fields.mensaje || "Solicitud de inscripción."}`,
           }),
         });

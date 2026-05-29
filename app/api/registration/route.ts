@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { club, social } from "@/lib/content";
 
 type RegistrationPayload = {
@@ -8,6 +9,7 @@ type RegistrationPayload = {
   acudiente?: string;
   telefono?: string;
   mensaje?: string;
+  correo?: string;
 };
 
 const requiredFields: Array<keyof RegistrationPayload> = [
@@ -18,18 +20,43 @@ const requiredFields: Array<keyof RegistrationPayload> = [
   "mensaje",
 ];
 
-export async function POST(request: Request) {
-  const payload = (await request.json()) as RegistrationPayload;
+function buildEmailBody(payload: RegistrationPayload) {
+  return [
+    `Nombre del aspirante: ${payload.aspirante}`,
+    `Edad / categoría: ${payload.edad}`,
+    `Nombre del acudiente: ${payload.acudiente}`,
+    `Teléfono: ${payload.telefono}`,
+    payload.correo ? `Correo: ${payload.correo}` : "",
+    "",
+    `Mensaje: ${payload.mensaje}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
 
-  const missingField = requiredFields.find((field) => !payload[field]?.trim());
-
-  if (missingField) {
-    return NextResponse.json(
-      { message: "Completa todos los campos del formulario." },
-      { status: 400 }
-    );
+async function sendWithResend(payload: RegistrationPayload) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return false;
   }
 
+  const resend = new Resend(apiKey);
+  const from = process.env.RESEND_FROM ?? "onboarding@resend.dev";
+  const body = buildEmailBody(payload);
+
+  await resend.emails.send({
+    from,
+    to: social.email,
+    replyTo: payload.correo || undefined,
+    subject: `Inscripción — ${payload.aspirante} | ${club.name}`,
+    text: body,
+    html: body.replace(/\n/g, "<br />"),
+  });
+
+  return true;
+}
+
+async function sendWithSmtp(payload: RegistrationPayload) {
   const gmailUser = process.env.GMAIL_USER;
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
   const smtpHost = process.env.SMTP_HOST ?? (gmailUser ? "smtp.gmail.com" : undefined);
@@ -39,43 +66,55 @@ export async function POST(request: Request) {
   const smtpFrom = process.env.SMTP_FROM ?? smtpUser;
 
   if (!smtpHost || !smtpUser || !smtpPass || !smtpFrom) {
-    return NextResponse.json(
-      {
-        message:
-          "El envío por Gmail aún no está configurado en el servidor. Agrega GMAIL_USER y GMAIL_APP_PASSWORD, o SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS y SMTP_FROM.",
-      },
-      { status: 503 }
-    );
+    return false;
   }
-
-  const body = [
-    `Nombre del aspirante: ${payload.aspirante}`,
-    `Edad: ${payload.edad}`,
-    `Nombre del acudiente: ${payload.acudiente}`,
-    `Telefono: ${payload.telefono}`,
-    "",
-    `Mensaje: ${payload.mensaje}`,
-  ].join("\n");
 
   const transporter = nodemailer.createTransport({
     host: smtpHost,
     port: smtpPort,
     secure: smtpPort === 465,
-    auth: {
-      user: smtpUser,
-      pass: smtpPass,
-    },
+    auth: { user: smtpUser, pass: smtpPass },
   });
 
   await transporter.sendMail({
     from: smtpFrom,
     to: social.email,
-    replyTo: smtpFrom,
-    subject: `Inscripción - ${club.name}`,
-    text: body,
+    replyTo: payload.correo || smtpFrom,
+    subject: `Inscripción — ${payload.aspirante} | ${club.name}`,
+    text: buildEmailBody(payload),
   });
 
-  return NextResponse.json({
-    message: "Solicitud enviada correctamente. Te contactaremos pronto.",
-  });
+  return true;
+}
+
+export async function POST(request: Request) {
+  const payload = (await request.json()) as RegistrationPayload;
+  const missingField = requiredFields.find((field) => !payload[field]?.trim());
+
+  if (missingField) {
+    return NextResponse.json(
+      { message: "Completa todos los campos del formulario." },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const sent = (await sendWithResend(payload)) || (await sendWithSmtp(payload));
+
+    if (!sent) {
+      return NextResponse.json(
+        { message: "No se pudo enviar la solicitud en este momento." },
+        { status: 503 },
+      );
+    }
+
+    return NextResponse.json({
+      message: "Solicitud enviada correctamente. Te contactaremos pronto.",
+    });
+  } catch {
+    return NextResponse.json(
+      { message: "No se pudo enviar la solicitud. Intenta de nuevo o escríbenos por WhatsApp." },
+      { status: 500 },
+    );
+  }
 }
