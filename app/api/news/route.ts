@@ -29,6 +29,7 @@ function isAuthorized(request: NextRequest) {
 async function newsInputFromFormData(request: NextRequest) {
   const formData = await request.formData();
   const image = formData.get("image");
+  const status = String(formData.get("status") || "draft");
 
   return {
     title: String(formData.get("title") || ""),
@@ -37,11 +38,12 @@ async function newsInputFromFormData(request: NextRequest) {
     summary: String(formData.get("summary") || ""),
     body: String(formData.get("body") || ""),
     image: image instanceof File && image.size > 0 ? image : null,
+    status: status === "published" ? ("published" as const) : ("draft" as const),
   };
 }
 
 export async function GET() {
-  const items = await readNews();
+  const items = await readNews({ includeDrafts: true });
 
   return NextResponse.json({ items });
 }

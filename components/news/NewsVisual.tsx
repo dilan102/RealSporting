@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Dumbbell, HeartHandshake, Shield, Trophy } from "lucide-react";
 import type { News } from "@/lib/content";
+import { NEWS_FALLBACK_IMAGE } from "@/lib/site";
 
 const defaultBlurDataURL =
   "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEwIiB3aWR0aD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjNzc3Nzc3Ii8+PC9zdmc+";
@@ -66,13 +67,14 @@ export function NewsVisual({
   priority?: boolean;
   className?: string;
 }) {
-  const hasImage = Boolean(item.image && item.image !== "/logo.png");
+  const imageSrc = item.image || NEWS_FALLBACK_IMAGE;
+  const hasImage = Boolean(imageSrc);
   const Icon = getCategoryIcon(item.category);
 
   if (hasImage) {
     return (
       <Image
-        src={item.image}
+        src={imageSrc}
         alt={item.title}
         fill
         priority={priority}

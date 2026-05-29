@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { mkdir, readFile, unlink, writeFile } from "fs/promises";
 import path from "path";
-import type { News } from "@/lib/content";
+import type { News, NewsStatus } from "@/lib/content";
 import { news as defaultNews } from "@/lib/content";
 import {
   NEWS_TEXT_PLACEHOLDER,
@@ -23,6 +23,7 @@ export type NewsInput = {
   summary: string;
   body: string;
   image?: File | null;
+  status?: NewsStatus;
 };
 
 const allowedTypes = new Map([
@@ -51,7 +52,10 @@ function isNews(value: unknown): value is News {
     typeof item.category === "string" &&
     typeof item.summary === "string" &&
     typeof item.body === "string" &&
-    typeof item.image === "string"
+    typeof item.image === "string" &&
+    (item.status === undefined ||
+      item.status === "published" ||
+      item.status === "draft")
   );
 }
 
@@ -70,7 +74,7 @@ function normalizeInput(input: NewsInput) {
     throw new Error("La fecha no tiene un formato válido.");
   }
 
-  return { title, date, category, summary, body };
+  return { title, date, category, summary, body, status: input.status ?? "draft" };
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -116,31 +120,36 @@ async function saveImage(file: File) {
   return `${publicUploadPrefix}${fileName}`;
 }
 
-export async function readNews() {
+export async function readNews(options?: { includeDrafts?: boolean }) {
   await ensureStorage();
+  const includeDrafts = options?.includeDrafts ?? false;
 
   try {
     const raw = await readFile(dataFile, "utf8");
     const parsed = JSON.parse(raw) as unknown;
 
     if (Array.isArray(parsed) && parsed.every(isNews)) {
-      return parsed.map((item) => ({
-        ...item,
-        title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
-        summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
-        body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
-      }));
+      return parsed
+        .filter((item) => includeDrafts || item.status !== "draft")
+        .map((item) => ({
+          ...item,
+          title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
+          summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+          body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+        }));
     }
   } catch {
     // Missing or invalid storage falls back to starter content.
   }
 
-  return defaultNews.map((item) => ({
-    ...item,
-    title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
-    summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
-    body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
-  }));
+  return defaultNews
+    .filter((item) => includeDrafts || item.status !== "draft")
+    .map((item) => ({
+      ...item,
+      title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
+      summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+      body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+    }));
 }
 
 async function writeNews(items: News[]) {
@@ -151,12 +160,12 @@ async function writeNews(items: News[]) {
 export async function createNews(input: NewsInput) {
   const clean = normalizeInput(input);
 
-  if (!input.image) {
-    throw new Error("Sube una imagen para la noticia.");
+  if (clean.status === "published" && !input.image) {
+    throw new Error("Sube una imagen antes de publicar la noticia.");
   }
 
-  const image = await saveImage(input.image);
-  const current = await readNews();
+  const image = input.image ? await saveImage(input.image) : "/logo.png";
+  const current = await readNews({ includeDrafts: true });
   const item: News = {
     id: `noticia-${randomUUID()}`,
     ...clean,
@@ -170,11 +179,15 @@ export async function createNews(input: NewsInput) {
 
 export async function updateNews(id: string, input: NewsInput) {
   const clean = normalizeInput(input);
-  const current = await readNews();
+  const current = await readNews({ includeDrafts: true });
   const existing = current.find((item) => item.id === id);
 
   if (!existing) {
     throw new Error("No se encontró la noticia.");
+  }
+
+  if (clean.status === "published" && !input.image && !existing.image) {
+    throw new Error("Sube una imagen antes de publicar la noticia.");
   }
 
   const image = input.image ? await saveImage(input.image) : existing.image;
@@ -191,7 +204,7 @@ export async function updateNews(id: string, input: NewsInput) {
 }
 
 export async function deleteNews(id: string) {
-  const current = await readNews();
+  const current = await readNews({ includeDrafts: true });
   const existing = current.find((item) => item.id === id);
 
   if (!existing) {
@@ -203,7 +216,7 @@ export async function deleteNews(id: string) {
 }
 
 export async function restoreDefaultNews() {
-  const current = await readNews();
+  const current = await readNews({ includeDrafts: true });
 
   await Promise.all(current.map((item) => removeUploadedFile(item.image)));
   await writeNews(defaultNews);

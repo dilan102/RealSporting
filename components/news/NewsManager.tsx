@@ -22,6 +22,7 @@ type NewsForm = {
   body: string;
   image: string;
   file: File | null;
+  status: "published" | "draft";
 };
 
 type ApiResponse = {
@@ -37,6 +38,7 @@ const emptyForm = (): NewsForm => ({
   body: "",
   image: "",
   file: null,
+  status: "draft",
 });
 
 async function parseNewsResponse(response: Response) {
@@ -198,6 +200,7 @@ export function NewsManager({
     body.set("category", form.category.trim());
     body.set("summary", form.summary.trim());
     body.set("body", form.body.trim());
+    body.set("status", form.status);
 
     if (form.file) {
       body.set("image", form.file);
@@ -234,6 +237,7 @@ export function NewsManager({
       body: item.body,
       image: item.image,
       file: null,
+      status: item.status ?? "published",
     });
     setFileName("");
     setMessage("Editando noticia.");
@@ -385,6 +389,24 @@ export function NewsManager({
                 }
                 className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
+            </div>
+            <div>
+              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+                Estado
+              </label>
+              <select
+                value={form.status}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    status: event.target.value as "published" | "draft",
+                  }))
+                }
+                className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
+              >
+                <option value="draft">Borrador</option>
+                <option value="published">Publicado</option>
+              </select>
             </div>
             <div className="sm:col-span-2">
               <label className="text-xs font-medium uppercase tracking-wider text-muted">
