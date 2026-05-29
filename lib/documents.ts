@@ -2,7 +2,10 @@ export type OfficialDocument = {
   id: string;
   title: string;
   description: string;
-  filePath: string;
+  /** URL `/preview` para incrustar en iframe sin ERR_BLOCKED_BY_RESPONSE */
+  previewUrl: string;
+  /** Enlace para abrir o descargar fuera del visor */
+  downloadUrl: string;
   type: "pdf" | "docx";
 };
 
@@ -12,7 +15,10 @@ const ALLOWED_DOCUMENTS: Record<string, OfficialDocument> = {
     title: "Modelo de Entrenamiento Deportivo SCM",
     description:
       "Metodología Sinergia Cognitivo-Motriz, sesión tipo, pilares de trabajo y macrociclo de 8 semanas.",
-    filePath: "/MODELO DE ENTRENAMIENTO DEPORTIVO SCM.pdf",
+    previewUrl:
+      "https://drive.google.com/file/d/1qChLXU1dpJaVS-jnsUssWHeilYbZ96aT/preview",
+    downloadUrl:
+      "https://drive.google.com/file/d/1qChLXU1dpJaVS-jnsUssWHeilYbZ96aT/view?usp=sharing",
     type: "pdf",
   },
   "proyecto-2026": {
@@ -20,7 +26,10 @@ const ALLOWED_DOCUMENTS: Record<string, OfficialDocument> = {
     title: "Proyecto Deportivo CDRS 2026",
     description:
       "Proyecto social, misión, visión, objetivos ODS, metodología por edades y plan de trabajo deportivo.",
-    filePath: "/Proyecto Deportivo CDRS 2026.docx",
+    previewUrl:
+      "https://docs.google.com/document/d/1c_0Hbo7Tqsk80eyRzztv4ErtP7rE1OLY/preview",
+    downloadUrl:
+      "https://docs.google.com/document/d/1c_0Hbo7Tqsk80eyRzztv4ErtP7rE1OLY/edit?usp=sharing",
     type: "docx",
   },
 };
@@ -37,4 +46,8 @@ export function getOfficialDocumentById(id: string): OfficialDocument | undefine
 
 export function getOfficialDocumentHref(id: string) {
   return `/documentos?id=${encodeURIComponent(id)}`;
+}
+
+export function getDocumentEmbedUrl(document: OfficialDocument) {
+  return document.previewUrl;
 }

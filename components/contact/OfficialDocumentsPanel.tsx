@@ -3,20 +3,10 @@
 import { useMemo, useState } from "react";
 import { Download, Eye, FileText, X } from "lucide-react";
 import {
+  getDocumentEmbedUrl,
   getOfficialDocumentById,
   officialDocuments,
-  type OfficialDocument,
 } from "@/lib/documents";
-
-function buildViewerSrc(document: OfficialDocument, origin: string) {
-  const fileUrl = `${origin}${encodeURI(document.filePath)}`;
-
-  if (document.type === "pdf") {
-    return fileUrl;
-  }
-
-  return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
-}
 
 export function OfficialDocumentsPanel() {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -27,11 +17,11 @@ export function OfficialDocumentsPanel() {
   );
 
   const viewerSrc = useMemo(() => {
-    if (!activeDocument || typeof window === "undefined") {
+    if (!activeDocument) {
       return "";
     }
 
-    return buildViewerSrc(activeDocument, window.location.origin);
+    return getDocumentEmbedUrl(activeDocument);
   }, [activeDocument]);
 
   const openDocument = (id: string) => {
@@ -93,11 +83,12 @@ export function OfficialDocumentsPanel() {
             </div>
             <div className="flex flex-wrap gap-2">
               <a
-                href={encodeURI(activeDocument.filePath)}
-                download
+                href={activeDocument.downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-gold inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 text-xs font-black sm:text-sm"
               >
-                Descargar
+                Abrir en Google
                 <Download size={15} aria-hidden="true" />
               </a>
               <button
@@ -112,9 +103,10 @@ export function OfficialDocumentsPanel() {
             </div>
           </div>
           <iframe
-            title={activeDocument.title}
+            title={`Vista previa: ${activeDocument.title}`}
             src={viewerSrc}
             className="h-[72vh] min-h-[520px] w-full bg-white"
+            allow="autoplay"
           />
         </div>
       )}
