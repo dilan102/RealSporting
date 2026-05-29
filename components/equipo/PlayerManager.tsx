@@ -27,6 +27,7 @@ type PlayerForm = {
   bio: string;
   category: string;
   convocado: boolean;
+  visible_publico: boolean;
   image: string;
   file: File | null;
 };
@@ -43,6 +44,7 @@ const emptyForm = (category: TeamCategoryId = "2020-2019"): PlayerForm => ({
   bio: "",
   category: category.split("-")[0],
   convocado: false,
+  visible_publico: false,
   image: "",
   file: null,
 });
@@ -178,6 +180,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
       bio: player.bio,
       category: categoryToYear(player.category),
       convocado: player.convocado === "SI",
+      visible_publico: player.visible_publico !== false,
       image: player.image,
       file: null,
     });
@@ -234,6 +237,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
     body.set("bio", form.bio.trim());
     body.set("category", form.category);
     body.set("convocado", form.convocado ? "SI" : "NO");
+    body.set("visible_publico", form.visible_publico ? "true" : "false");
 
     if (form.file) {
       body.set("image", form.file);
@@ -403,6 +407,21 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
                 className="h-5 w-5 accent-[var(--color-accent)]"
               />
               Convocado
+            </label>
+
+            <label className="flex min-h-12 items-center gap-3 rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm font-semibold">
+              <input
+                type="checkbox"
+                checked={form.visible_publico}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    visible_publico: event.target.checked,
+                  }))
+                }
+                className="h-5 w-5 accent-[var(--color-accent)]"
+              />
+              Visible en el sitio público
             </label>
 
             <div className="sm:col-span-2">

@@ -40,7 +40,7 @@ const technicalDefinitions: Record<TeamCategoryId, string> = {
   "2010-2009":
     "Alto rendimiento formativo (16-17 años): especialización de rol, lectura de juego y exigencia competitiva. Microciclo de 105 a 135 minutos.",
   "2008-2007":
-    "Proyección competitiva (16-17 años): optimización física y táctica para exigencias de torneo. Microciclo de 105 a 135 minutos.",
+    "Sub-18 / Senior formativo (17-18 años): proyección competitiva, optimización física y táctica para exigencias de torneo. Microciclo de 105 a 135 minutos.",
 };
 
 function isConvocado(player: Player) {
@@ -125,7 +125,16 @@ export function PlayerGrid({
       whileInView="visible"
       viewport={{ once: false, margin: "-40px" }}
     >
-      {sections.map((section) => {
+      {sections
+        .filter((section) => {
+          if (section.id === "entrenadores") {
+            const coaches = sectionPlayers[section.id] ?? [];
+            return canManage || coaches.length > 0;
+          }
+
+          return true;
+        })
+        .map((section) => {
         const categoryName = CATEGORY_NAMES[section.id] ?? section.title;
         const players = sectionPlayers[section.id] ?? [];
         const convocados = players.filter(isConvocado);
@@ -188,46 +197,56 @@ export function PlayerGrid({
                         </div>
                       )}
 
-                      <details
-                        className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60"
-                        open
-                      >
-                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
-                          <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
-                            Jugadores
-                          </span>
-                          <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
-                            {players.length}
-                          </span>
-                        </summary>
-                        <div className="border-t border-border p-4 sm:p-5">
-                          <PlayerList
-                            players={players}
-                            emptyMessage="No hay jugadores registrados en esta categoría."
-                            canManage={canManage}
-                            onEditPlayer={onEditPlayer}
-                          />
-                        </div>
-                      </details>
+                      {players.length === 0 && !canManage ? (
+                        <p className="rounded-lg border border-dashed border-border bg-bg/60 p-4 text-sm text-muted">
+                          Jugadores en proceso de registro.
+                        </p>
+                      ) : (
+                        <>
+                          <details
+                            className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60"
+                            open={players.length > 0}
+                          >
+                            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
+                              <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
+                                Jugadores
+                              </span>
+                              <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
+                                {players.length}
+                              </span>
+                            </summary>
+                            <div className="border-t border-border p-4 sm:p-5">
+                              <PlayerList
+                                players={players}
+                                emptyMessage="No hay jugadores registrados en esta categoría."
+                                canManage={canManage}
+                                onEditPlayer={onEditPlayer}
+                              />
+                            </div>
+                          </details>
 
-                      <details className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60">
-                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
-                          <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
-                            Convocados
-                          </span>
-                          <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
-                            {convocados.length}
-                          </span>
-                        </summary>
-                        <div className="border-t border-border p-4 sm:p-5">
-                          <PlayerList
-                            players={convocados}
-                            emptyMessage="No hay jugadores convocados en esta categoría."
-                            canManage={canManage}
-                            onEditPlayer={onEditPlayer}
-                          />
-                        </div>
-                      </details>
+                          {(convocados.length > 0 || canManage) && (
+                            <details className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60">
+                              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
+                                <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
+                                  Convocados
+                                </span>
+                                <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
+                                  {convocados.length}
+                                </span>
+                              </summary>
+                              <div className="border-t border-border p-4 sm:p-5">
+                                <PlayerList
+                                  players={convocados}
+                                  emptyMessage="No hay jugadores convocados en esta categoría."
+                                  canManage={canManage}
+                                  onEditPlayer={onEditPlayer}
+                                />
+                              </div>
+                            </details>
+                          )}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
