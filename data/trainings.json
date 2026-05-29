@@ -1,55 +1,12 @@
 [
   {
-    "id": "entrenamiento-b672075b-7d72-4718-aa6d-0888be1a8797",
-    "title": "bjhbhj",
-    "date": "2026-05-29",
-    "description": "hjbjkbjk",
-    "image": "/uploads/trainings/1779461351407-3b0ece22-658d-4051-84be-fd3db14a9141.jpg"
-  },
-  {
-    "id": "entrenamiento-b4683e67-5193-4a6b-a091-790953a3d769",
-    "title": "lñmñl",
-    "date": "2026-05-28",
-    "description": "´,ĺñ,ñ´,ñ´",
-    "image": "/uploads/trainings/1779461070505-0c963a8f-2ca4-4947-8817-443cb0f2b60b.jpg"
-  },
-  {
-    "id": "entrenamiento-2a86c5a6-d5dc-4b90-8271-e8a55988e0d8",
-    "title": "sdsad",
-    "date": "2026-05-22",
-    "description": "fdsaasfasf",
-    "image": "/uploads/trainings/1779451925284-f6eb6943-6877-486c-aa3d-369e63e965cb.jpg"
-  },
-  {
-    "id": "entrenamiento-4d8eac5a-de92-46e9-87f1-70c33e008ebc",
-    "title": "Goku",
-    "date": "2026-05-22",
-    "description": "goku!!!",
-    "image": "/uploads/trainings/1779430956292-546c996b-d2d3-450f-8e92-476e91f78add.jpg"
-  },
-  {
     "id": "2",
     "title": "Preparación física — resistencia",
     "date": "2025-05-12",
     "description": "Series de intervalos, trabajo de core y movilidad. Sesión orientada al rendimiento del segundo tiempo.",
-    "image": "/trainings/2.svg",
+    "image": "/uploads/trainings/1779559056527-f112534a-f98b-42f8-bb66-bd0e4e60c392.jpg",
     "images": [
-      "/trainings/2.svg",
       "/uploads/trainings/1779559056527-f112534a-f98b-42f8-bb66-bd0e4e60c392.jpg"
     ]
-  },
-  {
-    "id": "3",
-    "title": "Táctica — presión alta",
-    "date": "2025-05-15",
-    "description": "Bloque compacto, salida desde el arco y triggers de presión en zona de creación rival.",
-    "image": "/trainings/3.svg"
-  },
-  {
-    "id": "5",
-    "title": "Recuperación activa",
-    "date": "2025-05-19",
-    "description": "Estiramientos, hidratación y charla de análisis de video de la jornada anterior.",
-    "image": "/trainings/5.svg"
   }
 ]

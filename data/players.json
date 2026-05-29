@@ -5,9 +5,10 @@
     "number": 1,
     "position": "Portero",
     "bio": "Reflejos rápidos y liderazgo bajo los tres palos.",
-    "image": "/players/1.svg",
+    "image": "/players/avatar.svg",
     "category": 2010,
-    "convocado": "SI"
+    "convocado": "SI",
+    "visible_publico": true
   },
   {
     "id": "2",
@@ -15,9 +16,10 @@
     "number": 4,
     "position": "Cierre",
     "bio": "Solidez defensiva y salida limpia de balón.",
-    "image": "/players/2.svg",
+    "image": "/players/avatar.svg",
     "category": 2009,
-    "convocado": "SI"
+    "convocado": "SI",
+    "visible_publico": true
   },
   {
     "id": "3",
@@ -25,9 +27,10 @@
     "number": 6,
     "position": "Ala",
     "bio": "Distribución precisa y recuperación constante.",
-    "image": "/players/3.svg",
+    "image": "/players/avatar.svg",
     "category": 2008,
-    "convocado": "SI"
+    "convocado": "SI",
+    "visible_publico": true
   },
   {
     "id": "4",
@@ -37,7 +40,8 @@
     "bio": "Creatividad y visión de juego en el último tercio.",
     "category": 2008,
     "convocado": "SI",
-    "image": "/players/4.svg"
+    "image": "/players/avatar.svg",
+    "visible_publico": true
   },
   {
     "id": "5",
@@ -45,48 +49,20 @@
     "number": 7,
     "position": "Ala",
     "bio": "Instinto goleador y presión alta sin balón.",
-    "image": "/players/5.svg",
+    "image": "/players/avatar.svg",
     "category": 2009,
-    "convocado": "SI"
+    "convocado": "SI",
+    "visible_publico": true
   },
   {
     "id": "6",
     "name": "Keiner valencia",
     "number": 9,
     "position": "Pivot",
-    "bio": "Aguante de balon y definición clínica en el área rival.",
-    "image": "/players/6.svg",
-    "category": 2012,
-    "convocado": "SI"
-  },
-  {
-    "id": "jugador-847ea529-e232-437f-b1b4-f3f9159010d9",
-    "name": "pepito perez",
-    "number": 8,
-    "position": "Ala",
-    "bio": "juega melo",
-    "category": 2020,
-    "convocado": "SI",
-    "image": "/uploads/players/1779457094292-8c2f4848-e3ea-485d-b756-c844e3b4b088.jpg"
-  },
-  {
-    "id": "jugador-45a88713-ba73-4f93-ab08-89a29d790315",
-    "name": "jkkjkjkjkj",
-    "number": 8,
-    "position": "ppoiupou",
-    "bio": "ijiojio",
+    "bio": "Aguante de balón y definición clínica en el área rival.",
+    "image": "/players/avatar.svg",
     "category": 2012,
     "convocado": "SI",
-    "image": "/uploads/players/1779460835255-88920322-9fc8-4bc4-bef4-4d43571c5094.jpg"
-  },
-  {
-    "id": "jugador-a8bcd309-6876-44ac-8898-9c3148e374de",
-    "name": "jbjkhb",
-    "number": 9,
-    "position": "ljknlk",
-    "bio": ".,. n.,m",
-    "category": 2014,
-    "convocado": "NO",
-    "image": "/uploads/players/1779460894006-33833e03-06f5-4de7-8575-2ebb6c99dd6e.jpg"
+    "visible_publico": true
   }
 ]
