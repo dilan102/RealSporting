@@ -1,10 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Mail, MessageCircle, Phone } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { social } from "@/lib/content";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
-import { PHONE_TEL, WHATSAPP_URL } from "@/lib/constants";
+import { PHONE_TEL, VENUE_NAME, WHATSAPP_URL } from "@/lib/constants";
 
 const links: Array<{
   label: string;
@@ -50,7 +50,11 @@ const links: Array<{
   },
 ];
 
-export function SocialLinks() {
+type SocialLinksProps = {
+  showVenue?: boolean;
+};
+
+export function SocialLinks({ showVenue = false }: SocialLinksProps) {
   return (
     <motion.div
       className="grid gap-4 sm:grid-cols-2"
@@ -101,6 +105,21 @@ export function SocialLinks() {
           </div>
         </motion.a>
       ))}
+
+      {showVenue && (
+        <motion.div
+          variants={fadeUpItem}
+          className="light-panel group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+        >
+          <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
+            <MapPin size={24} aria-hidden="true" />
+          </span>
+          <div>
+            <p className="font-black">Sede</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted">{VENUE_NAME}</p>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 }

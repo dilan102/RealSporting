@@ -17,7 +17,6 @@ import { SocialLinks } from "@/components/contact/SocialLinks";
 import MapEmbed from "@/components/MapEmbed";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { social } from "@/lib/content";
 import { getOfficialDocumentHref, officialDocuments } from "@/lib/documents";
 import { pageOpenGraph } from "@/lib/site";
 
@@ -262,13 +261,8 @@ export default function ContactoPage() {
               <h2 className="text-2xl font-black">Contáctenos</h2>
             </div>
           </div>
-          <SocialLinks />
+          <SocialLinks showVenue />
 
-          <div className="light-panel mx-auto mt-8 max-w-xl rounded-lg border border-border bg-bg p-8 text-center shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg">
-            <MapPin className="mx-auto text-[var(--accent-green)]" size={28} />
-            <p className="mt-4 font-black text-text">Sede</p>
-            <p className="mt-2 text-sm text-muted">{social.location}</p>
-          </div>
           <div className="mt-8 overflow-hidden rounded-lg border border-border bg-bg">
             <MapEmbed />
           </div>

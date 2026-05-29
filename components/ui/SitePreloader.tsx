@@ -62,28 +62,33 @@ function AnimatedWords({ text }: { text: string }) {
 
 export function SitePreloader() {
   const pathname = usePathname();
-  const [done, setDone] = useState(() => {
-    if (typeof window === "undefined") {
-      return pathname !== "/";
-    }
-    return pathname !== "/" || sessionStorage.getItem("cdrs-splash-done") === "1";
-  });
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (pathname !== "/") {
-      setDone(true);
+      setVisible(false);
       return;
     }
 
-    if (sessionStorage.getItem("cdrs-splash-done") === "1") {
-      setDone(true);
+    try {
+      if (sessionStorage.getItem("cdrs-splash-done") === "1") {
+        setVisible(false);
+        return;
+      }
+    } catch {
+      setVisible(false);
       return;
     }
 
-    setDone(false);
+    setVisible(true);
+
     const doneTimer = window.setTimeout(() => {
-      sessionStorage.setItem("cdrs-splash-done", "1");
-      setDone(true);
+      try {
+        sessionStorage.setItem("cdrs-splash-done", "1");
+      } catch {
+        // sessionStorage unavailable
+      }
+      setVisible(false);
     }, loaderDuration);
 
     return () => {
@@ -97,8 +102,9 @@ export function SitePreloader() {
 
   return (
     <AnimatePresence>
-      {!done && (
+      {visible && (
         <motion.div
+          key="site-preloader"
           role="status"
           aria-live="polite"
           className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-bg text-text"
@@ -116,10 +122,7 @@ export function SitePreloader() {
 
           <div aria-hidden="true" className="preload-ball-stage absolute inset-x-0 bottom-[18vh]">
             <span className="preload-ball-shadow" />
-            <span
-              className="preload-ball-realistic"
-              style={{ background: "none", boxShadow: "none", filter: "none" }}
-            >
+            <div className="preload-ball-realistic">
               <Image
                 src="/balon.png"
                 alt=""
@@ -128,7 +131,7 @@ export function SitePreloader() {
                 sizes="(max-width: 768px) 160px, 220px"
                 priority
               />
-            </span>
+            </div>
           </div>
 
           <div className="relative z-10 grid min-h-screen place-items-center px-4 text-center">

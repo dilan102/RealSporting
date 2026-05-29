@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
-import { PHONE_TEL } from "@/lib/constants";
+import { PHONE_TEL, VENUE_NAME } from "@/lib/constants";
 import MapEmbed from "@/components/MapEmbed";
 
 export function Footer() {
@@ -29,7 +29,7 @@ export function Footer() {
             <p className="mt-4 text-sm leading-relaxed text-muted">{club.tagline}</p>
             <p className="mt-3 flex items-center gap-2 text-sm text-muted">
               <MapPin size={14} className="text-accent" />
-              {social.location}
+              {VENUE_NAME}
             </p>
           </div>
 
