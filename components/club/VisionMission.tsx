@@ -20,13 +20,13 @@ const cards = [
     icon: Target,
     title: "Misión",
     text: club.mission,
-    image: "/trainings/3.svg",
+    image: "/logo.png",
   },
   {
     icon: Eye,
     title: "Visión",
     text: club.vision,
-    image: "/banner.png",
+    image: "/balon.png",
   },
 ];
 
@@ -131,33 +131,33 @@ const odsItems = [
     id: "ods-3",
     code: "ODS 3",
     title: "Salud y Bienestar",
-    shortText: "Salud fisica, mental y apoyo psicologico en el proceso formativo.",
+    shortText: "Salud física, mental y apoyo psicológico en el proceso formativo.",
     detail:
-      "Promover la salud fisica y mental de los participantes a traves de actividades deportivas, educacion para la salud y apoyo psicologico.",
+      "Promover la salud física y mental de los participantes a través de actividades deportivas, educación para la salud y apoyo psicológico.",
   },
   {
     id: "ods-4",
     code: "ODS 4",
-    title: "Educacion de Calidad",
-    shortText: "Formacion integral con habilidades para la vida y valores.",
+    title: "Educación de Calidad",
+    shortText: "Formación integral con habilidades para la vida y valores.",
     detail:
-      "Proporcionar desarrollo integral incluyendo habilidades para la vida, educacion en valores y entrenamiento deportivo.",
+      "Proporcionar desarrollo integral incluyendo habilidades para la vida, educación en valores y entrenamiento deportivo.",
   },
   {
     id: "ods-5",
     code: "ODS 5",
-    title: "Igualdad de Genero",
-    shortText: "Acceso igualitario a oportunidades deportivas para todos los generos.",
+    title: "Igualdad de Género",
+    shortText: "Acceso igualitario a oportunidades deportivas para todos los géneros.",
     detail:
-      "Asegurar igualdad de acceso a oportunidades deportivas para ninos, ninas y adolescentes de todos los generos.",
+      "Asegurar igualdad de acceso a oportunidades deportivas para niños, niñas y adolescentes de todos los géneros.",
   },
   {
     id: "ods-10",
     code: "ODS 10",
-    title: "Reduccion de Desigualdades",
-    shortText: "Inclusion social y no discriminacion para poblaciones diversas.",
+    title: "Reducción de Desigualdades",
+    shortText: "Inclusión social y no discriminación para poblaciones diversas.",
     detail:
-      "Promover inclusion social y no discriminacion ofreciendo oportunidades a poblaciones diversas incluyendo victimas del conflicto armado.",
+      "Promover inclusión social y no discriminación ofreciendo oportunidades a poblaciones diversas incluyendo víctimas del conflicto armado.",
   },
   {
     id: "ods-11",
@@ -165,15 +165,15 @@ const odsItems = [
     title: "Ciudades y Comunidades Sostenibles",
     shortText: "Alianzas comunitarias para fortalecer tejido social local.",
     detail:
-      "Fortalecer lazos con la comunidad local a traves de alianzas con organizaciones, escuelas y entidades gubernamentales.",
+      "Fortalecer lazos con la comunidad local a través de alianzas con organizaciones, escuelas y entidades gubernamentales.",
   },
   {
     id: "ods-16",
     code: "ODS 16",
-    title: "Paz, Justicia e Instituciones Solidas",
-    shortText: "Futbol como herramienta de dialogo, tolerancia y paz.",
+    title: "Paz, Justicia e Instituciones Sólidas",
+    shortText: "Fútbol como herramienta de diálogo, tolerancia y paz.",
     detail:
-      "Utilizar el futbol para promover el dialogo, la tolerancia y una cultura de paz entre comunidades afectadas por el conflicto.",
+      "Utilizar el fútbol para promover el diálogo, la tolerancia y una cultura de paz entre comunidades afectadas por el conflicto.",
   },
 ];
 
