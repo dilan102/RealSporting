@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import {
   ImagePlus,
   Plus,
@@ -66,6 +67,7 @@ export function NewsManager({
   showList?: boolean;
 }) {
   const router = useRouter();
+  const { data: session } = useSession();
   const [items, setItems] = useState(initialItems);
   const [form, setForm] = useState<NewsForm>(() => emptyForm());
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -109,9 +111,10 @@ export function NewsManager({
   useEffect(() => {
     const syncAdminAccess = () => {
       const key = window.sessionStorage.getItem("cdrs-admin-key") || "";
+      const githubAdmin = Boolean(session?.user?.isAdmin);
 
       setAccessKey(key);
-      setUnlocked(Boolean(key));
+      setUnlocked(Boolean(key) || githubAdmin);
     };
 
     syncAdminAccess();
@@ -122,7 +125,7 @@ export function NewsManager({
       window.removeEventListener("cdrs-admin-login", syncAdminAccess);
       window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
     };
-  }, []);
+  }, [session?.user?.isAdmin]);
 
   useEffect(() => {
     return () => {
@@ -211,7 +214,8 @@ export function NewsManager({
         editingId ? `/api/news?id=${encodeURIComponent(editingId)}` : "/api/news",
         {
           method: editingId ? "PUT" : "POST",
-          headers: { "x-news-key": accessKey },
+          credentials: "include",
+          headers: accessKey ? { "x-news-key": accessKey } : undefined,
           body,
         },
       );
@@ -250,7 +254,8 @@ export function NewsManager({
     try {
       const response = await fetch(`/api/news?id=${encodeURIComponent(id)}`, {
         method: "DELETE",
-        headers: { "x-news-key": accessKey },
+        credentials: "include",
+        headers: accessKey ? { "x-news-key": accessKey } : undefined,
       });
       await parseNewsResponse(response);
       setItems(await fetchNews());
@@ -275,7 +280,8 @@ export function NewsManager({
     try {
       const response = await fetch("/api/news?restore=true", {
         method: "DELETE",
-        headers: { "x-news-key": accessKey },
+        credentials: "include",
+        headers: accessKey ? { "x-news-key": accessKey } : undefined,
       });
       await parseNewsResponse(response);
       setItems(await fetchNews());

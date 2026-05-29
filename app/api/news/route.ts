@@ -6,24 +6,16 @@ import {
   restoreDefaultNews,
   updateNews,
 } from "@/lib/news-store";
+import { isAdminApiAuthorized } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const accessKey =
-  process.env.NEWS_ACCESS_KEY ||
-  process.env.ADMIN_PASSWORD ||
-  "RealSporting1985";
 
 function errorResponse(error: unknown, status = 400) {
   const message =
     error instanceof Error ? error.message : "No se pudo procesar la solicitud.";
 
   return NextResponse.json({ error: message }, { status });
-}
-
-function isAuthorized(request: NextRequest) {
-  return request.headers.get("x-news-key") === accessKey;
 }
 
 async function newsInputFromFormData(request: NextRequest) {
@@ -49,7 +41,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  if (!isAuthorized(request)) {
+  if (!(await isAdminApiAuthorized(request))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 
@@ -65,7 +57,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  if (!isAuthorized(request)) {
+  if (!(await isAdminApiAuthorized(request))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 
@@ -87,7 +79,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!isAuthorized(request)) {
+  if (!(await isAdminApiAuthorized(request))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserRound } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
@@ -11,6 +12,7 @@ import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -31,7 +33,9 @@ export function Navbar() {
 
   useEffect(() => {
     const syncAdminAccess = () => {
-      setAdminActive(Boolean(window.sessionStorage.getItem("cdrs-admin-key")));
+      const hasPasswordAccess = Boolean(window.sessionStorage.getItem("cdrs-admin-key"));
+      const hasGitHubAccess = Boolean(session?.user?.isAdmin);
+      setAdminActive(hasPasswordAccess || hasGitHubAccess);
     };
 
     syncAdminAccess();
@@ -42,7 +46,7 @@ export function Navbar() {
       window.removeEventListener("cdrs-admin-login", syncAdminAccess);
       window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
     };
-  }, []);
+  }, [session?.user?.isAdmin]);
 
   const toggleAdmin = () => {
     window.dispatchEvent(new Event("cdrs-admin-toggle"));

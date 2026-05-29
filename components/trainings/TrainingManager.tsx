@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
 import {
   ImagePlus,
   Plus,
@@ -80,6 +81,7 @@ async function fetchTrainings() {
 
 export function TrainingManager({ initialItems }: { initialItems: Training[] }) {
   const router = useRouter();
+  const { data: session } = useSession();
   const [items, setItems] = useState(initialItems);
   const [form, setForm] = useState<TrainingForm>(() => emptyForm());
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -124,9 +126,10 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
   useEffect(() => {
     const syncAdminAccess = () => {
       const key = window.sessionStorage.getItem("cdrs-admin-key") || "";
+      const githubAdmin = Boolean(session?.user?.isAdmin);
 
       setAccessKey(key);
-      setUnlocked(Boolean(key));
+      setUnlocked(Boolean(key) || githubAdmin);
     };
 
     syncAdminAccess();
@@ -137,7 +140,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
       window.removeEventListener("cdrs-admin-login", syncAdminAccess);
       window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
     };
-  }, []);
+  }, [session?.user?.isAdmin]);
 
   const orderedItems = useMemo(
     () => [...items].sort((a, b) => b.date.localeCompare(a.date)),
@@ -253,7 +256,8 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
         editingId ? `/api/trainings?id=${encodeURIComponent(editingId)}` : "/api/trainings",
         {
           method: editingId ? "PUT" : "POST",
-          headers: { "x-training-key": accessKey },
+          credentials: "include",
+          headers: accessKey ? { "x-training-key": accessKey } : undefined,
           body,
         },
       );
@@ -302,7 +306,8 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     try {
       const response = await fetch(`/api/trainings?id=${encodeURIComponent(id)}`, {
         method: "DELETE",
-        headers: { "x-training-key": accessKey },
+        credentials: "include",
+        headers: accessKey ? { "x-training-key": accessKey } : undefined,
       });
       await parseTrainingResponse(response);
       setItems(await fetchTrainings());
@@ -327,7 +332,8 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     try {
       const response = await fetch("/api/trainings?restore=true", {
         method: "DELETE",
-        headers: { "x-training-key": accessKey },
+        credentials: "include",
+        headers: accessKey ? { "x-training-key": accessKey } : undefined,
       });
       await parseTrainingResponse(response);
       setItems(await fetchTrainings());

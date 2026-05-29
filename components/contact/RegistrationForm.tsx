@@ -1,10 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import emailjs from "@emailjs/browser";
 import { MessageCircle, ShieldCheck } from "lucide-react";
+import { getEmailJsConfig, sendEmailJsMessage } from "@/lib/emailjs";
 import { social } from "@/lib/content";
-import { buildWhatsAppUrl, WHATSAPP_URL } from "@/lib/constants";
+import { buildWhatsAppUrl } from "@/lib/constants";
 
 const fieldClass =
   "mt-2 w-full rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm font-medium text-text outline-none transition-all duration-300 ease-in-out placeholder:text-muted/65 focus:border-[var(--accent-green)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent-green)_16%,transparent)]";
@@ -20,6 +20,10 @@ type RegistrationFields = {
 };
 
 type FormStatus = "idle" | "sending" | "enviado" | "error";
+
+type RegistrationApiResponse = {
+  message?: string;
+};
 
 function buildWhatsAppFallbackMessage(fields: RegistrationFields) {
   return [
@@ -43,30 +47,18 @@ export function RegistrationForm() {
     mensaje: "",
   });
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    const { isConfigured } = getEmailJsConfig();
 
     try {
       setStatus("sending");
+      setErrorMessage("");
 
-      if (serviceId && templateId && publicKey) {
-        await emailjs.send(
-          serviceId,
-          templateId,
-          {
-            from_name: fields.nombreCompleto,
-            from_email: fields.correo,
-            phone: fields.telefono || "No registrado",
-            message: `Categoría de interés: ${fields.categoria}\n${fields.mensaje || "Sin mensaje adicional."}`,
-          },
-          publicKey,
-        );
-      } else {
+      const fallbackToApi = async () => {
         const response = await fetch("/api/registration", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -81,8 +73,26 @@ export function RegistrationForm() {
         });
 
         if (!response.ok) {
-          throw new Error("No se pudo enviar la solicitud.");
+          const payload = (await response.json().catch(() => null)) as RegistrationApiResponse | null;
+          throw new Error(payload?.message || "No se pudo enviar la solicitud.");
         }
+      };
+
+      if (isConfigured) {
+        const mensaje = [
+          `Categoría de interés: ${fields.categoria}`,
+          fields.mensaje || "Sin mensaje adicional.",
+        ].join("\n");
+
+        await sendEmailJsMessage({
+          nombre: fields.nombreCompleto,
+          correo: fields.correo,
+          telefono: fields.telefono,
+          categoria: fields.categoria,
+          mensaje,
+        });
+      } else {
+        await fallbackToApi();
       }
 
       setStatus("enviado");
@@ -93,8 +103,48 @@ export function RegistrationForm() {
         categoria: "Pre-Benjamín",
         mensaje: "",
       });
-    } catch {
+    } catch (error) {
+      // If EmailJS is configured but fails (template/service/key), try server fallback once.
+      if (isConfigured) {
+        try {
+          const response = await fetch("/api/registration", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              aspirante: fields.nombreCompleto,
+              edad: fields.categoria,
+              acudiente: fields.nombreCompleto,
+              telefono: fields.telefono || "No registrado",
+              correo: fields.correo,
+              mensaje: `Categoría: ${fields.categoria}. ${fields.mensaje || "Solicitud de inscripción."}`,
+            }),
+          });
+
+          if (!response.ok) {
+            const payload = (await response.json().catch(() => null)) as RegistrationApiResponse | null;
+            throw new Error(payload?.message || "No se pudo enviar la solicitud.");
+          }
+
+          setStatus("enviado");
+          setFields({
+            nombreCompleto: "",
+            correo: "",
+            telefono: "",
+            categoria: "Pre-Benjamín",
+            mensaje: "",
+          });
+          return;
+        } catch {
+          // continue to show actionable error below
+        }
+      }
+
       setStatus("error");
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "No se pudo enviar la solicitud. Revisa la configuración de EmailJS o Resend.",
+      );
     }
   };
 
@@ -218,7 +268,7 @@ export function RegistrationForm() {
       )}
       {status === "error" && (
         <div className="mt-4 space-y-3 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-700 dark:text-red-300">
-          <p>No pudimos enviar el formulario en este momento.</p>
+          <p>{errorMessage || "No pudimos enviar el formulario en este momento."}</p>
           <a
             href={buildWhatsAppUrl(buildWhatsAppFallbackMessage(fields))}
             target="_blank"

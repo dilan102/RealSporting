@@ -1,13 +1,13 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { NextRequest, NextResponse } from "next/server";
+import { isAdminApiAuthorized } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const dataDir = path.join(process.cwd(), "data");
 const dataFile = path.join(dataDir, "content-overrides.json");
-const accessKey = process.env.ADMIN_PASSWORD || "RealSporting1985";
 
 async function ensureStorage() {
   await mkdir(dataDir, { recursive: true });
@@ -30,16 +30,12 @@ async function readOverrides() {
   return {};
 }
 
-function isAuthorized(request: NextRequest) {
-  return request.headers.get("x-admin-key") === accessKey;
-}
-
 export async function GET() {
   return NextResponse.json({ items: await readOverrides() });
 }
 
 export async function POST(request: NextRequest) {
-  if (!isAuthorized(request)) {
+  if (!(await isAdminApiAuthorized(request))) {
     return NextResponse.json({ error: "Acceso no autorizado." }, { status: 401 });
   }
 

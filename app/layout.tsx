@@ -3,6 +3,7 @@ import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SitePreloader } from "@/components/ui/SitePreloader";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { club } from "@/lib/content";
@@ -45,12 +46,14 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>
-          <SitePreloader />
-          <Navbar />
-          <AdminPortal />
-          <WhatsAppFloat />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <AuthProvider>
+            <SitePreloader />
+            <Navbar />
+            <AdminPortal />
+            <WhatsAppFloat />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

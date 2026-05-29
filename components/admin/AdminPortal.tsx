@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 import {
   Dumbbell,
   LogOut,
@@ -11,6 +12,7 @@ import {
   UsersRound,
   X,
 } from "lucide-react";
+import { GitHubSignInButton } from "@/components/auth/GitHubSignInButton";
 
 const adminActions = [
   {
@@ -34,6 +36,7 @@ const adminActions = [
 ];
 
 export function AdminPortal() {
+  const { data: session } = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
   const [user, setUser] = useState("");
@@ -42,11 +45,12 @@ export function AdminPortal() {
   const [saving, setSaving] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
 
+  const githubAdmin = Boolean(session?.user?.isAdmin);
+
   useEffect(() => {
-    if (window.sessionStorage.getItem("cdrs-admin-key")) {
-      setAdminMode(true);
-    }
-  }, []);
+    const hasPasswordAccess = Boolean(window.sessionStorage.getItem("cdrs-admin-key"));
+    setAdminMode(hasPasswordAccess || githubAdmin);
+  }, [githubAdmin]);
 
   useEffect(() => {
     const handleAdminToggle = () => {
@@ -95,12 +99,16 @@ export function AdminPortal() {
     }
   };
 
-  const exitAdmin = () => {
+  const exitAdmin = async () => {
     setAdminMode(false);
     setPanelOpen(false);
     window.sessionStorage.removeItem("cdrs-admin-key");
     window.dispatchEvent(new Event("cdrs-admin-logout"));
     setMessage("");
+
+    if (githubAdmin) {
+      await signOut({ callbackUrl: "/" });
+    }
   };
 
   return (
@@ -128,7 +136,30 @@ export function AdminPortal() {
               </button>
             </div>
 
-            <label className="mt-6 block text-sm font-bold">
+            <p className="mt-4 text-sm text-muted">
+              Inicia sesión con GitHub o usa usuario y contraseña del club.
+            </p>
+
+            <div className="mt-4 space-y-3">
+              <GitHubSignInButton callbackUrl="/" />
+              <Link
+                href="/admin/login"
+                className="block text-center text-xs font-semibold text-accent hover:underline"
+              >
+                Abrir página de acceso completa
+              </Link>
+            </div>
+
+            <div className="relative my-5">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
+              </div>
+              <p className="relative mx-auto w-fit bg-bg-elevated px-3 text-xs font-semibold text-muted">
+                o contraseña
+              </p>
+            </div>
+
+            <label className="block text-sm font-bold">
               Usuario
               <input
                 value={user}
@@ -148,7 +179,14 @@ export function AdminPortal() {
               />
             </label>
 
-            {message && <p className="mt-4 text-sm font-semibold text-muted">{message}</p>}
+            {message && (
+              <p
+                className={`mt-4 text-sm font-semibold ${message.includes("Validando") || message.includes("activo") ? "text-muted" : "text-red-600 dark:text-red-300"}`}
+                role="status"
+              >
+                {message}
+              </p>
+            )}
 
             <button
               type="submit"
@@ -170,6 +208,9 @@ export function AdminPortal() {
                 Administrador
               </p>
               <h2 className="text-lg font-black">Añadir contenido</h2>
+              {session?.user?.email && (
+                <p className="mt-1 truncate text-xs text-muted">{session.user.email}</p>
+              )}
             </div>
             <button
               type="button"
@@ -213,7 +254,11 @@ export function AdminPortal() {
             Los textos generales del sitio quedan bloqueados; este panel solo abre
             las opciones para crear contenido.
           </p>
-          {message && <p className="border-t border-border px-4 py-3 text-xs font-semibold text-muted">{message}</p>}
+          {message && (
+            <p className="border-t border-border px-4 py-3 text-xs font-semibold text-muted">
+              {message}
+            </p>
+          )}
         </aside>
       )}
     </div>
