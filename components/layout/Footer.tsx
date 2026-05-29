@@ -2,22 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
+import { PHONE_TEL } from "@/lib/site";
+
+const footerNavLinks = navLinks.map((link) =>
+  link.href === "/contacto" ? { ...link, label: "Contacto" } : link,
+);
 
 export function Footer() {
-  const pathname = usePathname();
   const year = new Date().getFullYear();
-  const footerLinks = navLinks
-    .map((link) => (link.href === "/contacto" ? { ...link, label: "Contáctenos" } : link))
-    .filter((link) => {
-      if (link.href === "/") {
-        return pathname !== "/";
-      }
-
-      return !(pathname === link.href || pathname.startsWith(`${link.href}/`));
-    });
 
   return (
     <footer className="border-t border-border bg-bg-elevated">
@@ -28,10 +22,9 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <Image
                 src="/logo.png"
-                alt=""
+                alt="Logotipo Club Deportivo Real Sporting"
                 width={40}
                 height={40}
-                aria-hidden
                 className="object-contain"
               />
               <p className="font-semibold">{club.name}</p>
@@ -48,7 +41,7 @@ export function Footer() {
               Navegación
             </p>
             <ul className="mt-4 space-y-2">
-              {footerLinks.map((link) => (
+              {footerNavLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -99,7 +92,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="tel:+573209059855"
+                  href={PHONE_TEL}
                   aria-label="Llamar a Real Sporting"
                   className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
                 >
@@ -115,7 +108,7 @@ export function Footer() {
             title="Ubicación Real Sporting en Usme, Bogotá"
             src="https://www.google.com/maps?q=Usme%2C+Bogot%C3%A1%2C+Colombia&output=embed"
             width="100%"
-            height="400"
+            height="300"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
