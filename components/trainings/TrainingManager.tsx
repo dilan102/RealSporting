@@ -434,6 +434,28 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
                 className="mt-2 w-full resize-none rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
             </div>
+            {(form.title.trim() || form.description.trim()) && (
+              <div className="sm:col-span-2 rounded-lg border border-accent/30 bg-accent/5 p-4">
+                <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+                  Vista previa
+                </p>
+                <h4 className="mt-2 text-lg font-black">
+                  {form.title.trim() || "Sin título"}
+                </h4>
+                <p className="mt-1 text-xs text-muted">
+                  {form.date
+                    ? new Date(`${form.date}T12:00:00`).toLocaleDateString("es-CO", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : "Sin fecha"}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  {form.description.trim() || "Sin descripción"}
+                </p>
+              </div>
+            )}
             <div className="sm:col-span-2">
               <label className="text-xs font-medium uppercase tracking-wider text-muted">
                 Fotografías

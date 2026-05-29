@@ -85,7 +85,9 @@ export function TrainingCard({
   const media = getTrainingMedia(training);
   const mainMedia = media[0];
   const mediaCount = media.length;
+  const formattedDate = formatDate(training.date);
   const title = sanitizeVisibleTextOrDefault(training.title, "Entrenamiento Real Sporting");
+  const imageAlt = `Sesión de entrenamiento - ${formattedDate}`;
   const description = sanitizeVisibleTextOrDefault(
     training.description,
     TRAINING_TEXT_PLACEHOLDER,
@@ -144,7 +146,7 @@ export function TrainingCard({
           ) : mainMedia.type === "image" ? (
             <Image
               src={mainMedia.src}
-              alt={title}
+              alt={imageAlt}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
