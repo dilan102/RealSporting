@@ -2,8 +2,9 @@
 
 import { FormEvent, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { ShieldCheck } from "lucide-react";
+import { MessageCircle, ShieldCheck } from "lucide-react";
 import { social } from "@/lib/content";
+import { buildWhatsAppUrl } from "@/lib/site";
 
 const fieldClass =
   "mt-2 w-full rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm font-medium text-text outline-none transition-all duration-300 ease-in-out placeholder:text-muted/65 focus:border-[var(--accent-green)] focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent-green)_16%,transparent)]";
@@ -19,6 +20,19 @@ type RegistrationFields = {
 };
 
 type FormStatus = "idle" | "sending" | "enviado" | "error";
+
+function buildWhatsAppFallbackMessage(fields: RegistrationFields) {
+  return [
+    "Hola Real Sporting, quiero información sobre inscripción.",
+    `Nombre: ${fields.nombreCompleto}`,
+    `Correo: ${fields.correo}`,
+    `Teléfono: ${fields.telefono || "No registrado"}`,
+    `Categoría: ${fields.categoria}`,
+    fields.mensaje ? `Mensaje: ${fields.mensaje}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
 
 export function RegistrationForm() {
   const [fields, setFields] = useState<RegistrationFields>({
@@ -37,24 +51,39 @@ export function RegistrationForm() {
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    if (!serviceId || !templateId || !publicKey) {
-      setStatus("error");
-      return;
-    }
-
     try {
       setStatus("sending");
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: fields.nombreCompleto,
-          from_email: fields.correo,
-          phone: fields.telefono || "No registrado",
-          message: `Categoría de interés: ${fields.categoria}\n${fields.mensaje || "Sin mensaje adicional."}`,
-        },
-        publicKey,
-      );
+
+      if (serviceId && templateId && publicKey) {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            from_name: fields.nombreCompleto,
+            from_email: fields.correo,
+            phone: fields.telefono || "No registrado",
+            message: `Categoría de interés: ${fields.categoria}\n${fields.mensaje || "Sin mensaje adicional."}`,
+          },
+          publicKey,
+        );
+      } else {
+        const response = await fetch("/api/registration", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            aspirante: fields.nombreCompleto,
+            edad: fields.categoria,
+            acudiente: fields.nombreCompleto,
+            telefono: fields.telefono || "No registrado",
+            mensaje: `Categoría: ${fields.categoria}. ${fields.mensaje || "Solicitud de inscripción."}`,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("No se pudo enviar la solicitud.");
+        }
+      }
+
       setStatus("enviado");
       setFields({
         nombreCompleto: "",
@@ -187,9 +216,22 @@ export function RegistrationForm() {
         </p>
       )}
       {status === "error" && (
-        <p className="mt-4 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-700 dark:text-red-300">
-          Hubo un error. Escríbenos directamente a {social.email}
-        </p>
+        <div className="mt-4 space-y-3 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-700 dark:text-red-300">
+          <p>No pudimos enviar el formulario en este momento.</p>
+          <a
+            href={buildWhatsAppUrl(buildWhatsAppFallbackMessage(fields))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-green inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white"
+            aria-label="Enviar solicitud de inscripción por WhatsApp"
+          >
+            <MessageCircle size={18} aria-hidden="true" />
+            Enviar por WhatsApp
+          </a>
+          <p className="text-xs font-normal">
+            También puedes escribirnos a {social.email}
+          </p>
+        </div>
       )}
     </form>
   );

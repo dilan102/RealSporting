@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Download, Eye } from "lucide-react";
-import { getOfficialDocument, officialDocuments } from "@/lib/documents";
+import { getOfficialDocumentById, officialDocuments } from "@/lib/documents";
 
 export const metadata: Metadata = {
   title: "Documentos",
@@ -10,20 +11,26 @@ export const metadata: Metadata = {
 };
 
 type DocumentPageProps = {
-  searchParams: Promise<{ archivo?: string }>;
+  searchParams: Promise<{ id?: string; archivo?: string }>;
 };
 
 export default async function DocumentPage({ searchParams }: DocumentPageProps) {
-  const { archivo } = await searchParams;
-  const document = getOfficialDocument(archivo ?? "") ?? officialDocuments[0];
+  const { id, archivo } = await searchParams;
+
+  if (archivo) {
+    notFound();
+  }
+
+  const document = getOfficialDocumentById(id ?? "") ?? officialDocuments[0];
   const requestHeaders = await headers();
   const host = requestHeaders.get("host") ?? "";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? "http";
-  const absoluteUrl = host ? `${protocol}://${host}${document.href}` : document.href;
+  const encodedPath = encodeURI(document.filePath);
+  const absoluteUrl = host ? `${protocol}://${host}${encodedPath}` : encodedPath;
   const viewerUrl =
     document.type === "docx"
       ? `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(absoluteUrl)}`
-      : document.href;
+      : encodedPath;
 
   return (
     <div className="bg-bg pt-24 text-text sm:pt-28">
@@ -42,15 +49,17 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
+              {document.type === "pdf" && (
+                <a
+                  href="#visor"
+                  className="btn-green inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
+                >
+                  Ver aquí
+                  <Eye size={17} aria-hidden="true" />
+                </a>
+              )}
               <a
-                href="#visor"
-                className="btn-green inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
-              >
-                Ver aquí
-                <Eye size={17} aria-hidden="true" />
-              </a>
-              <a
-                href={document.href}
+                href={encodedPath}
                 download
                 className="btn-gold inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
               >
@@ -63,18 +72,21 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
       </section>
 
       <section id="visor" className="scroll-mt-28 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
-          <iframe
-            title={document.title}
-            src={viewerUrl}
-            className="h-[72vh] min-h-[520px] w-full bg-white"
-          />
-        </div>
-        {document.type === "docx" && (
-          <p className="mt-4 rounded-lg border border-border bg-bg-elevated px-4 py-3 text-sm text-muted">
-            La vista previa de Word usa el visor de Microsoft y necesita que el
-            archivo esté disponible en una URL pública. En local puedes usar Descargar.
-          </p>
+        {document.type === "pdf" ? (
+          <div className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
+            <iframe
+              title={document.title}
+              src={viewerUrl}
+              className="h-[72vh] min-h-[520px] w-full bg-white"
+            />
+          </div>
+        ) : (
+          <div className="rounded-lg border border-border bg-bg-elevated px-6 py-10 text-center shadow-sm">
+            <p className="text-sm leading-relaxed text-muted">
+              Este documento está disponible en formato Word (.docx). Usa el botón
+              Descargar para abrirlo en tu dispositivo.
+            </p>
+          </div>
         )}
         <div className="mt-6">
           <Link href="/contacto#documentos" className="text-sm font-black text-accent">
