@@ -242,9 +242,15 @@
     background: transparent;
     filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.22));
     transform-style: preserve-3d;
+    will-change: transform;
     animation:
-      football-bounce 1.22s cubic-bezier(0.34, 0.72, 0.28, 1) infinite,
-      football-roll 2.44s linear infinite;
+      football-bounce 1.35s cubic-bezier(0.42, 0, 0.2, 1) infinite,
+      football-roll 2.7s linear infinite;
+  }
+
+  .preload-ball-realistic.preload-ball-static,
+  .preload-ball-shadow.preload-ball-static {
+    animation: none;
   }
 
   .preload-ball-shadow {
@@ -256,7 +262,7 @@
     border-radius: 999px;
     background: radial-gradient(ellipse, rgba(0, 0, 0, 0.42) 0 42%, transparent 72%);
     filter: blur(4px);
-    animation: football-shadow 1.22s cubic-bezier(0.34, 0.72, 0.28, 1) infinite;
+    animation: football-shadow 1.35s cubic-bezier(0.42, 0, 0.2, 1) infinite;
   }
 
   .preload-glow {
@@ -421,27 +427,23 @@
 @keyframes football-bounce {
   0%,
   100% {
-    transform: translate3d(-34vw, 0, 0) rotateX(16deg) rotateZ(0deg) scaleY(0.94) scaleX(1.04);
+    transform: translate3d(-32vw, 0, 0) rotateX(14deg) rotateZ(0deg) scale(0.98);
   }
 
-  14% {
-    transform: translate3d(-23vw, -72px, 0) rotateX(24deg) rotateZ(86deg) scale(1);
+  18% {
+    transform: translate3d(-22vw, -64px, 0) rotateX(20deg) rotateZ(72deg) scale(1);
   }
 
-  36% {
-    transform: translate3d(-7vw, -176px, 24px) rotateX(36deg) rotateZ(210deg) scale(1.03);
+  42% {
+    transform: translate3d(-6vw, -168px, 16px) rotateX(28deg) rotateZ(188deg) scale(1.02);
   }
 
-  58% {
-    transform: translate3d(12vw, -78px, 0) rotateX(20deg) rotateZ(330deg) scale(1);
+  62% {
+    transform: translate3d(10vw, -70px, 0) rotateX(18deg) rotateZ(300deg) scale(1);
   }
 
-  74% {
-    transform: translate3d(23vw, 0, 0) rotateX(14deg) rotateZ(430deg) scaleY(0.92) scaleX(1.06);
-  }
-
-  88% {
-    transform: translate3d(31vw, -58px, 0) rotateX(22deg) rotateZ(520deg) scale(0.99);
+  82% {
+    transform: translate3d(24vw, -8px, 0) rotateX(12deg) rotateZ(400deg) scale(0.98);
   }
 }
 
@@ -453,25 +455,25 @@
 
 @keyframes football-shadow {
   0%,
-  74%,
+  82%,
   100% {
-    opacity: 0.58;
-    transform: translateX(-34vw) scaleX(0.72);
+    opacity: 0.55;
+    transform: translateX(-32vw) scaleX(0.7);
   }
 
-  36% {
-    opacity: 0.16;
-    transform: translateX(-7vw) scaleX(0.36);
+  42% {
+    opacity: 0.14;
+    transform: translateX(-6vw) scaleX(0.34);
   }
 
-  58% {
-    opacity: 0.28;
-    transform: translateX(12vw) scaleX(0.48);
+  62% {
+    opacity: 0.26;
+    transform: translateX(10vw) scaleX(0.46);
   }
 
   88% {
-    opacity: 0.22;
-    transform: translateX(31vw) scaleX(0.42);
+    opacity: 0.2;
+    transform: translateX(24vw) scaleX(0.4);
   }
 }
 

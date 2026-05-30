@@ -1,20 +1,22 @@
-/** Solo recarga dura (F5) en la página de inicio — no navegación interna con Link. */
+const INITIAL_PATH_KEY = "cdrs-initial-path";
+const COMPLETED_KEY = "cdrs-preloader-completed";
+
 export function isHomePath(pathname: string) {
   return pathname === "/" || pathname === "";
 }
 
-export function isHardReloadOnHome(): boolean {
+function getNavigationEntry(): PerformanceNavigationTiming | undefined {
   if (typeof window === "undefined") {
-    return false;
+    return undefined;
   }
 
-  if (!isHomePath(window.location.pathname)) {
-    return false;
-  }
-
-  const nav = performance.getEntriesByType("navigation")[0] as
+  return performance.getEntriesByType("navigation")[0] as
     | PerformanceNavigationTiming
     | undefined;
+}
+
+function isReloadNavigation(): boolean {
+  const nav = getNavigationEntry();
 
   if (nav?.type === "reload") {
     return true;
@@ -25,6 +27,60 @@ export function isHardReloadOnHome(): boolean {
   };
 
   return legacy.navigation?.type === 1;
+}
+
+function ensureInitialPathRecorded() {
+  try {
+    if (!sessionStorage.getItem(INITIAL_PATH_KEY)) {
+      sessionStorage.setItem(INITIAL_PATH_KEY, window.location.pathname);
+    }
+  } catch {
+    // sessionStorage unavailable
+  }
+}
+
+/**
+ * Muestra el preloader en:
+ * - Primera carga directa de `/` (navigate)
+ * - Recarga F5 en `/` (reload)
+ * No lo muestra al volver a Inicio por navegación interna (Link).
+ */
+export function shouldShowHomePreloader(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  if (!isHomePath(window.location.pathname)) {
+    return false;
+  }
+
+  if (isReloadNavigation()) {
+    return true;
+  }
+
+  ensureInitialPathRecorded();
+
+  try {
+    const nav = getNavigationEntry();
+    const initialPath = sessionStorage.getItem(INITIAL_PATH_KEY);
+    const completed = sessionStorage.getItem(COMPLETED_KEY);
+
+    return (
+      nav?.type === "navigate" &&
+      initialPath === "/" &&
+      completed !== "1"
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function markPreloaderCompleted() {
+  try {
+    sessionStorage.setItem(COMPLETED_KEY, "1");
+  } catch {
+    // ignore
+  }
 }
 
 export function setPreloaderPending(active: boolean) {
@@ -69,7 +125,17 @@ export const PRELOADER_BOOT_SCRIPT = `
     if (!isReload && performance.navigation && performance.navigation.type === 1) {
       isReload = true;
     }
-    if (!isReload) return;
+
+    if (!sessionStorage.getItem("cdrs-initial-path")) {
+      sessionStorage.setItem("cdrs-initial-path", path);
+    }
+
+    var initialPath = sessionStorage.getItem("cdrs-initial-path");
+    var completed = sessionStorage.getItem("cdrs-preloader-completed");
+    var firstHomeVisit = nav && nav.type === "navigate" && path === "/" && initialPath === "/" && completed !== "1";
+    var shouldShow = isReload || firstHomeVisit;
+
+    if (!shouldShow) return;
 
     var theme = localStorage.getItem("theme");
     if (theme === "dark") {
@@ -81,5 +147,8 @@ export const PRELOADER_BOOT_SCRIPT = `
 })();
 `;
 
-export const LOADER_DURATION_MS = 4000;
-export const LOADER_EXIT_MS = 1100;
+export const LOADER_DURATION_MS = 4300;
+export const LOADER_EXIT_MS = 1300;
+
+/** Curva suave tipo “cinematic ease-out”. */
+export const PRELOADER_EASE = [0.22, 1, 0.36, 1] as const;
