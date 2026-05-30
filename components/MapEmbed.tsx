@@ -4,12 +4,16 @@
 export const MAP_EMBED_SRC =
   "https://maps.google.com/maps?q=4.4720909,-74.1258881&hl=es&z=17&output=embed";
 
-export default function MapEmbed() {
+type MapEmbedProps = {
+  compact?: boolean;
+};
+
+export default function MapEmbed({ compact = false }: MapEmbedProps) {
   return (
     <iframe
       src={MAP_EMBED_SRC}
       width="100%"
-      height="300"
+      height={compact ? 220 : 300}
       style={{ border: 0 }}
       allowFullScreen
       loading="lazy"

@@ -47,6 +47,28 @@
     scroll-behavior: smooth;
   }
 
+  html.preloader-pending {
+    overflow: hidden;
+    background: var(--bg-primary);
+  }
+
+  html.preloader-pending #site-content {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  html.preloader-pending .site-preloader-root {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  html.preloader-done #site-content {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   *,
   *::before,
   *::after {
@@ -193,6 +215,16 @@
   .overflow-wrap-anywhere {
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+
+  .site-preloader-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99999;
+    background: var(--bg-primary);
   }
 
   .preload-ball-stage {

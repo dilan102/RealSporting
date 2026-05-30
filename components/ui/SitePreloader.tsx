@@ -3,11 +3,24 @@
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import {
+  clearPreloaderScrollState,
+  restoreScrollTargetAfterPreloader,
+  saveScrollTargetBeforeUnload,
+} from "@/lib/preloader-scroll";
 
 const introText = "Club Deportivo Real Sporting";
 const welcomeText = "Bienvenido";
 const loaderDuration = 3300;
+
+function isHomePath(pathname: string) {
+  return pathname === "/" || pathname === "";
+}
+
+function setPreloaderPending(active: boolean) {
+  document.documentElement.classList.toggle("preloader-pending", active);
+}
 
 function AnimatedWords({ text }: { text: string }) {
   const words = text.split(" ");
@@ -62,26 +75,56 @@ function AnimatedWords({ text }: { text: string }) {
 
 export function SitePreloader() {
   const pathname = usePathname();
+  const home = isHomePath(pathname);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    if (pathname !== "/") {
+  useLayoutEffect(() => {
+    if (!home) {
+      setPreloaderPending(false);
       setVisible(false);
       return;
     }
 
+    setPreloaderPending(true);
     setVisible(true);
+  }, [home]);
+
+  useEffect(() => {
+    if (!home) {
+      return;
+    }
+
+    const handleBeforeUnload = () => {
+      saveScrollTargetBeforeUnload();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pagehide", handleBeforeUnload);
 
     const doneTimer = window.setTimeout(() => {
       setVisible(false);
+      setPreloaderPending(false);
+      document.documentElement.classList.add("preloader-done");
+
+      window.requestAnimationFrame(() => {
+        restoreScrollTargetAfterPreloader();
+      });
     }, loaderDuration);
 
     return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("pagehide", handleBeforeUnload);
       window.clearTimeout(doneTimer);
     };
-  }, [pathname]);
+  }, [home]);
 
-  if (pathname !== "/") {
+  useEffect(() => {
+    if (!home) {
+      clearPreloaderScrollState();
+    }
+  }, [home]);
+
+  if (!home) {
     return null;
   }
 
@@ -92,7 +135,7 @@ export function SitePreloader() {
           key="site-preloader"
           role="status"
           aria-live="polite"
-          className="pointer-events-none fixed inset-0 z-[80] overflow-hidden bg-bg text-text"
+          className="site-preloader-root pointer-events-auto fixed inset-0 overflow-hidden bg-bg text-text"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } }}
         >

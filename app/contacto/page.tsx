@@ -13,7 +13,6 @@ import {
 import { ContactFormSection } from "@/components/contact/ContactFormSection";
 import { OfficialDocumentsPanel } from "@/components/contact/OfficialDocumentsPanel";
 import { SocialLinks } from "@/components/contact/SocialLinks";
-import MapEmbed from "@/components/MapEmbed";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { pageOpenGraph } from "@/lib/site";
@@ -239,10 +238,6 @@ export default function ContactoPage() {
             </div>
           </div>
           <SocialLinks showVenue />
-
-          <div className="mt-8 overflow-hidden rounded-lg border border-border bg-bg">
-            <MapEmbed />
-          </div>
         </RevealSection>
         </div>
       </section>

@@ -104,7 +104,10 @@ export function Footer() {
         </div>
 
         <div className="mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
-          <MapEmbed />
+          <p className="border-b border-border px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-accent">
+            Sede — {VENUE_NAME}
+          </p>
+          <MapEmbed compact />
         </div>
 
         <div className="mt-12 border-t border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] pt-6 text-center text-xs text-muted">

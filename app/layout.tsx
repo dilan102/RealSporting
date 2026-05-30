@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -45,14 +46,19 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
+        <Script id="preloader-boot" strategy="beforeInteractive">
+          {`(function(){try{var p=location.pathname;if(p==='/'||p===''){document.documentElement.classList.add('preloader-pending');}}catch(e){}})();`}
+        </Script>
+        <SitePreloader />
         <ThemeProvider>
           <AuthProvider>
-            <SitePreloader />
-            <Navbar />
-            <AdminPortal />
-            <WhatsAppFloat />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <div id="site-content" className="site-content flex min-h-screen flex-col">
+              <Navbar />
+              <AdminPortal />
+              <WhatsAppFloat />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
           </AuthProvider>
         </ThemeProvider>
       </body>

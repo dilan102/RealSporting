@@ -16,9 +16,9 @@ const ALLOWED_DOCUMENTS: Record<string, OfficialDocument> = {
     description:
       "Metodología Sinergia Cognitivo-Motriz, sesión tipo, pilares de trabajo y macrociclo de 8 semanas.",
     previewUrl:
-      "https://drive.google.com/file/d/1qChLXU1dpJaVS-jnsUssWHeilYbZ96aT/preview",
+      "https://drive.google.com/file/d/1xwc1kk8BzHxsXg0Ntsxfdf_UkNmihop4/preview",
     downloadUrl:
-      "https://drive.google.com/file/d/1qChLXU1dpJaVS-jnsUssWHeilYbZ96aT/view?usp=sharing",
+      "https://drive.google.com/file/d/1xwc1kk8BzHxsXg0Ntsxfdf_UkNmihop4/view?usp=sharing",
     type: "pdf",
   },
   "proyecto-2026": {
@@ -27,9 +27,9 @@ const ALLOWED_DOCUMENTS: Record<string, OfficialDocument> = {
     description:
       "Proyecto social, misión, visión, objetivos ODS, metodología por edades y plan de trabajo deportivo.",
     previewUrl:
-      "https://docs.google.com/document/d/1c_0Hbo7Tqsk80eyRzztv4ErtP7rE1OLY/preview",
+      "https://docs.google.com/document/d/170ynpkZxi_YgzFbt32yFhNmSyr6Acb-S/preview",
     downloadUrl:
-      "https://docs.google.com/document/d/1c_0Hbo7Tqsk80eyRzztv4ErtP7rE1OLY/edit?usp=sharing",
+      "https://docs.google.com/document/d/170ynpkZxi_YgzFbt32yFhNmSyr6Acb-S/edit?usp=sharing",
     type: "docx",
   },
 };
