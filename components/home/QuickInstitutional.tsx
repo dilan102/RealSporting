@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Trophy } from "lucide-react";
+import { ValuePillarsStrip } from "@/components/home/ValuePillarsStrip";
 import { club } from "@/lib/content";
 
 const programCards = [
@@ -132,19 +133,7 @@ export function QuickInstitutional() {
               </div>
             </div>
 
-            <div className="mobile-snap-x mobile-scrollbar-none grid gap-px overflow-hidden rounded-[1.6rem] border border-border bg-border sm:rounded-lg">
-              {club.values.slice(0, 4).map((value, index) => (
-                <article key={value.title} className="mobile-card-lift bg-bg-elevated p-6">
-                  <p className="text-sm font-black text-accent">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h3 className="mt-2 text-2xl font-black">{value.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-muted">
-                    {value.description}
-                  </p>
-                </article>
-              ))}
-            </div>
+            <ValuePillarsStrip />
           </div>
 
           <div className="mobile-card-lift mt-16 rounded-[1.75rem] bg-accent p-6 text-[var(--button-text)] sm:mt-20 sm:rounded-lg sm:p-8 lg:p-10">

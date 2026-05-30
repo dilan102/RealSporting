@@ -241,6 +241,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
     body.set("category", form.category);
     body.set("convocado", form.convocado ? "SI" : "NO");
     body.set("visible_publico", form.visible_publico ? "true" : "false");
+    body.set("status", form.visible_publico ? "published" : "draft");
 
     if (form.file) {
       body.set("image", form.file);

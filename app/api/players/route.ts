@@ -31,12 +31,16 @@ async function playerInputFromFormData(request: NextRequest) {
     visible_publico:
       String(formData.get("visible_publico") || formData.get("publicado") || "false") ===
       "true",
+    status:
+      String(formData.get("status") || "") === "published"
+        ? ("published" as const)
+        : ("draft" as const),
     image: image instanceof File && image.size > 0 ? image : null,
   };
 }
 
 export async function GET() {
-  const items = await readPlayers({ includeHidden: true });
+  const items = await readPlayers();
 
   return NextResponse.json({ items });
 }

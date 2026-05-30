@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { UserRound } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
 import { RegistrationModal } from "@/components/contact/RegistrationModal";
+import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
@@ -114,6 +115,7 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <NavWhatsAppLink className="btn-green hidden min-h-10 items-center justify-center gap-2 rounded-lg px-3 text-sm font-black text-white md:inline-flex lg:px-4" />
           <RegistrationModal
             className="btn-gold hidden min-h-10 items-center justify-center rounded-lg px-4 text-sm font-black md:inline-flex"
           >
@@ -180,6 +182,9 @@ export function Navbar() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <NavWhatsAppLink className="btn-green mt-1 flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white" />
+              </li>
               <li>
                 <RegistrationModal
                   className="btn-gold mt-1 flex min-h-11 items-center justify-center rounded-lg px-4 text-sm font-black"

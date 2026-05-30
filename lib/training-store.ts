@@ -5,12 +5,13 @@ import type { Training } from "@/lib/content";
 import { trainings as defaultTrainings } from "@/lib/content";
 import {
   TRAINING_TEXT_PLACEHOLDER,
+  isLikelyJunkText,
   sanitizeTextOrDefault,
-  validateCleanTextField,
   validateReadableText,
   validateTrainingDate,
   validateTrainingTitle,
 } from "@/lib/validators";
+import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "trainings");
@@ -24,6 +25,7 @@ export type TrainingInput = {
   images?: File[];
   videos?: File[];
   hidden?: boolean;
+  status?: PublishStatus;
 };
 
 const allowedImageTypes = new Map([
@@ -63,7 +65,8 @@ function isTraining(value: unknown): value is Training {
     (item.videos === undefined ||
       (Array.isArray(item.videos) &&
         item.videos.every((video) => typeof video === "string"))) &&
-    (item.hidden === undefined || typeof item.hidden === "boolean")
+    (item.hidden === undefined || typeof item.hidden === "boolean") &&
+    (item.status === undefined || item.status === "published" || item.status === "draft")
   );
 }
 
@@ -71,8 +74,33 @@ function normalizeInput(input: TrainingInput) {
   const title = validateTrainingTitle(input.title);
   const date = validateTrainingDate(input.date);
   const description = validateReadableText(input.description, "descripción", 10);
+  const hidden = input.hidden ?? false;
+  const status: PublishStatus = input.status ?? (hidden ? "draft" : "published");
 
-  return { title, date, description, hidden: input.hidden ?? false };
+  return { title, date, description, hidden, status };
+}
+
+function isValidTrainingDate(date: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return false;
+  }
+
+  const year = Number(date.slice(0, 4));
+  const currentYear = new Date().getFullYear();
+
+  return year >= 2020 && year <= currentYear + 1;
+}
+
+function isPublicTraining(item: Training) {
+  if (!isPublishedEntry(item)) {
+    return false;
+  }
+
+  if (!isValidTrainingDate(item.date)) {
+    return false;
+  }
+
+  return !isLikelyJunkText(item.title) && !isLikelyJunkText(item.description);
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -161,7 +189,7 @@ export async function readTrainings(options?: { includeHidden?: boolean }) {
 
     if (Array.isArray(parsed) && parsed.every(isTraining)) {
       return parsed
-        .filter((item) => includeHidden || !item.hidden)
+        .filter((item) => includeHidden || isPublicTraining(item))
         .map((item) => ({
           ...item,
           title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
@@ -173,7 +201,7 @@ export async function readTrainings(options?: { includeHidden?: boolean }) {
   }
 
   return defaultTrainings
-    .filter((item) => includeHidden || !item.hidden)
+    .filter((item) => includeHidden || isPublicTraining(item))
     .map((item) => ({
       ...item,
       title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),

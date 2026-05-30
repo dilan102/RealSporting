@@ -21,6 +21,7 @@ type TrainingForm = {
   title: string;
   date: string;
   description: string;
+  status: "published" | "draft";
   images: string[];
   files: File[];
   videos: string[];
@@ -31,6 +32,7 @@ const emptyForm = (): TrainingForm => ({
   title: "",
   date: new Date().toISOString().slice(0, 10),
   description: "",
+  status: "published",
   images: [],
   files: [],
   videos: [],
@@ -239,6 +241,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     body.set("title", normalizeText(form.title));
     body.set("date", normalizeText(form.date));
     body.set("description", normalizeText(form.description));
+    body.set("status", form.status);
 
     form.files.forEach((file) => {
       body.append("images", file);
@@ -284,6 +287,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
       title: training.title,
       date: training.date,
       description: training.description,
+      status: training.status ?? "published",
       images:
         training.images && training.images.length > 0
           ? training.images
@@ -439,6 +443,24 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
                 maxLength={800}
                 className="mt-2 w-full resize-none rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
+            </div>
+            <div>
+              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+                Estado
+              </label>
+              <select
+                value={form.status}
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    status: event.target.value as "published" | "draft",
+                  }))
+                }
+                className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
+              >
+                <option value="published">Publicado</option>
+                <option value="draft">Borrador</option>
+              </select>
             </div>
             {(form.title.trim() || form.description.trim()) && (
               <div className="sm:col-span-2 rounded-lg border border-accent/30 bg-accent/5 p-4">

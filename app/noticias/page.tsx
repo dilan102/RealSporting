@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { NewsManager } from "@/components/news/NewsManager";
 import { NewsBadge, NewsVisual } from "@/components/news/NewsVisual";
+import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
@@ -44,28 +45,19 @@ export default async function NoticiasPage() {
   const remainingNews = orderedNews.slice(1);
 
   return (
-    <main className="bg-bg pt-20 text-text">
+    <main className="bg-bg pt-20 text-text sm:pt-24">
+      <PageHero title="Noticias" subtitle="Actualidad del proceso deportivo" />
+
       <RevealSection>
-        <section className="relative overflow-hidden border-b border-border bg-bg-elevated">
-          <div className="pointer-events-none absolute inset-0 grid-overlay opacity-60" />
-          <div className="mx-auto max-w-7xl px-4 pb-7 pt-10 sm:px-6 lg:px-8">
-            <div className="relative flex flex-wrap items-end justify-between gap-5">
-              <div className="mobile-reveal">
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
-                  Club Deportivo Real Sporting
-                </p>
-                <h1 className="mt-3 text-[4rem] font-black leading-[0.86] sm:text-[6rem]">
-                  Noticias
-                </h1>
-              </div>
-              <Link
-                href="/contacto"
-                className="btn-gold inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-black"
-              >
-                Inscríbete
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
-            </div>
+        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-end gap-3">
+            <Link
+              href="/contacto"
+              className="btn-gold inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-black"
+            >
+              Inscríbete
+              <ArrowRight size={16} aria-hidden="true" />
+            </Link>
           </div>
         </section>
       </RevealSection>

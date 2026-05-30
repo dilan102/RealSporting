@@ -6,6 +6,7 @@ import { SitePreloader } from "@/components/ui/SitePreloader";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
+import { PageTransition } from "@/components/ui/PageTransition";
 import { club } from "@/lib/content";
 import { PRELOADER_BOOT_SCRIPT, PRELOADER_CRITICAL_CSS } from "@/lib/preloader";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
@@ -57,7 +58,9 @@ export default function RootLayout({
               <Navbar />
               <AdminPortal />
               <WhatsAppFloat />
-              <main className="flex-1">{children}</main>
+              <main className="flex-1">
+                <PageTransition>{children}</PageTransition>
+              </main>
               <Footer />
             </div>
           </AuthProvider>

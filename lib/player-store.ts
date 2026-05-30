@@ -4,9 +4,11 @@ import path from "path";
 import type { Player, PlayerCategory } from "@/lib/content";
 import { getPlayerCategory, players as defaultPlayers } from "@/lib/content";
 import {
+  isLikelyJunkText,
   isReadableText,
   validateReadableText,
 } from "@/lib/validators";
+import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
 
 const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "players");
@@ -22,6 +24,7 @@ export type PlayerInput = {
   convocado: string;
   image?: File | null;
   visible_publico?: boolean;
+  status?: PublishStatus;
 };
 
 const allowedTypes = new Map([
@@ -52,7 +55,8 @@ function isPlayer(value: unknown): value is Player {
     typeof item.image === "string" &&
     (typeof item.category === "string" || typeof item.category === "number") &&
     (item.convocado === "SI" || item.convocado === "NO") &&
-    (item.visible_publico === undefined || typeof item.visible_publico === "boolean")
+    (item.visible_publico === undefined || typeof item.visible_publico === "boolean") &&
+    (item.status === undefined || item.status === "published" || item.status === "draft")
   );
 }
 
@@ -76,6 +80,8 @@ function normalizeInput(input: PlayerInput) {
   const category = normalizeCategory(input.category);
   const convocado: Player["convocado"] = input.convocado === "SI" ? "SI" : "NO";
   const visible_publico = input.visible_publico ?? false;
+  const status: PublishStatus =
+    input.status ?? (visible_publico ? "published" : "draft");
 
   if (!Number.isInteger(number) || number < 1 || number > 99) {
     throw new Error("El número de camiseta debe estar entre 1 y 99.");
@@ -85,7 +91,7 @@ function normalizeInput(input: PlayerInput) {
     throw new Error("La descripción debe tener al menos 10 caracteres legibles.");
   }
 
-  return { name, number, position, bio, category, convocado, visible_publico };
+  return { name, number, position, bio, category, convocado, visible_publico, status };
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -131,6 +137,14 @@ async function saveImage(file: File) {
   return `${publicUploadPrefix}${fileName}`;
 }
 
+function isPublicPlayer(item: Player) {
+  if (!isPublishedEntry(item)) {
+    return false;
+  }
+
+  return !isLikelyJunkText(item.name) && !isLikelyJunkText(item.bio);
+}
+
 export async function readPlayers(options?: { includeHidden?: boolean }) {
   await ensureStorage();
   const includeHidden = options?.includeHidden ?? false;
@@ -140,17 +154,13 @@ export async function readPlayers(options?: { includeHidden?: boolean }) {
     const parsed = JSON.parse(raw) as unknown;
 
     if (Array.isArray(parsed) && parsed.every(isPlayer)) {
-      return parsed.filter(
-        (item) => includeHidden || item.visible_publico !== false,
-      );
+      return parsed.filter((item) => includeHidden || isPublicPlayer(item));
     }
   } catch {
     // Missing or invalid storage falls back to the starter roster.
   }
 
-  return defaultPlayers.filter(
-    (item) => includeHidden || item.visible_publico !== false,
-  );
+  return defaultPlayers.filter((item) => includeHidden || isPublicPlayer(item));
 }
 
 async function writePlayers(items: Player[]) {

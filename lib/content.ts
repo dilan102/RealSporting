@@ -66,6 +66,8 @@ export const social = {
   location: "Parque Ciudadela Nuevo Usme, Usme, Bogotá D.C., Colombia",
 };
 
+export type PublishStatus = "published" | "draft";
+
 export type Player = {
   id: string;
   name: string;
@@ -76,6 +78,7 @@ export type Player = {
   category: PlayerCategory;
   convocado: "SI" | "NO";
   visible_publico?: boolean;
+  status?: PublishStatus;
 };
 
 export type TeamBirthYear =
@@ -162,6 +165,7 @@ export const players: Player[] = [
     category: 2010,
     convocado: "SI",
     visible_publico: true,
+    status: "published",
   },
   {
     id: "2",
@@ -173,6 +177,7 @@ export const players: Player[] = [
     category: 2009,
     convocado: "SI",
     visible_publico: true,
+    status: "published",
   },
   {
     id: "3",
@@ -184,6 +189,7 @@ export const players: Player[] = [
     category: 2008,
     convocado: "SI",
     visible_publico: true,
+    status: "published",
   },
   {
     id: "4",
@@ -195,6 +201,7 @@ export const players: Player[] = [
     category: 2008,
     convocado: "SI",
     visible_publico: true,
+    status: "published",
   },
   {
     id: "5",
@@ -206,6 +213,7 @@ export const players: Player[] = [
     category: 2009,
     convocado: "SI",
     visible_publico: true,
+    status: "published",
   },
   {
     id: "6",
@@ -217,6 +225,7 @@ export const players: Player[] = [
     category: 2012,
     convocado: "SI",
     visible_publico: true,
+    status: "published",
   },
 ];
 
@@ -312,6 +321,7 @@ export type Training = {
   images?: string[];
   videos?: string[];
   hidden?: boolean;
+  status?: PublishStatus;
 };
 
 export type NewsStatus = "published" | "draft";
@@ -387,6 +397,7 @@ export const trainings: Training[] = [
       "Trabajo de rondo 4v2, circuitos de pase y finalización en espacios reducidos. Enfoque en primer toque y comunicación.",
     image: "/trainings/1.svg",
     hidden: true,
+    status: "draft",
   },
   {
     id: "2",
@@ -396,6 +407,7 @@ export const trainings: Training[] = [
       "Series de intervalos, trabajo de core y movilidad. Sesión orientada al rendimiento del segundo tiempo.",
     image: "/trainings/2.svg",
     hidden: true,
+    status: "draft",
   },
   {
     id: "3",
@@ -405,6 +417,7 @@ export const trainings: Training[] = [
       "Bloque compacto, salida desde el arco y triggers de presión en zona de creación rival.",
     image: "/trainings/3.svg",
     hidden: true,
+    status: "draft",
   },
   {
     id: "4",
@@ -414,6 +427,7 @@ export const trainings: Training[] = [
       "Partido de aplicación con rotaciones. Evaluación de decisiones bajo presión real.",
     image: "/trainings/4.svg",
     hidden: true,
+    status: "draft",
   },
   {
     id: "5",
@@ -423,6 +437,7 @@ export const trainings: Training[] = [
       "Estiramientos, hidratación y charla de análisis de video de la jornada anterior.",
     image: "/trainings/5.svg",
     hidden: true,
+    status: "draft",
   },
   {
     id: "6",
@@ -432,6 +447,7 @@ export const trainings: Training[] = [
       "Córners ofensivos, faltas laterales y transiciones rápidas post-rebote.",
     image: "/trainings/6.svg",
     hidden: true,
+    status: "draft",
   },
 ];
 

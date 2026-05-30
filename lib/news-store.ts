@@ -130,7 +130,7 @@ export async function readNews(options?: { includeDrafts?: boolean }) {
 
     if (Array.isArray(parsed) && parsed.every(isNews)) {
       return parsed
-        .filter((item) => includeDrafts || item.status !== "draft")
+        .filter((item) => includeDrafts || (item.status ?? "published") !== "draft")
         .map((item) => ({
           ...item,
           title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
@@ -143,7 +143,7 @@ export async function readNews(options?: { includeDrafts?: boolean }) {
   }
 
   return defaultNews
-    .filter((item) => includeDrafts || item.status !== "draft")
+    .filter((item) => includeDrafts || (item.status ?? "published") !== "draft")
     .map((item) => ({
       ...item,
       title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),

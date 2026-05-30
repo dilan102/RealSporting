@@ -35,7 +35,7 @@ async function newsInputFromFormData(request: NextRequest) {
 }
 
 export async function GET() {
-  const items = await readNews({ includeDrafts: true });
+  const items = await readNews();
 
   return NextResponse.json({ items });
 }

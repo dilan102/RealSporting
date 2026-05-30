@@ -1,8 +1,8 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import {
   ChevronDown,
   Eye,
@@ -13,7 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import { club } from "@/lib/content";
-import { fadeUpItem, staggerContainer } from "@/lib/motion";
+import { PRELOADER_EASE } from "@/lib/preloader";
 
 const cards = [
   {
@@ -34,17 +34,14 @@ const valueIcons = [ShieldCheck, Users, Target, HeartHandshake, Flag];
 
 export function VisionMission() {
   return (
-    <motion.div
-      className="grid gap-6 md:grid-cols-2"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-60px" }}
-    >
-      {cards.map(({ icon: Icon, title, text, image }) => (
+    <div className="grid gap-6 md:grid-cols-2">
+      {cards.map(({ icon: Icon, title, text, image }, index) => (
         <motion.article
           key={title}
-          variants={fadeUpItem}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.15, duration: 0.4, ease: PRELOADER_EASE }}
           className="mobile-card-lift overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
         >
           <div className="relative aspect-[16/9] bg-surface">
@@ -66,26 +63,23 @@ export function VisionMission() {
           </div>
         </motion.article>
       ))}
-    </motion.div>
+    </div>
   );
 }
 
 export function ValuesGrid() {
   return (
-    <motion.div
-      className="mt-10 grid gap-5 sm:grid-cols-2"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-60px" }}
-    >
+    <div className="mt-10 grid gap-5 sm:grid-cols-2">
       {club.values.slice(0, 4).map((value, index) => {
         const Icon = valueIcons[index] || Flag;
 
         return (
           <motion.article
             key={value.title}
-            variants={fadeUpItem}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.15, duration: 0.4, ease: PRELOADER_EASE }}
             className="mobile-card-lift group relative overflow-hidden rounded-lg border border-border bg-bg-elevated p-7 transition-all duration-300 hover:border-accent hover:bg-[color-mix(in_srgb,var(--accent-green)_9%,var(--card-bg))]"
           >
             <span className="pointer-events-none absolute right-5 top-3 font-display text-7xl leading-none text-[color-mix(in_srgb,var(--accent-gold)_20%,transparent)]">
@@ -99,30 +93,27 @@ export function ValuesGrid() {
           </motion.article>
         );
       })}
-    </motion.div>
+    </div>
   );
 }
 
 export function Timeline() {
   return (
-    <motion.ol
-      className="grid gap-4 sm:grid-cols-2"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false }}
-    >
-      {club.milestones.map((m) => (
+    <ol className="grid gap-4 sm:grid-cols-2">
+      {club.milestones.map((m, index) => (
         <motion.li
           key={`${m.year}-${m.event}`}
-          variants={fadeUpItem}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.2, duration: 0.4, ease: PRELOADER_EASE }}
           className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5"
         >
           <p className="text-sm font-black text-accent">{m.year}</p>
           <p className="mt-2 text-sm leading-6 text-muted">{m.event}</p>
         </motion.li>
       ))}
-    </motion.ol>
+    </ol>
   );
 }
 
@@ -181,20 +172,17 @@ export function OdsCommitment() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
-    <motion.div
-      className="grid gap-4 md:grid-cols-2"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-60px" }}
-    >
-      {odsItems.map((item) => {
+    <div className="grid gap-4 md:grid-cols-2">
+      {odsItems.map((item, index) => {
         const open = expanded === item.id;
 
         return (
           <motion.article
             key={item.id}
-            variants={fadeUpItem}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.12, duration: 0.4, ease: PRELOADER_EASE }}
             className={`group overflow-hidden rounded-lg border bg-bg-elevated/95 transition-all duration-300 ${
               open
                 ? "border-accent shadow-xl shadow-[var(--accent-gold)]/15"
@@ -238,6 +226,6 @@ export function OdsCommitment() {
           </motion.article>
         );
       })}
-    </motion.div>
+    </div>
   );
 }

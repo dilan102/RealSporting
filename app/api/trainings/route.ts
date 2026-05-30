@@ -36,13 +36,17 @@ async function trainingInputFromFormData(request: NextRequest) {
     title: String(formData.get("title") || ""),
     date: String(formData.get("date") || ""),
     description: String(formData.get("description") || ""),
+    status:
+      String(formData.get("status") || "") === "draft"
+        ? ("draft" as const)
+        : ("published" as const),
     images,
     videos,
   };
 }
 
 export async function GET() {
-  const items = await readTrainings({ includeHidden: true });
+  const items = await readTrainings();
 
   return NextResponse.json({ items });
 }
