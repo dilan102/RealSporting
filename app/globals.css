@@ -58,7 +58,7 @@
     pointer-events: none;
   }
 
-  html.preloader-pending .site-preloader-root {
+  html.preloader-active .site-preloader-root {
     visibility: visible;
     opacity: 1;
   }
@@ -243,8 +243,8 @@
     filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.22));
     transform-style: preserve-3d;
     animation:
-      football-bounce 1.08s cubic-bezier(0.2, 0.72, 0.26, 1) infinite,
-      football-roll 2.16s linear infinite;
+      football-bounce 1.22s cubic-bezier(0.34, 0.72, 0.28, 1) infinite,
+      football-roll 2.44s linear infinite;
   }
 
   .preload-ball-shadow {
@@ -256,7 +256,7 @@
     border-radius: 999px;
     background: radial-gradient(ellipse, rgba(0, 0, 0, 0.42) 0 42%, transparent 72%);
     filter: blur(4px);
-    animation: football-shadow 1.08s cubic-bezier(0.2, 0.72, 0.26, 1) infinite;
+    animation: football-shadow 1.22s cubic-bezier(0.34, 0.72, 0.28, 1) infinite;
   }
 
   .preload-glow {

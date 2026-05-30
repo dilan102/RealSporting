@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +7,7 @@ import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { club } from "@/lib/content";
+import { PRELOADER_BOOT_SCRIPT, PRELOADER_CRITICAL_CSS } from "@/lib/preloader";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
 
@@ -45,10 +45,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: PRELOADER_CRITICAL_CSS }} />
+        <script dangerouslySetInnerHTML={{ __html: PRELOADER_BOOT_SCRIPT }} />
+      </head>
       <body className="min-h-screen flex flex-col">
-        <Script id="preloader-boot" strategy="beforeInteractive">
-          {`(function(){try{var p=location.pathname;if(p==='/'||p===''){document.documentElement.classList.add('preloader-pending');}}catch(e){}})();`}
-        </Script>
         <SitePreloader />
         <ThemeProvider>
           <AuthProvider>
