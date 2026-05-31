@@ -91,7 +91,7 @@ export function isLikelyJunkText(value: string): boolean {
   }
 
   const uniqueRatio = new Set(normalized).size / normalized.length;
-  if (normalized.length >= 9 && uniqueRatio < 0.28) {
+  if (normalized.length >= 9 && normalized.length <= 80 && uniqueRatio < 0.22) {
     return true;
   }
 

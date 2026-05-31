@@ -15,6 +15,7 @@ const dataDir = path.join(process.cwd(), "data");
 const uploadsDir = path.join(process.cwd(), "public", "uploads", "news");
 const dataFile = path.join(dataDir, "news.json");
 const publicUploadPrefix = "/uploads/news/";
+const fallbackImage = "/logo.png";
 
 export type NewsInput = {
   title: string;
@@ -33,8 +34,12 @@ const allowedTypes = new Map([
   ["image/svg+xml", ".svg"],
 ]);
 
-async function ensureStorage() {
+async function ensureDataStorage() {
   await mkdir(dataDir, { recursive: true });
+}
+
+async function ensureUploadStorage() {
+  await ensureDataStorage();
   await mkdir(uploadsDir, { recursive: true });
 }
 
@@ -85,6 +90,19 @@ function uploadedPathFromPublicUrl(url: string) {
   return path.join(uploadsDir, path.basename(url));
 }
 
+function normalizeImagePath(url: string) {
+  const image = url.trim();
+
+  if (
+    image.startsWith("/") ||
+    image.startsWith("https://images.unsplash.com/")
+  ) {
+    return image;
+  }
+
+  return fallbackImage;
+}
+
 async function removeUploadedFile(url: string) {
   const filePath = uploadedPathFromPublicUrl(url);
 
@@ -108,7 +126,7 @@ async function saveImage(file: File) {
     throw new Error("La imagen no puede superar 5 MB.");
   }
 
-  await ensureStorage();
+  await ensureUploadStorage();
 
   const extension = allowedTypes.get(file.type);
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
@@ -121,7 +139,6 @@ async function saveImage(file: File) {
 }
 
 export async function readNews(options?: { includeDrafts?: boolean }) {
-  await ensureStorage();
   const includeDrafts = options?.includeDrafts ?? false;
 
   try {
@@ -136,6 +153,7 @@ export async function readNews(options?: { includeDrafts?: boolean }) {
           title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
           summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
           body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+          image: normalizeImagePath(item.image),
         }));
     }
   } catch {
@@ -149,11 +167,12 @@ export async function readNews(options?: { includeDrafts?: boolean }) {
       title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
       summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
       body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+      image: normalizeImagePath(item.image),
     }));
 }
 
 async function writeNews(items: News[]) {
-  await ensureStorage();
+  await ensureDataStorage();
   await writeFile(dataFile, JSON.stringify(items, null, 2), "utf8");
 }
 
