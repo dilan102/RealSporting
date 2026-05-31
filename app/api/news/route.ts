@@ -35,17 +35,21 @@ async function newsInputFromFormData(request: NextRequest) {
 }
 
 export async function GET() {
-  const items = await readNews();
+  try {
+    const items = await readNews();
 
-  return NextResponse.json({ items });
+    return NextResponse.json({ items });
+  } catch (error) {
+    return errorResponse(error, 500);
+  }
 }
 
 export async function POST(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request))) {
-    return errorResponse(new Error("Clave incorrecta."), 401);
-  }
-
   try {
+    if (!(await isAdminApiAuthorized(request))) {
+      return errorResponse(new Error("Clave incorrecta."), 401);
+    }
+
     const input = await newsInputFromFormData(request);
     const item = await createNews(input);
     const items = await readNews();
@@ -57,17 +61,17 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request))) {
-    return errorResponse(new Error("Clave incorrecta."), 401);
-  }
-
-  const id = request.nextUrl.searchParams.get("id");
-
-  if (!id) {
-    return errorResponse(new Error("Falta la noticia a editar."));
-  }
-
   try {
+    if (!(await isAdminApiAuthorized(request))) {
+      return errorResponse(new Error("Clave incorrecta."), 401);
+    }
+
+    const id = request.nextUrl.searchParams.get("id");
+
+    if (!id) {
+      return errorResponse(new Error("Falta la noticia a editar."));
+    }
+
     const input = await newsInputFromFormData(request);
     const item = await updateNews(id, input);
     const items = await readNews();
@@ -79,14 +83,14 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request))) {
-    return errorResponse(new Error("Clave incorrecta."), 401);
-  }
-
-  const restore = request.nextUrl.searchParams.get("restore");
-  const id = request.nextUrl.searchParams.get("id");
-
   try {
+    if (!(await isAdminApiAuthorized(request))) {
+      return errorResponse(new Error("Clave incorrecta."), 401);
+    }
+
+    const restore = request.nextUrl.searchParams.get("restore");
+    const id = request.nextUrl.searchParams.get("id");
+
     if (restore === "true") {
       const items = await restoreDefaultNews();
 

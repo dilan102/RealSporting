@@ -43,10 +43,26 @@ const emptyForm = (): NewsForm => ({
 });
 
 async function parseNewsResponse(response: Response) {
-  const payload = (await response.json()) as ApiResponse;
+  const text = await response.text();
+  let payload: ApiResponse = {};
+
+  if (text.trim()) {
+    try {
+      payload = JSON.parse(text) as ApiResponse;
+    } catch {
+      throw new Error(
+        response.ok
+          ? "El servidor devolvió una respuesta inválida."
+          : `El servidor respondió ${response.status} sin un JSON válido.`,
+      );
+    }
+  }
 
   if (!response.ok) {
-    throw new Error(payload.error || "No se pudo guardar la noticia.");
+    throw new Error(
+      payload.error ||
+        `No se pudo guardar la noticia. El servidor respondió ${response.status}.`,
+    );
   }
 
   return payload;

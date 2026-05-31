@@ -85,14 +85,14 @@ export function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden flex-nowrap items-center gap-1 md:flex">
           {navLinks.map((link) => {
             const active = pathname === link.href;
             return (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`relative whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors ${
                     active
                       ? "text-accent"
                       : solidHeader
@@ -171,7 +171,7 @@ export function Navbar() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={`block rounded-full px-4 py-3 text-sm font-bold transition-colors ${
+                    className={`block whitespace-nowrap rounded-full px-4 py-3 text-sm font-bold transition-colors ${
                       pathname === link.href
                         ? "bg-accent/10 text-accent"
                         : "text-muted hover:bg-surface hover:text-text"
