@@ -4,16 +4,21 @@ import path from "path";
 import type { Player, PlayerCategory } from "@/lib/content";
 import { getPlayerCategory, players as defaultPlayers } from "@/lib/content";
 import {
+  getDataDir,
+  getUploadDir,
+  getUploadPublicPrefix,
+} from "@/lib/file-storage";
+import {
   isLikelyJunkText,
   isReadableText,
   validateReadableText,
 } from "@/lib/validators";
 import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
 
-const dataDir = path.join(process.cwd(), "data");
-const uploadsDir = path.join(process.cwd(), "public", "uploads", "players");
+const dataDir = getDataDir();
+const uploadsDir = getUploadDir("players");
 const dataFile = path.join(dataDir, "players.json");
-const publicUploadPrefix = "/uploads/players/";
+const publicUploadPrefix = getUploadPublicPrefix("players");
 
 export type PlayerInput = {
   name: string;

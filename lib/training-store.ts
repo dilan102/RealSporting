@@ -4,6 +4,11 @@ import path from "path";
 import type { Training } from "@/lib/content";
 import { trainings as defaultTrainings } from "@/lib/content";
 import {
+  getDataDir,
+  getUploadDir,
+  getUploadPublicPrefix,
+} from "@/lib/file-storage";
+import {
   TRAINING_TEXT_PLACEHOLDER,
   isLikelyJunkText,
   sanitizeTextOrDefault,
@@ -13,10 +18,10 @@ import {
 } from "@/lib/validators";
 import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
 
-const dataDir = path.join(process.cwd(), "data");
-const uploadsDir = path.join(process.cwd(), "public", "uploads", "trainings");
+const dataDir = getDataDir();
+const uploadsDir = getUploadDir("trainings");
 const dataFile = path.join(dataDir, "trainings.json");
-const publicUploadPrefix = "/uploads/trainings/";
+const publicUploadPrefix = getUploadPublicPrefix("trainings");
 
 export type TrainingInput = {
   title: string;

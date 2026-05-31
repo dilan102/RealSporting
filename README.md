@@ -71,6 +71,13 @@ npm run build
 npm start
 ```
 
+En plataformas serverless como Vercel, el paquete desplegado es de solo lectura.
+Las subidas del panel admin se guardan en `/tmp/real-sporting` para evitar
+errores `EROFS`, pero ese almacenamiento puede perderse entre reinicios. Para
+subidas permanentes configura `REALSPORTING_STORAGE_DIR` en un servidor con disco
+persistente o migra los archivos a Cloudinary, S3 o Vercel Blob y los datos a
+una base de datos.
+
 ## Stack
 
 - Next.js 15 (App Router)

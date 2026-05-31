@@ -4,6 +4,11 @@ import path from "path";
 import type { News, NewsStatus } from "@/lib/content";
 import { news as defaultNews } from "@/lib/content";
 import {
+  getDataDir,
+  getUploadDir,
+  getUploadPublicPrefix,
+} from "@/lib/file-storage";
+import {
   NEWS_TEXT_PLACEHOLDER,
   NEWS_TITLE_PLACEHOLDER,
   sanitizeText,
@@ -11,10 +16,10 @@ import {
   validateCleanTextField,
 } from "@/lib/validators";
 
-const dataDir = path.join(process.cwd(), "data");
-const uploadsDir = path.join(process.cwd(), "public", "uploads", "news");
+const dataDir = getDataDir();
+const uploadsDir = getUploadDir("news");
 const dataFile = path.join(dataDir, "news.json");
-const publicUploadPrefix = "/uploads/news/";
+const publicUploadPrefix = getUploadPublicPrefix("news");
 const fallbackImage = "/logo.png";
 
 export type NewsInput = {
