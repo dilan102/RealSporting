@@ -34,9 +34,11 @@ async function newsInputFromFormData(request: NextRequest) {
   };
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const items = await readNews();
+    const items = await readNews({
+      includeDrafts: await isAdminApiAuthorized(request),
+    });
 
     return NextResponse.json({ items });
   } catch (error) {
@@ -46,13 +48,15 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    if (!(await isAdminApiAuthorized(request))) {
+    const isAuthorized = await isAdminApiAuthorized(request);
+
+    if (!isAuthorized) {
       return errorResponse(new Error("Clave incorrecta."), 401);
     }
 
     const input = await newsInputFromFormData(request);
     const item = await createNews(input);
-    const items = await readNews();
+    const items = await readNews({ includeDrafts: true });
 
     return NextResponse.json({ item, items }, { status: 201 });
   } catch (error) {
@@ -62,7 +66,9 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    if (!(await isAdminApiAuthorized(request))) {
+    const isAuthorized = await isAdminApiAuthorized(request);
+
+    if (!isAuthorized) {
       return errorResponse(new Error("Clave incorrecta."), 401);
     }
 
@@ -74,7 +80,7 @@ export async function PUT(request: NextRequest) {
 
     const input = await newsInputFromFormData(request);
     const item = await updateNews(id, input);
-    const items = await readNews();
+    const items = await readNews({ includeDrafts: true });
 
     return NextResponse.json({ item, items });
   } catch (error) {
@@ -84,7 +90,9 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    if (!(await isAdminApiAuthorized(request))) {
+    const isAuthorized = await isAdminApiAuthorized(request);
+
+    if (!isAuthorized) {
       return errorResponse(new Error("Clave incorrecta."), 401);
     }
 
@@ -103,7 +111,7 @@ export async function DELETE(request: NextRequest) {
 
     await deleteNews(id);
 
-    return NextResponse.json({ items: await readNews() });
+    return NextResponse.json({ items: await readNews({ includeDrafts: true }) });
   } catch (error) {
     return errorResponse(error);
   }

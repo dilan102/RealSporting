@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { mkdir, readFile, unlink, writeFile } from "fs/promises";
+import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { News, NewsStatus } from "@/lib/content";
 import { news as defaultNews } from "@/lib/content";
@@ -15,12 +15,13 @@ import {
   sanitizeTextOrDefault,
   validateCleanTextField,
 } from "@/lib/validators";
+import { prisma } from "@/lib/prisma";
 
 const dataDir = getDataDir();
 const uploadsDir = getUploadDir("news");
-const dataFile = path.join(dataDir, "news.json");
 const publicUploadPrefix = getUploadPublicPrefix("news");
 const fallbackImage = "/logo.png";
+const notFoundMessage = "No se encontró la noticia.";
 
 export type NewsInput = {
   title: string;
@@ -39,34 +40,9 @@ const allowedTypes = new Map([
   ["image/svg+xml", ".svg"],
 ]);
 
-async function ensureDataStorage() {
-  await mkdir(dataDir, { recursive: true });
-}
-
 async function ensureUploadStorage() {
-  await ensureDataStorage();
+  await mkdir(dataDir, { recursive: true });
   await mkdir(uploadsDir, { recursive: true });
-}
-
-function isNews(value: unknown): value is News {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const item = value as Record<string, unknown>;
-
-  return (
-    typeof item.id === "string" &&
-    typeof item.title === "string" &&
-    typeof item.date === "string" &&
-    typeof item.category === "string" &&
-    typeof item.summary === "string" &&
-    typeof item.body === "string" &&
-    typeof item.image === "string" &&
-    (item.status === undefined ||
-      item.status === "published" ||
-      item.status === "draft")
-  );
 }
 
 function normalizeInput(input: NewsInput) {
@@ -85,6 +61,14 @@ function normalizeInput(input: NewsInput) {
   }
 
   return { title, date, category, summary, body, status: input.status ?? "draft" };
+}
+
+function dateFromInput(date: string) {
+  return new Date(`${date}T00:00:00.000Z`);
+}
+
+function dateToInputValue(date: Date) {
+  return date.toISOString().slice(0, 10);
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -143,26 +127,55 @@ async function saveImage(file: File) {
   return `${publicUploadPrefix}${fileName}`;
 }
 
+function toNews(item: {
+  id: number;
+  titulo: string;
+  resumen: string;
+  contenido: string;
+  imagen: string | null;
+  fecha: Date;
+  categoria: string;
+  publicada: boolean;
+}): News {
+  return {
+    id: String(item.id),
+    title: sanitizeTextOrDefault(item.titulo, NEWS_TITLE_PLACEHOLDER),
+    date: dateToInputValue(item.fecha),
+    category: sanitizeTextOrDefault(item.categoria, "Club"),
+    summary: sanitizeTextOrDefault(item.resumen, NEWS_TEXT_PLACEHOLDER),
+    body: sanitizeTextOrDefault(item.contenido, NEWS_TEXT_PLACEHOLDER),
+    image: normalizeImagePath(item.imagen || fallbackImage),
+    status: item.publicada ? "published" : "draft",
+  };
+}
+
+function idFromParam(id: string) {
+  const parsed = Number(id);
+
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error("La noticia no tiene un identificador válido.");
+  }
+
+  return parsed;
+}
+
+function databaseError(action: string, error: unknown) {
+  console.error(`No se pudo ${action} en la base de datos.`, error);
+  return new Error(`No se pudo ${action} en la base de datos.`);
+}
+
 export async function readNews(options?: { includeDrafts?: boolean }) {
   const includeDrafts = options?.includeDrafts ?? false;
 
   try {
-    const raw = await readFile(dataFile, "utf8");
-    const parsed = JSON.parse(raw) as unknown;
+    const items = await prisma.noticia.findMany({
+      where: includeDrafts ? undefined : { publicada: true },
+      orderBy: [{ fecha: "desc" }, { id: "desc" }],
+    });
 
-    if (Array.isArray(parsed) && parsed.every(isNews)) {
-      return parsed
-        .filter((item) => includeDrafts || (item.status ?? "published") !== "draft")
-        .map((item) => ({
-          ...item,
-          title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
-          summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
-          body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
-          image: normalizeImagePath(item.image),
-        }));
-    }
-  } catch {
-    // Missing or invalid storage falls back to starter content.
+    return items.map(toNews);
+  } catch (error) {
+    console.error("No se pudieron leer las noticias desde la base de datos.", error);
   }
 
   return defaultNews
@@ -176,11 +189,6 @@ export async function readNews(options?: { includeDrafts?: boolean }) {
     }));
 }
 
-async function writeNews(items: News[]) {
-  await ensureDataStorage();
-  await writeFile(dataFile, JSON.stringify(items, null, 2), "utf8");
-}
-
 export async function createNews(input: NewsInput) {
   const clean = normalizeInput(input);
 
@@ -188,62 +196,126 @@ export async function createNews(input: NewsInput) {
     throw new Error("Sube una imagen antes de publicar la noticia.");
   }
 
-  const image = input.image ? await saveImage(input.image) : "/logo.png";
-  const current = await readNews({ includeDrafts: true });
-  const item: News = {
-    id: `noticia-${randomUUID()}`,
-    ...clean,
-    image,
-  };
+  const image = input.image ? await saveImage(input.image) : fallbackImage;
 
-  await writeNews([item, ...current]);
+  try {
+    const item = await prisma.noticia.create({
+      data: {
+        titulo: clean.title,
+        resumen: clean.summary,
+        contenido: clean.body,
+        fecha: dateFromInput(clean.date),
+        categoria: clean.category,
+        imagen: image,
+        publicada: clean.status === "published",
+      },
+    });
 
-  return item;
+    return toNews(item);
+  } catch (error) {
+    if (input.image) {
+      await removeUploadedFile(image);
+    }
+
+    throw databaseError("crear la noticia", error);
+  }
 }
 
 export async function updateNews(id: string, input: NewsInput) {
   const clean = normalizeInput(input);
-  const current = await readNews({ includeDrafts: true });
-  const existing = current.find((item) => item.id === id);
+  const numericId = idFromParam(id);
+  const existing = await prisma.noticia
+    .findUnique({ where: { id: numericId } })
+    .catch((error) => {
+      throw databaseError("consultar la noticia", error);
+    });
 
   if (!existing) {
-    throw new Error("No se encontró la noticia.");
+    throw new Error(notFoundMessage);
   }
 
-  if (clean.status === "published" && !input.image && !existing.image) {
+  if (clean.status === "published" && !input.image && !existing.imagen) {
     throw new Error("Sube una imagen antes de publicar la noticia.");
   }
 
-  const image = input.image ? await saveImage(input.image) : existing.image;
-  const updated: News = { id, ...clean, image };
-  const nextItems = current.map((item) => (item.id === id ? updated : item));
+  const image = input.image
+    ? await saveImage(input.image)
+    : existing.imagen || fallbackImage;
 
-  await writeNews(nextItems);
+  try {
+    const updated = await prisma.noticia.update({
+      where: { id: numericId },
+      data: {
+        titulo: clean.title,
+        resumen: clean.summary,
+        contenido: clean.body,
+        fecha: dateFromInput(clean.date),
+        categoria: clean.category,
+        imagen: image,
+        publicada: clean.status === "published",
+      },
+    });
 
-  if (input.image && existing.image !== image) {
-    await removeUploadedFile(existing.image);
+    if (input.image && existing.imagen && existing.imagen !== image) {
+      await removeUploadedFile(existing.imagen);
+    }
+
+    return toNews(updated);
+  } catch (error) {
+    if (input.image) {
+      await removeUploadedFile(image);
+    }
+
+    throw databaseError("actualizar la noticia", error);
   }
-
-  return updated;
 }
 
 export async function deleteNews(id: string) {
-  const current = await readNews({ includeDrafts: true });
-  const existing = current.find((item) => item.id === id);
+  const numericId = idFromParam(id);
+  const existing = await prisma.noticia
+    .findUnique({ where: { id: numericId } })
+    .catch((error) => {
+      throw databaseError("consultar la noticia", error);
+    });
 
   if (!existing) {
-    throw new Error("No se encontró la noticia.");
+    throw new Error(notFoundMessage);
   }
 
-  await writeNews(current.filter((item) => item.id !== id));
-  await removeUploadedFile(existing.image);
+  await prisma.noticia.delete({ where: { id: numericId } }).catch((error) => {
+    throw databaseError("borrar la noticia", error);
+  });
+
+  if (existing.imagen) {
+    await removeUploadedFile(existing.imagen);
+  }
 }
 
 export async function restoreDefaultNews() {
-  const current = await readNews({ includeDrafts: true });
+  let current: News[];
+
+  try {
+    current = (await prisma.noticia.findMany()).map(toNews);
+
+    await prisma.$transaction([
+      prisma.noticia.deleteMany(),
+      prisma.noticia.createMany({
+        data: defaultNews.map((item) => ({
+          titulo: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),
+          resumen: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
+          contenido: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
+          fecha: dateFromInput(item.date),
+          categoria: sanitizeTextOrDefault(item.category, "Club"),
+          imagen: normalizeImagePath(item.image),
+          publicada: (item.status ?? "published") === "published",
+        })),
+      }),
+    ]);
+  } catch (error) {
+    throw databaseError("restaurar las noticias", error);
+  }
 
   await Promise.all(current.map((item) => removeUploadedFile(item.image)));
-  await writeNews(defaultNews);
 
-  return defaultNews;
+  return readNews({ includeDrafts: true });
 }

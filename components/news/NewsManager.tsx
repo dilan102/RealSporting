@@ -68,8 +68,12 @@ async function parseNewsResponse(response: Response) {
   return payload;
 }
 
-async function fetchNews() {
-  const response = await fetch("/api/news", { cache: "no-store" });
+async function fetchNews(accessKey = "") {
+  const response = await fetch("/api/news", {
+    cache: "no-store",
+    credentials: "include",
+    headers: accessKey ? { "x-news-key": accessKey } : undefined,
+  });
   const payload = await parseNewsResponse(response);
 
   return payload.items || [];
@@ -102,9 +106,9 @@ export function NewsManager({
     let active = true;
 
     setLoading(true);
-    fetchNews()
+    fetchNews(accessKey)
       .then((nextItems) => {
-        if (active && nextItems.length > 0) {
+        if (active) {
           setItems(nextItems);
         }
       })
@@ -122,7 +126,7 @@ export function NewsManager({
     return () => {
       active = false;
     };
-  }, []);
+  }, [accessKey, session?.user?.isAdmin]);
 
   useEffect(() => {
     const syncAdminAccess = () => {
@@ -205,7 +209,7 @@ export function NewsManager({
       return;
     }
 
-    if (!editingId && !form.file) {
+    if (!editingId && form.status === "published" && !form.file) {
       setMessage("Sube una imagen para publicar la noticia.");
       return;
     }
@@ -236,7 +240,7 @@ export function NewsManager({
         },
       );
       await parseNewsResponse(response);
-      setItems(await fetchNews());
+      setItems(await fetchNews(accessKey));
       resetForm();
       router.refresh();
       setMessage(editingId ? "Noticia actualizada." : "Noticia publicada.");
@@ -274,7 +278,7 @@ export function NewsManager({
         headers: accessKey ? { "x-news-key": accessKey } : undefined,
       });
       await parseNewsResponse(response);
-      setItems(await fetchNews());
+      setItems(await fetchNews(accessKey));
 
       if (editingId === id) {
         resetForm();
@@ -300,7 +304,7 @@ export function NewsManager({
         headers: accessKey ? { "x-news-key": accessKey } : undefined,
       });
       await parseNewsResponse(response);
-      setItems(await fetchNews());
+      setItems(await fetchNews(accessKey));
       resetForm();
       router.refresh();
       setMessage("Noticias restauradas.");
