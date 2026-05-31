@@ -13,16 +13,20 @@ export async function getAdminSession() {
 }
 
 export async function isAdminApiAuthorized(request: NextRequest) {
-  const session = await getAdminSession();
-
-  if (session?.user?.isAdmin) {
-    return true;
-  }
-
   const headerKey =
     request.headers.get("x-training-key") ??
     request.headers.get("x-news-key") ??
     request.headers.get("x-admin-key");
 
-  return headerKey === accessKey;
+  if (headerKey === accessKey) {
+    return true;
+  }
+
+  try {
+    const session = await getAdminSession();
+
+    return Boolean(session?.user?.isAdmin);
+  } catch {
+    return false;
+  }
 }
