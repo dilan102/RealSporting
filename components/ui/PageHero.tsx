@@ -14,15 +14,29 @@ export function PageHero({
 }: PageHeroProps) {
   return (
     <section className="relative overflow-hidden border-b border-border bg-bg-elevated">
-      <div className="relative min-h-[280px] sm:min-h-[360px]">
-        <Image
-          src={image}
-          alt=""
-          fill
-          priority
-          className="hero-img object-cover object-center"
-          sizes="100vw"
-        />
+      <div className="hero-banner-stage relative min-h-[280px] sm:min-h-[360px]">
+        <div className="hero-banner-flip absolute inset-0">
+          <div className="hero-banner-face absolute inset-0">
+            <Image
+              src={image}
+              alt=""
+              fill
+              priority
+              className="hero-img object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+          <div className="hero-banner-face hero-banner-face-light absolute inset-0">
+            <Image
+              src={image}
+              alt=""
+              fill
+              priority
+              className="hero-img object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+        </div>
         <div className="hero-overlay absolute inset-0" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-0 grid-overlay opacity-25" aria-hidden="true" />
 

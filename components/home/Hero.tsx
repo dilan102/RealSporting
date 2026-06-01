@@ -9,7 +9,7 @@ import { club } from "@/lib/content";
 
 const heroBanners = {
   dark: "/banner.png",
-  light: "/banner claro.png",
+  light: "/banner.png",
 };
 
 const stats = [

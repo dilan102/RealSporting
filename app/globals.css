@@ -26,20 +26,20 @@
     --border: #BBA86A;
     --button-text: #0A0A0A;
     --nav-bg: rgba(255, 248, 230, 0.88);
-    --hero-overlay: rgba(234, 244, 237, 0.28);
+    --hero-overlay: rgba(7, 19, 12, 0.84);
     --hero-gradient: linear-gradient(
       to top,
-      rgba(234, 244, 237, 0.9) 0%,
-      rgba(255, 248, 230, 0.42) 46%,
-      rgba(31, 93, 67, 0.16) 100%
+      rgba(0, 0, 0, 0.82) 0%,
+      rgba(0, 0, 0, 0.35) 54%,
+      rgba(0, 0, 0, 0.18) 100%
     );
-    --hero-title-color: #102119;
-    --hero-copy-color: #20352a;
-    --hero-muted-color: rgba(20, 32, 24, 0.82);
-    --hero-copy-shadow: 0 2px 18px rgba(255, 252, 242, 0.92);
-    --hero-secondary-bg: rgba(255, 252, 242, 0.76);
-    --hero-secondary-border: rgba(31, 93, 67, 0.32);
-    --hero-secondary-color: #16251c;
+    --hero-title-color: #ffffff;
+    --hero-copy-color: #ffffff;
+    --hero-muted-color: rgba(255, 255, 255, 0.85);
+    --hero-copy-shadow: 0 8px 28px rgba(0, 0, 0, 0.62);
+    --hero-secondary-bg: rgba(255, 255, 255, 0.12);
+    --hero-secondary-border: rgba(255, 255, 255, 0.45);
+    --hero-secondary-color: #ffffff;
   }
 
   [data-theme="dark"] {
