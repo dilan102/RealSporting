@@ -142,7 +142,7 @@ export function Hero() {
               className="object-contain"
               aria-hidden="true"
             />
-            Club deportivo
+            Club Deportivo Real Sporting de Usme
           </div>
 
           <h1 className="hero-title mt-6 max-w-5xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_90ms_both] text-[clamp(3rem,12vw,6rem)] font-black leading-[0.96] drop-shadow-xl">

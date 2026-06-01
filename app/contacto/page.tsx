@@ -13,6 +13,7 @@ import {
 import { ContactFormSection } from "@/components/contact/ContactFormSection";
 import { OfficialDocumentsPanel } from "@/components/contact/OfficialDocumentsPanel";
 import { SocialLinks } from "@/components/contact/SocialLinks";
+import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { pageOpenGraph } from "@/lib/site";
@@ -85,21 +86,28 @@ const trainingModel = [
 export default function ContactoPage() {
   return (
     <div className="bg-bg pt-24 text-text transition-colors sm:pt-28">
-      <RevealSection>
-        <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(135deg,var(--bg-secondary)_0%,color-mix(in_srgb,var(--accent-green)_8%,var(--bg-secondary))_56%,color-mix(in_srgb,var(--accent-gold)_18%,var(--bg-secondary))_100%)]">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0a0a0a)]" />
-          <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,1.08fr)] lg:items-center lg:px-8 lg:py-16">
-            <div>
-              <p className="mb-3 inline-flex rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,transparent)] bg-bg-elevated px-3 py-2 text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)] shadow-sm">
-                Proceso de ingreso
-              </p>
-              <h1 className="text-4xl font-black tracking-tight text-text sm:text-5xl lg:text-6xl">
-                Inscripción Real Sporting
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-                Ingreso al proceso deportivo, social y formativo del Club Deportivo Real Sporting, construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM.
-              </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+      <PageHero
+        title="Inscripción"
+        subtitle="Ingreso al proceso deportivo, social y formativo de Real Sporting"
+      />
+
+      <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_10%,var(--bg-primary))_0%,var(--bg-primary)_52%,color-mix(in_srgb,var(--accent-gold)_10%,var(--bg-primary))_100%)]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_14%,transparent),transparent)]" />
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+          <RevealSection>
+            <div className="grid gap-5 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated/92 p-5 shadow-xl shadow-[color-mix(in_srgb,var(--accent-green)_14%,transparent)] backdrop-blur sm:p-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                  Proceso de ingreso
+                </p>
+                <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">
+                  Comienza tu camino con Real Sporting
+                </h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
+                  Construido desde el proyecto CDRS 2026 y el modelo de entrenamiento SCM, el proceso reúne familia, formación deportiva y acompañamiento humano.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
                 <a
                   href="#formulario"
                   className="btn-gold inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
@@ -115,20 +123,11 @@ export default function ContactoPage() {
                 </a>
               </div>
             </div>
-            <div className="rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-[var(--accent-green)] p-6 text-white shadow-xl sm:p-8">
-              <ClipboardCheck size={34} aria-hidden="true" className="text-[var(--accent-gold)]" />
-              <p className="mt-6 text-sm font-black uppercase tracking-[0.16em] text-white/72">
-                Formación deportiva integral
-              </p>
-              <p className="mt-3 text-3xl font-black leading-tight">
-                Futbol sala, valores, disciplina y comunidad desde Usme.
-              </p>
-            </div>
-          </div>
-        </section>
-      </RevealSection>
+          </RevealSection>
+        </div>
+      </section>
 
-      <section className="bg-bg">
+      <section className="bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-gold)_8%,var(--bg-primary))_0%,var(--bg-primary)_42%,var(--bg-primary)_100%)]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:items-start">
