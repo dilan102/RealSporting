@@ -175,7 +175,7 @@ function databaseError(action: string, error: unknown) {
 
 export async function cleanupExpiredNews(now = new Date()) {
   const cutoff = getNewsExpirationCutoff(now);
-  const expired = await prisma.noticia
+  const expired: Array<{ id: number; imagen: string | null }> = await prisma.noticia
     .findMany({
       where: { fecha: { lt: cutoff } },
       select: { id: true, imagen: true },
