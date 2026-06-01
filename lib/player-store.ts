@@ -243,7 +243,7 @@ export async function updatePlayer(id: string, input: PlayerInput) {
   const numericId = idFromParam(id);
   const existing = await prisma.jugador
     .findUnique({ where: { id: numericId } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar el jugador", error);
     });
 
@@ -287,7 +287,7 @@ export async function deletePlayer(id: string) {
   const numericId = idFromParam(id);
   const existing = await prisma.jugador
     .findUnique({ where: { id: numericId } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar el jugador", error);
     });
 
@@ -295,7 +295,7 @@ export async function deletePlayer(id: string) {
     throw new Error("No se encontró el jugador.");
   }
 
-  await prisma.jugador.delete({ where: { id: numericId } }).catch((error) => {
+  await prisma.jugador.delete({ where: { id: numericId } }).catch((error: unknown) => {
     throw databaseError("borrar el jugador", error);
   });
   await removeUploadedFile(existing.imagen);
@@ -304,14 +304,14 @@ export async function deletePlayer(id: string) {
 export async function restoreDefaultPlayers() {
   const current = await prisma.jugador
     .findMany()
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar los jugadores", error);
     });
 
   await prisma.$transaction([
     prisma.jugador.deleteMany(),
     prisma.jugador.createMany({ data: defaultPlayerRows() }),
-  ]).catch((error) => {
+  ]).catch((error: unknown) => {
     throw databaseError("restaurar los jugadores", error);
   });
 

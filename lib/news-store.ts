@@ -180,7 +180,7 @@ export async function cleanupExpiredNews(now = new Date()) {
       where: { fecha: { lt: cutoff } },
       select: { id: true, imagen: true },
     })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar noticias vencidas", error);
     });
 
@@ -190,7 +190,7 @@ export async function cleanupExpiredNews(now = new Date()) {
 
   await prisma.noticia
     .deleteMany({ where: { id: { in: expired.map((item) => item.id) } } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("borrar noticias vencidas", error);
     });
 
@@ -205,7 +205,7 @@ export async function readNews(options?: { includeDrafts?: boolean }): Promise<N
   const includeDrafts = options?.includeDrafts ?? false;
 
   try {
-    await cleanupExpiredNews().catch((error) => {
+    await cleanupExpiredNews().catch((error: unknown) => {
       console.error("No se pudieron limpiar las noticias vencidas.", error);
     });
 
@@ -271,7 +271,7 @@ export async function updateNews(id: string, input: NewsInput) {
   const numericId = idFromParam(id);
   const existing = await prisma.noticia
     .findUnique({ where: { id: numericId } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar la noticia", error);
     });
 
@@ -319,7 +319,7 @@ export async function deleteNews(id: string) {
   const numericId = idFromParam(id);
   const existing = await prisma.noticia
     .findUnique({ where: { id: numericId } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar la noticia", error);
     });
 
@@ -327,7 +327,7 @@ export async function deleteNews(id: string) {
     throw new Error(notFoundMessage);
   }
 
-  await prisma.noticia.delete({ where: { id: numericId } }).catch((error) => {
+  await prisma.noticia.delete({ where: { id: numericId } }).catch((error: unknown) => {
     throw databaseError("borrar la noticia", error);
   });
 

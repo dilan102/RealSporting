@@ -294,7 +294,7 @@ export async function updateTraining(id: string, input: TrainingInput) {
   const numericId = idFromParam(id);
   const existing = await prisma.entrenamiento
     .findUnique({ where: { id: numericId } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar el entrenamiento", error);
     });
 
@@ -343,7 +343,7 @@ export async function deleteTraining(id: string) {
   const numericId = idFromParam(id);
   const existing = await prisma.entrenamiento
     .findUnique({ where: { id: numericId } })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar el entrenamiento", error);
     });
 
@@ -351,7 +351,7 @@ export async function deleteTraining(id: string) {
     throw new Error("No se encontró el entrenamiento.");
   }
 
-  await prisma.entrenamiento.delete({ where: { id: numericId } }).catch((error) => {
+  await prisma.entrenamiento.delete({ where: { id: numericId } }).catch((error: unknown) => {
     throw databaseError("borrar el entrenamiento", error);
   });
 
@@ -367,14 +367,14 @@ export async function deleteTraining(id: string) {
 export async function restoreDefaultTrainings() {
   const current = await prisma.entrenamiento
     .findMany()
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw databaseError("consultar los entrenamientos", error);
     });
 
   await prisma.$transaction([
     prisma.entrenamiento.deleteMany(),
     prisma.entrenamiento.createMany({ data: defaultTrainingRows() }),
-  ]).catch((error) => {
+  ]).catch((error: unknown) => {
     throw databaseError("restaurar los entrenamientos", error);
   });
 
