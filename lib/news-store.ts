@@ -201,7 +201,7 @@ export async function cleanupExpiredNews(now = new Date()) {
   return { deleted: expired.length, cutoff };
 }
 
-export async function readNews(options?: { includeDrafts?: boolean }) {
+export async function readNews(options?: { includeDrafts?: boolean }): Promise<News[]> {
   const includeDrafts = options?.includeDrafts ?? false;
 
   try {
