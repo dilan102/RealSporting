@@ -5,12 +5,14 @@ type PageHeroProps = {
   title: string;
   subtitle: string;
   image?: string;
+  lightImage?: string;
 };
 
 export function PageHero({
   title,
   subtitle,
   image = "/banner.png",
+  lightImage = "/banner claro.png",
 }: PageHeroProps) {
   return (
     <section className="relative overflow-hidden border-b border-border bg-bg-elevated">
@@ -28,7 +30,7 @@ export function PageHero({
           </div>
           <div className="hero-banner-face hero-banner-face-light absolute inset-0">
             <Image
-              src={image}
+              src={lightImage}
               alt=""
               fill
               priority
