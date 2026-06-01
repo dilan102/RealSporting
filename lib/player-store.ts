@@ -199,7 +199,9 @@ export async function readPlayers(options?: { includeHidden?: boolean }) {
       orderBy: [{ categoria: "asc" }, { numero: "asc" }, { id: "asc" }],
     });
 
-    return items.map(toPlayer).filter((item) => includeHidden || isPublicPlayer(item));
+    const players: Player[] = items.map(toPlayer);
+
+    return players.filter((item) => includeHidden || isPublicPlayer(item));
   } catch (error) {
     console.error("No se pudieron leer los jugadores desde la base de datos.", error);
   }
