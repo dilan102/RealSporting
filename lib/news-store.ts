@@ -109,7 +109,7 @@ async function saveImage(file: File) {
   return `${publicUploadPrefix}${fileName}`;
 }
 
-export async function readNews() {
+export async function readNews(): Promise<News[]> {
   await ensureStorage();
 
   try {

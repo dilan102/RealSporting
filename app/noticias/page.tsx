@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { NewsManager } from "@/components/news/NewsManager";
 import { RevealSection } from "@/components/ui/RevealSection";
@@ -102,7 +103,10 @@ export default async function NoticiasPage() {
         <RevealSection>
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.6fr)]">
-            <article className="mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
+            <Link
+              href={`/noticias/${leadNews.id}`}
+              className="mobile-card-lift group block overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors hover:border-accent/50"
+            >
               <div className="relative aspect-[16/10] min-h-[220px] overflow-hidden bg-surface sm:aspect-[16/9] sm:min-h-[290px]">
                 <NewsImage
                   item={leadNews}
@@ -127,12 +131,13 @@ export default async function NoticiasPage() {
                   {leadNews.body}
                 </p>
               </div>
-            </article>
+            </Link>
 
             <aside className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
               {secondaryNews.map((item) => (
-                <article
+                <Link
                   key={item.id}
+                  href={`/noticias/${item.id}`}
                   className="mobile-card-lift group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm sm:block sm:min-h-36 lg:grid lg:grid-cols-[116px_minmax(0,1fr)]"
                 >
                   <div className="relative min-h-32 overflow-hidden bg-surface sm:aspect-[16/10] sm:min-h-36 lg:aspect-auto">
@@ -152,7 +157,7 @@ export default async function NoticiasPage() {
                       {formatDate(item.date)}
                     </time>
                   </div>
-                </article>
+                </Link>
               ))}
             </aside>
           </div>
@@ -173,8 +178,9 @@ export default async function NoticiasPage() {
               </div>
               <div className="mt-4 grid gap-4">
                 {categoryItems.map((item, index) => (
-                  <article
+                  <Link
                     key={item.id}
+                    href={`/noticias/${item.id}`}
                     className="group border-b border-border pb-4 last:border-b-0"
                   >
                     {index === 0 && (
@@ -194,7 +200,7 @@ export default async function NoticiasPage() {
                     <time className="mt-2 block text-xs font-semibold text-muted">
                       {formatDate(item.date)}
                     </time>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </section>
@@ -211,8 +217,9 @@ export default async function NoticiasPage() {
           </h2>
           <div className="mt-2 grid gap-x-8 sm:grid-cols-2">
             {moreNews.map((item) => (
-              <article
+              <Link
                 key={item.id}
+                href={`/noticias/${item.id}`}
                 className="group flex items-start justify-between gap-4 border-b border-border py-4"
               >
                 <div>
@@ -231,7 +238,7 @@ export default async function NoticiasPage() {
                   className="mt-6 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent"
                   aria-hidden="true"
                 />
-              </article>
+              </Link>
             ))}
           </div>
         </div>
