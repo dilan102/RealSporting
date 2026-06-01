@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 import { useSession } from "next-auth/react";
-import { ImagePlus, Save, Trash2, X } from "lucide-react";
+import { ImagePlus, RotateCcw, Save, Trash2, X } from "lucide-react";
 import {
   buildTeamSections,
   getPlayerCategory,
@@ -60,8 +60,12 @@ async function parsePlayersResponse(response: Response) {
   return payload;
 }
 
-async function fetchPlayers() {
-  const response = await fetch("/api/players", { cache: "no-store" });
+async function fetchPlayers(accessKey = "") {
+  const response = await fetch("/api/players", {
+    cache: "no-store",
+    credentials: "include",
+    headers: accessKey ? { "x-admin-key": accessKey } : undefined,
+  });
   const payload = await parsePlayersResponse(response);
 
   return payload.items || [];
@@ -95,7 +99,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
   useEffect(() => {
     let active = true;
 
-    fetchPlayers()
+    fetchPlayers(accessKey)
       .then((nextItems) => {
         if (active) {
           setItems(nextItems);
@@ -110,7 +114,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [accessKey, session?.user?.isAdmin]);
 
   useEffect(() => {
     const syncAdminAccess = () => {
@@ -258,7 +262,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         },
       );
       await parsePlayersResponse(response);
-      setItems(await fetchPlayers());
+      setItems(await fetchPlayers(accessKey));
       resetForm();
       router.refresh();
       setMessage(editingId ? "Jugador actualizado." : "Jugador añadido.");
@@ -284,12 +288,39 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         headers: accessKey ? { "x-training-key": accessKey } : undefined,
       });
       await parsePlayersResponse(response);
-      setItems(await fetchPlayers());
+      setItems(await fetchPlayers(accessKey));
       resetForm();
       router.refresh();
       setMessage("Jugador borrado.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "No se pudo borrar.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const restoreDefaults = async () => {
+    if (!unlocked) {
+      setMessage("Ingresa la clave antes de restaurar jugadores.");
+      return;
+    }
+
+    setSaving(true);
+    setMessage("Restaurando jugadores...");
+
+    try {
+      const response = await fetch("/api/players?restore=true", {
+        method: "DELETE",
+        credentials: "include",
+        headers: accessKey ? { "x-admin-key": accessKey } : undefined,
+      });
+      await parsePlayersResponse(response);
+      setItems(await fetchPlayers(accessKey));
+      resetForm();
+      router.refresh();
+      setMessage("Jugadores restaurados.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "No se pudo restaurar.");
     } finally {
       setSaving(false);
     }
@@ -340,7 +371,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
               </label>
               <input
                 type="number"
-                min="0"
+                min="1"
                 max="99"
                 value={form.number}
                 onChange={(event) =>
@@ -522,6 +553,15 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
                 del equipo.
               </p>
             </div>
+            <button
+              type="button"
+              onClick={restoreDefaults}
+              disabled={saving}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm font-semibold transition-colors hover:border-accent/40 hover:text-accent"
+            >
+              <RotateCcw size={17} aria-hidden="true" />
+              Restaurar
+            </button>
           </div>
         </section>
       )}

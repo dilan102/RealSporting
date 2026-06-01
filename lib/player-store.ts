@@ -1,23 +1,18 @@
 import { randomUUID } from "crypto";
-import { mkdir, readFile, unlink, writeFile } from "fs/promises";
+import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { Player, PlayerCategory } from "@/lib/content";
 import { getPlayerCategory, players as defaultPlayers } from "@/lib/content";
-import {
-  getDataDir,
-  getUploadDir,
-  getUploadPublicPrefix,
-} from "@/lib/file-storage";
+import { getUploadDir, getUploadPublicPrefix } from "@/lib/file-storage";
 import {
   isLikelyJunkText,
   isReadableText,
   validateReadableText,
 } from "@/lib/validators";
 import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
+import { prisma } from "@/lib/prisma";
 
-const dataDir = getDataDir();
 const uploadsDir = getUploadDir("players");
-const dataFile = path.join(dataDir, "players.json");
 const publicUploadPrefix = getUploadPublicPrefix("players");
 
 export type PlayerInput = {
@@ -39,30 +34,21 @@ const allowedTypes = new Map([
   ["image/svg+xml", ".svg"],
 ]);
 
-async function ensureStorage() {
-  await mkdir(dataDir, { recursive: true });
+type StoredPlayer = {
+  id: number;
+  nombre: string;
+  numero: number;
+  posicion: string;
+  bio: string;
+  imagen: string;
+  categoria: string;
+  convocado: boolean;
+  visiblePublico: boolean;
+  publicado: boolean;
+};
+
+async function ensureUploadStorage() {
   await mkdir(uploadsDir, { recursive: true });
-}
-
-function isPlayer(value: unknown): value is Player {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const item = value as Record<string, unknown>;
-
-  return (
-    typeof item.id === "string" &&
-    typeof item.name === "string" &&
-    typeof item.number === "number" &&
-    typeof item.position === "string" &&
-    typeof item.bio === "string" &&
-    typeof item.image === "string" &&
-    (typeof item.category === "string" || typeof item.category === "number") &&
-    (item.convocado === "SI" || item.convocado === "NO") &&
-    (item.visible_publico === undefined || typeof item.visible_publico === "boolean") &&
-    (item.status === undefined || item.status === "published" || item.status === "draft")
-  );
 }
 
 function normalizeCategory(value: string): PlayerCategory {
@@ -130,7 +116,7 @@ async function saveImage(file: File) {
     throw new Error("La imagen no puede superar 5 MB.");
   }
 
-  await ensureStorage();
+  await ensureUploadStorage();
 
   const extension = allowedTypes.get(file.type);
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
@@ -142,35 +128,83 @@ async function saveImage(file: File) {
   return `${publicUploadPrefix}${fileName}`;
 }
 
+function toPlayer(item: StoredPlayer): Player {
+  return {
+    id: String(item.id),
+    name: item.nombre,
+    number: item.numero,
+    position: item.posicion,
+    bio: item.bio,
+    image: item.imagen,
+    category: item.categoria as PlayerCategory,
+    convocado: item.convocado ? "SI" : "NO",
+    visible_publico: item.visiblePublico,
+    status: item.publicado ? "published" : "draft",
+  };
+}
+
+function idFromParam(id: string) {
+  const parsed = Number(id);
+
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error("El jugador no tiene un identificador válido.");
+  }
+
+  return parsed;
+}
+
 function isPublicPlayer(item: Player) {
-  if (!isPublishedEntry(item)) {
+  if (!isPublishedEntry(item) || item.visible_publico === false) {
     return false;
   }
 
   return !isLikelyJunkText(item.name) && !isLikelyJunkText(item.bio);
 }
 
+function databaseError(action: string, error: unknown) {
+  console.error(`No se pudo ${action} en la base de datos.`, error);
+  return new Error(`No se pudo ${action} en la base de datos.`);
+}
+
+function defaultPlayerRows() {
+  return defaultPlayers.map((item) => {
+    const visiblePublico = item.visible_publico ?? false;
+    const status = item.status ?? (visiblePublico ? "published" : "draft");
+
+    return {
+      nombre: item.name,
+      numero: item.number,
+      posicion: item.position,
+      bio: item.bio,
+      imagen: item.image,
+      categoria: String(item.category),
+      convocado: item.convocado === "SI",
+      visiblePublico,
+      publicado: status === "published" && visiblePublico,
+    };
+  });
+}
+
 export async function readPlayers(options?: { includeHidden?: boolean }) {
-  await ensureStorage();
   const includeHidden = options?.includeHidden ?? false;
 
   try {
-    const raw = await readFile(dataFile, "utf8");
-    const parsed = JSON.parse(raw) as unknown;
+    const items = await prisma.jugador.findMany({
+      where: includeHidden
+        ? undefined
+        : {
+            publicado: true,
+            visiblePublico: true,
+          },
+      orderBy: [{ categoria: "asc" }, { numero: "asc" }, { id: "asc" }],
+    });
 
-    if (Array.isArray(parsed) && parsed.every(isPlayer)) {
-      return parsed.filter((item) => includeHidden || isPublicPlayer(item));
-    }
-  } catch {
-    // Missing or invalid storage falls back to the starter roster.
+    return items.map(toPlayer).filter((item) => includeHidden || isPublicPlayer(item));
+  } catch (error) {
+    console.error("No se pudieron leer los jugadores desde la base de datos.", error);
   }
 
   return defaultPlayers.filter((item) => includeHidden || isPublicPlayer(item));
-}
-
-async function writePlayers(items: Player[]) {
-  await ensureStorage();
-  await writeFile(dataFile, JSON.stringify(items, null, 2), "utf8");
 }
 
 export async function createPlayer(input: PlayerInput) {
@@ -181,48 +215,107 @@ export async function createPlayer(input: PlayerInput) {
   }
 
   const image = await saveImage(input.image);
-  const current = await readPlayers({ includeHidden: true });
-  const player: Player = {
-    id: `jugador-${randomUUID()}`,
-    ...clean,
-    image,
-  };
 
-  await writePlayers([...current, player]);
+  try {
+    const player = await prisma.jugador.create({
+      data: {
+        nombre: clean.name,
+        numero: clean.number,
+        posicion: clean.position,
+        bio: clean.bio,
+        imagen: image,
+        categoria: String(clean.category),
+        convocado: clean.convocado === "SI",
+        visiblePublico: clean.visible_publico,
+        publicado: clean.status === "published" && clean.visible_publico,
+      },
+    });
 
-  return player;
+    return toPlayer(player);
+  } catch (error) {
+    await removeUploadedFile(image);
+    throw databaseError("crear el jugador", error);
+  }
 }
 
 export async function updatePlayer(id: string, input: PlayerInput) {
   const clean = normalizeInput(input);
-  const current = await readPlayers({ includeHidden: true });
-  const existing = current.find((item) => item.id === id);
+  const numericId = idFromParam(id);
+  const existing = await prisma.jugador
+    .findUnique({ where: { id: numericId } })
+    .catch((error) => {
+      throw databaseError("consultar el jugador", error);
+    });
 
   if (!existing) {
     throw new Error("No se encontró el jugador.");
   }
 
-  const image = input.image ? await saveImage(input.image) : existing.image;
-  const updated: Player = { id, ...clean, image };
-  const nextItems = current.map((item) => (item.id === id ? updated : item));
+  const image = input.image ? await saveImage(input.image) : existing.imagen;
 
-  await writePlayers(nextItems);
+  try {
+    const updated = await prisma.jugador.update({
+      where: { id: numericId },
+      data: {
+        nombre: clean.name,
+        numero: clean.number,
+        posicion: clean.position,
+        bio: clean.bio,
+        imagen: image,
+        categoria: String(clean.category),
+        convocado: clean.convocado === "SI",
+        visiblePublico: clean.visible_publico,
+        publicado: clean.status === "published" && clean.visible_publico,
+      },
+    });
 
-  if (input.image && existing.image !== image) {
-    await removeUploadedFile(existing.image);
+    if (input.image && existing.imagen !== image) {
+      await removeUploadedFile(existing.imagen);
+    }
+
+    return toPlayer(updated);
+  } catch (error) {
+    if (input.image) {
+      await removeUploadedFile(image);
+    }
+
+    throw databaseError("actualizar el jugador", error);
   }
-
-  return updated;
 }
 
 export async function deletePlayer(id: string) {
-  const current = await readPlayers({ includeHidden: true });
-  const existing = current.find((item) => item.id === id);
+  const numericId = idFromParam(id);
+  const existing = await prisma.jugador
+    .findUnique({ where: { id: numericId } })
+    .catch((error) => {
+      throw databaseError("consultar el jugador", error);
+    });
 
   if (!existing) {
     throw new Error("No se encontró el jugador.");
   }
 
-  await writePlayers(current.filter((item) => item.id !== id));
-  await removeUploadedFile(existing.image);
+  await prisma.jugador.delete({ where: { id: numericId } }).catch((error) => {
+    throw databaseError("borrar el jugador", error);
+  });
+  await removeUploadedFile(existing.imagen);
+}
+
+export async function restoreDefaultPlayers() {
+  const current = await prisma.jugador
+    .findMany()
+    .catch((error) => {
+      throw databaseError("consultar los jugadores", error);
+    });
+
+  await prisma.$transaction([
+    prisma.jugador.deleteMany(),
+    prisma.jugador.createMany({ data: defaultPlayerRows() }),
+  ]).catch((error) => {
+    throw databaseError("restaurar los jugadores", error);
+  });
+
+  await Promise.all(current.map((item) => removeUploadedFile(item.imagen)));
+
+  return readPlayers({ includeHidden: true });
 }

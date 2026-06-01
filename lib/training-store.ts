@@ -1,13 +1,9 @@
 import { randomUUID } from "crypto";
-import { mkdir, readFile, unlink, writeFile } from "fs/promises";
+import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
 import type { Training } from "@/lib/content";
 import { trainings as defaultTrainings } from "@/lib/content";
-import {
-  getDataDir,
-  getUploadDir,
-  getUploadPublicPrefix,
-} from "@/lib/file-storage";
+import { getUploadDir, getUploadPublicPrefix } from "@/lib/file-storage";
 import {
   TRAINING_TEXT_PLACEHOLDER,
   isLikelyJunkText,
@@ -17,10 +13,9 @@ import {
   validateTrainingTitle,
 } from "@/lib/validators";
 import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
+import { prisma } from "@/lib/prisma";
 
-const dataDir = getDataDir();
 const uploadsDir = getUploadDir("trainings");
-const dataFile = path.join(dataDir, "trainings.json");
 const publicUploadPrefix = getUploadPublicPrefix("trainings");
 
 export type TrainingInput = {
@@ -46,33 +41,20 @@ const allowedVideoTypes = new Map([
   ["video/quicktime", ".mov"],
 ]);
 
-async function ensureStorage() {
-  await mkdir(dataDir, { recursive: true });
+type StoredTraining = {
+  id: number;
+  titulo: string;
+  descripcion: string | null;
+  imagen: string | null;
+  imagenes: string[] | null;
+  videos: string[] | null;
+  fecha: Date;
+  oculto: boolean;
+  publicado: boolean;
+};
+
+async function ensureUploadStorage() {
   await mkdir(uploadsDir, { recursive: true });
-}
-
-function isTraining(value: unknown): value is Training {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const item = value as Record<string, unknown>;
-
-  return (
-    typeof item.id === "string" &&
-    typeof item.title === "string" &&
-    typeof item.date === "string" &&
-    typeof item.description === "string" &&
-    typeof item.image === "string" &&
-    (item.images === undefined ||
-      (Array.isArray(item.images) &&
-        item.images.every((image) => typeof image === "string"))) &&
-    (item.videos === undefined ||
-      (Array.isArray(item.videos) &&
-        item.videos.every((video) => typeof video === "string"))) &&
-    (item.hidden === undefined || typeof item.hidden === "boolean") &&
-    (item.status === undefined || item.status === "published" || item.status === "draft")
-  );
 }
 
 function normalizeInput(input: TrainingInput) {
@@ -83,6 +65,14 @@ function normalizeInput(input: TrainingInput) {
   const status: PublishStatus = input.status ?? (hidden ? "draft" : "published");
 
   return { title, date, description, hidden, status };
+}
+
+function dateFromInput(date: string) {
+  return new Date(`${date}T00:00:00.000Z`);
+}
+
+function dateToInputValue(date: Date) {
+  return date.toISOString().slice(0, 10);
 }
 
 function isValidTrainingDate(date: string) {
@@ -139,7 +129,7 @@ async function saveImage(file: File) {
     throw new Error("La imagen no puede superar 5 MB.");
   }
 
-  await ensureStorage();
+  await ensureUploadStorage();
 
   const extension = allowedImageTypes.get(file.type);
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
@@ -160,7 +150,7 @@ async function saveVideo(file: File) {
     throw new Error("El video no puede superar 80 MB.");
   }
 
-  await ensureStorage();
+  await ensureUploadStorage();
 
   const extension = allowedVideoTypes.get(file.type);
   const fileName = `${Date.now()}-${randomUUID()}${extension}`;
@@ -184,25 +174,81 @@ function getTrainingVideos(training: Training) {
   return training.videos && training.videos.length > 0 ? training.videos : [];
 }
 
+function toTraining(item: StoredTraining): Training {
+  const storedImages = item.imagenes ?? [];
+  const storedVideos = item.videos ?? [];
+  const images = storedImages.length > 0 ? storedImages : item.imagen ? [item.imagen] : [];
+
+  return {
+    id: String(item.id),
+    title: sanitizeTextOrDefault(item.titulo, "Entrenamiento Real Sporting"),
+    date: dateToInputValue(item.fecha),
+    description: sanitizeTextOrDefault(
+      item.descripcion || TRAINING_TEXT_PLACEHOLDER,
+      TRAINING_TEXT_PLACEHOLDER,
+    ),
+    image: images[0] || item.imagen || "",
+    images,
+    videos: storedVideos,
+    hidden: item.oculto,
+    status: item.publicado && !item.oculto ? "published" : "draft",
+  };
+}
+
+function idFromParam(id: string) {
+  const parsed = Number(id);
+
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error("El entrenamiento no tiene un identificador válido.");
+  }
+
+  return parsed;
+}
+
+function databaseError(action: string, error: unknown) {
+  console.error(`No se pudo ${action} en la base de datos.`, error);
+  return new Error(`No se pudo ${action} en la base de datos.`);
+}
+
+function defaultTrainingRows() {
+  return defaultTrainings.map((item) => {
+    const images = getTrainingImages(item);
+    const hidden = item.hidden ?? item.status === "draft";
+    const status = item.status ?? (hidden ? "draft" : "published");
+
+    return {
+      titulo: item.title,
+      descripcion: item.description,
+      fecha: dateFromInput(item.date),
+      imagen: images[0] || null,
+      imagenes: images,
+      videos: getTrainingVideos(item),
+      oculto: hidden,
+      publicado: status === "published" && !hidden,
+    };
+  });
+}
+
 export async function readTrainings(options?: { includeHidden?: boolean }) {
-  await ensureStorage();
   const includeHidden = options?.includeHidden ?? false;
 
   try {
-    const raw = await readFile(dataFile, "utf8");
-    const parsed = JSON.parse(raw) as unknown;
+    const items = await prisma.entrenamiento.findMany({
+      where: includeHidden
+        ? undefined
+        : {
+            publicado: true,
+            oculto: false,
+          },
+      orderBy: [{ fecha: "desc" }, { id: "desc" }],
+    });
 
-    if (Array.isArray(parsed) && parsed.every(isTraining)) {
-      return parsed
-        .filter((item) => includeHidden || isPublicTraining(item))
-        .map((item) => ({
-          ...item,
-          title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
-          description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
-        }));
-    }
-  } catch {
-    // Missing or invalid storage falls back to the curated starter content.
+    return items.map(toTraining).filter((item) => includeHidden || isPublicTraining(item));
+  } catch (error) {
+    console.error(
+      "No se pudieron leer los entrenamientos desde la base de datos.",
+      error,
+    );
   }
 
   return defaultTrainings
@@ -214,43 +260,51 @@ export async function readTrainings(options?: { includeHidden?: boolean }) {
     }));
 }
 
-async function writeTrainings(items: Training[]) {
-  await ensureStorage();
-  await writeFile(dataFile, JSON.stringify(items, null, 2), "utf8");
-}
-
 export async function createTraining(input: TrainingInput) {
   const clean = normalizeInput(input);
   const imageFiles = input.images || [];
   const videoFiles = input.videos || [];
-
   const images = await Promise.all(imageFiles.map((file) => saveImage(file)));
   const videos = await Promise.all(videoFiles.map((file) => saveVideo(file)));
-  const current = await readTrainings({ includeHidden: true });
-  const training: Training = {
-    id: `entrenamiento-${randomUUID()}`,
-    ...clean,
-    image: images[0] || "",
-    images,
-    videos,
-  };
+  const hidden = clean.hidden || clean.status === "draft";
 
-  await writeTrainings([training, ...current]);
+  try {
+    const training = await prisma.entrenamiento.create({
+      data: {
+        titulo: clean.title,
+        descripcion: clean.description,
+        fecha: dateFromInput(clean.date),
+        imagen: images[0] || null,
+        imagenes: images,
+        videos,
+        oculto: hidden,
+        publicado: clean.status === "published" && !hidden,
+      },
+    });
 
-  return training;
+    return toTraining(training);
+  } catch (error) {
+    await Promise.all([...images, ...videos].map((item) => removeUploadedFile(item)));
+    throw databaseError("crear el entrenamiento", error);
+  }
 }
 
 export async function updateTraining(id: string, input: TrainingInput) {
   const clean = normalizeInput(input);
-  const current = await readTrainings({ includeHidden: true });
-  const existing = current.find((item) => item.id === id);
+  const numericId = idFromParam(id);
+  const existing = await prisma.entrenamiento
+    .findUnique({ where: { id: numericId } })
+    .catch((error) => {
+      throw databaseError("consultar el entrenamiento", error);
+    });
 
   if (!existing) {
     throw new Error("No se encontró el entrenamiento.");
   }
 
-  const existingImages = getTrainingImages(existing);
-  const existingVideos = getTrainingVideos(existing);
+  const existingTraining = toTraining(existing);
+  const existingImages = getTrainingImages(existingTraining);
+  const existingVideos = getTrainingVideos(existingTraining);
   const newImages =
     input.images && input.images.length > 0
       ? await Promise.all(input.images.map((file) => saveImage(file)))
@@ -261,41 +315,78 @@ export async function updateTraining(id: string, input: TrainingInput) {
       : [];
   const images = [...existingImages, ...newImages];
   const videos = [...existingVideos, ...newVideos];
-  const updated: Training = { id, ...clean, image: images[0] || "", images, videos };
-  const nextItems = current.map((item) => (item.id === id ? updated : item));
+  const hidden = clean.hidden || clean.status === "draft";
 
-  await writeTrainings(nextItems);
+  try {
+    const updated = await prisma.entrenamiento.update({
+      where: { id: numericId },
+      data: {
+        titulo: clean.title,
+        descripcion: clean.description,
+        fecha: dateFromInput(clean.date),
+        imagen: images[0] || null,
+        imagenes: images,
+        videos,
+        oculto: hidden,
+        publicado: clean.status === "published" && !hidden,
+      },
+    });
 
-  return updated;
+    return toTraining(updated);
+  } catch (error) {
+    await Promise.all([...newImages, ...newVideos].map((item) => removeUploadedFile(item)));
+    throw databaseError("actualizar el entrenamiento", error);
+  }
 }
 
 export async function deleteTraining(id: string) {
-  const current = await readTrainings({ includeHidden: true });
-  const existing = current.find((item) => item.id === id);
+  const numericId = idFromParam(id);
+  const existing = await prisma.entrenamiento
+    .findUnique({ where: { id: numericId } })
+    .catch((error) => {
+      throw databaseError("consultar el entrenamiento", error);
+    });
 
   if (!existing) {
     throw new Error("No se encontró el entrenamiento.");
   }
 
-  await writeTrainings(current.filter((item) => item.id !== id));
+  await prisma.entrenamiento.delete({ where: { id: numericId } }).catch((error) => {
+    throw databaseError("borrar el entrenamiento", error);
+  });
+
+  const training = toTraining(existing);
+
   await Promise.all(
-    [...getTrainingImages(existing), ...getTrainingVideos(existing)].map((item) =>
+    [...getTrainingImages(training), ...getTrainingVideos(training)].map((item) =>
       removeUploadedFile(item),
     ),
   );
 }
 
 export async function restoreDefaultTrainings() {
-  const current = await readTrainings({ includeHidden: true });
+  const current = await prisma.entrenamiento
+    .findMany()
+    .catch((error) => {
+      throw databaseError("consultar los entrenamientos", error);
+    });
+
+  await prisma.$transaction([
+    prisma.entrenamiento.deleteMany(),
+    prisma.entrenamiento.createMany({ data: defaultTrainingRows() }),
+  ]).catch((error) => {
+    throw databaseError("restaurar los entrenamientos", error);
+  });
 
   await Promise.all(
-    current.flatMap((item) =>
-      [...getTrainingImages(item), ...getTrainingVideos(item)].map((media) =>
-        removeUploadedFile(media),
-      ),
-    ),
-  );
-  await writeTrainings(defaultTrainings);
+    current.flatMap((item) => {
+      const training = toTraining(item);
 
-  return defaultTrainings;
+      return [...getTrainingImages(training), ...getTrainingVideos(training)].map((media) =>
+        removeUploadedFile(media),
+      );
+    }),
+  );
+
+  return readTrainings({ includeHidden: true });
 }

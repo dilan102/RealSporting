@@ -45,8 +45,10 @@ async function trainingInputFromFormData(request: NextRequest) {
   };
 }
 
-export async function GET() {
-  const items = await readTrainings();
+export async function GET(request: NextRequest) {
+  const items = await readTrainings({
+    includeHidden: await isAdminApiAuthorized(request),
+  });
 
   return NextResponse.json({ items });
 }
@@ -59,7 +61,7 @@ export async function POST(request: NextRequest) {
   try {
     const input = await trainingInputFromFormData(request);
     const item = await createTraining(input);
-    const items = await readTrainings();
+    const items = await readTrainings({ includeHidden: true });
 
     return NextResponse.json({ item, items }, { status: 201 });
   } catch (error) {
@@ -81,7 +83,7 @@ export async function PUT(request: NextRequest) {
   try {
     const input = await trainingInputFromFormData(request);
     const item = await updateTraining(id, input);
-    const items = await readTrainings();
+    const items = await readTrainings({ includeHidden: true });
 
     return NextResponse.json({ item, items });
   } catch (error) {
@@ -110,7 +112,7 @@ export async function DELETE(request: NextRequest) {
 
     await deleteTraining(id);
 
-    return NextResponse.json({ items: await readTrainings() });
+    return NextResponse.json({ items: await readTrainings({ includeHidden: true }) });
   } catch (error) {
     return errorResponse(error);
   }

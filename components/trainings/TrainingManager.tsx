@@ -74,8 +74,12 @@ async function parseTrainingResponse(response: Response) {
   return payload;
 }
 
-async function fetchTrainings() {
-  const response = await fetch("/api/trainings", { cache: "no-store" });
+async function fetchTrainings(accessKey = "") {
+  const response = await fetch("/api/trainings", {
+    cache: "no-store",
+    credentials: "include",
+    headers: accessKey ? { "x-admin-key": accessKey } : undefined,
+  });
   const payload = await parseTrainingResponse(response);
 
   return payload.items || [];
@@ -103,9 +107,9 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     let active = true;
 
     setLoading(true);
-    fetchTrainings()
+    fetchTrainings(accessKey)
       .then((nextItems) => {
-        if (active && nextItems.length > 0) {
+        if (active) {
           setItems(nextItems);
         }
       })
@@ -123,7 +127,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     return () => {
       active = false;
     };
-  }, []);
+  }, [accessKey, session?.user?.isAdmin]);
 
   useEffect(() => {
     const syncAdminAccess = () => {
@@ -265,7 +269,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
         },
       );
       await parseTrainingResponse(response);
-      setItems(await fetchTrainings());
+      setItems(await fetchTrainings(accessKey));
 
       resetForm();
       router.refresh();
@@ -314,7 +318,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
         headers: accessKey ? { "x-training-key": accessKey } : undefined,
       });
       await parseTrainingResponse(response);
-      setItems(await fetchTrainings());
+      setItems(await fetchTrainings(accessKey));
 
       if (editingId === id) {
         resetForm();
@@ -340,7 +344,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
         headers: accessKey ? { "x-training-key": accessKey } : undefined,
       });
       await parseTrainingResponse(response);
-      setItems(await fetchTrainings());
+      setItems(await fetchTrainings(accessKey));
 
       resetForm();
       router.refresh();

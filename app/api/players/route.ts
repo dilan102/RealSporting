@@ -3,6 +3,7 @@ import {
   createPlayer,
   deletePlayer,
   readPlayers,
+  restoreDefaultPlayers,
   updatePlayer,
 } from "@/lib/player-store";
 import { isAdminApiAuthorized } from "@/lib/admin-auth";
@@ -39,8 +40,10 @@ async function playerInputFromFormData(request: NextRequest) {
   };
 }
 
-export async function GET() {
-  const items = await readPlayers();
+export async function GET(request: NextRequest) {
+  const items = await readPlayers({
+    includeHidden: await isAdminApiAuthorized(request),
+  });
 
   return NextResponse.json({ items });
 }
@@ -53,7 +56,7 @@ export async function POST(request: NextRequest) {
   try {
     const input = await playerInputFromFormData(request);
     const item = await createPlayer(input);
-    const items = await readPlayers();
+    const items = await readPlayers({ includeHidden: true });
 
     return NextResponse.json({ item, items }, { status: 201 });
   } catch (error) {
@@ -75,7 +78,7 @@ export async function PUT(request: NextRequest) {
   try {
     const input = await playerInputFromFormData(request);
     const item = await updatePlayer(id, input);
-    const items = await readPlayers();
+    const items = await readPlayers({ includeHidden: true });
 
     return NextResponse.json({ item, items });
   } catch (error) {
@@ -88,16 +91,23 @@ export async function DELETE(request: NextRequest) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 
-  const id = request.nextUrl.searchParams.get("id");
-
-  if (!id) {
-    return errorResponse(new Error("Falta el jugador a borrar."));
-  }
-
   try {
+    const restore = request.nextUrl.searchParams.get("restore");
+    const id = request.nextUrl.searchParams.get("id");
+
+    if (restore === "true") {
+      const items = await restoreDefaultPlayers();
+
+      return NextResponse.json({ items });
+    }
+
+    if (!id) {
+      return errorResponse(new Error("Falta el jugador a borrar."));
+    }
+
     await deletePlayer(id);
 
-    return NextResponse.json({ items: await readPlayers() });
+    return NextResponse.json({ items: await readPlayers({ includeHidden: true }) });
   } catch (error) {
     return errorResponse(error);
   }

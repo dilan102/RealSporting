@@ -22,6 +22,7 @@ const uploadsDir = getUploadDir("news");
 const publicUploadPrefix = getUploadPublicPrefix("news");
 const fallbackImage = "/logo.png";
 const notFoundMessage = "No se encontró la noticia.";
+const newsRetentionMs = 30 * 24 * 60 * 60 * 1000;
 
 export type NewsInput = {
   title: string;
@@ -69,6 +70,14 @@ function dateFromInput(date: string) {
 
 function dateToInputValue(date: Date) {
   return date.toISOString().slice(0, 10);
+}
+
+export function getNewsExpirationCutoff(now = new Date()) {
+  return new Date(now.getTime() - newsRetentionMs);
+}
+
+function isNewsWithinRetention(date: string) {
+  return dateFromInput(date).getTime() >= getNewsExpirationCutoff().getTime();
 }
 
 function uploadedPathFromPublicUrl(url: string) {
@@ -164,10 +173,42 @@ function databaseError(action: string, error: unknown) {
   return new Error(`No se pudo ${action} en la base de datos.`);
 }
 
+export async function cleanupExpiredNews(now = new Date()) {
+  const cutoff = getNewsExpirationCutoff(now);
+  const expired = await prisma.noticia
+    .findMany({
+      where: { fecha: { lt: cutoff } },
+      select: { id: true, imagen: true },
+    })
+    .catch((error) => {
+      throw databaseError("consultar noticias vencidas", error);
+    });
+
+  if (expired.length === 0) {
+    return { deleted: 0, cutoff };
+  }
+
+  await prisma.noticia
+    .deleteMany({ where: { id: { in: expired.map((item) => item.id) } } })
+    .catch((error) => {
+      throw databaseError("borrar noticias vencidas", error);
+    });
+
+  await Promise.all(
+    expired.map((item) => (item.imagen ? removeUploadedFile(item.imagen) : undefined)),
+  );
+
+  return { deleted: expired.length, cutoff };
+}
+
 export async function readNews(options?: { includeDrafts?: boolean }) {
   const includeDrafts = options?.includeDrafts ?? false;
 
   try {
+    await cleanupExpiredNews().catch((error) => {
+      console.error("No se pudieron limpiar las noticias vencidas.", error);
+    });
+
     const items = await prisma.noticia.findMany({
       where: includeDrafts ? undefined : { publicada: true },
       orderBy: [{ fecha: "desc" }, { id: "desc" }],
@@ -179,7 +220,11 @@ export async function readNews(options?: { includeDrafts?: boolean }) {
   }
 
   return defaultNews
-    .filter((item) => includeDrafts || (item.status ?? "published") !== "draft")
+    .filter(
+      (item) =>
+        isNewsWithinRetention(item.date) &&
+        (includeDrafts || (item.status ?? "published") !== "draft"),
+    )
     .map((item) => ({
       ...item,
       title: sanitizeTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER),

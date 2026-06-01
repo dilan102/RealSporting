@@ -15,6 +15,11 @@ model Noticia {
   fecha     DateTime @default(now())
   categoria String
   publicada Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([fecha])
+  @@index([publicada, fecha])
 }
 
 model Entrenamiento {
@@ -22,5 +27,31 @@ model Entrenamiento {
   titulo      String
   descripcion String?
   imagen      String?
+  imagenes    String[] @default([])
+  videos      String[] @default([])
   fecha       DateTime @default(now())
+  oculto      Boolean  @default(false)
+  publicado   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  @@index([publicado, fecha])
+}
+
+model Jugador {
+  id             Int      @id @default(autoincrement())
+  nombre         String
+  numero         Int
+  posicion       String
+  bio            String
+  imagen         String
+  categoria      String
+  convocado      Boolean  @default(false)
+  visiblePublico Boolean  @default(false)
+  publicado      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+
+  @@index([publicado, visiblePublico])
+  @@index([categoria])
 }

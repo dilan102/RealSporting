@@ -22,6 +22,14 @@ export async function isAdminApiAuthorized(request: NextRequest) {
     return true;
   }
 
+  const hasSessionCookie =
+    request.cookies.has("next-auth.session-token") ||
+    request.cookies.has("__Secure-next-auth.session-token");
+
+  if (!hasSessionCookie) {
+    return false;
+  }
+
   try {
     const session = await getAdminSession();
 
