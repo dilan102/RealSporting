@@ -7,7 +7,10 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { club } from "@/lib/content";
 
-const heroImages = ["/banner.png", "/trainings/3.svg", "/trainings/6.svg"];
+const heroBanners = {
+  dark: "/banner.png",
+  light: "/banner claro.png",
+};
 
 const stats = [
   { value: 7, suffix: "", label: "Categorías" },
@@ -94,20 +97,38 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative isolate min-h-[92vh] overflow-hidden bg-bg text-text">
-      <div className="absolute inset-0">
-        <Image
-          src={heroImages[0]}
-          alt={`Jugadores de ${club.name}`}
-          fill
-          priority
-          sizes="100vw"
-          className="hero-main-image object-center"
+    <section className="hero-section relative isolate min-h-[92vh] overflow-hidden bg-bg text-text">
+      <div className="hero-banner-stage absolute inset-0">
+        <div
+          className="hero-banner-parallax absolute inset-0"
           style={{ transform: `translate3d(0, ${parallax}px, 0)` }}
-        />
+        >
+          <div className="hero-banner-flip absolute inset-0">
+            <div className="hero-banner-face absolute inset-0">
+              <Image
+                src={heroBanners.dark}
+                alt={`Jugadores de ${club.name}`}
+                fill
+                priority
+                sizes="100vw"
+                className="hero-main-image object-center"
+              />
+            </div>
+            <div className="hero-banner-face hero-banner-face-light absolute inset-0">
+              <Image
+                src={heroBanners.light}
+                alt={`Jugadores de ${club.name}`}
+                fill
+                priority
+                sizes="100vw"
+                className="hero-main-image object-center"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div className="absolute inset-0 bg-[var(--hero-overlay)]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/35 to-black/18" />
+      <div className="hero-theme-gradient absolute inset-0" />
       <div className="pointer-events-none absolute inset-0 grid-overlay opacity-20" />
 
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl items-end px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
@@ -124,7 +145,7 @@ export function Hero() {
             Club deportivo
           </div>
 
-          <h1 className="mt-6 max-w-5xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_90ms_both] text-[clamp(3rem,12vw,6rem)] font-black leading-[0.96] text-white drop-shadow-xl">
+          <h1 className="hero-title mt-6 max-w-5xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_90ms_both] text-[clamp(3rem,12vw,6rem)] font-black leading-[0.96] drop-shadow-xl">
             Desde Usme.
             <br />
             Con disciplina.
@@ -132,7 +153,7 @@ export function Hero() {
             Hacia el futuro.
           </h1>
 
-          <p className="mt-6 max-w-2xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_180ms_both] text-base font-semibold leading-8 text-white sm:text-xl">
+          <p className="hero-copy mt-6 max-w-2xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_180ms_both] text-base font-semibold leading-8 sm:text-xl">
             {club.tagline}. Formamos jugadores con método, valores y sentido
             de pertenencia.
           </p>
@@ -146,7 +167,7 @@ export function Hero() {
             </RegistrationModal>
             <Link
               href="/club"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/45 bg-white/12 px-6 text-sm font-bold text-white backdrop-blur-md transition-all hover:scale-[1.03] hover:border-accent hover:bg-white/18 hover:shadow-lg hover:shadow-[var(--accent-gold)]/20"
+              className="hero-secondary-button inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-6 text-sm font-bold backdrop-blur-md transition-all hover:scale-[1.03] hover:border-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/20"
             >
               Proyecto deportivo
             </Link>
@@ -158,7 +179,7 @@ export function Hero() {
             ))}
           </div>
 
-          <p className="mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-white/85">
+          <p className="hero-location mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em]">
             <MapPin size={15} aria-hidden="true" />
             Usme · Bogotá
           </p>
