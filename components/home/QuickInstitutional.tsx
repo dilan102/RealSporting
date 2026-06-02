@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Trophy, UsersRound } from "lucide-react";
 import { ValuePillarsStrip } from "@/components/home/ValuePillarsStrip";
 const institutionalIntro =
-  "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y adolecentes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.";
+  "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y adolescentes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.";
 
 const programCards = [
   {
@@ -19,7 +19,7 @@ const programCards = [
     description:
       "Sesiones orientadas a decisión, presión, finalización y comportamiento en torneo.",
     href: "/entrenamientos",
-    cta: "Ver galería",
+    cta: "Ver entrenamientos",
     icon: Trophy,
   },
   {
@@ -89,17 +89,17 @@ export function QuickInstitutional() {
           </div>
 
           <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
-            <div className="alive-card group relative min-h-[420px] overflow-hidden rounded-lg border border-border bg-[#050805] shadow-2xl">
+            <div className="cinematic-card alive-card group relative min-h-[420px] overflow-hidden rounded-lg border border-border shadow-2xl">
               <Image
                 src="/brand/gallery-team.jpg"
-                alt=""
+                alt="Equipo del Club Deportivo Real Sporting en sesión de entrenamiento"
                 fill
                 className="interactive-image object-cover object-center"
                 sizes="(min-width: 1024px) 56vw, 100vw"
               />
               <div className="image-card-overlay absolute inset-0" />
               <div className="absolute bottom-0 left-0 max-w-lg p-6 text-white sm:p-8">
-                <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
+                <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
                   Método formativo
                 </p>
                 <h3 className="font-institutional mt-4 text-balance text-3xl font-black leading-tight sm:text-4xl">

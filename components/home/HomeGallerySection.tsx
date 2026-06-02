@@ -12,32 +12,37 @@ export function HomeGallerySection() {
           <h2 className="font-gallery kinetic-heading mt-4 text-balance text-3xl font-black leading-[1.04] sm:text-4xl lg:text-5xl">
             Sesiones con método, intensidad y trabajo en equipo cada semana.
           </h2>
+          <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
+            Vista visual del trabajo en cancha. Más abajo encontrarás el registro de las últimas
+            sesiones publicadas.
+          </p>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
           {galleryItems.map((item, index) => (
-            <article
+            <Link
               key={item.title}
-              className={`alive-card group relative min-h-[280px] overflow-hidden rounded-lg border border-border bg-[#050805] text-white shadow-sm ${
+              href="/entrenamientos"
+              className={`cinematic-card alive-card premium-card-hover group relative min-h-[280px] overflow-hidden rounded-lg border border-border shadow-sm ${
                 index === 0 ? "lg:row-span-2 lg:min-h-[580px]" : ""
               }`}
             >
               <Image
                 src={item.image}
-                alt=""
+                alt={item.title}
                 fill
-                className="interactive-image object-cover"
+                className="interactive-image object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes={index === 0 ? "(min-width: 1024px) 58vw, 100vw" : "(min-width: 1024px) 38vw, 100vw"}
               />
               <div className="image-card-overlay absolute inset-0" />
               <div className="absolute bottom-0 left-0 p-5">
-                <p className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-normal text-[#f3c548]">
+                <p className="cinematic-accent inline-flex items-center gap-2 text-xs font-black uppercase tracking-normal">
                   <Dumbbell size={15} aria-hidden="true" />
                   {item.category}
                 </p>
                 <h3 className="font-gallery mt-2 text-3xl font-black sm:text-4xl">{item.title}</h3>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

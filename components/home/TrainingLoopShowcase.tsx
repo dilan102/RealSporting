@@ -110,7 +110,7 @@ export function TrainingLoopShowcase({ items }: Props) {
             href="/entrenamientos"
             className="btn-green mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-bold"
           >
-            Ver galería
+            Ver entrenamientos
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
@@ -134,13 +134,13 @@ export function TrainingLoopShowcase({ items }: Props) {
         <div className="mobile-reveal flex flex-wrap items-end justify-between gap-5">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-normal text-accent">
-              Entrenamientos
+              Registro de sesiones
             </p>
             <h2 className="font-training kinetic-heading mt-3 text-5xl font-black leading-none tracking-normal sm:text-6xl">
-              Últimas sesiones del proceso
+              Últimas sesiones publicadas
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
-              Registro visual de las actividades recientes del cuerpo técnico.
+              Fechas, imágenes y detalle de las actividades recientes del cuerpo técnico.
             </p>
           </div>
           <Link

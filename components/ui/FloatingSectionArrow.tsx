@@ -48,10 +48,16 @@ export function FloatingSectionArrow({ sectionIds }: FloatingSectionArrowProps) 
   }
 
   const scrollToTarget = () => {
-    document.getElementById(targetId)?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    const target = document.getElementById(targetId);
+
+    if (!target) {
+      return;
+    }
+
+    const offset = 112;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   return (

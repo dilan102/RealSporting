@@ -15,7 +15,7 @@ export function PageHero({
   image = "/brand/gallery-team.jpg",
 }: PageHeroProps) {
   return (
-    <section className="section-ambient relative isolate overflow-hidden border-b border-border bg-[#050805] text-white">
+    <section className="cinematic-section section-ambient relative isolate overflow-hidden border-b border-border">
       <div className="absolute inset-0">
         <Image
           src={image}
@@ -25,8 +25,8 @@ export function PageHero({
           className="hero-photo object-cover object-center opacity-60"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,14,9,0.94),rgba(5,14,9,0.72)_48%,rgba(5,14,9,0.28))]" />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,14,9,0.18),rgba(5,14,9,0.86))]" />
+        <div className="hero-overlay-h absolute inset-0" />
+        <div className="hero-overlay-v absolute inset-0" />
         <div className="absolute inset-0 grid-overlay opacity-[0.12]" />
       </div>
 
@@ -42,7 +42,7 @@ export function PageHero({
               aria-hidden="true"
             />
           </span>
-          <p className="text-xs font-black uppercase tracking-normal text-[#d0a13a]">
+          <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
             {eyebrow}
           </p>
         </div>

@@ -16,7 +16,7 @@ export function HomeContactBand() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55, ease: PRELOADER_EASE }}
-          className="home-inscription-band relative overflow-hidden rounded-lg border border-accent/25 bg-[#050805] text-white shadow-2xl shadow-[var(--accent-green)]/10"
+          className="home-inscription-band cinematic-section relative overflow-hidden rounded-lg border text-white shadow-2xl shadow-[var(--accent-green)]/10"
         >
           <div
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(208,161,58,0.22),transparent_38%),radial-gradient(circle_at_88%_82%,rgba(43,118,85,0.28),transparent_42%)]"
@@ -29,7 +29,7 @@ export function HomeContactBand() {
 
           <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:p-10">
             <div>
-              <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
+              <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
                 Inscripción
               </p>
               <h2 className="mt-4 text-balance text-3xl font-black leading-tight sm:text-5xl">
@@ -68,9 +68,9 @@ export function HomeContactBand() {
                   viewport={{ once: true }}
                   transition={{ delay: 0.08 * index, duration: 0.4, ease: PRELOADER_EASE }}
                   whileHover={{ y: -3, scale: 1.01 }}
-                  className="alive-card rounded-lg border border-white/14 bg-white/10 p-4 backdrop-blur-sm transition-shadow hover:border-[#f3c548]/45 hover:shadow-lg hover:shadow-[#f3c548]/10"
+                  className="alive-card rounded-lg border border-white/14 bg-white/10 p-4 backdrop-blur-sm transition-shadow hover:border-[color-mix(in_srgb,var(--cinematic-accent)_45%,transparent)] hover:shadow-lg hover:shadow-[var(--accent-gold)]/10"
                 >
-                  <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
+                  <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
                     {step.step}
                   </p>
                   <h3 className="mt-2 text-lg font-black">{step.title}</h3>
@@ -79,7 +79,7 @@ export function HomeContactBand() {
               ))}
               <Link
                 href="/contacto#documentos"
-                className="alive-lift inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/22 bg-white/8 px-4 text-sm font-black text-white transition-all hover:border-[#f3c548] hover:bg-white/14"
+                className="alive-lift inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/22 bg-white/8 px-4 text-sm font-black text-white transition-all hover:border-[var(--cinematic-accent)] hover:bg-white/14"
               >
                 Ver documentos
                 <FileText size={16} aria-hidden="true" />

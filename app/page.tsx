@@ -41,47 +41,47 @@ export default async function HomePage() {
         ]}
       />
       <RevealSection>
-        <div id="inicio">
+        <div id="inicio" className="scroll-mt-28">
           <Hero />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="institucional">
+        <div id="institucional" className="scroll-mt-28">
           <QuickInstitutional />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="categorias-home">
+        <div id="categorias-home" className="scroll-mt-28">
           <CategoryShowcase />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="ods-home">
+        <div id="ods-home" className="scroll-mt-28">
           <OdsHomeSection />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="noticias-home">
+        <div id="noticias-home" className="scroll-mt-28">
           <NewsCircleShowcase items={news} />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="entrenamiento-home">
+        <div id="entrenamiento-home" className="scroll-mt-28">
           <HomeGallerySection />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="entrenamientos-home">
+        <div id="entrenamientos-home" className="scroll-mt-28">
           <RecentTrainings />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="inscripcion-home">
+        <div id="inscripcion-home" className="scroll-mt-28">
           <HomeContactBand />
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="redes-home">
+        <div id="redes-home" className="scroll-mt-28">
           <SocialStrip />
         </div>
       </RevealSection>

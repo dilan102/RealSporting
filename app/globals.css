@@ -50,6 +50,30 @@
     --preloader-logo-border: rgba(21, 79, 55, 0.22);
     --preloader-logo-bg: rgba(21, 79, 55, 0.06);
     --preloader-tagline: rgba(17, 28, 22, 0.78);
+    --cinematic-fallback: #121c17;
+    --cinematic-accent: #b88924;
+    --hero-overlay-h: linear-gradient(
+      90deg,
+      rgba(17, 28, 22, 0.9),
+      rgba(17, 28, 22, 0.68) 48%,
+      rgba(17, 28, 22, 0.22)
+    );
+    --hero-overlay-v: linear-gradient(
+      180deg,
+      rgba(17, 28, 22, 0.12),
+      rgba(17, 28, 22, 0.42) 56%,
+      rgba(17, 28, 22, 0.82)
+    );
+    --cinematic-vignette: radial-gradient(
+        circle at 18% 35%,
+        rgba(184, 137, 36, 0.16),
+        transparent 28rem
+      ),
+      radial-gradient(circle at 78% 18%, rgba(21, 79, 55, 0.14), transparent 34rem);
+    --image-card-overlay: linear-gradient(180deg, transparent 20%, rgba(17, 28, 22, 0.84)),
+      linear-gradient(90deg, rgba(17, 28, 22, 0.38), transparent);
+    --inscription-band-bg: #121c17;
+    --inscription-band-border: rgba(184, 137, 36, 0.32);
   }
 
   [data-theme="dark"] {
@@ -81,6 +105,30 @@
     --preloader-logo-border: rgba(255, 255, 255, 0.15);
     --preloader-logo-bg: rgba(255, 255, 255, 0.05);
     --preloader-tagline: rgba(255, 255, 255, 0.86);
+    --cinematic-fallback: #050805;
+    --cinematic-accent: #f3c548;
+    --hero-overlay-h: linear-gradient(
+      90deg,
+      rgba(5, 8, 5, 0.94),
+      rgba(5, 8, 5, 0.72) 48%,
+      rgba(5, 8, 5, 0.28)
+    );
+    --hero-overlay-v: linear-gradient(
+      180deg,
+      rgba(5, 8, 5, 0.18),
+      rgba(5, 8, 5, 0.46) 56%,
+      rgba(5, 8, 5, 0.88)
+    );
+    --cinematic-vignette: radial-gradient(
+        circle at 18% 35%,
+        rgba(208, 161, 58, 0.18),
+        transparent 28rem
+      ),
+      radial-gradient(circle at 78% 18%, rgba(43, 118, 85, 0.2), transparent 34rem);
+    --image-card-overlay: linear-gradient(180deg, transparent 20%, rgba(5, 14, 9, 0.88)),
+      linear-gradient(90deg, rgba(5, 14, 9, 0.42), transparent);
+    --inscription-band-bg: #050805;
+    --inscription-band-border: rgba(208, 161, 58, 0.28);
   }
 
   html {
@@ -475,10 +523,30 @@
     color: color-mix(in srgb, var(--color-text) 88%, var(--accent-green));
   }
 
+  .cinematic-section {
+    background-color: var(--cinematic-fallback);
+    color: #fff;
+  }
+
+  .cinematic-card {
+    background-color: var(--cinematic-fallback);
+    color: #fff;
+  }
+
+  .cinematic-accent {
+    color: var(--cinematic-accent);
+  }
+
+  .hero-overlay-h {
+    background: var(--hero-overlay-h);
+  }
+
+  .hero-overlay-v {
+    background: var(--hero-overlay-v);
+  }
+
   .hero-radial-vignette {
-    background:
-      radial-gradient(circle at 18% 35%, rgba(208, 161, 58, 0.18), transparent 28rem),
-      radial-gradient(circle at 78% 18%, rgba(43, 118, 85, 0.2), transparent 34rem);
+    background: var(--cinematic-vignette);
   }
 
   [data-theme="light"] .grid-overlay {
@@ -638,9 +706,18 @@
   }
 
   .image-card-overlay {
-    background:
-      linear-gradient(180deg, transparent 20%, rgba(5, 14, 9, 0.88)),
-      linear-gradient(90deg, rgba(5, 14, 9, 0.42), transparent);
+    background: var(--image-card-overlay);
+  }
+
+  .home-inscription-band {
+    background-color: var(--inscription-band-bg);
+    border-color: var(--inscription-band-border);
+  }
+
+  .category-anchor-target:target {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 4px;
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-gold) 18%, transparent);
   }
 
   .text-balance {

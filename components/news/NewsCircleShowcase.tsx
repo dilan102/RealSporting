@@ -27,7 +27,27 @@ export function NewsCircleShowcase({ items }: Props) {
   const secondaryNews = orderedItems.slice(1);
 
   if (!leadNews) {
-    return null;
+    return (
+      <section className="section-ambient border-y border-border bg-bg text-text">
+        <div className="section-shell section-padding">
+          <p className="eyebrow">Actualidad</p>
+          <h2 className="font-newsroom kinetic-heading mt-3 text-4xl font-black leading-none sm:text-5xl">
+            Noticias
+          </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">
+            Pronto publicaremos novedades del club, convocatorias y resultados del proceso
+            formativo.
+          </p>
+          <Link
+            href="/noticias"
+            className="btn-gold alive-lift mt-8 inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-black"
+          >
+            Ir a noticias
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+    );
   }
 
   return (

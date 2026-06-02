@@ -11,7 +11,7 @@ export function ValuePillarsStrip() {
 
   return (
     <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border">
-      {club.values.slice(0, 4).map((value, index) => {
+      {club.values.map((value, index) => {
         const open = expanded === value.title;
 
         return (
@@ -20,9 +20,8 @@ export function ValuePillarsStrip() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.12, duration: 0.4, ease: PRELOADER_EASE }}
-            whileHover={{ y: -2 }}
-            className={`mobile-card-lift bg-bg-elevated transition-all duration-300 ${
+            transition={{ delay: index * 0.1, duration: 0.4, ease: PRELOADER_EASE }}
+            className={`mobile-card-lift bg-bg-elevated transition-all duration-300 motion-reduce:transform-none ${
               open
                 ? "ring-2 ring-inset ring-accent shadow-lg shadow-[var(--accent-gold)]/12"
                 : "hover:bg-bg hover:shadow-md"
@@ -46,11 +45,9 @@ export function ValuePillarsStrip() {
                   aria-hidden="true"
                 />
               </div>
-              <h3 className="mt-2 text-2xl font-black transition-transform duration-300 group-hover:translate-x-0.5">
-                {value.title}
-              </h3>
-              <AnimatePresence initial={false} mode="wait">
-                {open ? (
+              <h3 className="mt-2 text-2xl font-black">{value.title}</h3>
+              <AnimatePresence initial={false}>
+                {open && (
                   <motion.p
                     key="detail"
                     initial={{ opacity: 0, height: 0 }}
@@ -58,17 +55,6 @@ export function ValuePillarsStrip() {
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.28, ease: PRELOADER_EASE }}
                     className="mt-3 overflow-hidden text-sm leading-7 text-muted"
-                  >
-                    {value.description}
-                  </motion.p>
-                ) : (
-                  <motion.p
-                    key="preview"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.22, ease: PRELOADER_EASE }}
-                    className="mt-3 line-clamp-2 text-sm leading-7 text-muted group-hover:text-text"
                   >
                     {value.description}
                   </motion.p>

@@ -9,10 +9,10 @@ import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Entrenamientos",
-  description: `Galería de sesiones de entrenamiento de ${club.name}.`,
+  description: `Sesiones de entrenamiento de ${club.name}.`,
   openGraph: pageOpenGraph(
     `Entrenamientos | ${club.name}`,
-    `Galería de sesiones de entrenamiento de ${club.name}.`,
+    `Sesiones de entrenamiento de ${club.name}.`,
   ),
 };
 
@@ -24,8 +24,8 @@ export default async function EntrenamientosPage() {
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="Galería"
-        subtitle="Registro visual de entrenamientos, comunidad y proceso deportivo."
+        title="Entrenamientos"
+        subtitle="Registro visual de sesiones, comunidad y proceso deportivo."
         eyebrow="Entrenamientos"
         image="/brand/gallery-night.jpg"
       />
@@ -48,18 +48,18 @@ export default async function EntrenamientosPage() {
               {galleryItems.map((item) => (
                 <article
                   key={item.title}
-                  className="alive-card group relative min-h-[220px] overflow-hidden rounded-lg border border-border bg-[#050805] text-white"
+                  className="cinematic-card alive-card group relative min-h-[220px] overflow-hidden rounded-lg border border-border"
                 >
                   <Image
                     src={item.image}
-                    alt=""
+                    alt={item.title}
                     fill
                     className="interactive-image object-cover"
                     sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
                   />
                   <div className="image-card-overlay absolute inset-0" />
                   <div className="absolute bottom-0 left-0 p-4">
-                    <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
+                    <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
                       {item.category}
                     </p>
                     <h3 className="font-gallery mt-1 text-2xl font-black">{item.title}</h3>

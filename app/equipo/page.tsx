@@ -44,6 +44,17 @@ export default async function EquipoPage() {
                 El registro de jugadores se organiza por año de nacimiento y permite
                 mantener convocatorias, seguimiento público y edición administrativa.
               </p>
+              <nav className="mt-6 flex flex-wrap gap-2" aria-label="Ir a una categoría">
+                {sportCategoryCards.map((category) => (
+                  <a
+                    key={category.id}
+                    href={`#categoria-${category.id}`}
+                    className="alive-lift rounded-full border border-border bg-bg-elevated px-3 py-1.5 text-xs font-black text-text transition-colors hover:border-accent hover:text-accent"
+                  >
+                    {category.name}
+                  </a>
+                ))}
+              </nav>
               <Link
                 href="/formulario-miembros-2026"
                 className="btn-gold alive-lift mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
@@ -57,18 +68,19 @@ export default async function EquipoPage() {
               {sportCategoryCards.map((category) => (
                 <article
                   key={category.id}
-                  className="alive-card premium-card group overflow-hidden"
+                  id={`categoria-${category.id}`}
+                  className="category-anchor-target alive-card premium-card group scroll-mt-32 overflow-hidden"
                 >
                   <div className="relative aspect-[16/9] bg-surface">
                     <Image
                       src={category.image}
-                      alt=""
+                      alt={`Categoría ${category.name} (${category.range})`}
                       fill
                       className="interactive-image object-cover"
                       sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <p className="absolute bottom-3 left-4 text-xs font-black uppercase tracking-normal text-[#f3c548]">
+                    <p className="cinematic-accent absolute bottom-3 left-4 text-xs font-black uppercase tracking-normal">
                       {category.range}
                     </p>
                   </div>
@@ -84,7 +96,7 @@ export default async function EquipoPage() {
       </RevealSection>
 
       <RevealSection>
-        <section className="section-shell pb-24">
+        <section id="plantilla" className="section-shell scroll-mt-28 pb-24">
           <div className="mb-8 max-w-2xl">
             <p className="eyebrow">Registro deportivo</p>
             <h2 className="font-training mt-3 text-4xl font-black sm:text-5xl">

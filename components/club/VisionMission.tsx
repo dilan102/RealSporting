@@ -70,7 +70,7 @@ export function VisionMission() {
 export function ValuesGrid() {
   return (
     <div className="mt-10 grid gap-5 sm:grid-cols-2">
-      {club.values.slice(0, 4).map((value, index) => {
+      {club.values.map((value, index) => {
         const Icon = valueIcons[index] || Flag;
 
         return (

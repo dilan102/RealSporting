@@ -7,7 +7,7 @@ export const club = {
   vision:
     "Ser un club deportivo reconocido a nivel distrital y nacional por su excelencia formativa, impacto social y proyección competitiva, consolidándose como una institución referente en el desarrollo deportivo y humano de nuevas generaciones.",
   history:
-    "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y jóvenes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.",
+    "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y adolescentes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.",
   values: [
     {
       title: "Disciplina",
@@ -606,7 +606,7 @@ export const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/club", label: "El Club" },
   { href: "/equipo", label: "Categorías" },
-  { href: "/entrenamientos", label: "Galería" },
+  { href: "/entrenamientos", label: "Entrenamientos" },
   { href: "/noticias", label: "Noticias" },
   { href: "/contacto", label: "Inscripción" },
 ];
