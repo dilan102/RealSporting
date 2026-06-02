@@ -148,7 +148,7 @@ export default function ContactoPage() {
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:items-start">
-              <section className="light-panel rounded-lg border border-border bg-bg-elevated p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
+              <section className="alive-card light-panel rounded-lg border border-border bg-bg-elevated p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
                     <ClipboardCheck size={22} aria-hidden="true" />
@@ -157,14 +157,14 @@ export default function ContactoPage() {
                     <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                       Lista de ingreso
                     </p>
-                    <h2 className="text-2xl font-black">Requisitos</h2>
+                    <h2 className="font-institutional text-3xl font-black">Requisitos</h2>
                   </div>
                 </div>
                 <ul className="mt-6 space-y-3">
                   {requirements.map((item) => (
                     <li
                       key={item}
-                      className="rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-muted transition-all duration-300 ease-in-out hover:border-[var(--accent-gold)] hover:bg-bg-elevated"
+                      className="alive-lift rounded-lg border border-border bg-bg px-4 py-3 text-sm leading-relaxed text-muted transition-all duration-300 ease-in-out hover:border-[var(--accent-gold)] hover:bg-bg-elevated"
                     >
                       {item}
                     </li>
@@ -203,10 +203,10 @@ export default function ContactoPage() {
             {programCards.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="light-panel rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+                className="alive-card light-panel rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
               >
                 <Icon className="text-[var(--accent-green)]" size={24} aria-hidden="true" />
-                <h3 className="mt-4 font-black">{title}</h3>
+                <h3 className="font-social-impact mt-4 font-black">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
               </article>
             ))}
@@ -227,10 +227,10 @@ export default function ContactoPage() {
             {trainingModel.map(({ title, text, icon: Icon }) => (
               <article
                 key={title}
-                className="light-panel rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
+                className="alive-card light-panel rounded-lg border border-border bg-bg-elevated p-5 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg"
               >
                 <Icon className="text-[var(--accent-gold)]" size={24} aria-hidden="true" />
-                <h3 className="mt-4 font-black">{title}</h3>
+                <h3 className="font-training mt-4 text-xl font-black">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
               </article>
             ))}
@@ -250,7 +250,7 @@ export default function ContactoPage() {
               <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                 Atención directa
               </p>
-              <h2 className="text-2xl font-black">Contáctenos</h2>
+              <h2 className="font-social-impact text-2xl font-black">Contáctenos</h2>
             </div>
           </div>
           <SocialLinks showVenue />

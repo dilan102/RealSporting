@@ -73,23 +73,19 @@ export default function Cursor() {
 
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Animación del cursor con requestAnimationFrame
     const animateCursor = () => {
-      // Interpolación suave (lerp) para el cursor principal
-      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.15;
-      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.15;
+      cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * 0.72;
+      cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * 0.72;
 
-      // Interpolación más lenta para el trail (efecto de flotación)
-      trailPos.current.x += (mousePos.current.x - trailPos.current.x) * 0.08;
-      trailPos.current.y += (mousePos.current.y - trailPos.current.y) * 0.08;
+      trailPos.current.x += (mousePos.current.x - trailPos.current.x) * 0.34;
+      trailPos.current.y += (mousePos.current.y - trailPos.current.y) * 0.34;
 
-      // Aplicar posiciones
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0)`;
+        cursorRef.current.style.transform = `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0) translate(-50%, -50%)`;
       }
 
       if (trailRef.current) {
-        trailRef.current.style.transform = `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0)`;
+        trailRef.current.style.transform = `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0) translate(-50%, -50%)`;
       }
 
       animationFrameRef.current = requestAnimationFrame(animateCursor);
@@ -132,7 +128,7 @@ export default function Cursor() {
         ref={cursorRef}
         className={`${styles.cursor} ${styles.cursorMain}`}
         style={{
-          transform: `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0)`,
+          transform: `translate3d(${cursorPos.current.x}px, ${cursorPos.current.y}px, 0) translate(-50%, -50%)`,
         }}
       />
 
@@ -141,7 +137,7 @@ export default function Cursor() {
         ref={trailRef}
         className={`${styles.cursor} ${styles.cursorTrail} ${isHovering ? styles.cursorHover : ''} ${isImageHover ? styles.cursorImageHover : ''}`}
         style={{
-          transform: `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0)`,
+          transform: `translate3d(${trailPos.current.x}px, ${trailPos.current.y}px, 0) translate(-50%, -50%)`,
         }}
       />
     </>

@@ -14,7 +14,7 @@ export function Footer() {
   const visibleNavLinks = navLinks.filter((link) => link.href !== pathname);
 
   return (
-    <footer className="border-t border-border bg-bg-elevated">
+    <footer className="section-ambient border-t border-border bg-bg-elevated">
       <div className="h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0A0A0A)]" />
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-[1fr_0.75fr_1fr]">
@@ -27,7 +27,7 @@ export function Footer() {
                 height={40}
                 className="object-contain"
               />
-              <p className="font-semibold">{club.name}</p>
+              <p className="font-categories text-2xl font-black leading-none">{club.name}</p>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted">{club.tagline}</p>
             <p className="mt-3 flex items-center gap-2 text-sm text-muted">
@@ -45,7 +45,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted transition-colors hover:text-text"
+                    className="alive-underline text-sm text-muted transition-colors hover:text-text"
                   >
                     {link.label}
                   </Link>
@@ -65,7 +65,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Seguir a Real Sporting en Instagram"
-                  className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
                   <Instagram size={16} /> Instagram
                 </a>
@@ -76,7 +76,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Seguir a Real Sporting en Facebook"
-                  className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
+                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
                   <Facebook size={16} /> Facebook
                 </a>
@@ -85,7 +85,7 @@ export function Footer() {
                 <a
                   href={`mailto:${social.email}`}
                   aria-label="Enviar correo a Real Sporting"
-                  className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
+                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
                 >
                   <Mail size={16} /> {social.email}
                 </a>
@@ -94,7 +94,7 @@ export function Footer() {
                 <a
                   href={PHONE_TEL}
                   aria-label="Llamar a Real Sporting"
-                  className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
+                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
                 >
                   <Phone size={16} /> {social.phone}
                 </a>
@@ -103,7 +103,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
+        <div className="alive-card mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
           <p className="border-b border-border px-4 py-2 text-xs font-black uppercase tracking-normal text-accent">
             Sede — {VENUE_NAME}
           </p>

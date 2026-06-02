@@ -26,7 +26,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
   return (
     <motion.article
       variants={fadeUpItem}
-      className={`overflow-hidden rounded-lg border bg-bg-elevated/80 transition-all duration-300 ${
+      className={`alive-card overflow-hidden rounded-lg border bg-bg-elevated/80 transition-all duration-300 ${
         expanded
           ? "border-accent shadow-lg shadow-[var(--accent-gold)]/10"
           : "border-border hover:border-accent/35"
@@ -46,10 +46,10 @@ export function PlayerCard({ player }: PlayerCardProps) {
             alt={player.name}
             fill
             sizes="(min-width: 1024px) 180px, 33vw"
-            className={`object-cover object-top transition-all duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${expanded ? "scale-105" : ""}`}
+            className={`interactive-image object-cover object-top transition-all duration-500 ${loaded ? "opacity-100" : "opacity-0"} ${expanded ? "scale-105" : ""}`}
             onLoad={() => setLoaded(true)}
           />
-          <span className="absolute left-2 top-2 rounded-md bg-bg/90 px-2 py-0.5 text-xs font-black text-accent backdrop-blur">
+          <span className="font-training absolute left-2 top-2 rounded-md bg-bg/90 px-2 py-0.5 text-xs font-black text-accent backdrop-blur">
             #{player.number}
           </span>
           {isConvocado && (
@@ -64,7 +64,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
             <p className="truncate text-[11px] font-semibold uppercase tracking-normal text-accent-secondary">
               {player.position}
             </p>
-            <h3 className="truncate text-sm font-bold">{player.name}</h3>
+            <h3 className="font-categories truncate text-xl font-bold leading-none">{player.name}</h3>
           </div>
           <ChevronDown
             size={16}

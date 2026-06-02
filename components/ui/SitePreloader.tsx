@@ -116,27 +116,27 @@ export function SitePreloader() {
           <div className="relative z-10 grid min-h-screen place-items-center px-5 text-center">
             <div className="mx-auto flex min-h-[430px] w-full max-w-4xl flex-col items-center justify-center">
               <motion.p
-                className="text-5xl font-black uppercase leading-none tracking-normal sm:text-6xl lg:text-8xl"
+                className="font-hero text-6xl font-black uppercase leading-none tracking-normal sm:text-7xl lg:text-9xl"
                 initial={{ opacity: 0, y: reducedMotion ? 0 : 18 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reducedMotion ? 0.2 : 0.55, ease: PRELOADER_EASE }}
+                transition={{ duration: reducedMotion ? 0.2 : 0.72, ease: PRELOADER_EASE }}
               >
                 Real Sporting
               </motion.p>
 
-              <div className="relative mt-7 h-10 w-full max-w-xl overflow-hidden">
+              <div className="relative mt-7 h-12 w-full max-w-xl overflow-hidden">
                 {pillars.map((word, index) => (
                   <motion.span
                     key={word}
-                    className="absolute inset-0 flex items-center justify-center text-sm font-black uppercase tracking-normal text-[#d0a13a] sm:text-base"
+                    className="font-training absolute inset-0 flex items-center justify-center text-lg font-black uppercase tracking-normal text-[#d0a13a] sm:text-2xl"
                     initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
                     animate={{
                       opacity: reducedMotion ? (index === 0 ? 1 : 0) : [0, 1, 1, 0],
                       y: 0,
                     }}
                     transition={{
-                      delay: reducedMotion ? 0 : 0.42 + index * 0.28,
-                      duration: reducedMotion ? 0.1 : 0.46,
+                      delay: reducedMotion ? 0 : 0.68 + index * 0.58,
+                      duration: reducedMotion ? 0.1 : 0.78,
                       ease: PRELOADER_EASE,
                     }}
                   >
@@ -150,8 +150,8 @@ export function SitePreloader() {
                 initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.92 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
-                  delay: reducedMotion ? 0.15 : 1.5,
-                  duration: reducedMotion ? 0.2 : 0.55,
+                  delay: reducedMotion ? 0.15 : 2.55,
+                  duration: reducedMotion ? 0.2 : 0.72,
                   ease: PRELOADER_EASE,
                 }}
               >
@@ -171,8 +171,8 @@ export function SitePreloader() {
                 initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  delay: reducedMotion ? 0.25 : 1.78,
-                  duration: reducedMotion ? 0.2 : 0.5,
+                  delay: reducedMotion ? 0.25 : 2.95,
+                  duration: reducedMotion ? 0.2 : 0.64,
                   ease: PRELOADER_EASE,
                 }}
               >

@@ -147,8 +147,8 @@ export const PRELOADER_BOOT_SCRIPT = `
 })();
 `;
 
-export const LOADER_DURATION_MS = 2400;
-export const LOADER_EXIT_MS = 520;
+export const LOADER_DURATION_MS = 4100;
+export const LOADER_EXIT_MS = 680;
 
 /** Curva suave tipo “cinematic ease-out”. */
 export const PRELOADER_EASE = [0.22, 1, 0.36, 1] as const;
