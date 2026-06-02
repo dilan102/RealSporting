@@ -38,6 +38,15 @@ export function OdsHomeSection() {
                 </div>
               </article>
             ))}
+            <Link
+              href="/club#compromiso-ods"
+              className="btn-green alive-lift alive-card premium-card-hover flex min-h-[15.5rem] flex-col items-center justify-center gap-4 rounded-lg p-6 text-center sm:col-span-2 sm:min-h-[17rem] sm:flex-row"
+            >
+              <span className="font-social-impact max-w-2xl text-balance text-lg font-black leading-snug sm:text-xl">
+                Conoce los ODS (objetivos de desarrollo sostenible)
+              </span>
+              <ArrowRight size={22} className="shrink-0" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </div>

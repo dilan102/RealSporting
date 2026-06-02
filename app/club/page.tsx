@@ -91,7 +91,7 @@ export default function ClubPage() {
       </RevealSection>
 
       <RevealSection>
-      <section className="section-shell py-12 sm:py-16">
+      <section id="compromiso-ods" className="section-shell scroll-mt-28 py-12 sm:py-16">
         <div className="mb-6">
           <p className="text-xs font-black uppercase tracking-normal text-accent">
             Sostenibilidad

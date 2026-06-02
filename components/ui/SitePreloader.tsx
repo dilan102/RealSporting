@@ -176,7 +176,7 @@ export function SitePreloader() {
                   ease: PRELOADER_EASE,
                 }}
               >
-                {"Desde Usme.\nCon disciplina.\nHacia el futuro."}
+                {"Desde Usme,\nCon disciplina,\nHacia el futuro."}
               </motion.p>
             </div>
           </div>

@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Trophy, UsersRound } from "lucide-react";
 import { ValuePillarsStrip } from "@/components/home/ValuePillarsStrip";
-import { club, institutionalStats } from "@/lib/content";
+const institutionalIntro =
+  "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y adolecentes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.";
 
 const programCards = [
   {
@@ -43,20 +44,8 @@ export function QuickInstitutional() {
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-8 text-muted sm:text-lg">
-            {club.history}
+            {institutionalIntro}
           </p>
-        </div>
-
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {institutionalStats.map((stat) => (
-            <article key={stat.label} className="alive-card premium-card p-5 sm:p-6">
-              <p className="font-training text-5xl font-black leading-none text-accent">{stat.value}</p>
-              <h3 className="mt-3 text-sm font-black uppercase tracking-normal">
-                {stat.label}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-muted">{stat.detail}</p>
-            </article>
-          ))}
         </div>
       </div>
 
@@ -68,13 +57,6 @@ export function QuickInstitutional() {
               <h2 className="font-categories kinetic-heading mt-4 text-balance text-4xl font-black leading-[0.98] sm:text-5xl lg:text-6xl">
                 Inicia, entrena y evoluciona dentro de un proceso ordenado.
               </h2>
-              <Link
-                href="/formulario-miembros-2026"
-                className="btn-gold alive-lift mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
-              >
-                Solicitar inscripción
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
             </div>
 
             <div className="grid gap-4">
