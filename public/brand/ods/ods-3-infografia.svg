@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1100" viewBox="0 0 800 1100">
+  <rect width="800" height="1100" fill="#f8faf7"/>
+  <rect width="800" height="140" fill="#4C9F38"/>
+  <text x="48" y="100" font-family="Arial Black, sans-serif" font-size="80" font-weight="700" fill="#fff">3</text>
+  <text x="150" y="68" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#fff">ODS 3</text>
+  <text x="150" y="108" font-family="Arial Black, sans-serif" font-size="30" font-weight="700" fill="#fff">Salud y Bienestar</text>
+  <text x="48" y="188" font-family="Arial Black, sans-serif" font-size="24" fill="#4C9F38">ODS 3 — Salud y Bienestar</text>
+  <text x="48" y="232" font-family="Arial, sans-serif" font-size="19" fill="#1a241f">Promovemos la salud física y emocional mediante la práctica constante del fútbol.</text>
+  <text x="48" y="312" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ACCIONES DEL CLUB</text>
+  <text x="56" y="360" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">⚽ Entrenamientos semanales permanentes</text>
+  <text x="56" y="408" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">❤️ Promoción de hábitos saludables</text>
+  <text x="56" y="456" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🧠 Bienestar emocional y confianza personal</text>
+  <text x="56" y="504" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🏃 Desarrollo físico integral</text>
+  <text x="56" y="552" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🤝 Prevención de riesgos sociales mediante el deporte</text>
+  <text x="48" y="748" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ESTADÍSTICAS DEL CLUB</text>
+  <text x="56" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#4C9F38">Semanal</text>  <text x="56" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Entrenamientos</text>
+  <text x="296" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#4C9F38">7</text>  <text x="296" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Categorías</text>
+  <text x="536" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#4C9F38">2022</text>  <text x="536" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Proceso en Usme</text>
+  <rect x="48" y="850" width="704" height="110" rx="10" fill="#4C9F38"/>
+  <text x="72" y="888" font-family="Arial Black, sans-serif" font-size="16" fill="#fff">OBJETIVO DEL CLUB</text>
+  <text x="72" y="928" font-family="Arial, sans-serif" font-size="21" fill="#fff">«Formar deportistas sanos física y emocionalmente»</text>
+  <text x="48" y="1000" font-family="Arial, sans-serif" font-size="17" fill="#4a5d50">Impacto: Deportistas con hábitos activos y bienestar integral.</text>
+  <text x="48" y="1040" font-family="Arial Black, sans-serif" font-size="15" fill="#4C9F38">Club Deportivo Real Sporting · Usme</text>
+</svg>

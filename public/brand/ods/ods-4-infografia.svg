@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1100" viewBox="0 0 800 1100">
+  <rect width="800" height="1100" fill="#f8faf7"/>
+  <rect width="800" height="140" fill="#C5192D"/>
+  <text x="48" y="100" font-family="Arial Black, sans-serif" font-size="80" font-weight="700" fill="#fff">4</text>
+  <text x="150" y="68" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#fff">ODS 4</text>
+  <text x="150" y="108" font-family="Arial Black, sans-serif" font-size="30" font-weight="700" fill="#fff">Educación de Calidad</text>
+  <text x="48" y="188" font-family="Arial Black, sans-serif" font-size="24" fill="#C5192D">ODS 4 — Educación de Calidad</text>
+  <text x="48" y="232" font-family="Arial, sans-serif" font-size="19" fill="#1a241f">El fútbol fortalece valores, disciplina, liderazgo y habilidades para la vida.</text>
+  <text x="48" y="312" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ACCIONES DEL CLUB</text>
+  <text x="56" y="360" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">📚 Aprendizaje dentro y fuera de la cancha</text>
+  <text x="56" y="408" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🗣 Desarrollo de comunicación efectiva</text>
+  <text x="56" y="456" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">⭐ Formación en liderazgo</text>
+  <text x="56" y="504" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🤝 Trabajo en equipo</text>
+  <text x="56" y="552" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🎯 Disciplina y responsabilidad</text>
+  <text x="56" y="600" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">⚽ Educación a través del deporte</text>
+  <text x="48" y="748" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ESTADÍSTICAS DEL CLUB</text>
+  <text x="56" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#C5192D">5</text>  <text x="56" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Valores</text>
+  <text x="296" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#C5192D">100%</text>  <text x="296" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Enfoque formativo</text>
+  <text x="536" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#C5192D">Usme</text>  <text x="536" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Proyección educativa</text>
+  <rect x="48" y="850" width="704" height="110" rx="10" fill="#C5192D"/>
+  <text x="72" y="888" font-family="Arial Black, sans-serif" font-size="16" fill="#fff">OBJETIVO DEL CLUB</text>
+  <text x="72" y="928" font-family="Arial, sans-serif" font-size="21" fill="#fff">«Formar personas íntegras con herramientas para la vida»</text>
+  <text x="48" y="1000" font-family="Arial, sans-serif" font-size="17" fill="#4a5d50">Impacto: Competencias sociales y liderazgo transferibles.</text>
+  <text x="48" y="1040" font-family="Arial Black, sans-serif" font-size="15" fill="#C5192D">Club Deportivo Real Sporting · Usme</text>
+</svg>

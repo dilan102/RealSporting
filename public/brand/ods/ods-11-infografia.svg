@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1100" viewBox="0 0 800 1100">
+  <rect width="800" height="1100" fill="#f8faf7"/>
+  <rect width="800" height="140" fill="#FD9D24"/>
+  <text x="48" y="100" font-family="Arial Black, sans-serif" font-size="80" font-weight="700" fill="#fff">11</text>
+  <text x="150" y="68" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#fff">ODS 11</text>
+  <text x="150" y="108" font-family="Arial Black, sans-serif" font-size="30" font-weight="700" fill="#fff">Ciudades y Comunidades Sostenibles</text>
+  <text x="48" y="188" font-family="Arial Black, sans-serif" font-size="24" fill="#FD9D24">ODS 11 — Comunidades Sostenibles</text>
+  <text x="48" y="232" font-family="Arial, sans-serif" font-size="19" fill="#1a241f">Fortalecemos el tejido social de Usme mediante el deporte y las familias.</text>
+  <text x="48" y="312" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ACCIONES DEL CLUB</text>
+  <text x="56" y="360" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🏘 Fortalecimiento comunitario</text>
+  <text x="56" y="408" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">👨‍👩‍👧 Participación de las familias</text>
+  <text x="56" y="456" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">⚽ Espacios deportivos seguros</text>
+  <text x="56" y="504" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🤝 Redes de apoyo social</text>
+  <text x="56" y="552" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">📍 Identidad territorial en Usme</text>
+  <text x="56" y="600" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🌱 Construcción de comunidad</text>
+  <text x="48" y="748" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ESTADÍSTICAS DEL CLUB</text>
+  <text x="56" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#FD9D24">Usme</text>  <text x="56" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Sede local</text>
+  <text x="296" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#FD9D24">Familias</text>  <text x="296" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Vinculación</text>
+  <text x="536" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#FD9D24">2022</text>  <text x="536" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Proceso comunitario</text>
+  <rect x="48" y="850" width="704" height="110" rx="10" fill="#FD9D24"/>
+  <text x="72" y="888" font-family="Arial Black, sans-serif" font-size="16" fill="#fff">OBJETIVO DEL CLUB</text>
+  <text x="72" y="928" font-family="Arial, sans-serif" font-size="21" fill="#fff">«Consolidar comunidad, familia y territorio»</text>
+  <text x="48" y="1000" font-family="Arial, sans-serif" font-size="17" fill="#4a5d50">Impacto: Comunidad más cohesionada.</text>
+  <text x="48" y="1040" font-family="Arial Black, sans-serif" font-size="15" fill="#FD9D24">Club Deportivo Real Sporting · Usme</text>
+</svg>

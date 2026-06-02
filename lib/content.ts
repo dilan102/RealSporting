@@ -125,54 +125,207 @@ export const sportCategoryCards = [
   },
 ];
 
-export const odsItems = [
+export type OdsItem = {
+  id: string;
+  number: number;
+  code: string;
+  title: string;
+  /** Color institucional oficial del ODS (ONU) */
+  color: string;
+  image: string;
+  /** Ruta a infografía (SVG/PNG). Si no existe, se genera póster en pantalla. */
+  infographicImage: string;
+  shortText: string;
+  detail: string;
+  infographicTitle: string;
+  bullets: { icon: string; text: string }[];
+  clubObjective: string;
+  stats: { value: string; label: string }[];
+  impact: string;
+};
+
+export const odsClosingPhrase =
+  "El deporte transforma vidas, fortalece comunidades y construye un mejor futuro para Usme.";
+
+export const odsItems: OdsItem[] = [
   {
     id: "ods-3",
+    number: 3,
     code: "ODS 3",
     title: "Salud y Bienestar",
-    shortText: "Actividad física, hábitos saludables y acompañamiento emocional.",
+    color: "#4C9F38",
+    image: "/brand/hero-training.jpg",
+    infographicImage: "/brand/ods/ods-3-infografia.svg",
+    shortText:
+      "Promovemos la salud física y emocional mediante la práctica constante del fútbol, fortaleciendo hábitos saludables y el bienestar integral de nuestros deportistas.",
     detail:
-      "El fútbol se trabaja como herramienta de salud física, bienestar mental y prevención mediante rutinas formativas constantes.",
+      "El Club Deportivo Real Sporting entiende el deporte como una herramienta fundamental para el desarrollo saludable de niños, niñas y jóvenes. A través de entrenamientos regulares, actividad física estructurada y acompañamiento formativo, se fortalecen hábitos que contribuyen al bienestar físico, mental y emocional. La práctica deportiva también ayuda a prevenir factores de riesgo asociados al sedentarismo, la violencia y el aislamiento social, promoviendo estilos de vida activos y saludables.",
+    infographicTitle: "ODS 3 — Salud y Bienestar",
+    bullets: [
+      { icon: "⚽", text: "Entrenamientos semanales permanentes" },
+      { icon: "❤️", text: "Promoción de hábitos saludables" },
+      { icon: "🧠", text: "Bienestar emocional y confianza personal" },
+      { icon: "🏃", text: "Desarrollo físico integral" },
+      { icon: "🤝", text: "Prevención de riesgos sociales mediante el deporte" },
+    ],
+    clubObjective: "Formar deportistas sanos física y emocionalmente",
+    stats: [
+      { value: "Semanal", label: "Entrenamientos permanentes" },
+      { value: "7", label: "Categorías formativas" },
+      { value: "2022", label: "Proceso activo en Usme" },
+    ],
+    impact:
+      "Deportistas con hábitos activos, bienestar integral y menor exposición a riesgos sociales.",
   },
   {
     id: "ods-4",
+    number: 4,
     code: "ODS 4",
     title: "Educación de Calidad",
-    shortText: "Valores, disciplina y habilidades para la vida.",
+    color: "#C5192D",
+    image: "/brand/gallery-youth.jpg",
+    infographicImage: "/brand/ods/ods-4-infografia.svg",
+    shortText:
+      "El fútbol se convierte en un espacio de aprendizaje donde se fortalecen valores, disciplina, liderazgo y habilidades para la vida.",
     detail:
-      "Cada entrenamiento combina aprendizaje deportivo con comunicación, liderazgo, convivencia y responsabilidad.",
+      "Cada sesión de entrenamiento representa una oportunidad para aprender más allá del deporte. Los participantes desarrollan capacidades como la comunicación efectiva, el trabajo en equipo, la responsabilidad y la toma de decisiones. El proceso formativo contribuye al crecimiento personal y complementa la educación académica mediante experiencias prácticas que fortalecen competencias sociales y ciudadanas.",
+    infographicTitle: "ODS 4 — Educación de Calidad",
+    bullets: [
+      { icon: "📚", text: "Aprendizaje dentro y fuera de la cancha" },
+      { icon: "🗣", text: "Desarrollo de comunicación efectiva" },
+      { icon: "⭐", text: "Formación en liderazgo" },
+      { icon: "🤝", text: "Trabajo en equipo" },
+      { icon: "🎯", text: "Disciplina y responsabilidad" },
+      { icon: "⚽", text: "Educación a través del deporte" },
+    ],
+    clubObjective: "Formar personas íntegras con herramientas para la vida",
+    stats: [
+      { value: "5", label: "Valores del proceso" },
+      { value: "100%", label: "Sesiones con enfoque formativo" },
+      { value: "Usme", label: "Proyección educativa territorial" },
+    ],
+    impact:
+      "Jóvenes con competencias sociales, liderazgo y disciplina transferibles a la vida cotidiana.",
   },
   {
     id: "ods-5",
+    number: 5,
     code: "ODS 5",
     title: "Igualdad de Género",
-    shortText: "Acceso y trato digno para todos los géneros.",
+    color: "#FF3A21",
+    image: "/brand/gallery-team.jpg",
+    infographicImage: "/brand/ods/ods-5-infografia.svg",
+    shortText:
+      "Promovemos espacios deportivos inclusivos donde todas las personas puedan participar con igualdad de oportunidades y respeto.",
     detail:
-      "El proceso promueve oportunidades deportivas sin discriminación y con un entorno de respeto.",
+      "El club fomenta un ambiente seguro y respetuoso donde niñas, niños y jóvenes pueden desarrollar sus capacidades deportivas sin discriminación. La igualdad de género se fortalece mediante el acceso equitativo a procesos formativos, actividades deportivas y oportunidades de participación, contribuyendo a la construcción de una cultura de respeto e inclusión.",
+    infographicTitle: "ODS 5 — Igualdad de Género",
+    bullets: [
+      { icon: "👧", text: "Participación femenina en el deporte" },
+      { icon: "👦", text: "Participación masculina en igualdad" },
+      { icon: "⚖️", text: "Igualdad de oportunidades" },
+      { icon: "🤝", text: "Respeto mutuo" },
+      { icon: "🚫", text: "Cero discriminación" },
+      { icon: "⚽", text: "Fútbol para todos" },
+    ],
+    clubObjective: "Garantizar inclusión y respeto en cada espacio deportivo",
+    stats: [
+      { value: "0", label: "Tolerancia a la discriminación" },
+      { value: "7", label: "Categorías abiertas al acceso" },
+      { value: "100%", label: "Enfoque inclusivo" },
+    ],
+    impact:
+      "Entornos deportivos seguros donde niñas y niños participan con las mismas oportunidades.",
   },
   {
     id: "ods-10",
+    number: 10,
     code: "ODS 10",
-    title: "Reducción de Desigualdades",
-    shortText: "Inclusión social para poblaciones diversas.",
+    title: "Reducción de las Desigualdades",
+    color: "#DD1367",
+    image: "/brand/gallery-youth.jpg",
+    infographicImage: "/brand/ods/ods-10-infografia.svg",
+    shortText:
+      "Generamos oportunidades deportivas para niños, niñas y jóvenes de diferentes contextos sociales mediante un enfoque inclusivo y comunitario.",
     detail:
-      "El club abre espacios formativos para niños, niñas y jóvenes del territorio con enfoque comunitario.",
+      "El club trabaja para reducir barreras de acceso a la formación deportiva, ofreciendo espacios de participación donde la diversidad es reconocida como una fortaleza. A través del deporte se promueve la integración social, la igualdad de oportunidades y el desarrollo de capacidades personales que fortalecen la inclusión dentro de la comunidad.",
+    infographicTitle: "ODS 10 — Reducción de las Desigualdades",
+    bullets: [
+      { icon: "🌎", text: "Inclusión para todos" },
+      { icon: "⚽", text: "Acceso a procesos deportivos" },
+      { icon: "🤝", text: "Integración comunitaria" },
+      { icon: "🏘", text: "Participación territorial" },
+      { icon: "⭐", text: "Desarrollo de talentos diversos" },
+      { icon: "🎯", text: "Igualdad de oportunidades" },
+    ],
+    clubObjective: "Abrir el deporte a niños y jóvenes de distintos contextos en Usme",
+    stats: [
+      { value: "Usme", label: "Enfoque territorial" },
+      { value: "7", label: "Categorías por edad" },
+      { value: "6", label: "ODS priorizados" },
+    ],
+    impact:
+      "Mayor inclusión social y acceso equitativo a oportunidades deportivas en el territorio.",
   },
   {
     id: "ods-11",
+    number: 11,
     code: "ODS 11",
-    title: "Comunidades Sostenibles",
-    shortText: "Tejido social, familias y territorio.",
+    title: "Ciudades y Comunidades Sostenibles",
+    color: "#FD9D24",
+    image: "/brand/gallery-team.jpg",
+    infographicImage: "/brand/ods/ods-11-infografia.svg",
+    shortText:
+      "Fortalecemos el tejido social de Usme mediante el deporte, la participación familiar y el sentido de pertenencia comunitaria.",
     detail:
-      "La práctica deportiva fortalece redes de cuidado, participación familiar y pertenencia local en Usme.",
+      "El club contribuye a la construcción de comunidades más cohesionadas a través de espacios deportivos seguros y participativos. La vinculación de familias, entrenadores y deportistas fortalece las redes de apoyo comunitario, promueve la convivencia y genera un impacto positivo en el territorio.",
+    infographicTitle: "ODS 11 — Comunidades Sostenibles",
+    bullets: [
+      { icon: "🏘", text: "Fortalecimiento comunitario" },
+      { icon: "👨‍👩‍👧", text: "Participación de las familias" },
+      { icon: "⚽", text: "Espacios deportivos seguros" },
+      { icon: "🤝", text: "Redes de apoyo social" },
+      { icon: "📍", text: "Identidad territorial en Usme" },
+      { icon: "🌱", text: "Construcción de comunidad" },
+    ],
+    clubObjective: "Consolidar comunidad, familia y territorio alrededor del deporte",
+    stats: [
+      { value: "Usme", label: "Sede y pertenencia local" },
+      { value: "Familias", label: "Vinculación activa" },
+      { value: "2022", label: "Proceso comunitario" },
+    ],
+    impact:
+      "Comunidad más cohesionada con redes de apoyo y participación en el territorio.",
   },
   {
     id: "ods-16",
+    number: 16,
     code: "ODS 16",
-    title: "Paz e Instituciones Sólidas",
-    shortText: "Cultura de paz, juego limpio y convivencia.",
+    title: "Paz, Justicia e Instituciones Sólidas",
+    color: "#00689D",
+    image: "/brand/gallery-night.jpg",
+    infographicImage: "/brand/ods/ods-16-infografia.svg",
+    shortText:
+      "Promovemos la convivencia pacífica, el respeto y el juego limpio como principios fundamentales de la formación deportiva.",
     detail:
-      "El fútbol se usa para formar respeto por normas, diálogo y resolución pacífica de conflictos.",
+      "La práctica deportiva permite fortalecer valores relacionados con la resolución pacífica de conflictos, la tolerancia y el respeto por las reglas. A través del juego limpio y la convivencia, el club contribuye a formar ciudadanos comprometidos con la paz, la participación y la construcción de entornos más seguros.",
+    infographicTitle: "ODS 16 — Paz e Instituciones Sólidas",
+    bullets: [
+      { icon: "🕊", text: "Cultura de paz" },
+      { icon: "🤝", text: "Respeto por los demás" },
+      { icon: "⚽", text: "Juego limpio" },
+      { icon: "📋", text: "Cumplimiento de normas" },
+      { icon: "🏘", text: "Convivencia comunitaria" },
+      { icon: "🎯", text: "Formación ciudadana responsable" },
+    ],
+    clubObjective: "Formar deportistas y ciudadanos comprometidos con la paz",
+    stats: [
+      { value: "100%", label: "Énfasis en juego limpio" },
+      { value: "5", label: "Valores institucionales" },
+      { value: "Usme", label: "Convivencia territorial" },
+    ],
+    impact:
+      "Cultura de respeto, diálogo y resolución pacífica de conflictos en la cancha y la comunidad.",
   },
 ];
 

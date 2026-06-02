@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Shield } from "lucide-react";
-import {
-  OdsCommitment,
-  Timeline,
-  ValuesGrid,
-  VisionMission,
-} from "@/components/club/VisionMission";
+import { OdsCommitment } from "@/components/club/OdsCommitment";
+import { Timeline, ValuesGrid, VisionMission } from "@/components/club/VisionMission";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club, institutionalStats } from "@/lib/content";
@@ -99,6 +95,10 @@ export default function ClubPage() {
           <h2 className="font-social-impact mt-2 text-3xl font-black tracking-normal sm:text-4xl">
             Nuestro compromiso con el desarrollo sostenible
           </h2>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-muted sm:text-base">
+            Cada objetivo se presenta con enfoque institucional alineado a Naciones Unidas: color
+            oficial del ODS, acciones del club, impacto esperado e infografía de apoyo.
+          </p>
         </div>
         <OdsCommitment />
       </section>

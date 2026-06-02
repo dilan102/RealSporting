@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1100" viewBox="0 0 800 1100">
+  <rect width="800" height="1100" fill="#f8faf7"/>
+  <rect width="800" height="140" fill="#DD1367"/>
+  <text x="48" y="100" font-family="Arial Black, sans-serif" font-size="80" font-weight="700" fill="#fff">10</text>
+  <text x="150" y="68" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#fff">ODS 10</text>
+  <text x="150" y="108" font-family="Arial Black, sans-serif" font-size="30" font-weight="700" fill="#fff">Reducción de las Desigualdades</text>
+  <text x="48" y="188" font-family="Arial Black, sans-serif" font-size="24" fill="#DD1367">ODS 10 — Reducción de las Desigualdades</text>
+  <text x="48" y="232" font-family="Arial, sans-serif" font-size="19" fill="#1a241f">Oportunidades deportivas inclusivas y comunitarias en Usme.</text>
+  <text x="48" y="312" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ACCIONES DEL CLUB</text>
+  <text x="56" y="360" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🌎 Inclusión para todos</text>
+  <text x="56" y="408" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">⚽ Acceso a procesos deportivos</text>
+  <text x="56" y="456" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🤝 Integración comunitaria</text>
+  <text x="56" y="504" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🏘 Participación territorial</text>
+  <text x="56" y="552" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">⭐ Desarrollo de talentos diversos</text>
+  <text x="56" y="600" font-family="Arial, sans-serif" font-size="20" fill="#1a241f">🎯 Igualdad de oportunidades</text>
+  <text x="48" y="748" font-family="Arial Black, sans-serif" font-size="17" fill="#4a5d50">ESTADÍSTICAS DEL CLUB</text>
+  <text x="56" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#DD1367">Usme</text>  <text x="56" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Territorio</text>
+  <text x="296" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#DD1367">7</text>  <text x="296" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">Categorías</text>
+  <text x="536" y="780" font-family="Arial Black, sans-serif" font-size="32" font-weight="700" fill="#DD1367">6</text>  <text x="536" y="810" font-family="Arial, sans-serif" font-size="15" fill="#4a5d50">ODS priorizados</text>
+  <rect x="48" y="850" width="704" height="110" rx="10" fill="#DD1367"/>
+  <text x="72" y="888" font-family="Arial Black, sans-serif" font-size="16" fill="#fff">OBJETIVO DEL CLUB</text>
+  <text x="72" y="928" font-family="Arial, sans-serif" font-size="21" fill="#fff">«Abrir el deporte a distintos contextos en Usme»</text>
+  <text x="48" y="1000" font-family="Arial, sans-serif" font-size="17" fill="#4a5d50">Impacto: Mayor inclusión y acceso equitativo.</text>
+  <text x="48" y="1040" font-family="Arial Black, sans-serif" font-size="15" fill="#DD1367">Club Deportivo Real Sporting · Usme</text>
+</svg>

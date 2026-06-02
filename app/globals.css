@@ -720,6 +720,37 @@
     box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-gold) 18%, transparent);
   }
 
+  .ods-flip-scene {
+    perspective: 1400px;
+  }
+
+  .ods-flip-inner {
+    position: relative;
+    display: block;
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+
+  .ods-flip-inner.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  .ods-flip-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: inherit;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .ods-flip-back {
+    transform: rotateY(180deg);
+  }
+
   .text-balance {
     text-wrap: balance;
   }
@@ -849,6 +880,32 @@
   .whatsapp-float,
   .home-inscription-shine {
     animation: none;
+  }
+
+  .ods-flip-inner {
+    transition: none;
+  }
+
+  .ods-flip-inner:not(.is-flipped) .ods-flip-back {
+    visibility: hidden;
+  }
+
+  .ods-flip-inner.is-flipped .ods-flip-front {
+    visibility: hidden;
+  }
+
+  .ods-flip-inner.is-flipped {
+    transform: none;
+  }
+
+  .ods-flip-inner.is-flipped .ods-flip-back {
+    position: relative;
+    transform: none;
+    visibility: visible;
+  }
+
+  .ods-flip-face {
+    position: relative;
   }
 }
 

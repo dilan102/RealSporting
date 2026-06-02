@@ -2,9 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
 import {
-  ChevronDown,
   Eye,
   Flag,
   HeartHandshake,
@@ -12,7 +10,7 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import { club, odsItems } from "@/lib/content";
+import { club } from "@/lib/content";
 import { PRELOADER_EASE } from "@/lib/preloader";
 
 const cards = [
@@ -117,64 +115,3 @@ export function Timeline() {
   );
 }
 
-export function OdsCommitment() {
-  const [expanded, setExpanded] = useState<string | null>(null);
-
-  return (
-    <div className="grid gap-4 md:grid-cols-2">
-      {odsItems.map((item, index) => {
-        const open = expanded === item.id;
-
-        return (
-          <motion.article
-            key={item.id}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.12, duration: 0.4, ease: PRELOADER_EASE }}
-            className={`alive-card group overflow-hidden rounded-lg border bg-bg-elevated/95 transition-all duration-300 ${
-              open
-                ? "border-accent shadow-xl shadow-[var(--accent-gold)]/15"
-                : "border-border hover:-translate-y-0.5 hover:border-accent/45"
-            }`}
-          >
-            <button
-              type="button"
-              onClick={() => setExpanded(open ? null : item.id)}
-              className="w-full px-5 py-5 text-left sm:px-6"
-              aria-expanded={open}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-normal text-accent">
-                    {item.code}
-                  </p>
-                  <h3 className="font-social-impact mt-2 text-xl font-black leading-tight">{item.title}</h3>
-                </div>
-                <ChevronDown
-                  size={20}
-                  className={`mt-1 shrink-0 text-muted transition-transform duration-300 ${
-                    open ? "rotate-180 text-accent" : ""
-                  }`}
-                  aria-hidden="true"
-                />
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-muted transition-all duration-300 group-hover:text-text">
-                {item.shortText}
-              </p>
-            </button>
-            <div
-              className={`grid transition-all duration-300 ${
-                open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-              }`}
-            >
-              <div className="overflow-hidden border-t border-border px-5 sm:px-6">
-                <p className="py-4 text-sm leading-7 text-muted">{item.detail}</p>
-              </div>
-            </div>
-          </motion.article>
-        );
-      })}
-    </div>
-  );
-}
