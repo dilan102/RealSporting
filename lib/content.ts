@@ -620,6 +620,7 @@ export type Training = {
   id: string;
   title: string;
   date: string;
+  endDate: string;
   description: string;
   image: string;
   images?: string[];
@@ -634,6 +635,7 @@ export type News = {
   id: string;
   title: string;
   date: string;
+  endDate: string;
   category: string;
   summary: string;
   body: string;
@@ -646,6 +648,7 @@ export const news: News[] = [
     id: "1",
     title: "Convocatoria institucional para nuevos talentos",
     date: "2026-05-18",
+    endDate: "2026-06-18",
     category: "Cantera",
     summary:
       "El club abre espacios de observación para niños, niñas y jóvenes de Usme interesados en iniciar un proceso deportivo estructurado.",
@@ -658,6 +661,7 @@ export const news: News[] = [
     id: "2",
     title: "Microciclo enfocado en presión alta",
     date: "2026-05-14",
+    endDate: "2026-06-14",
     category: "Entrenamiento",
     summary:
       "Las categorías formativas trabajaron recuperación rápida, cierres coordinados y salida limpia tras robo.",
@@ -670,6 +674,7 @@ export const news: News[] = [
     id: "3",
     title: "Familias y jugadores fortalecen el proyecto",
     date: "2026-05-10",
+    endDate: "2026-06-10",
     category: "Comunidad",
     summary:
       "La comunidad del club acompañó una jornada de integración alrededor del deporte y los valores.",
@@ -682,6 +687,7 @@ export const news: News[] = [
     id: "4",
     title: "Preparación para torneo local",
     date: "2026-05-06",
+    endDate: "2026-06-06",
     category: "Competencia",
     summary:
       "El equipo ajusta detalles tácticos y físicos antes de los próximos compromisos competitivos.",
@@ -697,6 +703,7 @@ export const trainings: Training[] = [
     id: "1",
     title: "Sesión técnica — pase y posesión",
     date: "2025-05-10",
+    endDate: "2025-06-10",
     description:
       "Trabajo de rondo 4v2, circuitos de pase y finalización en espacios reducidos. Enfoque en primer toque y comunicación.",
     image: "/trainings/1.svg",
@@ -707,6 +714,7 @@ export const trainings: Training[] = [
     id: "2",
     title: "Preparación física — resistencia",
     date: "2025-05-12",
+    endDate: "2025-06-12",
     description:
       "Series de intervalos, trabajo de core y movilidad. Sesión orientada al rendimiento del segundo tiempo.",
     image: "/trainings/2.svg",
@@ -717,6 +725,7 @@ export const trainings: Training[] = [
     id: "3",
     title: "Táctica — presión alta",
     date: "2025-05-15",
+    endDate: "2025-06-15",
     description:
       "Bloque compacto, salida desde el arco y triggers de presión en zona de creación rival.",
     image: "/trainings/3.svg",
@@ -727,6 +736,7 @@ export const trainings: Training[] = [
     id: "4",
     title: "Partido interno — formato 7v7",
     date: "2025-05-17",
+    endDate: "2025-06-17",
     description:
       "Partido de aplicación con rotaciones. Evaluación de decisiones bajo presión real.",
     image: "/trainings/4.svg",
@@ -737,6 +747,7 @@ export const trainings: Training[] = [
     id: "5",
     title: "Recuperación activa",
     date: "2025-05-19",
+    endDate: "2025-06-19",
     description:
       "Estiramientos, hidratación y charla de análisis de video de la jornada anterior.",
     image: "/trainings/5.svg",
@@ -747,6 +758,7 @@ export const trainings: Training[] = [
     id: "6",
     title: "Definición y estrategia a balón parado",
     date: "2025-05-21",
+    endDate: "2025-06-21",
     description:
       "Córners ofensivos, faltas laterales y transiciones rápidas post-rebote.",
     image: "/trainings/6.svg",

@@ -35,6 +35,7 @@ async function trainingInputFromFormData(request: NextRequest) {
   return {
     title: String(formData.get("title") || ""),
     date: String(formData.get("date") || ""),
+    endDate: String(formData.get("endDate") || ""),
     description: String(formData.get("description") || ""),
     status:
       String(formData.get("status") || "") === "draft"

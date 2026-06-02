@@ -26,6 +26,7 @@ async function newsInputFromFormData(request: NextRequest) {
   return {
     title: String(formData.get("title") || ""),
     date: String(formData.get("date") || ""),
+    endDate: String(formData.get("endDate") || ""),
     category: String(formData.get("category") || ""),
     summary: String(formData.get("summary") || ""),
     body: String(formData.get("body") || ""),

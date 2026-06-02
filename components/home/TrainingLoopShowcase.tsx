@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MouseEvent, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Dumbbell, X } from "lucide-react";
+import { ArrowRight, Dumbbell } from "lucide-react";
+import { TrainingModalShell } from "@/components/trainings/TrainingModalShell";
+import { PublicationDateText } from "@/components/ui/PublicationDateText";
+import { formatPublicationRange } from "@/lib/publication-dates";
 import type { Training } from "@/lib/content";
 import {
   TRAINING_TEXT_PLACEHOLDER,
@@ -17,17 +20,6 @@ type Props = {
 
 const trainingBlurDataURL =
   "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjEwIiB3aWR0aD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZyI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMUE0NzJBIi8+PGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjQiIGZpbGw9IiNDOUEyMjciIG9wYWNpdHk9Ii41Ii8+PC9zdmc+";
-
-function formatDate(dateStr: string) {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const localDate = new Date(year, month - 1, day);
-
-  return localDate.toLocaleDateString("es-CO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 function getTrainingImages(training: Training) {
   return training.images && training.images.length > 0
@@ -72,25 +64,9 @@ export function TrainingLoopShowcase({ items }: Props) {
     return () => window.clearInterval(interval);
   }, [expanded, orderedItems.length]);
 
-  useEffect(() => {
-    if (!expanded) {
-      return;
-    }
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setExpanded(null);
-      }
-    };
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [expanded]);
+  const closeExpanded = useCallback(() => {
+    setExpanded(null);
+  }, []);
 
   if (!activeTraining) {
     return (
@@ -118,12 +94,11 @@ export function TrainingLoopShowcase({ items }: Props) {
     );
   }
 
-  const closeExpanded = (event?: MouseEvent) => {
-    event?.stopPropagation();
-    setExpanded(null);
-  };
   const activeImage = getTrainingPreviewImage(activeTraining);
   const expandedImage = expanded ? getTrainingPreviewImage(expanded) : "";
+  const expandedTitle = expanded
+    ? sanitizeVisibleTextOrDefault(expanded.title, "Entrenamiento Real Sporting")
+    : "";
 
   return (
     <section className="section-ambient relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
@@ -191,9 +166,11 @@ export function TrainingLoopShowcase({ items }: Props) {
                     />
                   </span>
                   <span className="flex min-w-0 flex-col justify-center p-4">
-                    <time className="text-xs font-bold uppercase tracking-normal text-accent">
-                      {formatDate(item.date)}
-                    </time>
+                    <PublicationDateText
+                      startDate={item.date}
+                      endDate={item.endDate}
+                      className="text-xs font-bold uppercase tracking-normal text-accent"
+                    />
                     <span className="font-training mt-2 line-clamp-2 text-base font-bold leading-snug text-text">
                       {title}
                     </span>
@@ -235,9 +212,11 @@ export function TrainingLoopShowcase({ items }: Props) {
                     <Dumbbell size={14} aria-hidden="true" />
                     Entrenamiento
                   </span>
-                  <time className="block text-sm font-semibold text-[#f3c548]">
-                    {formatDate(activeTraining.date)}
-                  </time>
+                  <PublicationDateText
+                    startDate={activeTraining.date}
+                    endDate={activeTraining.endDate}
+                    className="block text-sm font-semibold text-[#f3c548]"
+                  />
                   <span className="font-training mt-3 block max-w-2xl text-4xl font-black leading-[0.9] sm:text-5xl">
                     {sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}
                   </span>
@@ -255,64 +234,56 @@ export function TrainingLoopShowcase({ items }: Props) {
         </div>
       </div>
 
-      <AnimatePresence>
+      <TrainingModalShell
+        open={Boolean(expanded)}
+        onClose={closeExpanded}
+        titleId={expanded ? `training-home-${expanded.id}-title` : "training-home-title"}
+        maxWidthClassName="max-w-3xl"
+        header={
+          expanded ? (
+            <>
+              <p className="text-xs font-bold uppercase tracking-normal text-accent">
+                Entrenamiento · {formatPublicationRange(expanded.date, expanded.endDate)}
+              </p>
+              <h2
+                id={`training-home-${expanded.id}-title`}
+                className="mt-2 text-2xl font-black leading-tight sm:text-3xl"
+              >
+                {expandedTitle}
+              </h2>
+            </>
+          ) : null
+        }
+      >
         {expanded && (
-          <motion.div
-            className="fixed inset-0 z-[100] grid place-items-center overflow-hidden bg-bg/90 px-4 py-6 backdrop-blur-md sm:px-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closeExpanded}
-          >
-            <motion.article
-              className="max-h-[calc(100vh-3rem)] w-full max-w-3xl overflow-y-auto rounded-lg border border-border bg-bg-elevated shadow-2xl"
-              initial={{ opacity: 0, x: -60, scale: 0.94 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 80, scale: 0.96 }}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <div className="relative aspect-[16/9]">
-                <Image
-                  src={expandedImage}
-                  alt={sanitizeVisibleTextOrDefault(expanded.title, "Entrenamiento Real Sporting")}
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 768px) 768px, 100vw"
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL={trainingBlurDataURL}
-                />
-                <button
-                  type="button"
-                  onClick={closeExpanded}
-                  className="absolute right-4 top-4 rounded-lg border border-white/20 bg-black/65 p-2 text-white backdrop-blur transition-colors hover:border-accent"
-                  aria-label="Cerrar entrenamiento"
-                >
-                  <X size={20} aria-hidden="true" />
-                </button>
-              </div>
-              <div className="p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-normal text-accent">
-                  Entrenamiento · {formatDate(expanded.date)}
-                </p>
-                <h2 className="mt-3 text-3xl font-bold tracking-normal">
-                  {sanitizeVisibleTextOrDefault(expanded.title, "Entrenamiento Real Sporting")}
-                </h2>
-                <p className="mt-5 whitespace-pre-line overflow-wrap-anywhere text-base leading-8 text-muted">
-                  {sanitizeVisibleTextOrDefault(expanded.description, TRAINING_TEXT_PLACEHOLDER)}
-                </p>
-                <Link
-                  href="/entrenamientos"
-                  className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90"
-                >
-                  Ir a entrenamientos
-                  <ArrowRight size={17} aria-hidden="true" />
-                </Link>
-              </div>
-            </motion.article>
-          </motion.div>
+          <>
+            <div className="relative aspect-[16/9] bg-black">
+              <Image
+                src={expandedImage}
+                alt={expandedTitle}
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 768px, 100vw"
+                priority
+                placeholder="blur"
+                blurDataURL={trainingBlurDataURL}
+              />
+            </div>
+            <div className="p-6 sm:p-8">
+              <p className="whitespace-pre-line overflow-wrap-anywhere text-base leading-8 text-muted">
+                {sanitizeVisibleTextOrDefault(expanded.description, TRAINING_TEXT_PLACEHOLDER)}
+              </p>
+              <Link
+                href="/entrenamientos"
+                className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-bold text-[var(--button-text)] transition-colors hover:bg-accent/90"
+              >
+                Ir a entrenamientos
+                <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+            </div>
+          </>
         )}
-      </AnimatePresence>
+      </TrainingModalShell>
     </section>
   );
 }

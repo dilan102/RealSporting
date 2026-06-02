@@ -1,22 +1,12 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { News } from "@/lib/content";
+import { PublicationDateText } from "@/components/ui/PublicationDateText";
 import { NewsBadge, NewsVisual } from "./NewsVisual";
 
 type Props = {
   items: News[];
 };
-
-function formatDate(dateStr: string) {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const localDate = new Date(year, month - 1, day);
-
-  return localDate.toLocaleDateString("es-CO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export function NewsCircleShowcase({ items }: Props) {
   const orderedItems = [...items]
@@ -87,9 +77,11 @@ export function NewsCircleShowcase({ items }: Props) {
               </span>
             </div>
             <div className="p-5 sm:p-7">
-              <time className="text-xs font-bold uppercase tracking-normal text-muted">
-                {formatDate(leadNews.date)}
-              </time>
+              <PublicationDateText
+                startDate={leadNews.date}
+                endDate={leadNews.endDate}
+                className="text-xs font-bold uppercase tracking-normal text-muted"
+              />
               <h3 className="font-newsroom mt-3 text-4xl font-black leading-none sm:text-6xl">
                 {leadNews.title}
               </h3>
@@ -114,9 +106,11 @@ export function NewsCircleShowcase({ items }: Props) {
                   <span className="font-newsroom mt-3 line-clamp-2 block text-xl font-black leading-none">
                     {item.title}
                   </span>
-                  <time className="mt-3 block text-xs font-semibold text-muted">
-                    {formatDate(item.date)}
-                  </time>
+                  <PublicationDateText
+                    startDate={item.date}
+                    endDate={item.endDate}
+                    className="mt-3 block text-xs font-semibold text-muted"
+                  />
                 </span>
               </Link>
             ))}

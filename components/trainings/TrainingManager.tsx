@@ -14,12 +14,14 @@ import {
   X,
 } from "lucide-react";
 import type { Training } from "@/lib/content";
+import { defaultEndDateFromStart } from "@/lib/publication-dates";
 import { isLikelyJunkText, normalizeText } from "@/lib/validators";
 import { TrainingGrid } from "./TrainingGrid";
 
 type TrainingForm = {
   title: string;
   date: string;
+  endDate: string;
   description: string;
   status: "published" | "draft";
   images: string[];
@@ -28,16 +30,21 @@ type TrainingForm = {
   videoFiles: File[];
 };
 
-const emptyForm = (): TrainingForm => ({
+const emptyForm = (): TrainingForm => {
+  const date = new Date().toISOString().slice(0, 10);
+
+  return {
   title: "",
-  date: new Date().toISOString().slice(0, 10),
+  date,
+  endDate: defaultEndDateFromStart(date),
   description: "",
   status: "published",
   images: [],
   files: [],
   videos: [],
   videoFiles: [],
-});
+  };
+};
 
 type ApiResponse = {
   error?: string;
@@ -233,8 +240,8 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     const titleError = validateDraftText(form.title, "el título");
     const descriptionError = validateDraftText(form.description, "la descripción");
 
-    if (titleError || descriptionError || !form.date) {
-      setMessage(titleError || descriptionError || "Completa la fecha.");
+    if (titleError || descriptionError || !form.date || !form.endDate) {
+      setMessage(titleError || descriptionError || "Completa las fechas de inicio y fin.");
       return;
     }
 
@@ -244,6 +251,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     const body = new FormData();
     body.set("title", normalizeText(form.title));
     body.set("date", normalizeText(form.date));
+    body.set("endDate", normalizeText(form.endDate));
     body.set("description", normalizeText(form.description));
     body.set("status", form.status);
 
@@ -290,6 +298,7 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
     setForm({
       title: training.title,
       date: training.date,
+      endDate: training.endDate,
       description: training.description,
       status: training.status ?? "published",
       images:
@@ -419,16 +428,41 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
             </div>
             <div>
               <label className="text-xs font-medium uppercase tracking-normal text-muted">
-                Fecha
+                Fecha de inicio
               </label>
               <input
                 type="date"
                 value={form.date}
+                onChange={(event) => {
+                  const date = event.target.value;
+                  setForm((current) => ({
+                    ...current,
+                    date,
+                    endDate:
+                      current.endDate < date
+                        ? defaultEndDateFromStart(date)
+                        : current.endDate,
+                  }));
+                }}
+                className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
+                Fecha de fin
+              </label>
+              <input
+                type="date"
+                min={form.date}
+                value={form.endDate}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, date: event.target.value }))
+                  setForm((current) => ({ ...current, endDate: event.target.value }))
                 }
                 className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
+              <p className="mt-2 text-xs leading-relaxed text-muted">
+                El día de fin el entrenamiento se elimina automáticamente del sitio.
+              </p>
             </div>
             <div className="sm:col-span-2">
               <label className="text-xs font-medium uppercase tracking-normal text-muted">
@@ -475,13 +509,9 @@ export function TrainingManager({ initialItems }: { initialItems: Training[] }) 
                   {form.title.trim() || "Sin título"}
                 </h4>
                 <p className="mt-1 text-xs text-muted">
-                  {form.date
-                    ? new Date(`${form.date}T12:00:00`).toLocaleDateString("es-CO", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })
-                    : "Sin fecha"}
+                  {form.date && form.endDate
+                    ? `${form.date} → ${form.endDate}`
+                    : "Sin fechas"}
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-muted">
                   {form.description.trim() || "Sin descripción"}

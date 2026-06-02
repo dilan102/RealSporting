@@ -19,6 +19,23 @@ export function isExternalStorageRoot() {
   return getStorageRoot() !== process.cwd();
 }
 
+/** En Vercel el disco es efímero; los uploads deben ir a PostgreSQL. */
+export function shouldPersistUploadsInDatabase() {
+  if (process.env.UPLOAD_STORAGE === "database") {
+    return true;
+  }
+
+  if (process.env.UPLOAD_STORAGE === "disk") {
+    return false;
+  }
+
+  if (process.env.REALSPORTING_STORAGE_DIR) {
+    return false;
+  }
+
+  return Boolean(process.env.VERCEL);
+}
+
 export function getDataDir() {
   return path.join(getStorageRoot(), "data");
 }

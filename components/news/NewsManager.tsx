@@ -13,11 +13,13 @@ import {
   X,
 } from "lucide-react";
 import type { News } from "@/lib/content";
+import { defaultEndDateFromStart } from "@/lib/publication-dates";
 import { NewsGrid } from "./NewsGrid";
 
 type NewsForm = {
   title: string;
   date: string;
+  endDate: string;
   category: string;
   summary: string;
   body: string;
@@ -31,16 +33,21 @@ type ApiResponse = {
   items?: News[];
 };
 
-const emptyForm = (): NewsForm => ({
+const emptyForm = (): NewsForm => {
+  const date = new Date().toISOString().slice(0, 10);
+
+  return {
   title: "",
-  date: new Date().toISOString().slice(0, 10),
+  date,
+  endDate: defaultEndDateFromStart(date),
   category: "",
   summary: "",
   body: "",
   image: "",
   file: null,
   status: "draft",
-});
+  };
+};
 
 async function parseNewsResponse(response: Response) {
   const text = await response.text();
@@ -201,6 +208,7 @@ export function NewsManager({
     if (
       !form.title.trim() ||
       !form.date ||
+      !form.endDate ||
       !form.category.trim() ||
       !form.summary.trim() ||
       !form.body.trim()
@@ -220,6 +228,7 @@ export function NewsManager({
     const body = new FormData();
     body.set("title", form.title.trim());
     body.set("date", form.date);
+    body.set("endDate", form.endDate);
     body.set("category", form.category.trim());
     body.set("summary", form.summary.trim());
     body.set("body", form.body.trim());
@@ -256,6 +265,7 @@ export function NewsManager({
     setForm({
       title: item.title,
       date: item.date,
+      endDate: item.endDate,
       category: item.category,
       summary: item.summary,
       body: item.body,
@@ -378,16 +388,41 @@ export function NewsManager({
             </div>
             <div>
               <label className="text-xs font-medium uppercase tracking-normal text-muted">
-                Fecha
+                Fecha de inicio
               </label>
               <input
                 type="date"
                 value={form.date}
+                onChange={(event) => {
+                  const date = event.target.value;
+                  setForm((current) => ({
+                    ...current,
+                    date,
+                    endDate:
+                      current.endDate < date
+                        ? defaultEndDateFromStart(date)
+                        : current.endDate,
+                  }));
+                }}
+                className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
+                Fecha de fin
+              </label>
+              <input
+                type="date"
+                min={form.date}
+                value={form.endDate}
                 onChange={(event) =>
-                  setForm((current) => ({ ...current, date: event.target.value }))
+                  setForm((current) => ({ ...current, endDate: event.target.value }))
                 }
                 className="mt-2 w-full rounded-lg border border-border bg-bg/70 px-4 py-3 text-sm outline-none transition-colors focus:border-accent"
               />
+              <p className="mt-2 text-xs leading-relaxed text-muted">
+                El día de fin la noticia se elimina automáticamente del sitio.
+              </p>
             </div>
             <div>
               <label className="text-xs font-medium uppercase tracking-normal text-muted">

@@ -1,13 +1,16 @@
-import { randomUUID } from "crypto";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import path from "path";
 import type { News, NewsStatus } from "@/lib/content";
 import { news as defaultNews } from "@/lib/content";
+import { cleanupExpiredNews } from "@/lib/content-expiry";
+import { prisma } from "@/lib/prisma";
 import {
-  getDataDir,
-  getUploadDir,
-  getUploadPublicPrefix,
-} from "@/lib/file-storage";
+  dateFromInput,
+  dateToInputValue,
+  defaultEndDateFromStart,
+  getTodayDateKey,
+  hasReachedEndDate,
+  validatePublicationDateRange,
+} from "@/lib/publication-dates";
+import { removeUpload, saveUpload } from "@/lib/upload-store";
 import {
   NEWS_TEXT_PLACEHOLDER,
   NEWS_TITLE_PLACEHOLDER,
@@ -16,18 +19,14 @@ import {
   validateCleanTextField,
 } from "@/lib/validators";
 import { NEWS_FALLBACK_IMAGE } from "@/lib/site";
-import { prisma } from "@/lib/prisma";
 
-const dataDir = getDataDir();
-const uploadsDir = getUploadDir("news");
-const publicUploadPrefix = getUploadPublicPrefix("news");
 const fallbackImage = NEWS_FALLBACK_IMAGE;
 const notFoundMessage = "No se encontró la noticia.";
-const newsRetentionMs = 30 * 24 * 60 * 60 * 1000;
 
 export type NewsInput = {
   title: string;
   date: string;
+  endDate: string;
   category: string;
   summary: string;
   body: string;
@@ -42,51 +41,27 @@ const allowedTypes = new Map([
   ["image/svg+xml", ".svg"],
 ]);
 
-async function ensureUploadStorage() {
-  await mkdir(dataDir, { recursive: true });
-  await mkdir(uploadsDir, { recursive: true });
-}
+const maxImageBytes = 5 * 1024 * 1024;
 
 function normalizeInput(input: NewsInput) {
   const title = validateCleanTextField(input.title, "título");
-  const date = input.date.trim();
   const category = sanitizeText(input.category);
   const summary = validateCleanTextField(input.summary, "resumen corto");
   const body = validateCleanTextField(input.body, "texto de la noticia");
+  const { startDate, endDate } = validatePublicationDateRange(
+    input.date,
+    input.endDate || defaultEndDateFromStart(input.date),
+  );
 
-  if (!date) {
-    throw new Error("La fecha no puede estar vacía.");
-  }
-
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    throw new Error("La fecha no tiene un formato válido.");
-  }
-
-  return { title, date, category, summary, body, status: input.status ?? "draft" };
-}
-
-function dateFromInput(date: string) {
-  return new Date(`${date}T00:00:00.000Z`);
-}
-
-function dateToInputValue(date: Date) {
-  return date.toISOString().slice(0, 10);
-}
-
-export function getNewsExpirationCutoff(now = new Date()) {
-  return new Date(now.getTime() - newsRetentionMs);
-}
-
-function isNewsWithinRetention(date: string) {
-  return dateFromInput(date).getTime() >= getNewsExpirationCutoff().getTime();
-}
-
-function uploadedPathFromPublicUrl(url: string) {
-  if (!url.startsWith(publicUploadPrefix)) {
-    return null;
-  }
-
-  return path.join(uploadsDir, path.basename(url));
+  return {
+    title,
+    date: startDate,
+    endDate,
+    category,
+    summary,
+    body,
+    status: input.status ?? "draft",
+  };
 }
 
 function normalizeImagePath(url: string) {
@@ -102,39 +77,12 @@ function normalizeImagePath(url: string) {
   return fallbackImage;
 }
 
-async function removeUploadedFile(url: string) {
-  const filePath = uploadedPathFromPublicUrl(url);
-
-  if (!filePath) {
-    return;
-  }
-
-  try {
-    await unlink(filePath);
-  } catch {
-    // The record can still be updated if the old file was already removed.
-  }
-}
-
 async function saveImage(file: File) {
   if (!allowedTypes.has(file.type)) {
     throw new Error("Selecciona una imagen JPG, PNG, WEBP o SVG.");
   }
 
-  if (file.size > 5 * 1024 * 1024) {
-    throw new Error("La imagen no puede superar 5 MB.");
-  }
-
-  await ensureUploadStorage();
-
-  const extension = allowedTypes.get(file.type);
-  const fileName = `${Date.now()}-${randomUUID()}${extension}`;
-  const diskPath = path.join(uploadsDir, fileName);
-  const bytes = Buffer.from(await file.arrayBuffer());
-
-  await writeFile(diskPath, bytes);
-
-  return `${publicUploadPrefix}${fileName}`;
+  return saveUpload("news", file, allowedTypes, maxImageBytes);
 }
 
 function toNews(item: {
@@ -144,13 +92,20 @@ function toNews(item: {
   contenido: string;
   imagen: string | null;
   fecha: Date;
+  fechaFin: Date | null;
   categoria: string;
   publicada: boolean;
 }): News {
+  const startDate = dateToInputValue(item.fecha);
+  const endDate = item.fechaFin
+    ? dateToInputValue(item.fechaFin)
+    : defaultEndDateFromStart(startDate);
+
   return {
     id: String(item.id),
     title: sanitizeTextOrDefault(item.titulo, NEWS_TITLE_PLACEHOLDER),
-    date: dateToInputValue(item.fecha),
+    date: startDate,
+    endDate,
     category: sanitizeTextOrDefault(item.categoria, "Club"),
     summary: sanitizeTextOrDefault(item.resumen, NEWS_TEXT_PLACEHOLDER),
     body: sanitizeTextOrDefault(item.contenido, NEWS_TEXT_PLACEHOLDER),
@@ -174,32 +129,18 @@ function databaseError(action: string, error: unknown) {
   return new Error(`No se pudo ${action} en la base de datos.`);
 }
 
-export async function cleanupExpiredNews(now = new Date()) {
-  const cutoff = getNewsExpirationCutoff(now);
-  const expired: Array<{ id: number; imagen: string | null }> = await prisma.noticia
-    .findMany({
-      where: { fecha: { lt: cutoff } },
-      select: { id: true, imagen: true },
-    })
-    .catch((error: unknown) => {
-      throw databaseError("consultar noticias vencidas", error);
-    });
-
-  if (expired.length === 0) {
-    return { deleted: 0, cutoff };
+function isVisibleNews(item: News, includeDrafts: boolean) {
+  if (!includeDrafts && item.status !== "published") {
+    return false;
   }
 
-  await prisma.noticia
-    .deleteMany({ where: { id: { in: expired.map((item) => item.id) } } })
-    .catch((error: unknown) => {
-      throw databaseError("borrar noticias vencidas", error);
-    });
+  const today = getTodayDateKey();
 
-  await Promise.all(
-    expired.map((item) => (item.imagen ? removeUploadedFile(item.imagen) : undefined)),
-  );
+  if (today < item.date || hasReachedEndDate(item.endDate)) {
+    return false;
+  }
 
-  return { deleted: expired.length, cutoff };
+  return true;
 }
 
 export async function readNews(options?: { includeDrafts?: boolean }): Promise<News[]> {
@@ -215,7 +156,7 @@ export async function readNews(options?: { includeDrafts?: boolean }): Promise<N
       orderBy: [{ fecha: "desc" }, { id: "desc" }],
     });
 
-    return items.map(toNews);
+    return items.map(toNews).filter((item) => isVisibleNews(item, includeDrafts));
   } catch (error) {
     console.error("No se pudieron leer las noticias desde la base de datos.", error);
   }
@@ -223,8 +164,13 @@ export async function readNews(options?: { includeDrafts?: boolean }): Promise<N
   return defaultNews
     .filter(
       (item) =>
-        isNewsWithinRetention(item.date) &&
-        (includeDrafts || (item.status ?? "published") !== "draft"),
+        isVisibleNews(
+          {
+            ...item,
+            status: item.status ?? "published",
+          },
+          includeDrafts,
+        ) && (includeDrafts || (item.status ?? "published") !== "draft"),
     )
     .map((item) => ({
       ...item,
@@ -232,6 +178,7 @@ export async function readNews(options?: { includeDrafts?: boolean }): Promise<N
       summary: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
       body: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
       image: normalizeImagePath(item.image),
+      endDate: item.endDate || defaultEndDateFromStart(item.date),
     }));
 }
 
@@ -251,6 +198,7 @@ export async function createNews(input: NewsInput) {
         resumen: clean.summary,
         contenido: clean.body,
         fecha: dateFromInput(clean.date),
+        fechaFin: dateFromInput(clean.endDate),
         categoria: clean.category,
         imagen: image,
         publicada: clean.status === "published",
@@ -260,7 +208,7 @@ export async function createNews(input: NewsInput) {
     return toNews(item);
   } catch (error) {
     if (input.image) {
-      await removeUploadedFile(image);
+      await removeUpload(image, "news");
     }
 
     throw databaseError("crear la noticia", error);
@@ -296,6 +244,7 @@ export async function updateNews(id: string, input: NewsInput) {
         resumen: clean.summary,
         contenido: clean.body,
         fecha: dateFromInput(clean.date),
+        fechaFin: dateFromInput(clean.endDate),
         categoria: clean.category,
         imagen: image,
         publicada: clean.status === "published",
@@ -303,13 +252,13 @@ export async function updateNews(id: string, input: NewsInput) {
     });
 
     if (input.image && existing.imagen && existing.imagen !== image) {
-      await removeUploadedFile(existing.imagen);
+      await removeUpload(existing.imagen, "news");
     }
 
     return toNews(updated);
   } catch (error) {
     if (input.image) {
-      await removeUploadedFile(image);
+      await removeUpload(image, "news");
     }
 
     throw databaseError("actualizar la noticia", error);
@@ -333,7 +282,7 @@ export async function deleteNews(id: string) {
   });
 
   if (existing.imagen) {
-    await removeUploadedFile(existing.imagen);
+    await removeUpload(existing.imagen, "news");
   }
 }
 
@@ -351,6 +300,7 @@ export async function restoreDefaultNews() {
           resumen: sanitizeTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER),
           contenido: sanitizeTextOrDefault(item.body, NEWS_TEXT_PLACEHOLDER),
           fecha: dateFromInput(item.date),
+          fechaFin: dateFromInput(item.endDate || defaultEndDateFromStart(item.date)),
           categoria: sanitizeTextOrDefault(item.category, "Club"),
           imagen: normalizeImagePath(item.image),
           publicada: (item.status ?? "published") === "published",
@@ -361,7 +311,7 @@ export async function restoreDefaultNews() {
     throw databaseError("restaurar las noticias", error);
   }
 
-  await Promise.all(current.map((item) => removeUploadedFile(item.image)));
+  await Promise.all(current.map((item) => removeUpload(item.image, "news")));
 
   return readNews({ includeDrafts: true });
 }

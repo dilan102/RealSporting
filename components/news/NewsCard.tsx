@@ -10,18 +10,8 @@ import {
   NEWS_TITLE_PLACEHOLDER,
   sanitizeVisibleTextOrDefault,
 } from "@/lib/validators";
+import { PublicationDateText } from "@/components/ui/PublicationDateText";
 import { NewsBadge, NewsVisual } from "./NewsVisual";
-
-function formatDate(dateStr: string) {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const localDate = new Date(year, month - 1, day);
-
-  return localDate.toLocaleDateString("es-CO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 type Props = {
   item: News;
@@ -48,9 +38,11 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
           </span>
         </div>
         <div className="p-6">
-          <time className="text-xs font-bold uppercase tracking-normal text-muted">
-            {formatDate(item.date)}
-          </time>
+          <PublicationDateText
+            startDate={item.date}
+            endDate={item.endDate}
+            className="text-xs font-bold uppercase tracking-normal text-muted"
+          />
           <h3 className="font-newsroom mt-3 line-clamp-2 overflow-wrap-anywhere text-2xl font-black leading-tight">{title}</h3>
           <p className="mt-3 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
             {summary}

@@ -13,12 +13,14 @@ model Noticia {
   contenido String
   imagen    String?
   fecha     DateTime @default(now())
+  fechaFin  DateTime?
   categoria String
   publicada Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   @@index([fecha])
+  @@index([fechaFin])
   @@index([publicada, fecha])
 }
 
@@ -30,11 +32,14 @@ model Entrenamiento {
   imagenes    String[] @default([])
   videos      String[] @default([])
   fecha       DateTime @default(now())
+  fechaFin    DateTime?
   oculto      Boolean  @default(false)
   publicado   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
+  @@index([fecha])
+  @@index([fechaFin])
   @@index([publicado, fecha])
 }
 
@@ -54,4 +59,15 @@ model Jugador {
 
   @@index([publicado, visiblePublico])
   @@index([categoria])
+}
+
+/// Archivos subidos desde el panel admin (imágenes y videos persistentes en PostgreSQL).
+model ArchivoSubido {
+  id        String   @id @default(uuid())
+  seccion   String
+  mimeType  String
+  contenido Bytes
+  createdAt DateTime @default(now())
+
+  @@index([seccion])
 }

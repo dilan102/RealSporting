@@ -1,9 +1,6 @@
-import { randomUUID } from "crypto";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import path from "path";
 import type { Player, PlayerCategory } from "@/lib/content";
 import { getPlayerCategory, players as defaultPlayers } from "@/lib/content";
-import { getUploadDir, getUploadPublicPrefix } from "@/lib/file-storage";
+import { removeUpload, saveUpload } from "@/lib/upload-store";
 import {
   isLikelyJunkText,
   isReadableText,
@@ -12,8 +9,7 @@ import {
 import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
 import { prisma } from "@/lib/prisma";
 
-const uploadsDir = getUploadDir("players");
-const publicUploadPrefix = getUploadPublicPrefix("players");
+const maxImageBytes = 5 * 1024 * 1024;
 
 export type PlayerInput = {
   name: string;
@@ -46,10 +42,6 @@ type StoredPlayer = {
   visiblePublico: boolean;
   publicado: boolean;
 };
-
-async function ensureUploadStorage() {
-  await mkdir(uploadsDir, { recursive: true });
-}
 
 function normalizeCategory(value: string): PlayerCategory {
   const clean = value.trim();
@@ -85,47 +77,12 @@ function normalizeInput(input: PlayerInput) {
   return { name, number, position, bio, category, convocado, visible_publico, status };
 }
 
-function uploadedPathFromPublicUrl(url: string) {
-  if (!url.startsWith(publicUploadPrefix)) {
-    return null;
-  }
-
-  return path.join(uploadsDir, path.basename(url));
-}
-
-async function removeUploadedFile(url: string) {
-  const filePath = uploadedPathFromPublicUrl(url);
-
-  if (!filePath) {
-    return;
-  }
-
-  try {
-    await unlink(filePath);
-  } catch {
-    // The record can still be updated if the previous upload is already gone.
-  }
-}
-
 async function saveImage(file: File) {
   if (!allowedTypes.has(file.type)) {
     throw new Error("Selecciona una imagen JPG, PNG, WEBP o SVG.");
   }
 
-  if (file.size > 5 * 1024 * 1024) {
-    throw new Error("La imagen no puede superar 5 MB.");
-  }
-
-  await ensureUploadStorage();
-
-  const extension = allowedTypes.get(file.type);
-  const fileName = `${Date.now()}-${randomUUID()}${extension}`;
-  const diskPath = path.join(uploadsDir, fileName);
-  const bytes = Buffer.from(await file.arrayBuffer());
-
-  await writeFile(diskPath, bytes);
-
-  return `${publicUploadPrefix}${fileName}`;
+  return saveUpload("players", file, allowedTypes, maxImageBytes);
 }
 
 function toPlayer(item: StoredPlayer): Player {
@@ -235,7 +192,7 @@ export async function createPlayer(input: PlayerInput) {
 
     return toPlayer(player);
   } catch (error) {
-    await removeUploadedFile(image);
+    await removeUpload(image, "players");
     throw databaseError("crear el jugador", error);
   }
 }
@@ -272,13 +229,13 @@ export async function updatePlayer(id: string, input: PlayerInput) {
     });
 
     if (input.image && existing.imagen !== image) {
-      await removeUploadedFile(existing.imagen);
+      await removeUpload(existing.imagen, "players");
     }
 
     return toPlayer(updated);
   } catch (error) {
     if (input.image) {
-      await removeUploadedFile(image);
+      await removeUpload(image, "players");
     }
 
     throw databaseError("actualizar el jugador", error);
@@ -300,7 +257,7 @@ export async function deletePlayer(id: string) {
   await prisma.jugador.delete({ where: { id: numericId } }).catch((error: unknown) => {
     throw databaseError("borrar el jugador", error);
   });
-  await removeUploadedFile(existing.imagen);
+  await removeUpload(existing.imagen, "players");
 }
 
 export async function restoreDefaultPlayers() {
@@ -317,7 +274,7 @@ export async function restoreDefaultPlayers() {
     throw databaseError("restaurar los jugadores", error);
   });
 
-  await Promise.all(current.map((item) => removeUploadedFile(item.imagen)));
+  await Promise.all(current.map((item) => removeUpload(item.imagen, "players")));
 
   return readPlayers({ includeHidden: true });
 }

@@ -1,9 +1,15 @@
-import { randomUUID } from "crypto";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import path from "path";
 import type { Training } from "@/lib/content";
 import { trainings as defaultTrainings } from "@/lib/content";
-import { getUploadDir, getUploadPublicPrefix } from "@/lib/file-storage";
+import { cleanupExpiredTrainings } from "@/lib/content-expiry";
+import {
+  dateFromInput,
+  dateToInputValue,
+  defaultEndDateFromStart,
+  getTodayDateKey,
+  hasReachedEndDate,
+  validatePublicationDateRange,
+} from "@/lib/publication-dates";
+import { removeUpload, saveUpload } from "@/lib/upload-store";
 import {
   TRAINING_TEXT_PLACEHOLDER,
   isLikelyJunkText,
@@ -15,12 +21,13 @@ import {
 import { isPublishedEntry, type PublishStatus } from "@/lib/publish-status";
 import { prisma } from "@/lib/prisma";
 
-const uploadsDir = getUploadDir("trainings");
-const publicUploadPrefix = getUploadPublicPrefix("trainings");
+const maxImageBytes = 5 * 1024 * 1024;
+const maxVideoBytes = 80 * 1024 * 1024;
 
 export type TrainingInput = {
   title: string;
   date: string;
+  endDate: string;
   description: string;
   images?: File[];
   videos?: File[];
@@ -49,30 +56,23 @@ type StoredTraining = {
   imagenes: string[] | null;
   videos: string[] | null;
   fecha: Date;
+  fechaFin: Date | null;
   oculto: boolean;
   publicado: boolean;
 };
 
-async function ensureUploadStorage() {
-  await mkdir(uploadsDir, { recursive: true });
-}
-
 function normalizeInput(input: TrainingInput) {
   const title = validateTrainingTitle(input.title);
-  const date = validateTrainingDate(input.date);
+  const startDate = validateTrainingDate(input.date);
+  const { endDate } = validatePublicationDateRange(
+    startDate,
+    input.endDate || defaultEndDateFromStart(startDate),
+  );
   const description = validateReadableText(input.description, "descripción", 10);
   const hidden = input.hidden ?? false;
   const status: PublishStatus = input.status ?? (hidden ? "draft" : "published");
 
-  return { title, date, description, hidden, status };
-}
-
-function dateFromInput(date: string) {
-  return new Date(`${date}T00:00:00.000Z`);
-}
-
-function dateToInputValue(date: Date) {
-  return date.toISOString().slice(0, 10);
+  return { title, date: startDate, endDate, description, hidden, status };
 }
 
 function isValidTrainingDate(date: string) {
@@ -91,6 +91,12 @@ function isPublicTraining(item: Training) {
     return false;
   }
 
+  const today = getTodayDateKey();
+
+  if (today < item.date || hasReachedEndDate(item.endDate)) {
+    return false;
+  }
+
   if (!isValidTrainingDate(item.date)) {
     return false;
   }
@@ -98,47 +104,12 @@ function isPublicTraining(item: Training) {
   return !isLikelyJunkText(item.title) && !isLikelyJunkText(item.description);
 }
 
-function uploadedPathFromPublicUrl(url: string) {
-  if (!url.startsWith(publicUploadPrefix)) {
-    return null;
-  }
-
-  return path.join(uploadsDir, path.basename(url));
-}
-
-async function removeUploadedFile(url: string) {
-  const filePath = uploadedPathFromPublicUrl(url);
-
-  if (!filePath) {
-    return;
-  }
-
-  try {
-    await unlink(filePath);
-  } catch {
-    // The record can still be updated if the old file was already removed.
-  }
-}
-
 async function saveImage(file: File) {
   if (!allowedImageTypes.has(file.type)) {
     throw new Error("Selecciona una imagen JPG, PNG, WEBP o SVG.");
   }
 
-  if (file.size > 5 * 1024 * 1024) {
-    throw new Error("La imagen no puede superar 5 MB.");
-  }
-
-  await ensureUploadStorage();
-
-  const extension = allowedImageTypes.get(file.type);
-  const fileName = `${Date.now()}-${randomUUID()}${extension}`;
-  const diskPath = path.join(uploadsDir, fileName);
-  const bytes = Buffer.from(await file.arrayBuffer());
-
-  await writeFile(diskPath, bytes);
-
-  return `${publicUploadPrefix}${fileName}`;
+  return saveUpload("trainings", file, allowedImageTypes, maxImageBytes);
 }
 
 async function saveVideo(file: File) {
@@ -146,20 +117,7 @@ async function saveVideo(file: File) {
     throw new Error("Selecciona un video MP4, WEBM o MOV.");
   }
 
-  if (file.size > 80 * 1024 * 1024) {
-    throw new Error("El video no puede superar 80 MB.");
-  }
-
-  await ensureUploadStorage();
-
-  const extension = allowedVideoTypes.get(file.type);
-  const fileName = `${Date.now()}-${randomUUID()}${extension}`;
-  const diskPath = path.join(uploadsDir, fileName);
-  const bytes = Buffer.from(await file.arrayBuffer());
-
-  await writeFile(diskPath, bytes);
-
-  return `${publicUploadPrefix}${fileName}`;
+  return saveUpload("trainings", file, allowedVideoTypes, maxVideoBytes);
 }
 
 function getTrainingImages(training: Training) {
@@ -179,10 +137,16 @@ function toTraining(item: StoredTraining): Training {
   const storedVideos = item.videos ?? [];
   const images = storedImages.length > 0 ? storedImages : item.imagen ? [item.imagen] : [];
 
+  const startDate = dateToInputValue(item.fecha);
+  const endDate = item.fechaFin
+    ? dateToInputValue(item.fechaFin)
+    : defaultEndDateFromStart(startDate);
+
   return {
     id: String(item.id),
     title: sanitizeTextOrDefault(item.titulo, "Entrenamiento Real Sporting"),
-    date: dateToInputValue(item.fecha),
+    date: startDate,
+    endDate,
     description: sanitizeTextOrDefault(
       item.descripcion || TRAINING_TEXT_PLACEHOLDER,
       TRAINING_TEXT_PLACEHOLDER,
@@ -220,6 +184,7 @@ function defaultTrainingRows() {
       titulo: item.title,
       descripcion: item.description,
       fecha: dateFromInput(item.date),
+      fechaFin: dateFromInput(item.endDate || defaultEndDateFromStart(item.date)),
       imagen: images[0] || null,
       imagenes: images,
       videos: getTrainingVideos(item),
@@ -233,6 +198,10 @@ export async function readTrainings(options?: { includeHidden?: boolean }) {
   const includeHidden = options?.includeHidden ?? false;
 
   try {
+    await cleanupExpiredTrainings().catch((error: unknown) => {
+      console.error("No se pudieron limpiar los entrenamientos vencidos.", error);
+    });
+
     const items = await prisma.entrenamiento.findMany({
       where: includeHidden
         ? undefined
@@ -257,6 +226,7 @@ export async function readTrainings(options?: { includeHidden?: boolean }) {
       ...item,
       title: sanitizeTextOrDefault(item.title, "Entrenamiento Real Sporting"),
       description: sanitizeTextOrDefault(item.description, TRAINING_TEXT_PLACEHOLDER),
+      endDate: item.endDate || defaultEndDateFromStart(item.date),
     }));
 }
 
@@ -274,6 +244,7 @@ export async function createTraining(input: TrainingInput) {
         titulo: clean.title,
         descripcion: clean.description,
         fecha: dateFromInput(clean.date),
+        fechaFin: dateFromInput(clean.endDate),
         imagen: images[0] || null,
         imagenes: images,
         videos,
@@ -284,7 +255,9 @@ export async function createTraining(input: TrainingInput) {
 
     return toTraining(training);
   } catch (error) {
-    await Promise.all([...images, ...videos].map((item) => removeUploadedFile(item)));
+    await Promise.all(
+      [...images, ...videos].map((item) => removeUpload(item, "trainings")),
+    );
     throw databaseError("crear el entrenamiento", error);
   }
 }
@@ -324,6 +297,7 @@ export async function updateTraining(id: string, input: TrainingInput) {
         titulo: clean.title,
         descripcion: clean.description,
         fecha: dateFromInput(clean.date),
+        fechaFin: dateFromInput(clean.endDate),
         imagen: images[0] || null,
         imagenes: images,
         videos,
@@ -334,7 +308,9 @@ export async function updateTraining(id: string, input: TrainingInput) {
 
     return toTraining(updated);
   } catch (error) {
-    await Promise.all([...newImages, ...newVideos].map((item) => removeUploadedFile(item)));
+    await Promise.all(
+      [...newImages, ...newVideos].map((item) => removeUpload(item, "trainings")),
+    );
     throw databaseError("actualizar el entrenamiento", error);
   }
 }
@@ -359,7 +335,7 @@ export async function deleteTraining(id: string) {
 
   await Promise.all(
     [...getTrainingImages(training), ...getTrainingVideos(training)].map((item) =>
-      removeUploadedFile(item),
+      removeUpload(item, "trainings"),
     ),
   );
 }
@@ -383,7 +359,7 @@ export async function restoreDefaultTrainings() {
       const training = toTraining(item);
 
       return [...getTrainingImages(training), ...getTrainingVideos(training)].map((media) =>
-        removeUploadedFile(media),
+        removeUpload(media, "trainings"),
       );
     }),
   );

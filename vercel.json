@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/cleanup-news",
+      "path": "/api/cron/cleanup-expired",
       "schedule": "0 8 * * *"
     }
   ]

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { NewsBadge, NewsVisual } from "@/components/news/NewsVisual";
 import { RevealSection } from "@/components/ui/RevealSection";
+import { formatPublicationRange } from "@/lib/publication-dates";
 import { club } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
 import { pageOpenGraph } from "@/lib/site";
@@ -19,17 +20,6 @@ export const dynamic = "force-dynamic";
 type Props = {
   params: Promise<{ id: string }>;
 };
-
-function formatDate(dateStr: string) {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const localDate = new Date(year, month - 1, day);
-
-  return localDate.toLocaleDateString("es-CO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -91,9 +81,9 @@ export default async function NoticiaDetallePage({ params }: Props) {
             <h1 className="font-newsroom mt-5 max-w-5xl text-balance text-5xl font-black leading-[0.9] sm:text-6xl lg:text-8xl">
               {title}
             </h1>
-            <time className="mt-5 block text-xs font-bold uppercase tracking-normal text-white/68">
-              {formatDate(item.date)} · {club.name}
-            </time>
+            <p className="mt-5 text-xs font-bold uppercase tracking-normal text-white/68">
+              {formatPublicationRange(item.date, item.endDate)} · {club.name}
+            </p>
             <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-white/84 sm:text-xl">
               {summary}
             </p>

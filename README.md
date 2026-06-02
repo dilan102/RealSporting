@@ -71,12 +71,14 @@ npm run build
 npm start
 ```
 
-En plataformas serverless como Vercel, el paquete desplegado es de solo lectura.
-Las subidas del panel admin se guardan en `/tmp/real-sporting` para evitar
-errores `EROFS`, pero ese almacenamiento puede perderse entre reinicios. Para
-subidas permanentes configura `REALSPORTING_STORAGE_DIR` en un servidor con disco
-persistente o migra los archivos a Cloudinary, S3 o Vercel Blob y los datos a
-una base de datos.
+En Vercel, las imágenes y videos subidos desde el panel admin se guardan en
+PostgreSQL (`ArchivoSubido`) y se sirven por `/api/media/{id}`. En desarrollo
+local o en un VPS con `REALSPORTING_STORAGE_DIR`, los archivos pueden guardarse
+en disco bajo `public/uploads/`.
+
+Después del despliegue ejecuta `npx prisma db push` para crear la tabla
+`ArchivoSubido`. Las noticias antiguas cuya imagen ya se perdió deben volver a
+subirse una vez desde el panel admin.
 
 ## Stack
 

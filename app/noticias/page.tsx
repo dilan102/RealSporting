@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { NewsManager } from "@/components/news/NewsManager";
 import { NewsBadge, NewsVisual } from "@/components/news/NewsVisual";
 import { PageHero } from "@/components/ui/PageHero";
+import { PublicationDateText } from "@/components/ui/PublicationDateText";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { readNews } from "@/lib/news-store";
@@ -24,17 +25,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-function formatDate(dateStr: string) {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const localDate = new Date(year, month - 1, day);
-
-  return localDate.toLocaleDateString("es-CO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export default async function NoticiasPage() {
   const news = await readNews();
@@ -85,9 +75,11 @@ export default async function NoticiasPage() {
                 </span>
               </span>
               <span className="p-6 sm:p-8 lg:flex lg:flex-col lg:justify-center">
-                <time className="text-xs font-bold uppercase tracking-normal text-muted">
-                  {formatDate(leadNews.date)}
-                </time>
+                <PublicationDateText
+                  startDate={leadNews.date}
+                  endDate={leadNews.endDate}
+                  className="text-xs font-bold uppercase tracking-normal text-muted"
+                />
                 <h2 className="font-newsroom mt-4 text-4xl font-black leading-none sm:text-6xl">
                   {sanitizeVisibleTextOrDefault(leadNews.title, NEWS_TITLE_PLACEHOLDER)}
                 </h2>
@@ -127,9 +119,11 @@ export default async function NoticiasPage() {
                     </span>
                   </span>
                   <span className="block p-5">
-                    <time className="text-xs font-bold uppercase tracking-normal text-muted">
-                      {formatDate(item.date)}
-                    </time>
+                    <PublicationDateText
+                      startDate={item.date}
+                      endDate={item.endDate}
+                      className="text-xs font-bold uppercase tracking-normal text-muted"
+                    />
                     <span className="font-newsroom mt-3 line-clamp-2 block overflow-wrap-anywhere text-3xl font-black leading-none">
                       {sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)}
                     </span>
