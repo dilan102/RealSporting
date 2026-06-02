@@ -6,31 +6,34 @@
   z-index: 9999;
   will-change: transform;
   border-radius: 50%;
-  mix-blend-mode: difference;
 }
 
-/* Cursor principal - círculo pequeño blanco */
+/* Cursor principal */
 .cursorMain {
-  width: 10px;
-  height: 10px;
-  background-color: #ffffff;
+  width: 11px;
+  height: 11px;
+  background-color: var(--cursor-main, #ffffff);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 0 0 2px var(--cursor-ring, rgba(255, 255, 255, 0.22)),
+    0 0 14px var(--cursor-glow, rgba(255, 255, 255, 0.42));
 }
 
-/* Cursor secundario (trail) - círculo más grande con borde */
+/* Cursor secundario (trail) */
 .cursorTrail {
   width: 36px;
   height: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background-color: transparent;
+  border: 2px solid var(--cursor-trail, rgba(255, 255, 255, 0.6));
+  background-color: var(--cursor-fill, transparent);
   border-radius: 50%;
   transform: translate(-50%, -50%);
+  box-shadow: 0 0 18px var(--cursor-glow, rgba(255, 255, 255, 0.26));
   transition: 
     width 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     height 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     border-color 0.16s ease,
+    background-color 0.16s ease,
     opacity 0.16s ease;
 }
 
@@ -38,95 +41,47 @@
 .cursorHover {
   width: 56px;
   height: 56px;
-  border-color: rgba(255, 255, 255, 0.9);
-  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--cursor-hover, rgba(255, 255, 255, 0.9));
+  background-color: var(--cursor-hover-fill, rgba(255, 255, 255, 0.05));
 }
 
 /* Hover sobre imágenes */
 .cursorImageHover {
   width: 48px;
   height: 48px;
-  border-color: rgba(255, 255, 255, 0.4);
-  opacity: 0.7;
-}
-
-/* Modo oscuro - ajustes sutiles */
-@media (prefers-color-scheme: dark) {
-  .cursorMain {
-    background-color: #ffffff;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
-  }
-
-  .cursorTrail {
-    border-color: rgba(255, 255, 255, 0.5);
-  }
-
-  .cursorHover {
-    border-color: rgba(255, 255, 255, 0.95);
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .cursorImageHover {
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-}
-
-/* Modo claro - ajustes para mejor visibilidad */
-@media (prefers-color-scheme: light) {
-  .cursorMain {
-    background-color: #111c16;
-    box-shadow: 0 0 4px rgba(17, 28, 22, 0.3);
-  }
-
-  .cursorTrail {
-    border-color: rgba(17, 28, 22, 0.4);
-  }
-
-  .cursorHover {
-    border-color: rgba(17, 28, 22, 0.7);
-    background-color: rgba(17, 28, 22, 0.03);
-  }
-
-  .cursorImageHover {
-    border-color: rgba(17, 28, 22, 0.3);
-  }
+  border-color: var(--cursor-image, rgba(255, 255, 255, 0.4));
+  opacity: 0.82;
 }
 
 /* Soporte para data-theme attribute (para modo claro/oscuro manual) */
+[data-theme="dark"] {
+  --cursor-main: #f8faf7;
+  --cursor-ring: rgba(208, 161, 58, 0.5);
+  --cursor-trail: rgba(208, 161, 58, 0.78);
+  --cursor-fill: rgba(208, 161, 58, 0.05);
+  --cursor-hover: rgba(43, 118, 85, 0.95);
+  --cursor-hover-fill: rgba(43, 118, 85, 0.16);
+  --cursor-image: rgba(255, 255, 255, 0.7);
+  --cursor-glow: rgba(208, 161, 58, 0.36);
+}
+
 [data-theme="dark"] .cursorMain {
-  background-color: #ffffff;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  background-color: var(--cursor-main);
 }
 
-[data-theme="dark"] .cursorTrail {
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-[data-theme="dark"] .cursorHover {
-  border-color: rgba(255, 255, 255, 0.95);
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-[data-theme="dark"] .cursorImageHover {
-  border-color: rgba(255, 255, 255, 0.35);
+[data-theme="light"] {
+  --cursor-main: #b88924;
+  --cursor-ring: rgba(21, 79, 55, 0.28);
+  --cursor-trail: rgba(21, 79, 55, 0.82);
+  --cursor-fill: rgba(184, 137, 36, 0.08);
+  --cursor-hover: rgba(184, 137, 36, 0.95);
+  --cursor-hover-fill: rgba(184, 137, 36, 0.14);
+  --cursor-image: rgba(21, 79, 55, 0.68);
+  --cursor-glow: rgba(21, 79, 55, 0.28);
 }
 
 [data-theme="light"] .cursorMain {
-  background-color: #111c16;
-  box-shadow: 0 0 4px rgba(17, 28, 22, 0.3);
-}
-
-[data-theme="light"] .cursorTrail {
-  border-color: rgba(17, 28, 22, 0.4);
-}
-
-[data-theme="light"] .cursorHover {
-  border-color: rgba(17, 28, 22, 0.7);
-  background-color: rgba(17, 28, 22, 0.03);
-}
-
-[data-theme="light"] .cursorImageHover {
-  border-color: rgba(17, 28, 22, 0.3);
+  background-color: var(--cursor-main);
 }
 
 /* Optimización para móviles - ocultar cursor en dispositivos táctiles */

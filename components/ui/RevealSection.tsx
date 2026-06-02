@@ -41,7 +41,7 @@ export function RevealSection({ children, className, delay = 0 }: Props) {
       data-visible={visible}
     >
       <div
-        className="translate-y-4 scale-[0.99] opacity-100 transition-transform duration-700 ease-out group-data-[visible=true]/reveal:translate-y-0 group-data-[visible=true]/reveal:scale-100"
+        className="translate-y-6 scale-[0.985] opacity-0 transition-all duration-700 ease-out group-data-[visible=true]/reveal:translate-y-0 group-data-[visible=true]/reveal:scale-100 group-data-[visible=true]/reveal:opacity-100"
         style={{ transitionDelay: `${delay}s` }}
       >
         {children}
