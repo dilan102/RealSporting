@@ -85,6 +85,19 @@
       var(--bg-primary);
   }
 
+  /* Ocultar cursor nativo cuando el cursor personalizado está activo */
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: none !important;
+  }
+
+  /* Solo activar cursor personalizado en dispositivos no táctiles */
+  @media (hover: hover) and (pointer: fine) {
+    body.custom-cursor-active {
+      cursor: none !important;
+    }
+  }
+
   [data-theme="light"] body {
     background:
       linear-gradient(

@@ -1,0 +1,144 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+}
+
+/* Cursor principal - círculo pequeño blanco */
+.cursorMain {
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Cursor secundario (trail) - círculo más grande con borde */
+.cursorTrail {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: transparent;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: 
+    width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+/* Hover sobre enlaces, botones y elementos interactivos */
+.cursorHover {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Hover sobre imágenes */
+.cursorImageHover {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(255, 255, 255, 0.4);
+  opacity: 0.7;
+}
+
+/* Modo oscuro - ajustes sutiles */
+@media (prefers-color-scheme: dark) {
+  .cursorMain {
+    background-color: #ffffff;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  }
+
+  .cursorTrail {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .cursorHover {
+    border-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .cursorImageHover {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* Modo claro - ajustes para mejor visibilidad */
+@media (prefers-color-scheme: light) {
+  .cursorMain {
+    background-color: #111c16;
+    box-shadow: 0 0 4px rgba(17, 28, 22, 0.3);
+  }
+
+  .cursorTrail {
+    border-color: rgba(17, 28, 22, 0.4);
+  }
+
+  .cursorHover {
+    border-color: rgba(17, 28, 22, 0.7);
+    background-color: rgba(17, 28, 22, 0.03);
+  }
+
+  .cursorImageHover {
+    border-color: rgba(17, 28, 22, 0.3);
+  }
+}
+
+/* Soporte para data-theme attribute (para modo claro/oscuro manual) */
+[data-theme="dark"] .cursorMain {
+  background-color: #ffffff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .cursorTrail {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .cursorHover {
+  border-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .cursorImageHover {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="light"] .cursorMain {
+  background-color: #111c16;
+  box-shadow: 0 0 4px rgba(17, 28, 22, 0.3);
+}
+
+[data-theme="light"] .cursorTrail {
+  border-color: rgba(17, 28, 22, 0.4);
+}
+
+[data-theme="light"] .cursorHover {
+  border-color: rgba(17, 28, 22, 0.7);
+  background-color: rgba(17, 28, 22, 0.03);
+}
+
+[data-theme="light"] .cursorImageHover {
+  border-color: rgba(17, 28, 22, 0.3);
+}
+
+/* Optimización para móviles - ocultar cursor en dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+}
+
+/* Reducir movimiento para usuarios que prefieren menos animación */
+@media (prefers-reduced-motion: reduce) {
+  .cursorTrail {
+    transition: none;
+  }
+}
