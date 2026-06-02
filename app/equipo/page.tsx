@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PlayerManager } from "@/components/equipo/PlayerManager";
@@ -33,7 +32,7 @@ export default async function EquipoPage() {
       />
 
       <RevealSection>
-        <section className="section-shell section-padding">
+        <section className="section-shell section-padding pb-24">
           <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-start">
             <div>
               <p className="eyebrow">Proceso por edades</p>
@@ -41,8 +40,8 @@ export default async function EquipoPage() {
                 Cada categoría tiene una intención técnica y humana.
               </h2>
               <p className="mt-5 text-base leading-8 text-muted">
-                El registro de jugadores se organiza por año de nacimiento y permite
-                mantener convocatorias, seguimiento público y edición administrativa.
+                El registro de jugadores se organiza por año de nacimiento. Haz clic en
+                una categoría para ver su plantilla, convocatorias y seguimiento público.
               </p>
               <nav className="mt-6 flex flex-wrap gap-2" aria-label="Ir a una categoría">
                 {sportCategoryCards.map((category) => (
@@ -64,46 +63,8 @@ export default async function EquipoPage() {
               </Link>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {sportCategoryCards.map((category) => (
-                <article
-                  key={category.id}
-                  id={`categoria-${category.id}`}
-                  className="category-anchor-target alive-card premium-card group scroll-mt-32 overflow-hidden"
-                >
-                  <div className="relative aspect-[16/9] bg-surface">
-                    <Image
-                      src={category.image}
-                      alt={`Categoría ${category.name} (${category.range})`}
-                      fill
-                      className="interactive-image object-cover"
-                      sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <p className="cinematic-accent absolute bottom-3 left-4 text-xs font-black uppercase tracking-normal">
-                      {category.range}
-                    </p>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-categories text-3xl font-black leading-none">{category.name}</h3>
-                    <p className="mt-2 text-sm leading-6 text-muted">{category.description}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
+            <PlayerManager initialItems={players} />
           </div>
-        </section>
-      </RevealSection>
-
-      <RevealSection>
-        <section id="plantilla" className="section-shell scroll-mt-28 pb-24">
-          <div className="mb-8 max-w-2xl">
-            <p className="eyebrow">Registro deportivo</p>
-            <h2 className="font-training mt-3 text-4xl font-black sm:text-5xl">
-              Plantilla y convocatorias
-            </h2>
-          </div>
-          <PlayerManager initialItems={players} />
         </section>
       </RevealSection>
     </main>

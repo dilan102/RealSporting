@@ -19,7 +19,7 @@ import {
   type Player,
   type TeamCategoryId,
 } from "@/lib/content";
-import { PlayerGrid } from "./PlayerGrid";
+import { EquipoCategories } from "./EquipoCategories";
 
 type PlayerForm = {
   name: string;
@@ -329,7 +329,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
   return (
     <>
       {formOpen && (
-        <section ref={formRef} className="glass mobile-card-lift mt-8 scroll-mt-28 rounded-lg p-5 sm:p-6">
+        <section ref={formRef} className="glass mobile-card-lift mb-6 scroll-mt-28 rounded-lg p-5 sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h3 className="text-xl font-bold">
@@ -531,8 +531,8 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         </section>
       )}
 
-      <div id="admin-equipo" className="mt-8 scroll-mt-28">
-        <PlayerGrid
+      <div id="admin-equipo" className="scroll-mt-28">
+        <EquipoCategories
           sections={sections}
           canManage={unlocked}
           onAddPlayer={openCreate}
