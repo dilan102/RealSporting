@@ -34,7 +34,7 @@ export default async function HomePage() {
           "categorias-home",
           "ods-home",
           "noticias-home",
-          "galeria-home",
+          "entrenamiento-home",
           "entrenamientos-home",
           "inscripcion-home",
           "redes-home",
@@ -66,7 +66,7 @@ export default async function HomePage() {
         </div>
       </RevealSection>
       <RevealSection>
-        <div id="galeria-home">
+        <div id="entrenamiento-home">
           <HomeGallerySection />
         </div>
       </RevealSection>

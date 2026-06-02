@@ -23,7 +23,7 @@ export function WhatsAppFloat() {
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className="whatsapp-float fixed bottom-6 right-6 z-[999] inline-flex min-h-[52px] min-w-[52px] items-center justify-center gap-2 rounded-full bg-[#25D366] px-3 py-3 text-sm font-black text-white shadow-xl shadow-[#25D366]/30 transition-transform hover:scale-105 sm:px-4"
+      className="btn-green whatsapp-float alive-lift fixed bottom-6 right-6 z-[999] inline-flex min-h-[52px] min-w-[52px] items-center justify-center gap-2 rounded-full px-3 py-3 text-sm font-black text-white sm:px-4"
       aria-label="Escríbenos por WhatsApp"
     >
       <WhatsAppIcon />

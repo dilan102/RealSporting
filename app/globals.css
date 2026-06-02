@@ -726,12 +726,38 @@
 @keyframes pulse-whatsapp {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    box-shadow:
+      0 14px 34px color-mix(in srgb, var(--accent-green) 24%, transparent),
+      0 0 0 0 color-mix(in srgb, var(--accent-green) 45%, transparent);
   }
 
   50% {
-    box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+    box-shadow:
+      0 16px 38px color-mix(in srgb, var(--accent-green) 28%, transparent),
+      0 0 0 10px color-mix(in srgb, var(--accent-green) 0%, transparent);
   }
+}
+
+@keyframes inscription-shine {
+  0%,
+  100% {
+    background-position: 120% 0;
+  }
+
+  50% {
+    background-position: -20% 0;
+  }
+}
+
+.home-inscription-shine {
+  background-image: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(243, 197, 72, 0.08) 50%,
+    transparent 60%
+  );
+  background-size: 220% 100%;
+  animation: inscription-shine 7s ease-in-out infinite;
 }
 
 .whatsapp-float {
@@ -743,7 +769,8 @@
     animation: none;
   }
 
-  .whatsapp-float {
+  .whatsapp-float,
+  .home-inscription-shine {
     animation: none;
   }
 }

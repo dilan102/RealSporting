@@ -21,6 +21,7 @@ export function ValuePillarsStrip() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.12, duration: 0.4, ease: PRELOADER_EASE }}
+            whileHover={{ y: -2 }}
             className={`mobile-card-lift bg-bg-elevated transition-all duration-300 ${
               open
                 ? "ring-2 ring-inset ring-accent shadow-lg shadow-[var(--accent-gold)]/12"
@@ -48,7 +49,7 @@ export function ValuePillarsStrip() {
               <h3 className="mt-2 text-2xl font-black transition-transform duration-300 group-hover:translate-x-0.5">
                 {value.title}
               </h3>
-              <AnimatePresence initial={false}>
+              <AnimatePresence initial={false} mode="wait">
                 {open ? (
                   <motion.p
                     key="detail"
@@ -63,18 +64,16 @@ export function ValuePillarsStrip() {
                 ) : (
                   <motion.p
                     key="preview"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.22, ease: PRELOADER_EASE }}
                     className="mt-3 line-clamp-2 text-sm leading-7 text-muted group-hover:text-text"
                   >
                     {value.description}
                   </motion.p>
                 )}
               </AnimatePresence>
-              <span className="mt-4 inline-flex text-xs font-black uppercase tracking-normal text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                {open ? "Cerrar" : "Ver más"}
-              </span>
             </button>
           </motion.article>
         );
