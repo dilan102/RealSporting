@@ -101,7 +101,7 @@ export function SitePreloader() {
           key="site-preloader"
           role="status"
           aria-live="polite"
-          className="site-preloader-root pointer-events-auto fixed inset-0 overflow-hidden bg-[#050805] text-white"
+          className="site-preloader-root pointer-events-auto fixed inset-0 overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
@@ -109,9 +109,9 @@ export function SitePreloader() {
             transition: { duration: exitDuration, ease: PRELOADER_EASE },
           }}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(208,161,58,0.18),transparent_32rem)]" />
-          <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
-          <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
+          <div className="site-preloader-glow" aria-hidden="true" />
+          <div className="site-preloader-divider site-preloader-divider-top" aria-hidden="true" />
+          <div className="site-preloader-divider site-preloader-divider-bottom" aria-hidden="true" />
 
           <div className="relative z-10 grid min-h-screen place-items-center px-5 text-center">
             <div className="mx-auto flex min-h-[430px] w-full max-w-4xl flex-col items-center justify-center">
@@ -128,7 +128,7 @@ export function SitePreloader() {
                 {pillars.map((word, index) => (
                   <motion.span
                     key={word}
-                    className="font-training absolute inset-0 flex items-center justify-center text-lg font-black uppercase tracking-normal text-[#d0a13a] sm:text-2xl"
+                    className="site-preloader-pillar font-training absolute inset-0 flex items-center justify-center text-lg font-black uppercase tracking-normal sm:text-2xl"
                     initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
                     animate={{
                       opacity: reducedMotion ? (index === 0 ? 1 : 0) : [0, 1, 1, 0],
@@ -146,7 +146,7 @@ export function SitePreloader() {
               </div>
 
               <motion.div
-                className="mt-8 grid size-24 place-items-center rounded-full border border-white/15 bg-white/5 p-4 shadow-2xl backdrop-blur sm:size-28"
+                className="site-preloader-logo-ring mt-8 grid size-24 place-items-center rounded-full p-4 backdrop-blur sm:size-28"
                 initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.92 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
@@ -167,7 +167,7 @@ export function SitePreloader() {
               </motion.div>
 
               <motion.p
-                className="mt-8 max-w-xl whitespace-pre-line text-sm font-black uppercase leading-7 tracking-normal text-white/86 sm:text-base"
+                className="site-preloader-tagline mt-8 max-w-xl whitespace-pre-line text-sm font-black uppercase leading-7 tracking-normal sm:text-base"
                 initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{

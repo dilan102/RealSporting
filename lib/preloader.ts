@@ -91,7 +91,7 @@ export function setPreloaderPending(active: boolean) {
 export const PRELOADER_CRITICAL_CSS = `
 html.preloader-pending {
   overflow: hidden !important;
-  background: #050805 !important;
+  background: #f4f7f1 !important;
 }
 html[data-theme="dark"].preloader-pending {
   background: #050805 !important;
@@ -138,9 +138,10 @@ export const PRELOADER_BOOT_SCRIPT = `
     if (!shouldShow) return;
 
     var theme = localStorage.getItem("theme");
-    if (theme === "dark") {
-      document.documentElement.setAttribute("data-theme", "dark");
-    }
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme === "dark" ? "dark" : "light"
+    );
 
     document.documentElement.classList.add("preloader-pending", "preloader-active");
   } catch (e) {}

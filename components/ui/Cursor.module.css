@@ -12,23 +12,23 @@
 .cursorMain {
   width: 11px;
   height: 11px;
-  background-color: var(--cursor-main, #ffffff);
+  background-color: var(--cursor-main, #111c16);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow:
-    0 0 0 2px var(--cursor-ring, rgba(255, 255, 255, 0.22)),
-    0 0 14px var(--cursor-glow, rgba(255, 255, 255, 0.42));
+    0 0 0 2px var(--cursor-ring, rgba(17, 28, 22, 0.22)),
+    0 0 14px var(--cursor-glow, rgba(21, 79, 55, 0.24));
 }
 
 /* Cursor secundario (trail) */
 .cursorTrail {
   width: 36px;
   height: 36px;
-  border: 2px solid var(--cursor-trail, rgba(255, 255, 255, 0.6));
+  border: 2px solid var(--cursor-trail, rgba(21, 79, 55, 0.78));
   background-color: var(--cursor-fill, transparent);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 18px var(--cursor-glow, rgba(255, 255, 255, 0.26));
+  box-shadow: 0 0 18px var(--cursor-glow, rgba(21, 79, 55, 0.24));
   transition: 
     width 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     height 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -41,15 +41,15 @@
 .cursorHover {
   width: 56px;
   height: 56px;
-  border-color: var(--cursor-hover, rgba(255, 255, 255, 0.9));
-  background-color: var(--cursor-hover-fill, rgba(255, 255, 255, 0.05));
+  border-color: var(--cursor-hover, rgba(184, 137, 36, 0.95));
+  background-color: var(--cursor-hover-fill, rgba(184, 137, 36, 0.14));
 }
 
 /* Hover sobre imágenes */
 .cursorImageHover {
   width: 48px;
   height: 48px;
-  border-color: var(--cursor-image, rgba(255, 255, 255, 0.4));
+  border-color: var(--cursor-image, rgba(17, 28, 22, 0.55));
   opacity: 0.82;
 }
 

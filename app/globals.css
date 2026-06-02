@@ -32,6 +32,24 @@
     --border: rgba(17, 28, 22, 0.24);
     --button-text: #0A0A0A;
     --nav-bg: rgba(255, 253, 247, 0.9);
+    --cursor-main: #111c16;
+    --cursor-ring: rgba(17, 28, 22, 0.22);
+    --cursor-trail: rgba(21, 79, 55, 0.78);
+    --cursor-fill: rgba(21, 79, 55, 0.07);
+    --cursor-hover: rgba(184, 137, 36, 0.95);
+    --cursor-hover-fill: rgba(184, 137, 36, 0.14);
+    --cursor-image: rgba(17, 28, 22, 0.55);
+    --cursor-glow: rgba(21, 79, 55, 0.24);
+    --preloader-surface: #f4f7f1;
+    --preloader-glow: radial-gradient(
+      circle at 50% 38%,
+      rgba(21, 79, 55, 0.14),
+      transparent 32rem
+    );
+    --preloader-divider: rgba(17, 28, 22, 0.1);
+    --preloader-logo-border: rgba(21, 79, 55, 0.22);
+    --preloader-logo-bg: rgba(21, 79, 55, 0.06);
+    --preloader-tagline: rgba(17, 28, 22, 0.78);
   }
 
   [data-theme="dark"] {
@@ -45,6 +63,24 @@
     --border: rgba(245, 247, 244, 0.14);
     --button-text: #0A0A0A;
     --nav-bg: rgba(10, 10, 10, 0.78);
+    --cursor-main: #f8faf7;
+    --cursor-ring: rgba(208, 161, 58, 0.5);
+    --cursor-trail: rgba(208, 161, 58, 0.78);
+    --cursor-fill: rgba(208, 161, 58, 0.05);
+    --cursor-hover: rgba(43, 118, 85, 0.95);
+    --cursor-hover-fill: rgba(43, 118, 85, 0.16);
+    --cursor-image: rgba(255, 255, 255, 0.7);
+    --cursor-glow: rgba(208, 161, 58, 0.36);
+    --preloader-surface: #050805;
+    --preloader-glow: radial-gradient(
+      circle at 50% 38%,
+      rgba(208, 161, 58, 0.18),
+      transparent 32rem
+    );
+    --preloader-divider: rgba(255, 255, 255, 0.1);
+    --preloader-logo-border: rgba(255, 255, 255, 0.15);
+    --preloader-logo-bg: rgba(255, 255, 255, 0.05);
+    --preloader-tagline: rgba(255, 255, 255, 0.86);
   }
 
   html {
@@ -53,7 +89,7 @@
 
   html.preloader-pending {
     overflow: hidden;
-    background: var(--bg-primary);
+    background: var(--preloader-surface);
   }
 
   html.preloader-pending #site-content {
@@ -471,7 +507,43 @@
     width: 100%;
     height: 100vh;
     z-index: 99999;
-    background: var(--bg-primary);
+    background: var(--preloader-surface);
+    color: var(--text-primary);
+  }
+
+  .site-preloader-glow {
+    position: absolute;
+    inset: 0;
+    background: var(--preloader-glow);
+  }
+
+  .site-preloader-divider {
+    position: absolute;
+    inset-inline: 0;
+    height: 1px;
+    background: var(--preloader-divider);
+  }
+
+  .site-preloader-divider-top {
+    top: 0;
+  }
+
+  .site-preloader-divider-bottom {
+    bottom: 0;
+  }
+
+  .site-preloader-pillar {
+    color: var(--accent-gold);
+  }
+
+  .site-preloader-logo-ring {
+    border: 1px solid var(--preloader-logo-border);
+    background: var(--preloader-logo-bg);
+    box-shadow: 0 24px 48px color-mix(in srgb, var(--accent-green) 12%, transparent);
+  }
+
+  .site-preloader-tagline {
+    color: var(--preloader-tagline);
   }
 
   .btn-gold {
