@@ -53,37 +53,6 @@
   opacity: 0.82;
 }
 
-/* Soporte para data-theme attribute (para modo claro/oscuro manual) */
-[data-theme="dark"] {
-  --cursor-main: #f8faf7;
-  --cursor-ring: rgba(208, 161, 58, 0.5);
-  --cursor-trail: rgba(208, 161, 58, 0.78);
-  --cursor-fill: rgba(208, 161, 58, 0.05);
-  --cursor-hover: rgba(43, 118, 85, 0.95);
-  --cursor-hover-fill: rgba(43, 118, 85, 0.16);
-  --cursor-image: rgba(255, 255, 255, 0.7);
-  --cursor-glow: rgba(208, 161, 58, 0.36);
-}
-
-[data-theme="dark"] .cursorMain {
-  background-color: var(--cursor-main);
-}
-
-[data-theme="light"] {
-  --cursor-main: #b88924;
-  --cursor-ring: rgba(21, 79, 55, 0.28);
-  --cursor-trail: rgba(21, 79, 55, 0.82);
-  --cursor-fill: rgba(184, 137, 36, 0.08);
-  --cursor-hover: rgba(184, 137, 36, 0.95);
-  --cursor-hover-fill: rgba(184, 137, 36, 0.14);
-  --cursor-image: rgba(21, 79, 55, 0.68);
-  --cursor-glow: rgba(21, 79, 55, 0.28);
-}
-
-[data-theme="light"] .cursorMain {
-  background-color: var(--cursor-main);
-}
-
 /* Optimización para móviles - ocultar cursor en dispositivos táctiles */
 @media (hover: none) and (pointer: coarse) {
   .cursor {
