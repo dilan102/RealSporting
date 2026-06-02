@@ -69,12 +69,18 @@ export default async function NoticiaDetallePage({ params }: Props) {
     !normalizeText(body).startsWith(normalizeText(summary));
 
   return (
-    <main className="bg-bg pt-20 text-text">
-      <RevealSection>
-        <article className="mx-auto max-w-5xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
+    <main className="bg-bg text-text">
+      <section className="relative isolate overflow-hidden bg-[#050805] text-white">
+        <div className="absolute inset-0 opacity-50">
+          <NewsVisual item={item} sizes="100vw" priority />
+        </div>
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,14,9,0.94),rgba(5,14,9,0.72)_52%,rgba(5,14,9,0.3))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,14,9,0.2),rgba(5,14,9,0.9))]" />
+
+        <div className="section-shell relative flex min-h-[560px] flex-col justify-end pb-12 pt-32">
           <Link
             href="/noticias"
-            className="inline-flex items-center gap-2 text-sm font-black text-muted transition-colors hover:text-accent"
+            className="inline-flex w-fit items-center gap-2 rounded-lg border border-white/18 bg-white/10 px-3 py-2 text-sm font-black text-white/82 backdrop-blur transition-colors hover:border-[#f3c548] hover:text-white"
           >
             <ArrowLeft size={16} aria-hidden="true" />
             Volver a noticias
@@ -82,16 +88,21 @@ export default async function NoticiaDetallePage({ params }: Props) {
 
           <header className="mt-8">
             <NewsBadge category={item.category} />
-            <h1 className="mt-5 text-[4rem] font-black leading-[0.86] sm:text-[6rem]">
+            <h1 className="mt-5 max-w-5xl text-balance text-5xl font-black leading-[0.9] sm:text-6xl lg:text-8xl">
               {title}
             </h1>
-            <time className="mt-5 block text-xs font-bold uppercase tracking-[0.16em] text-muted">
+            <time className="mt-5 block text-xs font-bold uppercase tracking-normal text-white/68">
               {formatDate(item.date)} · {club.name}
             </time>
-            <p className="mt-6 max-w-3xl text-xl font-semibold leading-8 text-muted">
+            <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-white/84 sm:text-xl">
               {summary}
             </p>
           </header>
+        </div>
+      </section>
+
+      <RevealSection>
+        <article className="mx-auto max-w-5xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
 
           <div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-lg border border-border bg-surface shadow-2xl">
             <NewsVisual item={item} sizes="(min-width: 1024px) 896px, 100vw" priority />

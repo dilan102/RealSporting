@@ -351,7 +351,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
 
           <form className="mt-6 grid gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Nombre
               </label>
               <input
@@ -366,7 +366,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
             </div>
 
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Número
               </label>
               <input
@@ -382,7 +382,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
             </div>
 
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Posición
               </label>
               <input
@@ -397,7 +397,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
             </div>
 
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Categoría
               </label>
               <select
@@ -418,7 +418,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Descripción
               </label>
               <textarea
@@ -462,7 +462,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
             </label>
 
             <div className="sm:col-span-2">
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Foto
               </label>
               <label className="mt-2 flex min-h-[180px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-dashed border-border bg-bg/40 text-center transition-colors hover:border-accent/60 hover:bg-accent/5">

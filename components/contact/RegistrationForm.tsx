@@ -158,10 +158,10 @@ export function RegistrationForm() {
           <ShieldCheck size={22} aria-hidden="true" />
         </span>
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
             Formulario rápido
           </p>
-          <h2 className="overflow-wrap-anywhere text-2xl font-black tracking-tight">
+          <h2 className="overflow-wrap-anywhere text-2xl font-black tracking-normal">
             Solicitud de inscripción
           </h2>
         </div>

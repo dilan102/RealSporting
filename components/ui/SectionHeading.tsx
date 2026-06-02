@@ -27,11 +27,11 @@ export function SectionHeading({
       variants={fadeUpItem}
     >
       {eyebrow && (
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-accent">
           {eyebrow}
         </p>
       )}
-      <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+      <h2 className="text-3xl font-bold tracking-normal sm:text-4xl">{title}</h2>
       {description && (
         <p className="mt-4 text-base leading-relaxed text-muted">{description}</p>
       )}

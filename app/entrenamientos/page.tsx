@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { TrainingManager } from "@/components/trainings/TrainingManager";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
-import { club } from "@/lib/content";
+import { club, galleryItems } from "@/lib/content";
 import { readTrainings } from "@/lib/training-store";
 import { pageOpenGraph } from "@/lib/site";
 
@@ -21,14 +22,66 @@ export default async function EntrenamientosPage() {
   const trainings = await readTrainings();
 
   return (
-    <div className="bg-bg pt-24 text-text sm:pt-28">
-      <PageHero title="Entrenamientos" subtitle="Registro de sesiones del proceso" />
+    <main className="bg-bg text-text">
+      <PageHero
+        title="Galería"
+        subtitle="Registro visual de entrenamientos, comunidad y proceso deportivo."
+        eyebrow="Entrenamientos"
+        image="/brand/gallery-night.jpg"
+      />
 
       <RevealSection>
-      <section className="mx-auto max-w-6xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
-        <TrainingManager initialItems={trainings} />
-      </section>
+        <section className="section-shell section-padding">
+          <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-end">
+            <div>
+              <p className="eyebrow">Memoria visual</p>
+              <h2 className="mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
+                Sesiones que muestran disciplina, trabajo técnico y comunidad.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-muted">
+                Las publicaciones del administrador aparecen debajo como registro
+                público. Las imágenes de apoyo editorial refuerzan la identidad visual
+                mientras el club suma material propio.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {galleryItems.map((item) => (
+                <article
+                  key={item.title}
+                  className="relative min-h-[220px] overflow-hidden rounded-lg border border-border bg-[#050805] text-white"
+                >
+                  <Image
+                    src={item.image}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
+                  />
+                  <div className="image-card-overlay absolute inset-0" />
+                  <div className="absolute bottom-0 left-0 p-4">
+                    <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
+                      {item.category}
+                    </p>
+                    <h3 className="mt-1 text-xl font-black">{item.title}</h3>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
       </RevealSection>
-    </div>
+
+      <RevealSection>
+        <section className="section-shell pb-24">
+          <div className="mb-8 max-w-2xl">
+            <p className="eyebrow">Entrenamientos publicados</p>
+            <h2 className="mt-3 text-3xl font-black sm:text-4xl">
+              Registro de sesiones
+            </h2>
+          </div>
+          <TrainingManager initialItems={trainings} />
+        </section>
+      </RevealSection>
+    </main>
   );
 }

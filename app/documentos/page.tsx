@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, FileText } from "lucide-react";
+import { PageHero } from "@/components/ui/PageHero";
 import {
   getDocumentEmbedUrl,
   getOfficialDocumentById,
@@ -28,15 +29,20 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
   const viewerUrl = getDocumentEmbedUrl(document);
 
   return (
-    <div className="bg-bg pt-24 text-text sm:pt-28">
-      <section className="border-b border-border bg-bg-elevated">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-accent-secondary">
-            Documentación oficial
-          </p>
-          <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <main className="bg-bg text-text">
+      <PageHero
+        title="Documentos"
+        subtitle="Biblioteca institucional, modelo deportivo y proyecto CDRS 2026."
+        eyebrow="Documentación oficial"
+        image="/brand/gallery-team.jpg"
+      />
+
+      <section className="section-band border-b border-border">
+        <div className="section-shell py-10 sm:py-12">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="text-3xl font-black tracking-tight sm:text-5xl">
+              <p className="eyebrow">Documento activo</p>
+              <h1 className="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
                 {document.title}
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
@@ -62,10 +68,37 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
               </a>
             </div>
           </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {officialDocuments.map((item) => {
+              const active = item.id === document.id;
+
+              return (
+                <Link
+                  key={item.id}
+                  href={`/documentos?id=${encodeURIComponent(item.id)}`}
+                  className={`premium-card-hover flex min-h-40 flex-col justify-between rounded-lg border p-5 ${
+                    active
+                      ? "border-accent bg-accent/10"
+                      : "border-border bg-bg-elevated"
+                  }`}
+                >
+                  <span className="grid size-11 place-items-center rounded-lg bg-accent/14 text-accent">
+                    <FileText size={22} aria-hidden="true" />
+                  </span>
+                  <span className="mt-5 block">
+                    <span className="block text-lg font-black">{item.title}</span>
+                    <span className="mt-2 block text-sm leading-6 text-muted">
+                      {item.description}
+                    </span>
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      <section id="visor" className="scroll-mt-28 mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <section id="visor" className="section-shell scroll-mt-28 py-8">
         <div className="overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm">
           <iframe
             title={`Vista previa: ${document.title}`}
@@ -80,6 +113,6 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
           </Link>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

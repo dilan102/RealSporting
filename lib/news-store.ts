@@ -15,12 +15,13 @@ import {
   sanitizeTextOrDefault,
   validateCleanTextField,
 } from "@/lib/validators";
+import { NEWS_FALLBACK_IMAGE } from "@/lib/site";
 import { prisma } from "@/lib/prisma";
 
 const dataDir = getDataDir();
 const uploadsDir = getUploadDir("news");
 const publicUploadPrefix = getUploadPublicPrefix("news");
-const fallbackImage = "/logo.png";
+const fallbackImage = NEWS_FALLBACK_IMAGE;
 const notFoundMessage = "No se encontró la noticia.";
 const newsRetentionMs = 30 * 24 * 60 * 60 * 1000;
 

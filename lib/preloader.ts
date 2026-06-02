@@ -91,10 +91,10 @@ export function setPreloaderPending(active: boolean) {
 export const PRELOADER_CRITICAL_CSS = `
 html.preloader-pending {
   overflow: hidden !important;
-  background: #EAF4ED !important;
+  background: #050805 !important;
 }
 html[data-theme="dark"].preloader-pending {
-  background: #0A0A0A !important;
+  background: #050805 !important;
 }
 html.preloader-pending #site-content {
   visibility: hidden !important;
@@ -147,8 +147,8 @@ export const PRELOADER_BOOT_SCRIPT = `
 })();
 `;
 
-export const LOADER_DURATION_MS = 4300;
-export const LOADER_EXIT_MS = 1300;
+export const LOADER_DURATION_MS = 2400;
+export const LOADER_EXIT_MS = 520;
 
 /** Curva suave tipo “cinematic ease-out”. */
 export const PRELOADER_EASE = [0.22, 1, 0.36, 1] as const;

@@ -24,7 +24,7 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
             <ShieldCheck size={22} aria-hidden="true" />
           </span>
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">
+            <p className="text-xs font-black uppercase tracking-normal text-accent">
               Panel privado
             </p>
             <h1 className="text-2xl font-black">Administración</h1>

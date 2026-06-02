@@ -49,7 +49,7 @@ function getCategoryIcon(category: string) {
 export function NewsBadge({ category }: { category: string }) {
   return (
     <span
-      className={`inline-flex rounded-lg border px-3 py-1 text-xs font-black uppercase tracking-[0.12em] shadow-sm backdrop-blur-md ${getCategoryClass(category)}`}
+      className={`inline-flex rounded-lg border px-3 py-1 text-xs font-black uppercase tracking-normal shadow-sm backdrop-blur-md ${getCategoryClass(category)}`}
     >
       {category}
     </span>

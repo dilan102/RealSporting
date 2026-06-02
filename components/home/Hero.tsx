@@ -2,93 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { ArrowRight, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { RegistrationModal } from "@/components/contact/RegistrationModal";
-import { club } from "@/lib/content";
-
-const heroBanners = {
-  dark: "/banner.png",
-  light: "/banner claro.png",
-};
-
-const stats = [
-  { value: 7, suffix: "", label: "Categorías" },
-  { value: 20, suffix: "+", label: "Cupos por categoría" },
-  { value: 2026, suffix: "", label: "Proyección" },
-];
-
-function AnimatedStat({
-  value,
-  suffix,
-  label,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    if (!ref.current || started) {
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      if (!entry?.isIntersecting) {
-        return;
-      }
-
-      setStarted(true);
-      observer.disconnect();
-    }, {
-      threshold: 0.4,
-    });
-
-    observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [started]);
-
-  useEffect(() => {
-    if (!started || !ref.current) {
-      return;
-    }
-
-    const node = ref.current;
-    const duration = 1200;
-    const startAt = performance.now();
-
-    const render = (timestamp: number) => {
-      const progress = Math.min((timestamp - startAt) / duration, 1);
-      const eased = 1 - (1 - progress) * (1 - progress);
-      const current = Math.round(value * eased);
-      node.textContent = `${current}${suffix}`;
-
-      if (progress < 1) {
-        window.requestAnimationFrame(render);
-      }
-    };
-
-    window.requestAnimationFrame(render);
-  }, [started, suffix, value]);
-
-  return (
-    <div className="rounded-lg border border-white/20 bg-white/95 p-4 shadow-sm backdrop-blur-md">
-      <span ref={ref} className="block text-4xl font-black leading-none text-accent" />
-      <span className="mt-2 block text-xs font-black uppercase tracking-[0.14em] text-[#223127]">
-        {label}
-      </span>
-    </div>
-  );
-}
+import { club, institutionalStats } from "@/lib/content";
 
 export function Hero() {
   const [parallax, setParallax] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => setParallax(Math.min(window.scrollY * 0.22, 120));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      return;
+    }
+
+    const onScroll = () => setParallax(Math.min(window.scrollY * 0.16, 92));
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -97,92 +25,91 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="hero-section relative isolate min-h-[92vh] overflow-hidden bg-bg text-text">
-      <div className="hero-banner-stage absolute inset-0">
-        <div
-          className="hero-banner-parallax absolute inset-0"
-          style={{ transform: `translate3d(0, ${parallax}px, 0)` }}
-        >
-          <div className="hero-banner-flip absolute inset-0">
-            <div className="hero-banner-face absolute inset-0">
-              <Image
-                src={heroBanners.dark}
-                alt={`Jugadores de ${club.name}`}
-                fill
-                priority
-                sizes="100vw"
-                className="hero-main-image object-center"
-              />
-            </div>
-            <div className="hero-banner-face hero-banner-face-light absolute inset-0">
-              <Image
-                src={heroBanners.light}
-                alt={`Jugadores de ${club.name}`}
-                fill
-                priority
-                sizes="100vw"
-                className="hero-main-image object-center"
-              />
-            </div>
-          </div>
-        </div>
+    <section className="relative isolate min-h-[94svh] overflow-hidden bg-[#050805] text-white">
+      <div
+        className="absolute inset-0 scale-[1.04]"
+        style={{ transform: `translate3d(0, ${parallax}px, 0) scale(1.04)` }}
+      >
+        <Image
+          src="/brand/hero-training.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hero-photo object-cover object-[center_38%]"
+        />
       </div>
-      <div className="absolute inset-0 bg-[var(--hero-overlay)]" />
-      <div className="hero-theme-gradient absolute inset-0" />
-      <div className="pointer-events-none absolute inset-0 grid-overlay opacity-20" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,5,0.94),rgba(5,8,5,0.72)_48%,rgba(5,8,5,0.28))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,8,5,0.18),rgba(5,8,5,0.46)_56%,rgba(5,8,5,0.88))]" />
+      <div className="hero-radial-vignette absolute inset-0" />
+      <div className="pointer-events-none absolute inset-0 grid-overlay opacity-[0.14]" />
 
-      <div className="relative mx-auto flex min-h-[92vh] max-w-7xl items-end px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 lg:px-8">
-        <div className="max-w-5xl">
-          <div className="animate-[mobile-reveal_760ms_cubic-bezier(0.22,1,0.36,1)_both] inline-flex items-center gap-3 rounded-lg border border-white/20 bg-white/95 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-accent shadow-sm backdrop-blur-md">
-            <Image
-              src="/logo.png"
-              alt=""
-              width={30}
-              height={30}
-              className="object-contain"
-              aria-hidden="true"
-            />
-            Club Deportivo Real Sporting de Usme
+      <div className="section-shell relative flex min-h-[94svh] items-end pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
+        <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.55fr)] lg:items-end">
+          <div className="max-w-5xl">
+            <div className="mobile-reveal inline-flex items-center gap-3 rounded-lg border border-white/18 bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-normal text-[#f3c548] shadow-sm backdrop-blur-md">
+              <Image
+                src="/logo.png"
+                alt=""
+                width={30}
+                height={30}
+                className="object-contain"
+                aria-hidden="true"
+              />
+              Club Deportivo Real Sporting de Usme
+            </div>
+
+            <h1 className="mt-6 max-w-5xl text-5xl font-black leading-[0.92] tracking-normal text-white drop-shadow-xl sm:text-6xl lg:text-8xl mobile-reveal mobile-reveal-delay-1">
+              Desde Usme.
+              <br />
+              Con disciplina.
+              <br />
+              Hacia el futuro.
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-base font-semibold leading-8 text-white/88 sm:text-xl mobile-reveal mobile-reveal-delay-2">
+              {club.tagline}. Formamos jugadores con método, valores y sentido
+              de pertenencia territorial.
+            </p>
+
+            <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center mobile-reveal mobile-reveal-delay-3">
+              <RegistrationModal
+                className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-black"
+              >
+                Inscribirme
+                <ArrowRight size={16} aria-hidden="true" />
+              </RegistrationModal>
+              <Link
+                href="/club"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-6 text-sm font-black text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[#f3c548] hover:bg-white/16"
+              >
+                Conocer el club
+              </Link>
+            </div>
+
+            <p className="mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-normal text-white/76">
+              <MapPin size={15} aria-hidden="true" />
+              Usme · Bogotá D.C.
+            </p>
           </div>
 
-          <h1 className="hero-title mt-6 max-w-5xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_90ms_both] text-[clamp(3rem,12vw,6rem)] font-black leading-[0.96] drop-shadow-xl">
-            Desde Usme.
-            <br />
-            Con disciplina.
-            <br />
-            Hacia el futuro.
-          </h1>
-
-          <p className="hero-copy mt-6 max-w-2xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_180ms_both] text-base font-semibold leading-8 sm:text-xl">
-            {club.tagline}. Formamos jugadores con método, valores y sentido
-            de pertenencia.
-          </p>
-
-          <div className="mt-8 grid animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_270ms_both] gap-3 sm:flex sm:flex-wrap sm:items-center">
-            <RegistrationModal
-              className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-black"
-            >
-              Inscríbete
-              <ArrowRight size={16} aria-hidden="true" />
-            </RegistrationModal>
-            <Link
-              href="/club"
-              className="hero-secondary-button inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-6 text-sm font-bold backdrop-blur-md transition-all hover:scale-[1.03] hover:border-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/20"
-            >
-              Proyecto deportivo
-            </Link>
-          </div>
-
-          <div className="mt-9 grid max-w-2xl animate-[mobile-reveal_820ms_cubic-bezier(0.22,1,0.36,1)_360ms_both] gap-3 sm:grid-cols-3">
-            {stats.map((stat) => (
-              <AnimatedStat key={stat.label} {...stat} />
+          <aside className="grid gap-3 rounded-lg border border-white/16 bg-black/28 p-4 backdrop-blur-md sm:grid-cols-2 lg:grid-cols-1">
+            <div className="flex items-center gap-3 border-b border-white/12 pb-4 sm:col-span-2 lg:col-span-1">
+              <span className="grid size-11 place-items-center rounded-lg bg-[#d0a13a] text-[#0a0a0a]">
+                <ShieldCheck size={22} aria-hidden="true" />
+              </span>
+              <p className="text-sm font-black uppercase tracking-normal text-white">
+                Datos institucionales
+              </p>
+            </div>
+            {institutionalStats.map((stat) => (
+              <div key={stat.label} className="rounded-lg border border-white/12 bg-white/8 p-4">
+                <p className="text-4xl font-black leading-none text-[#f3c548]">{stat.value}</p>
+                <p className="mt-2 text-sm font-black text-white">{stat.label}</p>
+                <p className="mt-1 text-xs leading-5 text-white/68">{stat.detail}</p>
+              </div>
             ))}
-          </div>
-
-          <p className="hero-location mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em]">
-            <MapPin size={15} aria-hidden="true" />
-            Usme · Bogotá
-          </p>
+          </aside>
         </div>
       </div>
     </section>

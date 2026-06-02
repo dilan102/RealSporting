@@ -23,7 +23,7 @@ export default async function AdminErrorPage({ searchParams }: AdminErrorPagePro
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-1 shrink-0 text-red-600" size={24} aria-hidden="true" />
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-red-600">
+            <p className="text-xs font-black uppercase tracking-normal text-red-600">
               Acceso denegado
             </p>
             <h1 className="mt-2 text-2xl font-black">No se pudo iniciar sesión</h1>

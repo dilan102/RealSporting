@@ -21,7 +21,7 @@ export function UploadMock() {
 
       <form className="mt-8 grid gap-6 sm:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
         <div>
-          <label className="text-xs font-medium uppercase tracking-wider text-muted">
+          <label className="text-xs font-medium uppercase tracking-normal text-muted">
             Título del entrenamiento
           </label>
           <input
@@ -32,7 +32,7 @@ export function UploadMock() {
           />
         </div>
         <div>
-          <label className="text-xs font-medium uppercase tracking-wider text-muted">
+          <label className="text-xs font-medium uppercase tracking-normal text-muted">
             Fecha
           </label>
           <input
@@ -42,7 +42,7 @@ export function UploadMock() {
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted">
+          <label className="text-xs font-medium uppercase tracking-normal text-muted">
             Descripción
           </label>
           <textarea
@@ -53,7 +53,7 @@ export function UploadMock() {
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted">
+          <label className="text-xs font-medium uppercase tracking-normal text-muted">
             Fotografía
           </label>
           <div className="mt-2 flex min-h-[140px] flex-col items-center justify-center rounded-lg border border-dashed border-border bg-bg/30 opacity-60">

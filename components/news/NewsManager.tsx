@@ -364,7 +364,7 @@ export function NewsManager({
 
           <form className="mt-8 grid gap-6 sm:grid-cols-2" onSubmit={handleSubmit}>
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Título
               </label>
               <input
@@ -377,7 +377,7 @@ export function NewsManager({
               />
             </div>
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Fecha
               </label>
               <input
@@ -390,7 +390,7 @@ export function NewsManager({
               />
             </div>
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Categoría
               </label>
               <input
@@ -404,7 +404,7 @@ export function NewsManager({
               />
             </div>
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Resumen corto
               </label>
               <input
@@ -417,7 +417,7 @@ export function NewsManager({
               />
             </div>
             <div>
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Estado
               </label>
               <select
@@ -435,7 +435,7 @@ export function NewsManager({
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Noticia completa
               </label>
               <textarea
@@ -448,7 +448,7 @@ export function NewsManager({
               />
             </div>
             <div className="sm:col-span-2">
-              <label className="text-xs font-medium uppercase tracking-wider text-muted">
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
                 Imagen
               </label>
               <label className="mt-2 flex min-h-[190px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-lg border border-dashed border-border bg-bg/40 text-center transition-colors hover:border-accent/60 hover:bg-accent/5">

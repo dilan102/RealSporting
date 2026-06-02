@@ -121,7 +121,7 @@ export function AdminPortal() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
+                <p className="text-xs font-black uppercase tracking-normal text-accent">
                   Acceso privado
                 </p>
                 <h2 className="mt-2 text-2xl font-black">Modo Administrador</h2>
@@ -204,7 +204,7 @@ export function AdminPortal() {
         <aside className="fixed bottom-4 right-4 z-[75] max-h-[72vh] w-[min(92vw,430px)] overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-2xl backdrop-blur-xl">
           <div className="flex items-center justify-between gap-3 border-b border-border p-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
+              <p className="text-xs font-black uppercase tracking-normal text-accent">
                 Administrador
               </p>
               <h2 className="text-lg font-black">Añadir contenido</h2>

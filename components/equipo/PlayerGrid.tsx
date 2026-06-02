@@ -155,7 +155,7 @@ export function PlayerGrid({
                 >
                   <div>
                     <h3 className="text-2xl font-bold text-text">{categoryName}</h3>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-normal text-muted">
                       Rango {section.title} · {players.length} integrantes
                     </p>
                   </div>
@@ -175,7 +175,7 @@ export function PlayerGrid({
                     <div className="space-y-4 p-4 sm:p-6">
                       {teamCategories.includes(section.id as TeamCategoryId) && (
                         <article className="rounded-lg border border-border bg-bg/70 p-4 sm:p-5">
-                          <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+                          <p className="text-xs font-black uppercase tracking-normal text-accent">
                             Definición técnica
                           </p>
                           <p className="mt-3 text-sm leading-7 text-muted">
@@ -208,7 +208,7 @@ export function PlayerGrid({
                             open={players.length > 0}
                           >
                             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
-                              <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
+                              <span className="text-sm font-black uppercase tracking-normal text-text">
                                 Jugadores
                               </span>
                               <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">
@@ -228,7 +228,7 @@ export function PlayerGrid({
                           {(convocados.length > 0 || canManage) && (
                             <details className="group overflow-hidden rounded-lg border border-border bg-bg/70 open:bg-bg-elevated/60">
                               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-4 transition-colors hover:bg-surface sm:px-5 [&::-webkit-details-marker]:hidden">
-                                <span className="text-sm font-black uppercase tracking-[0.12em] text-text">
+                                <span className="text-sm font-black uppercase tracking-normal text-text">
                                   Convocados
                                 </span>
                                 <span className="rounded-md bg-accent/10 px-2 py-1 text-xs font-bold text-accent">

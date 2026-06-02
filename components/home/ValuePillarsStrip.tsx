@@ -6,7 +6,7 @@ import { PRELOADER_EASE } from "@/lib/preloader";
 
 export function ValuePillarsStrip() {
   return (
-    <div className="mobile-snap-x mobile-scrollbar-none grid gap-px overflow-hidden rounded-[1.6rem] border border-border bg-border sm:rounded-lg">
+    <div className="mobile-snap-x mobile-scrollbar-none grid gap-px overflow-hidden rounded-lg border border-border bg-border">
       {club.values.slice(0, 4).map((value, index) => (
         <motion.article
           key={value.title}

@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen, ShieldCheck, Trophy } from "lucide-react";
+import { ArrowRight, BookOpen, ShieldCheck, Trophy, UsersRound } from "lucide-react";
 import { ValuePillarsStrip } from "@/components/home/ValuePillarsStrip";
-import { club } from "@/lib/content";
+import { club, institutionalStats } from "@/lib/content";
 
 const programCards = [
   {
     title: "Formación integral",
     description:
-      "Niños, niñas y jóvenes desarrollan técnica, coordinación, pensamiento de juego y hábitos de alto compromiso.",
+      "Técnica, coordinación, lectura del juego y hábitos de compromiso en cada categoría.",
     href: "/equipo",
     cta: "Ver categorías",
     icon: BookOpen,
@@ -16,82 +16,75 @@ const programCards = [
   {
     title: "Proceso competitivo",
     description:
-      "Entrenamientos orientados a toma de decisiones, presión, finalización, lectura táctica y comportamiento en torneo.",
+      "Sesiones orientadas a decisión, presión, finalización y comportamiento en torneo.",
     href: "/entrenamientos",
-    cta: "Ver sesiones",
+    cta: "Ver galería",
     icon: Trophy,
   },
   {
-    title: "Acompañamiento",
+    title: "Comunidad",
     description:
-      "Familias, cuerpo técnico y comunidad sostienen un entorno de respeto, pertenencia, seguimiento y superación.",
+      "Familias, cuerpo técnico y territorio sostienen un entorno seguro e incluyente.",
     href: "/club",
     cta: "Conocer club",
-    icon: ShieldCheck,
+    icon: UsersRound,
   },
 ];
 
 export function QuickInstitutional() {
   return (
-    <section className="overflow-hidden bg-bg-elevated text-text">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-end">
-          <div className="mobile-reveal">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
-              Club Deportivo Real Sporting
-            </p>
-            <h2 className="mt-5 max-w-3xl text-[clamp(2rem,8vw,3.8rem)] font-black leading-[1.04] tracking-tight">
-              Formación deportiva con identidad, método y proyección.
+    <section className="section-band overflow-hidden text-text">
+      <div className="section-shell section-padding">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-end">
+          <div>
+            <p className="eyebrow">Proyecto institucional</p>
+            <h2 className="mt-5 max-w-3xl text-balance text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">
+              Formación deportiva con método, identidad y proyección humana.
             </h2>
           </div>
-          <p className="mobile-reveal mobile-reveal-delay-1 max-w-2xl text-base leading-8 text-muted sm:text-lg">
+          <p className="max-w-2xl text-base leading-8 text-muted sm:text-lg">
             {club.history}
           </p>
         </div>
 
-        <div className="mobile-snap-x mobile-scrollbar-none mt-12 grid gap-px overflow-hidden rounded-[1.6rem] border border-border bg-border sm:mt-14 sm:grid-cols-3 sm:rounded-lg">
-          {[
-            ["7", "categorías formativas"],
-            ["20+", "espacios por categoría"],
-            ["2026", "modelo deportivo renovado"],
-          ].map(([value, label]) => (
-            <div key={label} className="mobile-card-lift bg-bg p-6 sm:p-8">
-              <p className="text-5xl font-black text-accent">{value}</p>
-              <p className="mt-3 text-sm font-semibold uppercase tracking-[0.14em] text-muted">
-                {label}
-              </p>
-            </div>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {institutionalStats.map((stat) => (
+            <article key={stat.label} className="premium-card p-5 sm:p-6">
+              <p className="text-4xl font-black leading-none text-accent">{stat.value}</p>
+              <h3 className="mt-3 text-sm font-black uppercase tracking-normal">
+                {stat.label}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-muted">{stat.detail}</p>
+            </article>
           ))}
         </div>
       </div>
 
       <div className="bg-bg text-text">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="section-shell section-padding">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
-            <div className="mobile-reveal">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">
-                Tres caminos
-              </p>
-              <h2 className="mt-4 text-[clamp(2rem,8vw,3.6rem)] font-black leading-[1.05] tracking-tight">
-                Inicia, entrena y evoluciona dentro del proceso.
+            <div>
+              <p className="eyebrow">Ruta formativa</p>
+              <h2 className="mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
+                Inicia, entrena y evoluciona dentro de un proceso ordenado.
               </h2>
               <Link
                 href="/contacto"
-                className="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-[var(--button-text)] shadow-lg shadow-accent/20 transition-colors hover:bg-accent/90 sm:rounded-lg"
+                className="btn-gold mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
               >
                 Solicitar inscripción
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
 
-            <div className="mobile-snap-x mobile-scrollbar-none grid gap-4">
+            <div className="grid gap-4">
               {programCards.map(({ title, description, href, cta, icon: Icon }) => (
                 <Link
                   key={title}
                   href={href}
-                  className="mobile-card-lift group grid gap-5 rounded-[1.6rem] border border-border bg-bg-elevated p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 sm:rounded-lg sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
+                  className="premium-card premium-card-hover group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
                 >
-                  <span className="grid size-14 place-items-center rounded-2xl bg-accent text-[var(--button-text)] sm:rounded-lg">
+                  <span className="grid size-14 place-items-center rounded-lg bg-accent text-[var(--button-text)]">
                     <Icon size={24} aria-hidden="true" />
                   </span>
                   <span>
@@ -100,7 +93,7 @@ export function QuickInstitutional() {
                       {description}
                     </span>
                   </span>
-                  <span className="inline-flex items-center gap-2 text-sm font-bold text-accent">
+                  <span className="inline-flex items-center gap-2 text-sm font-black text-accent">
                     {cta}
                     <ArrowRight
                       size={16}
@@ -113,46 +106,32 @@ export function QuickInstitutional() {
             </div>
           </div>
 
-          <div className="mt-16 grid gap-8 sm:mt-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:items-center">
-            <div className="mobile-card-lift relative aspect-[0.9] min-h-[360px] overflow-hidden rounded-[2rem] border border-border bg-bg-elevated sm:aspect-[16/10] sm:min-h-[460px] sm:rounded-lg lg:aspect-auto">
+          <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
+            <div className="relative min-h-[420px] overflow-hidden rounded-lg border border-border bg-[#050805] shadow-2xl">
               <Image
-                src="/banner.png"
-                alt="Entrenamiento de Club Deportivo Real Sporting"
+                src="/brand/gallery-team.jpg"
+                alt=""
                 fill
                 className="object-cover object-center"
                 sizes="(min-width: 1024px) 56vw, 100vw"
               />
-              <div className="image-readable-dark absolute inset-0" />
-              <div className="absolute bottom-0 left-0 max-w-lg p-5 text-white sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#f3c548]">
+              <div className="image-card-overlay absolute inset-0" />
+              <div className="absolute bottom-0 left-0 max-w-lg p-6 text-white sm:p-8">
+                <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
                   Método formativo
                 </p>
-                <h3 className="mt-4 text-3xl font-black leading-tight text-white sm:text-4xl">
+                <h3 className="mt-4 text-balance text-3xl font-black leading-tight sm:text-4xl">
                   Evaluar, corregir, competir y evolucionar.
                 </h3>
               </div>
             </div>
 
-            <ValuePillarsStrip />
-          </div>
-
-          <div className="mobile-card-lift mt-16 rounded-[1.75rem] bg-accent p-6 text-[var(--button-text)] sm:mt-20 sm:rounded-lg sm:p-8 lg:p-10">
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-black/70">
-                  &quot;Nunca caminarás solo&quot;
-                </p>
-                <h2 className="mt-4 max-w-3xl text-3xl font-black leading-tight sm:text-5xl">
-                  Cuando la disciplina se convierte en hábito, el talento encuentra dirección.
-                </h2>
+            <div>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-lg border border-border bg-bg-elevated px-3 py-2 text-xs font-black uppercase tracking-normal text-accent">
+                <ShieldCheck size={16} aria-hidden="true" />
+                Valores del proceso
               </div>
-              <Link
-                href="/equipo"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-bg px-5 text-sm font-bold text-text transition-colors hover:bg-bg/90 sm:rounded-lg"
-              >
-                Conoce el equipo
-                <ArrowRight size={16} aria-hidden="true" />
-              </Link>
+              <ValuePillarsStrip />
             </div>
           </div>
         </div>

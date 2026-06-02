@@ -76,7 +76,7 @@ export function OfficialDocumentsPanel() {
         >
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-5">
             <div className="min-w-0">
-              <p className="text-xs font-black uppercase tracking-[0.14em] text-accent">
+              <p className="text-xs font-black uppercase tracking-normal text-accent">
                 Visor integrado
               </p>
               <p className="truncate text-sm font-black">{activeDocument.title}</p>

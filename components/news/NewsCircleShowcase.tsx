@@ -35,7 +35,7 @@ export function NewsCircleShowcase({ items }: Props) {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mobile-reveal flex flex-wrap items-end justify-between gap-5 border-b border-border pb-6">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">
+            <p className="text-xs font-black uppercase tracking-normal text-accent">
               Actualidad
             </p>
             <h2 className="mt-3 text-[2.5rem] font-black leading-none sm:text-[4rem]">
@@ -67,7 +67,7 @@ export function NewsCircleShowcase({ items }: Props) {
               </span>
             </div>
             <div className="p-5 sm:p-7">
-              <time className="text-xs font-bold uppercase tracking-[0.14em] text-muted">
+              <time className="text-xs font-bold uppercase tracking-normal text-muted">
                 {formatDate(leadNews.date)}
               </time>
               <h3 className="mt-3 text-4xl font-black leading-none sm:text-5xl">

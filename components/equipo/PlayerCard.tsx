@@ -53,7 +53,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
             #{player.number}
           </span>
           {isConvocado && (
-            <span className="absolute right-2 top-2 rounded-md bg-accent px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-[var(--button-text)]">
+            <span className="absolute right-2 top-2 rounded-md bg-accent px-2 py-0.5 text-[10px] font-black uppercase tracking-normal text-[var(--button-text)]">
               Convocado
             </span>
           )}
@@ -61,7 +61,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
 
         <div className="flex items-start justify-between gap-2 p-3">
           <div className="min-w-0">
-            <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-accent-secondary">
+            <p className="truncate text-[11px] font-semibold uppercase tracking-normal text-accent-secondary">
               {player.position}
             </p>
             <h3 className="truncate text-sm font-bold">{player.name}</h3>

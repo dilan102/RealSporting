@@ -232,7 +232,7 @@ export function TrainingCard({
             >
               <div className="flex items-start justify-between gap-4 border-b border-border p-4 sm:p-5">
                 <div>
-                  <time className="text-xs font-bold uppercase tracking-[0.14em] text-accent">
+                  <time className="text-xs font-bold uppercase tracking-normal text-accent">
                     {formatDate(training.date)}
                   </time>
                   <h2

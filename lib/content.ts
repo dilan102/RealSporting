@@ -66,6 +66,157 @@ export const social = {
   location: "Parque Ciudadela Nuevo Usme, Usme, Bogotá D.C., Colombia",
 };
 
+export const institutionalStats = [
+  { value: "2022", label: "Inicio del proceso", detail: "Trabajo formativo desde Usme" },
+  { value: "7", label: "Categorías", detail: "Rangos por año de nacimiento" },
+  { value: "6", label: "ODS priorizados", detail: "Salud, educación, igualdad e inclusión" },
+  { value: "2026", label: "Proyección", detail: "Renovación metodológica y digital" },
+];
+
+export const sportCategoryCards = [
+  {
+    id: "2020-2019",
+    name: "Pre-Benjamín",
+    range: "2020-2019",
+    description: "Iniciación motriz, juego guiado, confianza y vínculo positivo con el balón.",
+    image: "/brand/gallery-youth.jpg",
+  },
+  {
+    id: "2018-2017",
+    name: "Benjamín",
+    range: "2018-2017",
+    description: "Fundamentos técnicos, cooperación, lectura básica del juego y hábitos de equipo.",
+    image: "/brand/gallery-team.jpg",
+  },
+  {
+    id: "2016-2015",
+    name: "Alevín",
+    range: "2016-2015",
+    description: "Perfeccionamiento técnico, toma de decisiones y comunicación en cancha.",
+    image: "/brand/hero-training.jpg",
+  },
+  {
+    id: "2014-2013",
+    name: "Infantil",
+    range: "2014-2013",
+    description: "Consolidación táctica, preparación física general y responsabilidad competitiva.",
+    image: "/brand/gallery-night.jpg",
+  },
+  {
+    id: "2012-2011",
+    name: "Cadete",
+    range: "2012-2011",
+    description: "Especialización inicial, seguimiento por posición y rendimiento formativo.",
+    image: "/brand/gallery-team.jpg",
+  },
+  {
+    id: "2010-2009",
+    name: "Juvenil",
+    range: "2010-2009",
+    description: "Alta exigencia formativa, lectura de juego y preparación para competencia.",
+    image: "/brand/gallery-night.jpg",
+  },
+  {
+    id: "2008-2007",
+    name: "Sub-20",
+    range: "2008-2007",
+    description: "Proyección competitiva, liderazgo y madurez deportiva dentro del proceso.",
+    image: "/brand/hero-training.jpg",
+  },
+];
+
+export const odsItems = [
+  {
+    id: "ods-3",
+    code: "ODS 3",
+    title: "Salud y Bienestar",
+    shortText: "Actividad física, hábitos saludables y acompañamiento emocional.",
+    detail:
+      "El fútbol se trabaja como herramienta de salud física, bienestar mental y prevención mediante rutinas formativas constantes.",
+  },
+  {
+    id: "ods-4",
+    code: "ODS 4",
+    title: "Educación de Calidad",
+    shortText: "Valores, disciplina y habilidades para la vida.",
+    detail:
+      "Cada entrenamiento combina aprendizaje deportivo con comunicación, liderazgo, convivencia y responsabilidad.",
+  },
+  {
+    id: "ods-5",
+    code: "ODS 5",
+    title: "Igualdad de Género",
+    shortText: "Acceso y trato digno para todos los géneros.",
+    detail:
+      "El proceso promueve oportunidades deportivas sin discriminación y con un entorno de respeto.",
+  },
+  {
+    id: "ods-10",
+    code: "ODS 10",
+    title: "Reducción de Desigualdades",
+    shortText: "Inclusión social para poblaciones diversas.",
+    detail:
+      "El club abre espacios formativos para niños, niñas y jóvenes del territorio con enfoque comunitario.",
+  },
+  {
+    id: "ods-11",
+    code: "ODS 11",
+    title: "Comunidades Sostenibles",
+    shortText: "Tejido social, familias y territorio.",
+    detail:
+      "La práctica deportiva fortalece redes de cuidado, participación familiar y pertenencia local en Usme.",
+  },
+  {
+    id: "ods-16",
+    code: "ODS 16",
+    title: "Paz e Instituciones Sólidas",
+    shortText: "Cultura de paz, juego limpio y convivencia.",
+    detail:
+      "El fútbol se usa para formar respeto por normas, diálogo y resolución pacífica de conflictos.",
+  },
+];
+
+export const registrationSteps = [
+  {
+    step: "01",
+    title: "Formulario",
+    text: "Envía los datos del aspirante y el canal de contacto familiar.",
+  },
+  {
+    step: "02",
+    title: "Documentación",
+    text: "Revisa requisitos, modelo deportivo y documentos institucionales.",
+  },
+  {
+    step: "03",
+    title: "Confirmación",
+    text: "El club responde por correo o WhatsApp para orientar el ingreso.",
+  },
+];
+
+export const galleryItems = [
+  {
+    title: "Disciplina diaria",
+    category: "Entrenamiento",
+    image: "/brand/hero-training.jpg",
+  },
+  {
+    title: "Formación de base",
+    category: "Cantera",
+    image: "/brand/gallery-youth.jpg",
+  },
+  {
+    title: "Trabajo en equipo",
+    category: "Comunidad",
+    image: "/brand/gallery-team.jpg",
+  },
+  {
+    title: "Competencia con carácter",
+    category: "Proyección",
+    image: "/brand/gallery-night.jpg",
+  },
+];
+
 export type PublishStatus = "published" | "draft";
 
 export type Player = {
@@ -347,7 +498,7 @@ export const news: News[] = [
       "El club abre espacios de observación para niños, niñas y jóvenes de Usme interesados en iniciar un proceso deportivo estructurado.",
     body:
       "El Club Deportivo Real Sporting invita a las familias de la localidad a participar en jornadas de observación para nuevos talentos. El proceso prioriza disciplina, asistencia, actitud, compromiso familiar y seguimiento técnico por categorías.",
-    image: "/logo.png",
+    image: "/brand/gallery-youth.jpg",
     status: "published",
   },
   {
@@ -359,7 +510,7 @@ export const news: News[] = [
       "Las categorías formativas trabajaron recuperación rápida, cierres coordinados y salida limpia tras robo.",
     body:
       "Durante la semana se desarrolló un microciclo dedicado a la presión alta. Los jugadores practicaron basculaciones, coberturas y decisiones de primer pase para transformar recuperaciones en ataques organizados. El objetivo es sostener intensidad sin perder orden.",
-    image: "/logo.png",
+    image: "/brand/hero-training.jpg",
     status: "published",
   },
   {
@@ -371,7 +522,7 @@ export const news: News[] = [
       "La comunidad del club acompañó una jornada de integración alrededor del deporte y los valores.",
     body:
       "El encuentro reunió a jugadores, familias y cuerpo técnico en una jornada pensada para reforzar pertenencia, respeto y trabajo en equipo. Estos espacios sostienen la identidad del club y recuerdan que el proceso deportivo también se construye fuera de la cancha.",
-    image: "/logo.png",
+    image: "/brand/gallery-team.jpg",
     status: "published",
   },
   {
@@ -383,7 +534,7 @@ export const news: News[] = [
       "El equipo ajusta detalles tácticos y físicos antes de los próximos compromisos competitivos.",
     body:
       "El Club Deportivo Real Sporting prepara sus próximas presentaciones con énfasis en pelota quieta, repliegue defensivo y definición. El cuerpo técnico evalúa convocatorias por asistencia, rendimiento y comportamiento para representar a la institución con responsabilidad.",
-    image: "/logo.png",
+    image: "/brand/gallery-night.jpg",
     status: "published",
   },
 ];
@@ -453,9 +604,9 @@ export const trainings: Training[] = [
 
 export const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/noticias", label: "Noticias" },
   { href: "/club", label: "El Club" },
-  { href: "/equipo", label: "Equipo" },
-  { href: "/entrenamientos", label: "Entrenamientos" },
+  { href: "/equipo", label: "Categorías" },
+  { href: "/entrenamientos", label: "Galería" },
+  { href: "/noticias", label: "Noticias" },
   { href: "/contacto", label: "Inscripción" },
 ];

@@ -17,6 +17,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { pageOpenGraph } from "@/lib/site";
+import { registrationSteps } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: {
@@ -85,10 +86,12 @@ const trainingModel = [
 
 export default function ContactoPage() {
   return (
-    <div className="bg-bg pt-24 text-text transition-colors sm:pt-28">
+    <main className="bg-bg text-text transition-colors">
       <PageHero
         title="Inscripción"
         subtitle="Ingreso al proceso deportivo, social y formativo de Real Sporting"
+        eyebrow="Contacto"
+        image="/brand/hero-training.jpg"
       />
 
       <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_10%,var(--bg-primary))_0%,var(--bg-primary)_52%,color-mix(in_srgb,var(--accent-gold)_10%,var(--bg-primary))_100%)]">
@@ -97,10 +100,10 @@ export default function ContactoPage() {
           <RevealSection>
             <div className="grid gap-5 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated/92 p-5 shadow-xl shadow-[color-mix(in_srgb,var(--accent-green)_14%,transparent)] backdrop-blur sm:p-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                   Proceso de ingreso
                 </p>
-                <h2 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">
+                <h2 className="mt-2 text-2xl font-black tracking-normal sm:text-3xl">
                   Comienza tu camino con Real Sporting
                 </h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
@@ -123,6 +126,20 @@ export default function ContactoPage() {
                 </a>
               </div>
             </div>
+            <div className="mt-5 grid gap-3 lg:grid-cols-3">
+              {registrationSteps.map((step) => (
+                <article
+                  key={step.step}
+                  className="rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-bg-elevated/88 p-4"
+                >
+                  <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
+                    {step.step}
+                  </p>
+                  <h3 className="mt-2 text-lg font-black">{step.title}</h3>
+                  <p className="mt-1 text-sm leading-6 text-muted">{step.text}</p>
+                </article>
+              ))}
+            </div>
           </RevealSection>
         </div>
       </section>
@@ -137,7 +154,7 @@ export default function ContactoPage() {
                     <ClipboardCheck size={22} aria-hidden="true" />
                   </span>
                   <div>
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+                    <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                       Lista de ingreso
                     </p>
                     <h2 className="text-2xl font-black">Requisitos</h2>
@@ -230,7 +247,7 @@ export default function ContactoPage() {
               <MessageCircle size={22} aria-hidden="true" />
             </span>
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+              <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                 Atención directa
               </p>
               <h2 className="text-2xl font-black">Contáctenos</h2>
@@ -240,6 +257,6 @@ export default function ContactoPage() {
         </RevealSection>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

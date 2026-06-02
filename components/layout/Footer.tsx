@@ -37,7 +37,7 @@ export function Footer() {
           </div>
 
           <div className="border-y border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] py-6 md:border-x md:border-y-0 md:px-8 md:py-0">
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+            <p className="text-xs font-semibold uppercase tracking-normal text-accent">
               Navegación
             </p>
             <ul className="mt-4 space-y-2">
@@ -55,7 +55,7 @@ export function Footer() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+            <p className="text-xs font-semibold uppercase tracking-normal text-accent">
               Contacto
             </p>
             <ul className="mt-4 space-y-3">
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
-          <p className="border-b border-border px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-accent">
+          <p className="border-b border-border px-4 py-2 text-xs font-black uppercase tracking-normal text-accent">
             Sede — {VENUE_NAME}
           </p>
           <MapEmbed compact />

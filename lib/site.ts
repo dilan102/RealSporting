@@ -9,7 +9,7 @@ export const CONTACT_EMAIL = "realsportingdeusmeed@gmail.com";
 export const OG_IMAGE_PATH = "/banner.png";
 export const OG_IMAGE_URL = `${SITE_URL}${OG_IMAGE_PATH}`;
 
-export const NEWS_FALLBACK_IMAGE = "/logo.png";
+export const NEWS_FALLBACK_IMAGE = "/brand/gallery-team.jpg";
 
 export const DEFAULT_WHATSAPP_MESSAGE =
   "Hola Real Sporting, quiero información sobre inscripciones.";

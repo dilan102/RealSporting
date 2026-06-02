@@ -7,9 +7,9 @@ export function ContactFormSection() {
   return (
     <section
       id="formulario"
-      className="light-panel scroll-mt-28 rounded-lg border border-border bg-bg-elevated p-6 shadow-sm sm:p-8"
+      className="scroll-mt-28"
     >
-      <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--accent-green)]">
+      <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
         Inscripción en línea
       </p>
       <h2 className="mt-3 text-2xl font-black">Formulario rápido</h2>

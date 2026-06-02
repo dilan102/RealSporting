@@ -12,7 +12,7 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import { club } from "@/lib/content";
+import { club, odsItems } from "@/lib/content";
 import { PRELOADER_EASE } from "@/lib/preloader";
 
 const cards = [
@@ -20,13 +20,13 @@ const cards = [
     icon: Target,
     title: "Misión",
     text: club.mission,
-    image: "/logo.png",
+    image: "/brand/gallery-team.jpg",
   },
   {
     icon: Eye,
     title: "Visión",
     text: club.vision,
-    image: "/balon.png",
+    image: "/brand/hero-training.jpg",
   },
 ];
 
@@ -117,57 +117,6 @@ export function Timeline() {
   );
 }
 
-const odsItems = [
-  {
-    id: "ods-3",
-    code: "ODS 3",
-    title: "Salud y Bienestar",
-    shortText: "Salud física, mental y apoyo psicológico en el proceso formativo.",
-    detail:
-      "Promover la salud física y mental de los participantes a través de actividades deportivas, educación para la salud y apoyo psicológico.",
-  },
-  {
-    id: "ods-4",
-    code: "ODS 4",
-    title: "Educación de Calidad",
-    shortText: "Formación integral con habilidades para la vida y valores.",
-    detail:
-      "Proporcionar desarrollo integral incluyendo habilidades para la vida, educación en valores y entrenamiento deportivo.",
-  },
-  {
-    id: "ods-5",
-    code: "ODS 5",
-    title: "Igualdad de Género",
-    shortText: "Acceso igualitario a oportunidades deportivas para todos los géneros.",
-    detail:
-      "Asegurar igualdad de acceso a oportunidades deportivas para niños, niñas y adolescentes de todos los géneros.",
-  },
-  {
-    id: "ods-10",
-    code: "ODS 10",
-    title: "Reducción de Desigualdades",
-    shortText: "Inclusión social y no discriminación para poblaciones diversas.",
-    detail:
-      "Promover inclusión social y no discriminación ofreciendo oportunidades a poblaciones diversas incluyendo víctimas del conflicto armado.",
-  },
-  {
-    id: "ods-11",
-    code: "ODS 11",
-    title: "Ciudades y Comunidades Sostenibles",
-    shortText: "Alianzas comunitarias para fortalecer tejido social local.",
-    detail:
-      "Fortalecer lazos con la comunidad local a través de alianzas con organizaciones, escuelas y entidades gubernamentales.",
-  },
-  {
-    id: "ods-16",
-    code: "ODS 16",
-    title: "Paz, Justicia e Instituciones Sólidas",
-    shortText: "Fútbol como herramienta de diálogo, tolerancia y paz.",
-    detail:
-      "Utilizar el fútbol para promover el diálogo, la tolerancia y una cultura de paz entre comunidades afectadas por el conflicto.",
-  },
-];
-
 export function OdsCommitment() {
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -197,7 +146,7 @@ export function OdsCommitment() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">
+                  <p className="text-xs font-black uppercase tracking-normal text-accent">
                     {item.code}
                   </p>
                   <h3 className="mt-2 text-xl font-black leading-tight">{item.title}</h3>

@@ -19,66 +19,7 @@ import {
   saveScrollTargetBeforeUnload,
 } from "@/lib/preloader-scroll";
 
-const introText = "Club Deportivo Real Sporting";
-const welcomeText = "Bienvenido";
-
-function AnimatedWords({
-  text,
-  reducedMotion,
-}: {
-  text: string;
-  reducedMotion: boolean;
-}) {
-  const words = text.split(" ");
-
-  return (
-    <motion.span
-      aria-label={text}
-      className="flex flex-wrap justify-center gap-x-4 gap-y-3"
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: reducedMotion ? 0 : 0.07,
-            delayChildren: reducedMotion ? 0 : 0.08,
-          },
-        },
-        exit: {
-          transition: { staggerChildren: 0.04, staggerDirection: -1 },
-        },
-      }}
-    >
-      {words.map((word, index) => (
-        <motion.span
-          key={`${word}-${index}`}
-          aria-hidden="true"
-          className="inline-block whitespace-nowrap"
-          variants={{
-            hidden: { opacity: 0, y: reducedMotion ? 0 : 18 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: {
-                duration: reducedMotion ? 0.2 : 0.72,
-                ease: PRELOADER_EASE,
-              },
-            },
-            exit: {
-              opacity: 0,
-              y: reducedMotion ? 0 : -10,
-              transition: { duration: 0.5, ease: PRELOADER_EASE },
-            },
-          }}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
-}
+const pillars = ["DISCIPLINA", "COMUNIDAD", "EXCELENCIA", "RESPETO"];
 
 export function SitePreloader() {
   const pathname = usePathname();
@@ -106,13 +47,7 @@ export function SitePreloader() {
   }, []);
 
   useLayoutEffect(() => {
-    if (!home) {
-      setPreloaderPending(false);
-      setVisible(false);
-      return;
-    }
-
-    if (!shouldShowHomePreloader()) {
+    if (!home || !shouldShowHomePreloader()) {
       setPreloaderPending(false);
       setVisible(false);
       return;
@@ -135,7 +70,7 @@ export function SitePreloader() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     window.addEventListener("pagehide", handleBeforeUnload);
 
-    const duration = reducedMotion ? 1200 : LOADER_DURATION_MS;
+    const duration = reducedMotion ? 1000 : LOADER_DURATION_MS;
     const doneTimer = window.setTimeout(() => {
       setVisible(false);
     }, duration);
@@ -157,7 +92,7 @@ export function SitePreloader() {
     return null;
   }
 
-  const exitDuration = reducedMotion ? 0.35 : LOADER_EXIT_MS / 1000;
+  const exitDuration = reducedMotion ? 0.2 : LOADER_EXIT_MS / 1000;
 
   return (
     <AnimatePresence mode="wait" onExitComplete={finishPreloader}>
@@ -166,92 +101,84 @@ export function SitePreloader() {
           key="site-preloader"
           role="status"
           aria-live="polite"
-          className="site-preloader-root pointer-events-auto fixed inset-0 overflow-hidden bg-bg text-text"
+          className="site-preloader-root pointer-events-auto fixed inset-0 overflow-hidden bg-[#050805] text-white"
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
+            clipPath: "inset(0 0 100% 0)",
             transition: { duration: exitDuration, ease: PRELOADER_EASE },
           }}
         >
-          <div className="absolute inset-0 grid-overlay opacity-40" />
-          <motion.div
-            aria-hidden="true"
-            className="preload-glow absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: reducedMotion ? 0.35 : [0, 0.75, 0.38] }}
-            transition={{
-              duration: reducedMotion ? 0.4 : 3.6,
-              ease: "easeInOut",
-            }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(208,161,58,0.18),transparent_32rem)]" />
+          <div className="absolute inset-x-0 top-0 h-px bg-white/10" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-white/10" />
 
-          <div aria-hidden="true" className="preload-ball-stage absolute inset-x-0 bottom-[18vh]">
-            <span className={`preload-ball-shadow ${reducedMotion ? "preload-ball-static" : ""}`} />
-            <div
-              className={`preload-ball-realistic ${reducedMotion ? "preload-ball-static" : ""}`}
-            >
-              <Image
-                src="/balon.png"
-                alt=""
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 160px, 220px"
-                priority
-              />
-            </div>
-          </div>
-
-          <div className="relative z-10 grid min-h-screen place-items-center px-4 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: PRELOADER_EASE }}
-              className="mx-auto max-w-5xl"
-            >
-              <h2 className="text-balance text-[clamp(1.75rem,7vw,5rem)] font-black leading-[1.04] text-text drop-shadow-2xl">
-                <AnimatedWords text={introText} reducedMotion={Boolean(reducedMotion)} />
-              </h2>
+          <div className="relative z-10 grid min-h-screen place-items-center px-5 text-center">
+            <div className="mx-auto flex min-h-[430px] w-full max-w-4xl flex-col items-center justify-center">
               <motion.p
-                className="mx-auto mt-4 text-[clamp(1.3rem,5vw,3rem)] font-black leading-none text-accent drop-shadow-xl"
-                initial={{ opacity: 0, y: 12 }}
+                className="text-5xl font-black uppercase leading-none tracking-normal sm:text-6xl lg:text-8xl"
+                initial={{ opacity: 0, y: reducedMotion ? 0 : 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reducedMotion ? 0.2 : 0.55, ease: PRELOADER_EASE }}
+              >
+                Real Sporting
+              </motion.p>
+
+              <div className="relative mt-7 h-10 w-full max-w-xl overflow-hidden">
+                {pillars.map((word, index) => (
+                  <motion.span
+                    key={word}
+                    className="absolute inset-0 flex items-center justify-center text-sm font-black uppercase tracking-normal text-[#d0a13a] sm:text-base"
+                    initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
+                    animate={{
+                      opacity: reducedMotion ? (index === 0 ? 1 : 0) : [0, 1, 1, 0],
+                      y: 0,
+                    }}
+                    transition={{
+                      delay: reducedMotion ? 0 : 0.42 + index * 0.28,
+                      duration: reducedMotion ? 0.1 : 0.46,
+                      ease: PRELOADER_EASE,
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </div>
+
+              <motion.div
+                className="mt-8 grid size-24 place-items-center rounded-full border border-white/15 bg-white/5 p-4 shadow-2xl backdrop-blur sm:size-28"
+                initial={{ opacity: 0, scale: reducedMotion ? 1 : 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  delay: reducedMotion ? 0.15 : 1.5,
+                  duration: reducedMotion ? 0.2 : 0.55,
+                  ease: PRELOADER_EASE,
+                }}
+              >
+                <Image
+                  src="/logo.png"
+                  alt=""
+                  width={86}
+                  height={86}
+                  className="object-contain"
+                  priority
+                  aria-hidden="true"
+                />
+              </motion.div>
+
+              <motion.p
+                className="mt-8 max-w-xl whitespace-pre-line text-sm font-black uppercase leading-7 tracking-normal text-white/86 sm:text-base"
+                initial={{ opacity: 0, y: reducedMotion ? 0 : 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  delay: reducedMotion ? 0.1 : 0.85,
-                  duration: 0.85,
+                  delay: reducedMotion ? 0.25 : 1.78,
+                  duration: reducedMotion ? 0.2 : 0.5,
                   ease: PRELOADER_EASE,
                 }}
               >
-                {welcomeText}
+                {"Desde Usme.\nCon disciplina.\nHacia el futuro."}
               </motion.p>
-              <motion.p
-                className="mx-auto mt-5 max-w-2xl text-sm font-bold uppercase tracking-[0.24em] text-accent sm:text-base"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 0.9, y: 0 }}
-                transition={{
-                  delay: reducedMotion ? 0.15 : 1.15,
-                  duration: 0.75,
-                  ease: PRELOADER_EASE,
-                }}
-              >
-                Formación, identidad y alto rendimiento
-              </motion.p>
-            </motion.div>
-            <motion.div
-              className="absolute bottom-8 left-1/2 h-1 w-48 -translate-x-1/2 overflow-hidden rounded-full bg-border"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.6, ease: PRELOADER_EASE }}
-            >
-              <motion.span
-                className="block h-full rounded-full bg-accent"
-                initial={{ scaleX: 0, originX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{
-                  duration: reducedMotion ? 0.8 : 3.5,
-                  ease: PRELOADER_EASE,
-                }}
-              />
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       )}

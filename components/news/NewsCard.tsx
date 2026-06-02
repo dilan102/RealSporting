@@ -48,14 +48,14 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
           </span>
         </div>
         <div className="p-6">
-          <time className="text-xs font-bold uppercase tracking-[0.14em] text-muted">
+          <time className="text-xs font-bold uppercase tracking-normal text-muted">
             {formatDate(item.date)}
           </time>
           <h3 className="mt-3 line-clamp-2 overflow-wrap-anywhere text-xl font-black leading-tight">{title}</h3>
           <p className="mt-3 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
             {summary}
           </p>
-          <span className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg border border-accent/35 bg-accent/10 px-4 text-xs font-black uppercase tracking-[0.12em] text-accent transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-[var(--button-text)]">
+          <span className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-lg border border-accent/35 bg-accent/10 px-4 text-xs font-black uppercase tracking-normal text-accent transition-all group-hover:border-accent group-hover:bg-accent group-hover:text-[var(--button-text)]">
             Leer más
             <ArrowRight size={14} aria-hidden="true" />
           </span>

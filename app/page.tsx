@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import { CategoryShowcase } from "@/components/home/CategoryShowcase";
 import { Hero } from "@/components/home/Hero";
+import { HomeContactBand } from "@/components/home/HomeContactBand";
+import { HomeGallerySection } from "@/components/home/HomeGallerySection";
+import { OdsHomeSection } from "@/components/home/OdsHomeSection";
 import { QuickInstitutional } from "@/components/home/QuickInstitutional";
 import { RecentTrainings } from "@/components/home/RecentTrainings";
 import { SocialStrip } from "@/components/home/SocialStrip";
@@ -27,8 +31,12 @@ export default async function HomePage() {
         sectionIds={[
           "inicio",
           "institucional",
+          "categorias-home",
+          "ods-home",
           "noticias-home",
+          "galeria-home",
           "entrenamientos-home",
+          "inscripcion-home",
           "redes-home",
         ]}
       />
@@ -43,13 +51,33 @@ export default async function HomePage() {
         </div>
       </RevealSection>
       <RevealSection>
+        <div id="categorias-home">
+          <CategoryShowcase />
+        </div>
+      </RevealSection>
+      <RevealSection>
+        <div id="ods-home">
+          <OdsHomeSection />
+        </div>
+      </RevealSection>
+      <RevealSection>
         <div id="noticias-home">
           <NewsCircleShowcase items={news} />
         </div>
       </RevealSection>
       <RevealSection>
+        <div id="galeria-home">
+          <HomeGallerySection />
+        </div>
+      </RevealSection>
+      <RevealSection>
         <div id="entrenamientos-home">
           <RecentTrainings />
+        </div>
+      </RevealSection>
+      <RevealSection>
+        <div id="inscripcion-home">
+          <HomeContactBand />
         </div>
       </RevealSection>
       <RevealSection>
