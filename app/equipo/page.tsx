@@ -37,7 +37,7 @@ export default async function EquipoPage() {
           <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-start">
             <div>
               <p className="eyebrow">Proceso por edades</p>
-              <h2 className="mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
+              <h2 className="font-categories mt-4 text-balance text-4xl font-black leading-[0.96] sm:text-5xl lg:text-6xl">
                 Cada categoría tiene una intención técnica y humana.
               </h2>
               <p className="mt-5 text-base leading-8 text-muted">
@@ -45,8 +45,8 @@ export default async function EquipoPage() {
                 mantener convocatorias, seguimiento público y edición administrativa.
               </p>
               <Link
-                href="/contacto"
-                className="btn-gold mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
+                href="/formulario-miembros-2026"
+                className="btn-gold alive-lift mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
               >
                 Inscribirme
                 <ArrowRight size={16} aria-hidden="true" />
@@ -57,14 +57,14 @@ export default async function EquipoPage() {
               {sportCategoryCards.map((category) => (
                 <article
                   key={category.id}
-                  className="premium-card overflow-hidden"
+                  className="alive-card premium-card group overflow-hidden"
                 >
                   <div className="relative aspect-[16/9] bg-surface">
                     <Image
                       src={category.image}
                       alt=""
                       fill
-                      className="object-cover"
+                      className="interactive-image object-cover"
                       sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
@@ -73,7 +73,7 @@ export default async function EquipoPage() {
                     </p>
                   </div>
                   <div className="p-5">
-                    <h3 className="text-xl font-black">{category.name}</h3>
+                    <h3 className="font-categories text-3xl font-black leading-none">{category.name}</h3>
                     <p className="mt-2 text-sm leading-6 text-muted">{category.description}</p>
                   </div>
                 </article>
@@ -87,7 +87,7 @@ export default async function EquipoPage() {
         <section className="section-shell pb-24">
           <div className="mb-8 max-w-2xl">
             <p className="eyebrow">Registro deportivo</p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl">
+            <h2 className="font-training mt-3 text-4xl font-black sm:text-5xl">
               Plantilla y convocatorias
             </h2>
           </div>

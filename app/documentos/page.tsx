@@ -37,12 +37,12 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
         image="/brand/gallery-team.jpg"
       />
 
-      <section className="section-band border-b border-border">
+      <section className="section-band section-ambient border-b border-border">
         <div className="section-shell py-10 sm:py-12">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="eyebrow">Documento activo</p>
-              <h1 className="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
+              <h1 className="font-institutional kinetic-heading mt-3 text-3xl font-black tracking-normal sm:text-5xl">
                 {document.title}
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">
@@ -52,7 +52,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
             <div className="flex flex-wrap gap-3">
               <a
                 href="#visor"
-                className="btn-green inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
+                className="btn-green alive-lift inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
               >
                 Ver aquí
                 <Eye size={17} aria-hidden="true" />
@@ -61,7 +61,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
                 href={document.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-gold inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
+                className="btn-gold alive-lift inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
               >
                 Abrir en Google
                 <Download size={17} aria-hidden="true" />
@@ -76,7 +76,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
                 <Link
                   key={item.id}
                   href={`/documentos?id=${encodeURIComponent(item.id)}`}
-                  className={`premium-card-hover flex min-h-40 flex-col justify-between rounded-lg border p-5 ${
+                  className={`alive-card premium-card-hover flex min-h-40 flex-col justify-between rounded-lg border p-5 ${
                     active
                       ? "border-accent bg-accent/10"
                       : "border-border bg-bg-elevated"
@@ -86,7 +86,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
                     <FileText size={22} aria-hidden="true" />
                   </span>
                   <span className="mt-5 block">
-                    <span className="block text-lg font-black">{item.title}</span>
+                    <span className="font-institutional block text-xl font-black">{item.title}</span>
                     <span className="mt-2 block text-sm leading-6 text-muted">
                       {item.description}
                     </span>
@@ -108,7 +108,7 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
           />
         </div>
         <div className="mt-6">
-          <Link href="/contacto#documentos" className="text-sm font-black text-accent">
+          <Link href="/contacto#documentos" className="alive-underline text-sm font-black text-accent">
             Volver a documentos
           </Link>
         </div>

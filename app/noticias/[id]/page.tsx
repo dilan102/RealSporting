@@ -70,7 +70,7 @@ export default async function NoticiaDetallePage({ params }: Props) {
 
   return (
     <main className="bg-bg text-text">
-      <section className="relative isolate overflow-hidden bg-[#050805] text-white">
+      <section className="section-ambient relative isolate overflow-hidden bg-[#050805] text-white">
         <div className="absolute inset-0 opacity-50">
           <NewsVisual item={item} sizes="100vw" priority />
         </div>
@@ -80,7 +80,7 @@ export default async function NoticiaDetallePage({ params }: Props) {
         <div className="section-shell relative flex min-h-[560px] flex-col justify-end pb-12 pt-32">
           <Link
             href="/noticias"
-            className="inline-flex w-fit items-center gap-2 rounded-lg border border-white/18 bg-white/10 px-3 py-2 text-sm font-black text-white/82 backdrop-blur transition-colors hover:border-[#f3c548] hover:text-white"
+            className="alive-lift inline-flex w-fit items-center gap-2 rounded-lg border border-white/18 bg-white/10 px-3 py-2 text-sm font-black text-white/82 backdrop-blur transition-colors hover:border-[#f3c548] hover:text-white"
           >
             <ArrowLeft size={16} aria-hidden="true" />
             Volver a noticias
@@ -88,7 +88,7 @@ export default async function NoticiaDetallePage({ params }: Props) {
 
           <header className="mt-8">
             <NewsBadge category={item.category} />
-            <h1 className="mt-5 max-w-5xl text-balance text-5xl font-black leading-[0.9] sm:text-6xl lg:text-8xl">
+            <h1 className="font-newsroom mt-5 max-w-5xl text-balance text-5xl font-black leading-[0.9] sm:text-6xl lg:text-8xl">
               {title}
             </h1>
             <time className="mt-5 block text-xs font-bold uppercase tracking-normal text-white/68">
@@ -104,7 +104,7 @@ export default async function NoticiaDetallePage({ params }: Props) {
       <RevealSection>
         <article className="mx-auto max-w-5xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
 
-          <div className="relative mt-8 aspect-[16/10] overflow-hidden rounded-lg border border-border bg-surface shadow-2xl">
+          <div className="alive-card relative mt-8 aspect-[16/10] overflow-hidden rounded-lg border border-border bg-surface shadow-2xl">
             <NewsVisual item={item} sizes="(min-width: 1024px) 896px, 100vw" priority />
           </div>
 

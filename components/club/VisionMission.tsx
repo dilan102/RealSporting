@@ -42,14 +42,14 @@ export function VisionMission() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.15, duration: 0.4, ease: PRELOADER_EASE }}
-          className="mobile-card-lift overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
+          className="alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
         >
           <div className="relative aspect-[16/9] bg-surface">
             <Image
               src={image}
               alt={title}
               fill
-              className="object-cover"
+              className="interactive-image object-cover"
               sizes="(min-width: 768px) 50vw, 100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
@@ -58,7 +58,7 @@ export function VisionMission() {
             </span>
           </div>
           <div className="p-6">
-            <h3 className="text-2xl font-black">{title}</h3>
+            <h3 className="font-institutional text-3xl font-black">{title}</h3>
             <p className="mt-3 text-sm leading-7 text-muted">{text}</p>
           </div>
         </motion.article>
@@ -80,7 +80,7 @@ export function ValuesGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.15, duration: 0.4, ease: PRELOADER_EASE }}
-            className="mobile-card-lift group relative overflow-hidden rounded-lg border border-border bg-bg-elevated p-7 transition-all duration-300 hover:border-accent hover:bg-[color-mix(in_srgb,var(--accent-green)_9%,var(--card-bg))]"
+            className="alive-card mobile-card-lift group relative overflow-hidden rounded-lg border border-border bg-bg-elevated p-7 transition-all duration-300 hover:border-accent hover:bg-[color-mix(in_srgb,var(--accent-green)_9%,var(--card-bg))]"
           >
             <span className="pointer-events-none absolute right-5 top-3 font-display text-7xl leading-none text-[color-mix(in_srgb,var(--accent-gold)_20%,transparent)]">
               {String(index + 1).padStart(2, "0")}
@@ -88,7 +88,7 @@ export function ValuesGrid() {
             <div className="mb-6 grid size-14 place-items-center rounded-lg bg-accent/15 text-accent">
               <Icon size={44} aria-hidden="true" strokeWidth={1.6} />
             </div>
-            <h3 className="relative text-3xl font-black">{value.title}</h3>
+            <h3 className="font-social-impact relative text-3xl font-black">{value.title}</h3>
             <p className="relative mt-3 text-sm leading-7 text-muted">{value.description}</p>
           </motion.article>
         );
@@ -107,9 +107,9 @@ export function Timeline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.2, duration: 0.4, ease: PRELOADER_EASE }}
-          className="mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5"
+          className="alive-card mobile-card-lift rounded-lg border border-border bg-bg-elevated p-5"
         >
-          <p className="text-sm font-black text-accent">{m.year}</p>
+          <p className="font-training text-lg font-black text-accent">{m.year}</p>
           <p className="mt-2 text-sm leading-6 text-muted">{m.event}</p>
         </motion.li>
       ))}
@@ -132,7 +132,7 @@ export function OdsCommitment() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.12, duration: 0.4, ease: PRELOADER_EASE }}
-            className={`group overflow-hidden rounded-lg border bg-bg-elevated/95 transition-all duration-300 ${
+            className={`alive-card group overflow-hidden rounded-lg border bg-bg-elevated/95 transition-all duration-300 ${
               open
                 ? "border-accent shadow-xl shadow-[var(--accent-gold)]/15"
                 : "border-border hover:-translate-y-0.5 hover:border-accent/45"
@@ -149,7 +149,7 @@ export function OdsCommitment() {
                   <p className="text-xs font-black uppercase tracking-normal text-accent">
                     {item.code}
                   </p>
-                  <h3 className="mt-2 text-xl font-black leading-tight">{item.title}</h3>
+                  <h3 className="font-social-impact mt-2 text-xl font-black leading-tight">{item.title}</h3>
                 </div>
                 <ChevronDown
                   size={20}

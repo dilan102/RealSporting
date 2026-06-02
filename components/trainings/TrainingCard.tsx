@@ -130,7 +130,7 @@ export function TrainingCard({
     <>
       <motion.article
         variants={fadeUpItem}
-        className="glass mobile-card-lift group overflow-hidden rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
+        className="alive-card glass mobile-card-lift group overflow-hidden rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
       >
         <button
           type="button"
@@ -148,7 +148,7 @@ export function TrainingCard({
               src={mainMedia.src}
               alt={imageAlt}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="interactive-image object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               loading="lazy"
               placeholder="blur"
@@ -157,7 +157,7 @@ export function TrainingCard({
           ) : (
             <video
               src={mainMedia.src}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="interactive-image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               muted
               playsInline
               preload="metadata"
@@ -181,7 +181,7 @@ export function TrainingCard({
         </button>
 
         <div className="p-6">
-          <h3 className="line-clamp-2 overflow-wrap-anywhere text-lg font-semibold">{title}</h3>
+          <h3 className="font-training line-clamp-2 overflow-wrap-anywhere text-2xl font-bold leading-none">{title}</h3>
           <p className="mt-2 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
             {description}
           </p>

@@ -37,7 +37,7 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
   return (
     <motion.article
       variants={fadeUpItem}
-      className="mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
+      className="alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
     >
       <Link href={`/noticias/${item.id}`} className="block">
         <div className="relative aspect-[16/10] min-h-64 overflow-hidden">
@@ -51,7 +51,7 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
           <time className="text-xs font-bold uppercase tracking-normal text-muted">
             {formatDate(item.date)}
           </time>
-          <h3 className="mt-3 line-clamp-2 overflow-wrap-anywhere text-xl font-black leading-tight">{title}</h3>
+          <h3 className="font-newsroom mt-3 line-clamp-2 overflow-wrap-anywhere text-2xl font-black leading-tight">{title}</h3>
           <p className="mt-3 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
             {summary}
           </p>

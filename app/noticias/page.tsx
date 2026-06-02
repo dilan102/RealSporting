@@ -57,8 +57,8 @@ export default async function NoticiasPage() {
         <section className="section-shell py-8">
           <div className="flex flex-wrap items-center justify-end gap-3">
             <Link
-              href="/contacto"
-              className="btn-gold inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-black"
+              href="/formulario-miembros-2026"
+              className="btn-gold alive-lift inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-black"
             >
               Inscríbete
               <ArrowRight size={16} aria-hidden="true" />
@@ -72,7 +72,7 @@ export default async function NoticiasPage() {
           <section className="section-shell py-8">
             <Link
               href={`/noticias/${leadNews.id}`}
-              className="mobile-card-lift group grid overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]"
+              className="alive-card mobile-card-lift group grid overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)]"
             >
               <span className="relative min-h-[320px] overflow-hidden bg-surface lg:min-h-[520px]">
                 <NewsVisual
@@ -88,7 +88,7 @@ export default async function NoticiasPage() {
                 <time className="text-xs font-bold uppercase tracking-normal text-muted">
                   {formatDate(leadNews.date)}
                 </time>
-                <h2 className="mt-4 text-4xl font-black leading-none sm:text-6xl">
+                <h2 className="font-newsroom mt-4 text-4xl font-black leading-none sm:text-6xl">
                   {sanitizeVisibleTextOrDefault(leadNews.title, NEWS_TITLE_PLACEHOLDER)}
                 </h2>
                 <span className="mt-5 block max-w-3xl overflow-wrap-anywhere text-base leading-7 text-muted">
@@ -106,7 +106,7 @@ export default async function NoticiasPage() {
 
       <RevealSection>
         <section className="section-shell pb-12">
-          <h2 className="border-b border-border pb-3 text-4xl font-black sm:text-6xl">
+          <h2 className="font-newsroom border-b border-border pb-3 text-4xl font-black sm:text-6xl">
             Todas las noticias
           </h2>
           {remainingNews.length > 0 ? (
@@ -115,7 +115,7 @@ export default async function NoticiasPage() {
                 <Link
                   key={item.id}
                   href={`/noticias/${item.id}`}
-                  className="mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
+                  className="alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
                 >
                   <span className="relative block aspect-[16/10] overflow-hidden bg-surface">
                     <NewsVisual
@@ -130,7 +130,7 @@ export default async function NoticiasPage() {
                     <time className="text-xs font-bold uppercase tracking-normal text-muted">
                       {formatDate(item.date)}
                     </time>
-                    <span className="mt-3 line-clamp-2 block overflow-wrap-anywhere text-2xl font-black leading-none">
+                    <span className="font-newsroom mt-3 line-clamp-2 block overflow-wrap-anywhere text-3xl font-black leading-none">
                       {sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)}
                     </span>
                     <span className="mt-3 line-clamp-3 block overflow-wrap-anywhere text-sm leading-6 text-muted">

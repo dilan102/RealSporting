@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
-import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { club, institutionalStats } from "@/lib/content";
 
 export function Hero() {
@@ -59,7 +58,7 @@ export function Hero() {
               Club Deportivo Real Sporting de Usme
             </div>
 
-            <h1 className="mt-6 max-w-5xl text-5xl font-black leading-[0.92] tracking-normal text-white drop-shadow-xl sm:text-6xl lg:text-8xl mobile-reveal mobile-reveal-delay-1">
+            <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1">
               Desde Usme.
               <br />
               Con disciplina.
@@ -73,15 +72,16 @@ export function Hero() {
             </p>
 
             <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center mobile-reveal mobile-reveal-delay-3">
-              <RegistrationModal
-                className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-black"
+              <Link
+                href="/formulario-miembros-2026"
+                className="btn-gold alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 text-sm font-black"
               >
                 Inscribirme
                 <ArrowRight size={16} aria-hidden="true" />
-              </RegistrationModal>
+              </Link>
               <Link
                 href="/club"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-6 text-sm font-black text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[#f3c548] hover:bg-white/16"
+                className="alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-6 text-sm font-black text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[#f3c548] hover:bg-white/16"
               >
                 Conocer el club
               </Link>
@@ -103,8 +103,8 @@ export function Hero() {
               </p>
             </div>
             {institutionalStats.map((stat) => (
-              <div key={stat.label} className="rounded-lg border border-white/12 bg-white/8 p-4">
-                <p className="text-4xl font-black leading-none text-[#f3c548]">{stat.value}</p>
+              <div key={stat.label} className="alive-card rounded-lg border border-white/12 bg-white/8 p-4">
+                <p className="font-training text-5xl font-black leading-none text-[#f3c548]">{stat.value}</p>
                 <p className="mt-2 text-sm font-black text-white">{stat.label}</p>
                 <p className="mt-1 text-xs leading-5 text-white/68">{stat.detail}</p>
               </div>

@@ -15,14 +15,14 @@ export function PageHero({
   image = "/brand/gallery-team.jpg",
 }: PageHeroProps) {
   return (
-    <section className="relative isolate overflow-hidden border-b border-border bg-[#050805] text-white">
+    <section className="section-ambient relative isolate overflow-hidden border-b border-border bg-[#050805] text-white">
       <div className="absolute inset-0">
         <Image
           src={image}
           alt=""
           fill
           priority
-          className="object-cover object-center opacity-60"
+          className="hero-photo object-cover object-center opacity-60"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,14,9,0.94),rgba(5,14,9,0.72)_48%,rgba(5,14,9,0.28))]" />
@@ -46,7 +46,7 @@ export function PageHero({
             {eyebrow}
           </p>
         </div>
-        <h1 className="max-w-4xl text-balance text-5xl font-black leading-[0.92] tracking-normal sm:text-6xl lg:text-7xl xl:text-8xl">
+        <h1 className="font-hero kinetic-heading max-w-4xl text-balance text-6xl font-black leading-[0.88] tracking-normal sm:text-7xl lg:text-8xl xl:text-9xl">
           {title}
         </h1>
         <p className="mt-5 max-w-2xl text-base font-semibold leading-8 text-white/84 sm:text-lg">

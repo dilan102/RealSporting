@@ -126,7 +126,7 @@ export function TrainingLoopShowcase({ items }: Props) {
   const expandedImage = expanded ? getTrainingPreviewImage(expanded) : "";
 
   return (
-    <section className="relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <section className="section-ambient relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <div className="absolute inset-x-0 top-0 h-px bg-border" />
       <div className="absolute inset-x-0 bottom-0 h-px bg-border" />
 
@@ -136,7 +136,7 @@ export function TrainingLoopShowcase({ items }: Props) {
             <p className="text-xs font-semibold uppercase tracking-normal text-accent">
               Entrenamientos
             </p>
-            <h2 className="mt-3 text-4xl font-black leading-none tracking-normal sm:text-5xl">
+            <h2 className="font-training kinetic-heading mt-3 text-5xl font-black leading-none tracking-normal sm:text-6xl">
               Últimas sesiones del proceso
             </h2>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
@@ -145,7 +145,7 @@ export function TrainingLoopShowcase({ items }: Props) {
           </div>
           <Link
             href="/entrenamientos"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-bg-elevated/70 px-4 text-sm font-bold transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
+            className="alive-lift inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-bg-elevated/70 px-4 text-sm font-bold transition-colors hover:border-accent/50 hover:text-accent sm:rounded-lg"
           >
             Ver todos
             <ArrowRight size={16} aria-hidden="true" />
@@ -171,7 +171,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                     setActiveIndex(index);
                     setExpanded(item);
                   }}
-                  className={`mobile-card-lift group grid min-h-32 grid-cols-[112px_minmax(0,1fr)] overflow-hidden rounded-lg border bg-bg/70 text-left transition-colors ${
+                  className={`alive-card mobile-card-lift group grid min-h-32 grid-cols-[112px_minmax(0,1fr)] overflow-hidden rounded-lg border bg-bg/70 text-left transition-colors ${
                     selected
                       ? "border-accent/60"
                       : "border-border hover:border-accent/40"
@@ -183,7 +183,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                       src={previewImage}
                       alt=""
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="interactive-image object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="112px"
                       loading="lazy"
                       placeholder="blur"
@@ -194,7 +194,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                     <time className="text-xs font-bold uppercase tracking-normal text-accent">
                       {formatDate(item.date)}
                     </time>
-                    <span className="mt-2 line-clamp-2 text-sm font-bold leading-snug text-text">
+                    <span className="font-training mt-2 line-clamp-2 text-base font-bold leading-snug text-text">
                       {title}
                     </span>
                     <span className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted">
@@ -212,7 +212,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                 key={activeTraining.id}
                 type="button"
                 onClick={() => setExpanded(activeTraining)}
-                className="mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-lg border border-accent/40 bg-bg text-left text-white shadow-2xl sm:min-h-[410px]"
+                className="alive-card mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-lg border border-accent/40 bg-bg text-left text-white shadow-2xl sm:min-h-[410px]"
                 initial={{ opacity: 0, x: -54, scale: 0.96 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 64, scale: 0.97 }}
@@ -223,7 +223,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                   src={activeImage}
                   alt=""
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="interactive-image object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(min-width: 1024px) 62vw, 100vw"
                   loading="lazy"
                   placeholder="blur"
@@ -238,7 +238,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                   <time className="block text-sm font-semibold text-[#f3c548]">
                     {formatDate(activeTraining.date)}
                   </time>
-                  <span className="mt-3 block max-w-2xl text-3xl font-black leading-[0.98] sm:text-4xl">
+                  <span className="font-training mt-3 block max-w-2xl text-4xl font-black leading-[0.9] sm:text-5xl">
                     {sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}
                   </span>
                   <span className="mt-4 block max-w-2xl overflow-wrap-anywhere text-sm leading-relaxed text-white/90 sm:text-base">

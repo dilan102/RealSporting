@@ -98,12 +98,12 @@ export default function ContactoPage() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_14%,transparent),transparent)]" />
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
           <RevealSection>
-            <div className="grid gap-5 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated/92 p-5 shadow-xl shadow-[color-mix(in_srgb,var(--accent-green)_14%,transparent)] backdrop-blur sm:p-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div className="alive-card grid gap-5 rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated/92 p-5 shadow-xl shadow-[color-mix(in_srgb,var(--accent-green)_14%,transparent)] backdrop-blur sm:p-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <div>
                 <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                   Proceso de ingreso
                 </p>
-                <h2 className="mt-2 text-2xl font-black tracking-normal sm:text-3xl">
+                <h2 className="font-institutional mt-2 text-3xl font-black tracking-normal sm:text-4xl">
                   Comienza tu camino con Real Sporting
                 </h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-muted sm:text-base">
@@ -112,15 +112,15 @@ export default function ContactoPage() {
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
                 <a
-                  href="#formulario"
-                  className="btn-gold inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
+                  href="/formulario-miembros-2026"
+                  className="btn-gold alive-lift inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
                   aria-label="Ir al formulario de inscripción"
                 >
                   Iniciar inscripción
                 </a>
                 <a
                   href="#documentos"
-                  className="btn-green inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
+                  className="btn-green alive-lift inline-flex min-h-12 items-center justify-center rounded-lg px-5 text-sm font-black"
                 >
                   Ver documentos
                 </a>
@@ -130,12 +130,12 @@ export default function ContactoPage() {
               {registrationSteps.map((step) => (
                 <article
                   key={step.step}
-                  className="rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-bg-elevated/88 p-4"
+                  className="alive-card rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-bg-elevated/88 p-4"
                 >
                   <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
                     {step.step}
                   </p>
-                  <h3 className="mt-2 text-lg font-black">{step.title}</h3>
+                  <h3 className="font-training mt-2 text-xl font-black">{step.title}</h3>
                   <p className="mt-1 text-sm leading-6 text-muted">{step.text}</p>
                 </article>
               ))}

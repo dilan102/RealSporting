@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight, FileText, MessageCircle } from "lucide-react";
-import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { registrationSteps } from "@/lib/content";
 import { buildWhatsAppUrl } from "@/lib/constants";
 
@@ -18,10 +17,13 @@ export function HomeContactBand() {
                 Un ingreso claro para familias, aspirantes y cuerpo técnico.
               </h2>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <RegistrationModal className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black">
+                <Link
+                  href="/formulario-miembros-2026"
+                  className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
+                >
                   Iniciar inscripción
                   <ArrowRight size={16} aria-hidden="true" />
-                </RegistrationModal>
+                </Link>
                 <a
                   href={buildWhatsAppUrl("Hola Real Sporting, quiero información sobre inscripciones.")}
                   target="_blank"

@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
-import { RegistrationModal } from "@/components/contact/RegistrationModal";
 import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -141,10 +140,13 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <NavWhatsAppLink className="btn-green hidden min-h-10 items-center justify-center rounded-full px-4 text-sm font-black text-white md:inline-flex" />
-          <RegistrationModal className="btn-gold hidden min-h-10 items-center justify-center rounded-full px-5 text-sm font-black md:inline-flex">
+          <NavWhatsAppLink className="btn-green alive-lift hidden min-h-10 items-center justify-center rounded-full px-4 text-sm font-black text-white md:inline-flex" />
+          <Link
+            href="/formulario-miembros-2026"
+            className="btn-gold alive-lift hidden min-h-10 items-center justify-center rounded-full px-5 text-sm font-black md:inline-flex"
+          >
             Inscribirme
-          </RegistrationModal>
+          </Link>
           <button
             type="button"
             onClick={toggleAdmin}
@@ -203,10 +205,14 @@ export function Navbar() {
                 </li>
               ))}
               <li className="grid gap-2 pt-2 sm:grid-cols-2">
-                <NavWhatsAppLink className="btn-green flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black text-white" />
-                <RegistrationModal className="btn-gold flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black">
+                <NavWhatsAppLink className="btn-green alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black text-white" />
+                <Link
+                  href="/formulario-miembros-2026"
+                  className="btn-gold alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black"
+                  onClick={() => setOpen(false)}
+                >
                   Inscribirme
-                </RegistrationModal>
+                </Link>
               </li>
             </ul>
           </motion.div>

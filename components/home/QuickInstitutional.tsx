@@ -33,12 +33,12 @@ const programCards = [
 
 export function QuickInstitutional() {
   return (
-    <section className="section-band overflow-hidden text-text">
+    <section className="section-band section-ambient overflow-hidden text-text">
       <div className="section-shell section-padding">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-end">
           <div>
             <p className="eyebrow">Proyecto institucional</p>
-            <h2 className="mt-5 max-w-3xl text-balance text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">
+            <h2 className="font-institutional kinetic-heading mt-5 max-w-3xl text-balance text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">
               Formación deportiva con método, identidad y proyección humana.
             </h2>
           </div>
@@ -49,8 +49,8 @@ export function QuickInstitutional() {
 
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {institutionalStats.map((stat) => (
-            <article key={stat.label} className="premium-card p-5 sm:p-6">
-              <p className="text-4xl font-black leading-none text-accent">{stat.value}</p>
+            <article key={stat.label} className="alive-card premium-card p-5 sm:p-6">
+              <p className="font-training text-5xl font-black leading-none text-accent">{stat.value}</p>
               <h3 className="mt-3 text-sm font-black uppercase tracking-normal">
                 {stat.label}
               </h3>
@@ -60,17 +60,17 @@ export function QuickInstitutional() {
         </div>
       </div>
 
-      <div className="bg-bg text-text">
+      <div className="section-ambient bg-bg text-text">
         <div className="section-shell section-padding">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
             <div>
               <p className="eyebrow">Ruta formativa</p>
-              <h2 className="mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
+              <h2 className="font-categories kinetic-heading mt-4 text-balance text-4xl font-black leading-[0.98] sm:text-5xl lg:text-6xl">
                 Inicia, entrena y evoluciona dentro de un proceso ordenado.
               </h2>
               <Link
-                href="/contacto"
-                className="btn-gold mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
+                href="/formulario-miembros-2026"
+                className="btn-gold alive-lift mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
               >
                 Solicitar inscripción
                 <ArrowRight size={16} aria-hidden="true" />
@@ -82,7 +82,7 @@ export function QuickInstitutional() {
                 <Link
                   key={title}
                   href={href}
-                  className="premium-card premium-card-hover group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
+                  className="alive-card premium-card premium-card-hover group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
                 >
                   <span className="grid size-14 place-items-center rounded-lg bg-accent text-[var(--button-text)]">
                     <Icon size={24} aria-hidden="true" />
@@ -107,12 +107,12 @@ export function QuickInstitutional() {
           </div>
 
           <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
-            <div className="relative min-h-[420px] overflow-hidden rounded-lg border border-border bg-[#050805] shadow-2xl">
+            <div className="alive-card group relative min-h-[420px] overflow-hidden rounded-lg border border-border bg-[#050805] shadow-2xl">
               <Image
                 src="/brand/gallery-team.jpg"
                 alt=""
                 fill
-                className="object-cover object-center"
+                className="interactive-image object-cover object-center"
                 sizes="(min-width: 1024px) 56vw, 100vw"
               />
               <div className="image-card-overlay absolute inset-0" />
@@ -120,7 +120,7 @@ export function QuickInstitutional() {
                 <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
                   Método formativo
                 </p>
-                <h3 className="mt-4 text-balance text-3xl font-black leading-tight sm:text-4xl">
+                <h3 className="font-institutional mt-4 text-balance text-3xl font-black leading-tight sm:text-4xl">
                   Evaluar, corregir, competir y evolucionar.
                 </h3>
               </div>

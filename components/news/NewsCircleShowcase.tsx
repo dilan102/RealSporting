@@ -31,20 +31,20 @@ export function NewsCircleShowcase({ items }: Props) {
   }
 
   return (
-    <section className="border-y border-border bg-bg text-text">
+    <section className="section-ambient border-y border-border bg-bg text-text">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mobile-reveal flex flex-wrap items-end justify-between gap-5 border-b border-border pb-6">
           <div>
             <p className="text-xs font-black uppercase tracking-normal text-accent">
               Actualidad
             </p>
-            <h2 className="mt-3 text-[2.5rem] font-black leading-none sm:text-[4rem]">
+            <h2 className="font-newsroom kinetic-heading mt-3 text-[3rem] font-black leading-none sm:text-[5rem]">
               Noticias
             </h2>
           </div>
           <Link
             href="/noticias"
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-bg-elevated px-4 text-sm font-bold text-text transition-all hover:scale-[1.03] hover:border-accent hover:text-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/15"
+            className="alive-lift inline-flex min-h-11 items-center gap-2 rounded-lg border border-border bg-bg-elevated px-4 text-sm font-bold text-text transition-all hover:scale-[1.03] hover:border-accent hover:text-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/15"
           >
             Ver todas las noticias
             <ArrowRight size={16} aria-hidden="true" />
@@ -54,7 +54,7 @@ export function NewsCircleShowcase({ items }: Props) {
         <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)]">
           <Link
             href={`/noticias/${leadNews.id}`}
-            className="mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
+            className="alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
           >
             <div className="relative aspect-[16/10] min-h-[340px] overflow-hidden">
               <NewsVisual
@@ -70,7 +70,7 @@ export function NewsCircleShowcase({ items }: Props) {
               <time className="text-xs font-bold uppercase tracking-normal text-muted">
                 {formatDate(leadNews.date)}
               </time>
-              <h3 className="mt-3 text-4xl font-black leading-none sm:text-5xl">
+              <h3 className="font-newsroom mt-3 text-4xl font-black leading-none sm:text-6xl">
                 {leadNews.title}
               </h3>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-muted sm:text-base">
@@ -84,14 +84,14 @@ export function NewsCircleShowcase({ items }: Props) {
               <Link
                 key={item.id}
                 href={`/noticias/${item.id}`}
-                className="mobile-card-lift group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/15 sm:min-h-36 sm:grid-cols-[120px_minmax(0,1fr)]"
+                className="alive-card mobile-card-lift group grid min-h-32 grid-cols-[104px_minmax(0,1fr)] overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-all hover:-translate-y-1 hover:border-accent hover:shadow-lg hover:shadow-[var(--accent-gold)]/15 sm:min-h-36 sm:grid-cols-[120px_minmax(0,1fr)]"
               >
                 <span className="relative min-h-32 overflow-hidden sm:min-h-36">
                   <NewsVisual item={item} sizes="120px" />
                 </span>
                 <span className="p-4">
                   <NewsBadge category={item.category} />
-                  <span className="mt-3 line-clamp-2 block text-xl font-black leading-none">
+                  <span className="font-newsroom mt-3 line-clamp-2 block text-xl font-black leading-none">
                     {item.title}
                   </span>
                   <time className="mt-3 block text-xs font-semibold text-muted">

@@ -35,7 +35,7 @@ export default async function EntrenamientosPage() {
           <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-end">
             <div>
               <p className="eyebrow">Memoria visual</p>
-              <h2 className="mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
+              <h2 className="font-gallery mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
                 Sesiones que muestran disciplina, trabajo técnico y comunidad.
               </h2>
               <p className="mt-5 text-base leading-8 text-muted">
@@ -48,13 +48,13 @@ export default async function EntrenamientosPage() {
               {galleryItems.map((item) => (
                 <article
                   key={item.title}
-                  className="relative min-h-[220px] overflow-hidden rounded-lg border border-border bg-[#050805] text-white"
+                  className="alive-card group relative min-h-[220px] overflow-hidden rounded-lg border border-border bg-[#050805] text-white"
                 >
                   <Image
                     src={item.image}
                     alt=""
                     fill
-                    className="object-cover"
+                    className="interactive-image object-cover"
                     sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
                   />
                   <div className="image-card-overlay absolute inset-0" />
@@ -62,7 +62,7 @@ export default async function EntrenamientosPage() {
                     <p className="text-xs font-black uppercase tracking-normal text-[#f3c548]">
                       {item.category}
                     </p>
-                    <h3 className="mt-1 text-xl font-black">{item.title}</h3>
+                    <h3 className="font-gallery mt-1 text-2xl font-black">{item.title}</h3>
                   </div>
                 </article>
               ))}
@@ -75,7 +75,7 @@ export default async function EntrenamientosPage() {
         <section className="section-shell pb-24">
           <div className="mb-8 max-w-2xl">
             <p className="eyebrow">Entrenamientos publicados</p>
-            <h2 className="mt-3 text-3xl font-black sm:text-4xl">
+            <h2 className="font-training mt-3 text-4xl font-black sm:text-5xl">
               Registro de sesiones
             </h2>
           </div>

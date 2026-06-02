@@ -40,15 +40,15 @@ export default function ClubPage() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/contacto"
-              className="btn-gold inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
+              href="/formulario-miembros-2026"
+              className="btn-gold alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
             >
               Inscripción
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/equipo"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-border bg-bg-elevated px-5 text-sm font-black text-text transition-colors hover:border-accent/50 hover:text-accent"
+              className="alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-border bg-bg-elevated px-5 text-sm font-black text-text transition-colors hover:border-accent/50 hover:text-accent"
             >
               Ver equipo
             </Link>
@@ -62,8 +62,8 @@ export default function ClubPage() {
       <section className="section-shell pb-10">
         <div className="grid overflow-hidden rounded-lg border border-border bg-bg-elevated sm:grid-cols-2 lg:grid-cols-4">
           {institutionalStats.map((stat) => (
-            <div key={stat.label} className="border-b border-border p-6 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0">
-              <p className="text-3xl font-black text-accent">{stat.value}</p>
+            <div key={stat.label} className="alive-card border-b border-border p-6 last:border-b-0 sm:border-r sm:last:border-r-0 lg:border-b-0">
+              <p className="font-training text-4xl font-black text-accent">{stat.value}</p>
               <p className="mt-2 text-sm font-black">{stat.label}</p>
               <p className="mt-2 text-sm leading-6 text-muted">{stat.detail}</p>
             </div>
@@ -79,7 +79,7 @@ export default function ClubPage() {
             <p className="text-xs font-black uppercase tracking-normal text-accent">
               Proyecto deportivo
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-normal sm:text-4xl">
+            <h2 className="font-institutional mt-2 text-3xl font-black tracking-normal sm:text-5xl">
               Identidad clara, metodología diaria.
             </h2>
           </div>
@@ -96,7 +96,7 @@ export default function ClubPage() {
           <p className="text-xs font-black uppercase tracking-normal text-accent">
             Sostenibilidad
           </p>
-          <h2 className="mt-2 text-3xl font-black tracking-normal sm:text-4xl">
+          <h2 className="font-social-impact mt-2 text-3xl font-black tracking-normal sm:text-4xl">
             Nuestro compromiso con el desarrollo sostenible
           </h2>
         </div>
@@ -111,7 +111,7 @@ export default function ClubPage() {
             <p className="text-xs font-black uppercase tracking-normal text-accent">
               Historia
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-normal">
+            <h2 className="font-institutional mt-2 text-4xl font-black tracking-normal">
               Hitos del club
             </h2>
             <p className="mt-4 text-sm leading-7 text-muted">
