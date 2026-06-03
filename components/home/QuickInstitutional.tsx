@@ -27,7 +27,7 @@ const programCards = [
     description:
       "Familias, cuerpo técnico y territorio sostienen un entorno seguro e incluyente.",
     href: "/club",
-    cta: "Conocer club",
+    cta: "Conócenos",
     icon: UsersRound,
   },
 ];

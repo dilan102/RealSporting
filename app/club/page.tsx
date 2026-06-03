@@ -9,10 +9,10 @@ import { club, institutionalStats } from "@/lib/content";
 import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "El Club",
-  description: `Historia, misión, visión y valores de ${club.name}.`,
+  title: "Conócenos",
+  description: `Conoce la historia, misión, visión, valores e hitos de ${club.name} en Usme, Bogotá.`,
   openGraph: pageOpenGraph(
-    `El Club | ${club.name}`,
+    `Conócenos | ${club.name}`,
     `Historia, misión, visión y valores de ${club.name}.`,
   ),
 };
@@ -21,10 +21,9 @@ export default function ClubPage() {
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="El Club"
-        subtitle="Historia, misión, visión y valores del proyecto deportivo en Usme."
+        title="Conócenos"
+        subtitle="Historia, identidad, valores y el camino que recorremos como club formativo en Usme."
         eyebrow="Institucional"
-        image="/brand/gallery-team.jpg"
       />
 
       <RevealSection>
@@ -32,7 +31,7 @@ export default function ClubPage() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-2 text-xs font-black uppercase tracking-normal text-accent">
             <Shield size={15} aria-hidden="true" />
-            Institucional
+            Quiénes somos
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
@@ -50,7 +49,19 @@ export default function ClubPage() {
             </Link>
           </div>
         </div>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-muted sm:text-lg">{club.history}</p>
+        <div className="mt-8 max-w-4xl">
+          <h2 className="font-institutional text-3xl font-black tracking-normal sm:text-4xl">
+            Un club que forma desde el territorio
+          </h2>
+          <p className="mt-5 text-base leading-8 text-text sm:text-lg">{club.about.lead}</p>
+          <div className="mt-6 space-y-4">
+            {club.about.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 48)} className="text-sm leading-7 text-muted sm:text-base sm:leading-8">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
       </section>
       </RevealSection>
 
@@ -114,9 +125,10 @@ export default function ClubPage() {
             <h2 className="font-institutional mt-2 text-4xl font-black tracking-normal">
               Hitos del club
             </h2>
-            <p className="mt-4 text-sm leading-7 text-muted">
-              Una línea de avance que refleja consolidación, aprendizaje y
-              proyección institucional.
+            <p className="mt-4 text-sm leading-7 text-muted sm:text-base sm:leading-8">
+              Desde el arranque en 2022 hasta la renovación del proyecto 2026, cada etapa
+              refleja crecimiento deportivo, organización por categorías y compromiso con las
+              familias de Usme.
             </p>
           </div>
           <Timeline />

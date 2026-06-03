@@ -46,7 +46,6 @@ export default function FormularioMiembros2026Page() {
         title="Información general Miembros 2026"
         subtitle="Formulario institucional para actualizar autorizaciones y datos de integrantes del Club Deportivo Real Sporting de Usme."
         eyebrow="Real Sporting de Usme"
-        image="/brand/gallery-team.jpg"
       />
 
       <section className="section-ambient border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_9%,var(--bg-primary))_0%,var(--bg-primary)_55%,color-mix(in_srgb,var(--accent-gold)_8%,var(--bg-primary))_100%)]">

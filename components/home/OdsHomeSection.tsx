@@ -22,8 +22,7 @@ export function OdsHomeSection() {
                 El fútbol como herramienta de salud, educación, inclusión y paz.
               </h2>
               <p className="mt-6 max-w-md text-sm leading-7 text-muted sm:text-base">
-                Toca un ODS para voltear la tarjeta, leer más detalle y abrir la infografía del
-                club.
+                Toca un ODS para voltear la tarjeta y abrir la infografía oficial.
               </p>
             </div>
 

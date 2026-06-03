@@ -40,7 +40,6 @@ export default async function NoticiasPage() {
         title="Noticias"
         subtitle="Comunicados, convocatorias y actualidad del proceso deportivo."
         eyebrow="Actualidad"
-        image="/brand/gallery-team.jpg"
       />
 
       <RevealSection>

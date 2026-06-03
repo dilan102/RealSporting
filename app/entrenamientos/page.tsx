@@ -28,7 +28,6 @@ export default async function EntrenamientosPage() {
         title="Entrenamientos"
         subtitle="Registro visual de sesiones, comunidad y proceso deportivo."
         eyebrow="Entrenamientos"
-        image="/brand/gallery-night.jpg"
       />
 
       <ScmTrainingModelSection />

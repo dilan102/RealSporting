@@ -15,8 +15,8 @@ export function OdsCommitment() {
     <>
       <div className="space-y-10">
         <p className="text-sm text-muted">
-          Haz clic en cualquier ODS para voltear la tarjeta, leer la descripción ampliada y abrir
-          la infografía institucional.
+          Haz clic en cualquier ODS para voltear la tarjeta y abrir la infografía oficial en PDF o
+          imagen.
         </p>
 
         <div className="grid gap-6 md:grid-cols-2">

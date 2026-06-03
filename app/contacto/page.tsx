@@ -40,7 +40,6 @@ export default function ContactoPage() {
         title="Inscripción"
         subtitle="Ingreso al proceso deportivo, social y formativo de Real Sporting"
         eyebrow="Contacto"
-        image="/brand/hero-training.jpg"
       />
 
       <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_10%,var(--bg-primary))_0%,var(--bg-primary)_52%,color-mix(in_srgb,var(--accent-gold)_10%,var(--bg-primary))_100%)]">

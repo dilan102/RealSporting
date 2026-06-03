@@ -28,7 +28,6 @@ export default async function EquipoPage() {
         title="Categorías"
         subtitle="Rangos formativos, convocatorias y registro deportivo del proceso 2026."
         eyebrow="Equipo"
-        image="/brand/gallery-youth.jpg"
       />
 
       <RevealSection>

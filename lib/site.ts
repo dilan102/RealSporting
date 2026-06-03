@@ -9,6 +9,9 @@ export const CONTACT_EMAIL = "realsportingdeusmeed@gmail.com";
 export const OG_IMAGE_PATH = "/banner.png";
 export const OG_IMAGE_URL = `${SITE_URL}${OG_IMAGE_PATH}`;
 
+/** Hero de páginas internas (todas las secciones excepto inicio). */
+export const PAGE_HERO_IMAGE = "/banner%20claro.png";
+
 export const NEWS_FALLBACK_IMAGE = "/brand/gallery-team.jpg";
 
 export const DEFAULT_WHATSAPP_MESSAGE =

@@ -34,7 +34,6 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
         title="Documentos"
         subtitle="Biblioteca institucional, modelo deportivo y proyecto CDRS 2026."
         eyebrow="Documentación oficial"
-        image="/brand/gallery-team.jpg"
       />
 
       <section className="section-band section-ambient border-b border-border">

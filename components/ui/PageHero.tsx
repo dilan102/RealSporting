@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { club } from "@/lib/content";
+import { PAGE_HERO_IMAGE } from "@/lib/site";
 
 type PageHeroProps = {
   title: string;
@@ -12,7 +13,7 @@ export function PageHero({
   title,
   subtitle,
   eyebrow = club.name,
-  image = "/brand/gallery-team.jpg",
+  image = PAGE_HERO_IMAGE,
 }: PageHeroProps) {
   return (
     <section className="cinematic-section section-ambient relative isolate overflow-hidden border-b border-border">
