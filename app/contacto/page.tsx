@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import {
+  ArrowRight,
   ClipboardCheck,
+  FileText,
   MessageCircle,
 } from "lucide-react";
-import { ContactFormSection } from "@/components/contact/ContactFormSection";
 import { OfficialDocumentsPanel } from "@/components/contact/OfficialDocumentsPanel";
 import { SocialLinks } from "@/components/contact/SocialLinks";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { WHATSAPP_URL } from "@/lib/constants";
 import { pageOpenGraph } from "@/lib/site";
 import { registrationSteps } from "@/lib/content";
 
@@ -94,7 +96,12 @@ export default function ContactoPage() {
       <section className="bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-gold)_8%,var(--bg-primary))_0%,var(--bg-primary)_42%,var(--bg-primary)_100%)]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
           <RevealSection>
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)] lg:items-start">
+            <SectionHeading
+              eyebrow="Lista de ingreso"
+              title="Requisitos e inscripción"
+              description="Revisa las condiciones de ingreso y completa el formulario oficial del club cuando estés listo para iniciar el proceso."
+            />
+            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-stretch">
               <section className="alive-card light-panel rounded-lg border border-border bg-bg-elevated p-6 shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-green)] hover:shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
@@ -102,9 +109,9 @@ export default function ContactoPage() {
                   </span>
                   <div>
                     <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
-                      Lista de ingreso
+                      Antes de inscribirte
                     </p>
-                    <h2 className="font-institutional text-3xl font-black">Requisitos</h2>
+                    <h3 className="font-institutional text-2xl font-black sm:text-3xl">Requisitos</h3>
                   </div>
                 </div>
                 <ul className="mt-6 space-y-3">
@@ -119,7 +126,46 @@ export default function ContactoPage() {
                 </ul>
               </section>
 
-              <ContactFormSection />
+              <aside className="alive-card flex flex-col justify-between rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated p-6 shadow-sm sm:p-8">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
+                    Formulario oficial
+                  </p>
+                  <h3 className="font-institutional mt-2 text-2xl font-black sm:text-3xl">
+                    Información de miembros 2026
+                  </h3>
+                  <p className="mt-4 text-sm leading-relaxed text-muted">
+                    Registra al aspirante, datos del representante y autorizaciones en el formulario
+                    institucional. El club recibe la solicitud por el canal configurado.
+                  </p>
+                </div>
+                <div className="mt-8 flex flex-col gap-3">
+                  <a
+                    href="/formulario-miembros-2026"
+                    className="btn-gold alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
+                    aria-label="Ir al formulario de inscripción"
+                  >
+                    Iniciar inscripción
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                  <a
+                    href="#documentos"
+                    className="btn-green alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
+                  >
+                    Ver documentos
+                    <FileText size={16} aria-hidden="true" />
+                  </a>
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-border bg-bg px-5 text-sm font-black text-text transition-all hover:border-[var(--accent-green)]"
+                  >
+                    Consultar por WhatsApp
+                    <MessageCircle size={16} aria-hidden="true" />
+                  </a>
+                </div>
+              </aside>
             </div>
           </RevealSection>
         </div>
@@ -140,20 +186,16 @@ export default function ContactoPage() {
 
       <section className="bg-bg-elevated">
         <div className="mx-auto max-w-6xl px-4 py-14 pb-24 sm:px-6 lg:px-8">
-        <RevealSection>
-          <div className="mb-6 flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--accent-green)] text-white">
-              <MessageCircle size={22} aria-hidden="true" />
-            </span>
-            <div>
-              <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
-                Atención directa
-              </p>
-              <h2 className="font-social-impact text-2xl font-black">Contáctenos</h2>
+          <RevealSection>
+            <SectionHeading
+              eyebrow="Atención directa"
+              title="Contáctenos"
+              description="Escríbenos por redes, correo o teléfono si necesitas orientación antes de completar la inscripción."
+            />
+            <div className="mt-8">
+              <SocialLinks showVenue />
             </div>
-          </div>
-          <SocialLinks showVenue />
-        </RevealSection>
+          </RevealSection>
         </div>
       </section>
     </main>

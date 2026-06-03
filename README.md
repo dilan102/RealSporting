@@ -27,6 +27,63 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000).
 
+## Base de datos (Neon)
+
+El proyecto usa **PostgreSQL en Neon**. La URL va en `.env` (no se sube a git).
+
+1. Entra en [Neon Console](https://console.neon.tech) → tu proyecto → **Connect**.
+2. Elige **Prisma** y copia la connection string.
+3. En el proyecto:
+
+```bash
+cp .env.example .env   # solo la primera vez
+nano .env              # pega DATABASE_URL de Neon
+npm run db:push
+```
+
+Neon da **dos** URLs en Connect:
+
+```env
+# App (Vercel) — host con -pooler
+DATABASE_URL=postgresql://...@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require
+# Migraciones locales (npm run db:push) — sin -pooler
+DIRECT_URL=postgresql://...@ep-xxx.region.aws.neon.tech/neondb?sslmode=require
+```
+
+En **Prisma 7** no pongas `url = env("DATABASE_URL")` en `schema.prisma`; va en `prisma.config.ts` (ya configurado en este repo).
+
+En **Vercel**, usa la misma `DATABASE_URL` en Environment Variables. Después de cambiar el schema, ejecuta `npm run db:push` en local con esa URL para crear tablas nuevas (`fechaFin`, `ArchivoSubido`, etc.).
+
+### Ya tienes `DATABASE_URL` en Vercel pero no la ves
+
+Vercel **no muestra** el valor de variables sensibles después de guardarlas (es normal).
+
+**Opción A — Desde Neon (la más fácil)**  
+La base está en Neon aunque la uses en Vercel:
+
+1. [console.neon.tech](https://console.neon.tech) → el mismo proyecto que enlazaste a Vercel  
+2. **Connect** → **Prisma** → copiar connection string  
+3. Pegar en tu `.env` local → `npm run db:push`
+
+**Opción B — Descargar variables con Vercel CLI**
+
+```bash
+npm i -g vercel
+vercel login
+cd ~/RealSporting-main
+vercel link
+vercel env pull .env
+```
+
+Eso escribe las variables del proyecto (incluida `DATABASE_URL`) en `.env`. Luego:
+
+```bash
+npm run db:push
+```
+
+**Opción C — Rotar en Vercel**  
+Settings → Environment Variables → `DATABASE_URL` → Edit → pega una URL nueva de Neon y cópiala al guardar (solo se ve al escribirla).
+
 ## Páginas
 
 | Ruta | Contenido |
@@ -76,9 +133,9 @@ PostgreSQL (`ArchivoSubido`) y se sirven por `/api/media/{id}`. En desarrollo
 local o en un VPS con `REALSPORTING_STORAGE_DIR`, los archivos pueden guardarse
 en disco bajo `public/uploads/`.
 
-Después del despliegue ejecuta `npx prisma db push` para crear la tabla
-`ArchivoSubido`. Las noticias antiguas cuya imagen ya se perdió deben volver a
-subirse una vez desde el panel admin.
+Después del despliegue configura `DATABASE_URL` en Vercel y ejecuta `npm run db:push`
+con la misma URL (o usa el panel de tu proveedor Postgres). Eso crea tablas como
+`ArchivoSubido`, `fechaFin` en noticias/entrenamientos, etc.
 
 ## Stack
 

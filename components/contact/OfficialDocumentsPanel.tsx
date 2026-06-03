@@ -6,9 +6,23 @@ import {
   getDocumentEmbedUrl,
   getOfficialDocumentById,
   officialDocuments,
+  type OfficialDocument,
 } from "@/lib/documents";
 
-export function OfficialDocumentsPanel() {
+type OfficialDocumentsPanelProps = {
+  /** Si se indica, solo se muestran estos documentos (por id). */
+  documentIds?: string[];
+};
+
+export function OfficialDocumentsPanel({ documentIds }: OfficialDocumentsPanelProps = {}) {
+  const documents = useMemo<OfficialDocument[]>(() => {
+    if (!documentIds?.length) {
+      return officialDocuments;
+    }
+
+    return officialDocuments.filter((document) => documentIds.includes(document.id));
+  }, [documentIds]);
+
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const activeDocument = useMemo(
@@ -36,8 +50,10 @@ export function OfficialDocumentsPanel() {
 
   return (
     <div className="mt-8 space-y-6">
-      <div className="grid gap-5 md:grid-cols-2">
-        {officialDocuments.map((document) => {
+      <div
+        className={`grid gap-5 ${documents.length === 1 ? "max-w-2xl" : "md:grid-cols-2"}`}
+      >
+        {documents.map((document) => {
           const isActive = activeId === document.id;
 
           return (

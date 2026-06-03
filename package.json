@@ -9,8 +9,8 @@
     "start": "next start",
     "lint": "eslint app components lib next.config.ts postcss.config.mjs eslint.config.mjs",
     "prisma:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
+    "db:push": "node scripts/ensure-database-url.mjs && prisma db push",
+    "db:studio": "node scripts/ensure-database-url.mjs && prisma studio",
     "fotos:optimize": "node scripts/optimize-fotos.mjs",
     "fotos:watch": "node scripts/optimize-fotos.mjs --watch",
     "ods:infografias": "python3 scripts/write_ods_svgs.py"
@@ -21,6 +21,7 @@
     "@prisma/client": "^7.8.0",
     "@types/nodemailer": "^8.0.0",
     "countup.js": "^2.10.0",
+    "docker": "^1.0.0",
     "framer-motion": "^12.15.0",
     "lucide-react": "^0.511.0",
     "next": "^15.3.3",
