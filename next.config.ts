@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV !== "production";
 const securityHeaders = [
   {
     key: "X-Frame-Options",
-    value: "DENY",
+    value: "SAMEORIGIN",
   },
   {
     key: "X-Content-Type-Options",
@@ -20,16 +20,16 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       "base-uri 'self'",
-      "frame-ancestors 'none'",
+      "frame-ancestors 'self' https://drive.google.com https://docs.google.com",
       "object-src 'none'",
       "form-action 'self'",
       "frame-src 'self' https://www.google.com https://www.google.com/maps https://maps.google.com https://maps.googleapis.com https://drive.google.com https://docs.google.com https://view.officeapps.live.com",
-      "img-src 'self' data: blob: https://images.unsplash.com https://maps.googleapis.com https://maps.gstatic.com",
+      "img-src 'self' data: blob: https://images.unsplash.com https://maps.googleapis.com https://maps.gstatic.com https://drive.google.com https://docs.google.com",
       "media-src 'self' blob: data:",
       "font-src 'self' https://fonts.gstatic.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-      "connect-src 'self' https://*.vercel-insights.com https://*.vercel.app https://api.emailjs.com https://api.resend.com",
+      "connect-src 'self' https://*.vercel-insights.com https://*.vercel.app https://api.emailjs.com https://api.resend.com https://drive.google.com https://docs.google.com https://*.google.com https://*.googleapis.com",
       "upgrade-insecure-requests",
     ].join("; "),
   },
