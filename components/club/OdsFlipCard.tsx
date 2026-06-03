@@ -12,14 +12,10 @@ type Props = {
   onOpenInfographic: (item: OdsItem) => void;
 };
 
-function documentButtonLabel(item: OdsItem) {
-  return item.documentType === "pdf" ? "Abrir PDF" : "Abrir imagen";
-}
-
 export function OdsFlipCard({ item, variant = "club", onOpenInfographic }: Props) {
   const [flipped, setFlipped] = useState(false);
   const Icon = odsIcons[item.id];
-  const minHeight = variant === "club" ? "min-h-[24rem]" : "min-h-[18rem]";
+  const minHeight = variant === "club" ? "min-h-[28rem]" : "min-h-[22rem]";
 
   const toggleFlip = useCallback(() => {
     setFlipped((current) => !current);
@@ -90,24 +86,48 @@ export function OdsFlipCard({ item, variant = "club", onOpenInfographic }: Props
           </div>
         </div>
 
-        <div className="ods-flip-face ods-flip-back flex flex-col bg-bg-elevated">
+        <div className="ods-flip-face ods-flip-back relative flex flex-col overflow-hidden bg-bg-elevated">
           <div
-            className="px-4 py-3 text-white sm:px-5"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center"
+            aria-hidden="true"
+          >
+            <Image
+              src="/logo.png"
+              alt=""
+              width={320}
+              height={320}
+              className="max-h-[72%] max-w-[72%] object-contain opacity-[0.09]"
+            />
+          </div>
+
+          <div
+            className="relative z-10 px-4 py-3 text-white sm:px-5"
             style={{ backgroundColor: item.color }}
           >
             <p className="text-xs font-black uppercase tracking-widest">
               {item.code} · {item.title}
             </p>
           </div>
-          <div className="flex flex-1 flex-col justify-between gap-5 p-4 sm:p-5">
-            <p className="text-sm leading-6 text-text">{item.backText}</p>
+
+          <div className="relative z-10 flex flex-1 flex-col gap-4 overflow-y-auto p-4 sm:p-5">
+            <p className="text-sm leading-7 text-text">{item.backText}</p>
+            <p className="rounded-lg border border-border/80 bg-bg/80 px-3 py-3 text-sm leading-6 text-muted backdrop-blur-[2px]">
+              <span className="font-black text-text">Impacto: </span>
+              {item.impact}
+            </p>
+            <p
+              className="rounded-lg px-3 py-3 text-sm font-black leading-6 text-white"
+              style={{ backgroundColor: `color-mix(in srgb, ${item.color} 88%, transparent)` }}
+            >
+              «{item.clubObjective}»
+            </p>
             <button
               type="button"
               onClick={openDocument}
-              className="btn-green alive-lift inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white"
+              className="btn-green alive-lift mt-auto inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white"
             >
               <FileText size={16} aria-hidden="true" />
-              {documentButtonLabel(item)}
+              Abrir PDF
             </button>
           </div>
         </div>

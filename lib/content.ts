@@ -180,12 +180,13 @@ export const odsItems: OdsItem[] = [
     title: "Salud y Bienestar",
     color: "#4C9F38",
     image: "/brand/hero-training.jpg",
-    documentUrl: "/ODS/2309739_S_SDG_2023_infographics_3-3.pdf",
+    documentUrl:
+      "https://drive.google.com/file/d/1hB5VEWfRI7J7uMxJh5iitAOWuS-kX5us/view?usp=sharing",
     documentType: "pdf",
     shortText:
       "Promovemos la salud física y emocional mediante la práctica constante del fútbol, fortaleciendo hábitos saludables y el bienestar integral de nuestros deportistas.",
     backText:
-      "Entrenamientos y acompañamiento formativo para el bienestar físico, mental y emocional de niños y jóvenes.",
+      "El club entiende el deporte como herramienta para el desarrollo saludable de niños, niñas y jóvenes. Con entrenamientos regulares, actividad física estructurada y acompañamiento formativo fortalecemos el bienestar físico, mental y emocional, y promovemos estilos de vida activos en Usme.",
     detail:
       "El Club Deportivo Real Sporting entiende el deporte como una herramienta fundamental para el desarrollo saludable de niños, niñas y jóvenes. A través de entrenamientos regulares, actividad física estructurada y acompañamiento formativo, se fortalecen hábitos que contribuyen al bienestar físico, mental y emocional. La práctica deportiva también ayuda a prevenir factores de riesgo asociados al sedentarismo, la violencia y el aislamiento social, promoviendo estilos de vida activos y saludables.",
     infographicTitle: "ODS 3 — Salud y Bienestar",
@@ -212,12 +213,13 @@ export const odsItems: OdsItem[] = [
     title: "Educación de Calidad",
     color: "#C5192D",
     image: "/brand/gallery-youth.jpg",
-    documentUrl: "/ODS/ods4-instantanea_ODS4-5.png",
-    documentType: "image",
+    documentUrl:
+      "https://drive.google.com/file/d/1nJYugoSwv9s1LyZv1mRjPl0rjY1HJp90/view?usp=sharing",
+    documentType: "pdf",
     shortText:
       "El fútbol se convierte en un espacio de aprendizaje donde se fortalecen valores, disciplina, liderazgo y habilidades para la vida.",
     backText:
-      "Valores, disciplina, trabajo en equipo y habilidades para la vida en cada sesión de entrenamiento.",
+      "Cada sesión es una oportunidad de aprender más allá del deporte: comunicación, trabajo en equipo, responsabilidad y toma de decisiones. El proceso formativo complementa la educación académica con experiencias prácticas que fortalecen competencias sociales y ciudadanas.",
     detail:
       "Cada sesión de entrenamiento representa una oportunidad para aprender más allá del deporte. Los participantes desarrollan capacidades como la comunicación efectiva, el trabajo en equipo, la responsabilidad y la toma de decisiones. El proceso formativo contribuye al crecimiento personal y complementa la educación académica mediante experiencias prácticas que fortalecen competencias sociales y ciudadanas.",
     infographicTitle: "ODS 4 — Educación de Calidad",
@@ -245,12 +247,13 @@ export const odsItems: OdsItem[] = [
     title: "Igualdad de Género",
     color: "#FF3A21",
     image: "/brand/gallery-team.jpg",
-    documentUrl: "/ODS/2309739_S_SDG_2023_infographics_5-5.pdf",
+    documentUrl:
+      "https://drive.google.com/file/d/1qO4OWTQiQwK7Nh4aTKI-5v68yFtYolUU/view?usp=sharing",
     documentType: "pdf",
     shortText:
       "Promovemos espacios deportivos inclusivos donde todas las personas puedan participar con igualdad de oportunidades y respeto.",
     backText:
-      "Espacios inclusivos con igualdad de oportunidades y respeto para todas las personas.",
+      "Fomentamos un ambiente seguro donde niñas, niños y jóvenes desarrollan sus capacidades sin discriminación. El acceso equitativo a procesos formativos y actividades deportivas fortalece una cultura de respeto, inclusión y participación.",
     detail:
       "El club fomenta un ambiente seguro y respetuoso donde niñas, niños y jóvenes pueden desarrollar sus capacidades deportivas sin discriminación. La igualdad de género se fortalece mediante el acceso equitativo a procesos formativos, actividades deportivas y oportunidades de participación, contribuyendo a la construcción de una cultura de respeto e inclusión.",
     infographicTitle: "ODS 5 — Igualdad de Género",
@@ -278,12 +281,13 @@ export const odsItems: OdsItem[] = [
     title: "Reducción de las Desigualdades",
     color: "#DD1367",
     image: "/brand/gallery-youth.jpg",
-    documentUrl: "/ODS/2309739_S_SDG_2023_infographics_10-10.pdf",
+    documentUrl:
+      "https://drive.google.com/file/d/1Vqoqwsm_hH3QmkN3ptQI2TOwmsuxKTW8/view?usp=sharing",
     documentType: "pdf",
     shortText:
       "Generamos oportunidades deportivas para niños, niñas y jóvenes de diferentes contextos sociales mediante un enfoque inclusivo y comunitario.",
     backText:
-      "Oportunidades deportivas inclusivas para niños y jóvenes de distintos contextos en Usme.",
+      "Trabajamos para reducir barreras de acceso a la formación deportiva y reconocer la diversidad como fortaleza. El deporte impulsa la integración social, la igualdad de oportunidades y el desarrollo de capacidades que fortalecen la inclusión en la comunidad.",
     detail:
       "El club trabaja para reducir barreras de acceso a la formación deportiva, ofreciendo espacios de participación donde la diversidad es reconocida como una fortaleza. A través del deporte se promueve la integración social, la igualdad de oportunidades y el desarrollo de capacidades personales que fortalecen la inclusión dentro de la comunidad.",
     infographicTitle: "ODS 10 — Reducción de las Desigualdades",
@@ -311,12 +315,13 @@ export const odsItems: OdsItem[] = [
     title: "Ciudades y Comunidades Sostenibles",
     color: "#FD9D24",
     image: "/brand/gallery-team.jpg",
-    documentUrl: "/ODS/2309739_S_SDG_2023_infographics_11-11.pdf",
+    documentUrl:
+      "https://drive.google.com/file/d/14581c-L3QqlDVTU_qSFw2NJqW4LtcFje/view?usp=sharing",
     documentType: "pdf",
     shortText:
       "Fortalecemos el tejido social de Usme mediante el deporte, la participación familiar y el sentido de pertenencia comunitaria.",
     backText:
-      "Deporte y familias que fortalecen el tejido social y la pertenencia en Usme.",
+      "Construimos comunidades más cohesionadas con espacios deportivos seguros y participativos. La vinculación de familias, entrenadores y deportistas fortalece redes de apoyo, la convivencia y el impacto positivo en el territorio de Usme.",
     detail:
       "El club contribuye a la construcción de comunidades más cohesionadas a través de espacios deportivos seguros y participativos. La vinculación de familias, entrenadores y deportistas fortalece las redes de apoyo comunitario, promueve la convivencia y genera un impacto positivo en el territorio.",
     infographicTitle: "ODS 11 — Comunidades Sostenibles",
@@ -344,12 +349,13 @@ export const odsItems: OdsItem[] = [
     title: "Paz, Justicia e Instituciones Sólidas",
     color: "#00689D",
     image: "/brand/gallery-night.jpg",
-    documentUrl: "/ODS/2309739_S_SDG_2023_infographics_16-16.pdf",
+    documentUrl:
+      "https://drive.google.com/file/d/1N-Ti6p7xv7oTM1KJL1ka-z24z18kWXOY/view?usp=sharing",
     documentType: "pdf",
     shortText:
       "Promovemos la convivencia pacífica, el respeto y el juego limpio como principios fundamentales de la formación deportiva.",
     backText:
-      "Convivencia pacífica, juego limpio y respeto como base de la formación deportiva.",
+      "El deporte fortalece la resolución pacífica de conflictos, la tolerancia y el respeto por las reglas. Con juego limpio y convivencia formamos deportistas comprometidos con la paz, la participación y entornos más seguros en Usme.",
     detail:
       "La práctica deportiva permite fortalecer valores relacionados con la resolución pacífica de conflictos, la tolerancia y el respeto por las reglas. A través del juego limpio y la convivencia, el club contribuye a formar ciudadanos comprometidos con la paz, la participación y la construcción de entornos más seguros.",
     infographicTitle: "ODS 16 — Paz e Instituciones Sólidas",

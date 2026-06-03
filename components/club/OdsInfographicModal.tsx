@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect } from "react";
-import { X } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
 import type { OdsItem } from "@/lib/content";
+import { odsDrivePreviewUrl } from "@/lib/ods-drive";
 
 type Props = {
   item: OdsItem | null;
@@ -36,7 +36,7 @@ export function OdsInfographicModal({ item, onClose }: Props) {
     return null;
   }
 
-  const isPdf = item.documentType === "pdf";
+  const previewUrl = odsDrivePreviewUrl(item.documentUrl);
 
   return (
     <div
@@ -47,9 +47,7 @@ export function OdsInfographicModal({ item, onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className={`relative flex w-full flex-col overflow-hidden rounded-lg bg-bg shadow-2xl ${
-          isPdf ? "max-h-[92vh] max-w-5xl" : "max-h-[92vh] max-w-3xl overflow-y-auto"
-        }`}
+        className="relative flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-bg shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div
@@ -57,37 +55,36 @@ export function OdsInfographicModal({ item, onClose }: Props) {
           style={{ backgroundColor: item.color }}
         >
           <h2 id="ods-infographic-title" className="text-sm font-black text-white sm:text-base">
-            {item.code} — {item.title}
+            Infografía oficial · {item.code}
           </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="grid size-10 place-items-center rounded-lg bg-white/15 text-white transition-colors hover:bg-white/25"
-            aria-label="Cerrar documento"
-          >
-            <X size={20} aria-hidden="true" />
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href={item.documentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-lg bg-white/15 px-3 text-xs font-black uppercase tracking-normal text-white transition-colors hover:bg-white/25"
+            >
+              <ExternalLink size={14} aria-hidden="true" />
+              Abrir en Drive
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="grid size-10 place-items-center rounded-lg bg-white/15 text-white transition-colors hover:bg-white/25"
+              aria-label="Cerrar documento"
+            >
+              <X size={20} aria-hidden="true" />
+            </button>
+          </div>
         </div>
 
-        <div className={isPdf ? "min-h-0 flex-1 bg-white" : "p-4 sm:p-6"}>
-          {isPdf ? (
-            <iframe
-              src={item.documentUrl}
-              title={`Infografía oficial ${item.code}`}
-              className="h-[min(78vh,820px)] w-full border-0"
-            />
-          ) : (
-            <div className="relative overflow-hidden rounded-lg border border-border bg-white">
-              <Image
-                src={item.documentUrl}
-                alt={`Infografía oficial ${item.code} — ${item.title}`}
-                width={1200}
-                height={1600}
-                className="h-auto w-full"
-                unoptimized
-              />
-            </div>
-          )}
+        <div className="min-h-0 flex-1 bg-white">
+          <iframe
+            src={previewUrl}
+            title={`Infografía oficial ${item.code} — ${item.title}`}
+            className="h-[min(78vh,820px)] w-full border-0"
+            allow="autoplay"
+          />
         </div>
       </div>
     </div>
