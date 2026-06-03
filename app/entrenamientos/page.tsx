@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { OfficialDocumentsPanel } from "@/components/contact/OfficialDocumentsPanel";
+import { ScmTrainingModelSection } from "@/components/trainings/ScmTrainingModelSection";
 import { TrainingManager } from "@/components/trainings/TrainingManager";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { club, galleryItems } from "@/lib/content";
 import { readTrainings } from "@/lib/training-store";
 import { pageOpenGraph } from "@/lib/site";
@@ -32,18 +31,7 @@ export default async function EntrenamientosPage() {
         image="/brand/gallery-night.jpg"
       />
 
-      <section id="modelo-scm" className="scroll-mt-28 border-b border-border bg-bg-elevated">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-          <RevealSection>
-            <SectionHeading
-              eyebrow="Documentación"
-              title="Modelo de entrenamiento SCM"
-              description="Metodología Sinergia Cognitivo-Motriz: sesión tipo, pilares de trabajo y macrociclo de 8 semanas. Consulta el documento oficial del club."
-            />
-            <OfficialDocumentsPanel documentIds={["modelo-scm"]} />
-          </RevealSection>
-        </div>
-      </section>
+      <ScmTrainingModelSection />
 
       <RevealSection>
         <section className="section-shell section-padding">

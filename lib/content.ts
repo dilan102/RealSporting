@@ -329,6 +329,25 @@ export const odsItems: OdsItem[] = [
   },
 ];
 
+export const scmTrainingModel = [
+  {
+    title: "Motricidad",
+    text: "Alfabetización motora, apoyos, orientación espacial, coordinación y toma de decisiones con estímulos variables.",
+  },
+  {
+    title: "Físico",
+    text: "Potencia metabólica, fuerza funcional, prevención de lesiones y sprints repetidos con transferencia inmediata al juego.",
+  },
+  {
+    title: "Técnica-táctica",
+    text: "Micro-situaciones de caos controlado, superioridades, finalización bajo presión y lectura del espacio en fútbol sala.",
+  },
+  {
+    title: "Macrociclo SCM",
+    text: "Plan de 8 semanas con bloques de cimentación, caos, alta intensidad y maestría competitiva.",
+  },
+] as const;
+
 export const registrationSteps = [
   {
     step: "01",
