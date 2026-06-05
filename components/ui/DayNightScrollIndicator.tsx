@@ -18,10 +18,10 @@ export function DayNightScrollIndicator() {
 
     const update = () => {
       const scrollable = Math.max(root.scrollHeight - window.innerHeight, 1);
-      const transitionDistance = Math.max(Math.min(scrollable, window.innerHeight * 2.2), 520);
+      const transitionDistance = Math.max(scrollable * 0.5, 1);
       const nextProgress = clamp(window.scrollY / transitionDistance);
       const roundedProgress = Number(nextProgress.toFixed(3));
-      const nextTheme = nextProgress > 0.55 ? "light" : "dark";
+      const nextTheme = nextProgress >= 0.5 ? "light" : "dark";
 
       root.style.setProperty("--scroll-day-progress", String(roundedProgress));
       setProgress(roundedProgress);
