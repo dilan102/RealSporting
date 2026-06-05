@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
 import {
   ImagePlus,
   Plus,
@@ -94,7 +93,6 @@ export function NewsManager({
   showList?: boolean;
 }) {
   const router = useRouter();
-  const { data: session } = useSession();
   const [items, setItems] = useState(initialItems);
   const [form, setForm] = useState<NewsForm>(() => emptyForm());
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -133,15 +131,14 @@ export function NewsManager({
     return () => {
       active = false;
     };
-  }, [accessKey, session?.user?.isAdmin]);
+  }, [accessKey]);
 
   useEffect(() => {
     const syncAdminAccess = () => {
       const key = window.sessionStorage.getItem("cdrs-admin-key") || "";
-      const githubAdmin = Boolean(session?.user?.isAdmin);
 
       setAccessKey(key);
-      setUnlocked(Boolean(key) || githubAdmin);
+      setUnlocked(Boolean(key));
     };
 
     syncAdminAccess();
@@ -152,7 +149,7 @@ export function NewsManager({
       window.removeEventListener("cdrs-admin-login", syncAdminAccess);
       window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
     };
-  }, [session?.user?.isAdmin]);
+  }, []);
 
   useEffect(() => {
     return () => {

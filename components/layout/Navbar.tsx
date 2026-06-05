@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
@@ -12,7 +11,6 @@ import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
 import { DayNightScrollIndicator } from "@/components/ui/DayNightScrollIndicator";
 
 export function Navbar() {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
@@ -35,8 +33,7 @@ export function Navbar() {
   useEffect(() => {
     const syncAdminAccess = () => {
       const hasPasswordAccess = Boolean(window.sessionStorage.getItem("cdrs-admin-key"));
-      const hasGitHubAccess = Boolean(session?.user?.isAdmin);
-      setAdminActive(hasPasswordAccess || hasGitHubAccess);
+      setAdminActive(hasPasswordAccess);
     };
 
     syncAdminAccess();
@@ -47,7 +44,7 @@ export function Navbar() {
       window.removeEventListener("cdrs-admin-login", syncAdminAccess);
       window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
     };
-  }, [session?.user?.isAdmin]);
+  }, []);
 
   useEffect(() => {
     if (!open) {

@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { useSession } from "next-auth/react";
 import { ImagePlus, RotateCcw, Save, Trash2, X } from "lucide-react";
 import {
   buildTeamSections,
@@ -79,7 +78,6 @@ function categoryToYear(category: Player["category"]) {
 
 export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
   const router = useRouter();
-  const { data: session } = useSession();
   const formRef = useRef<HTMLElement | null>(null);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
   const [items, setItems] = useState(initialItems);
@@ -114,15 +112,14 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
     return () => {
       active = false;
     };
-  }, [accessKey, session?.user?.isAdmin]);
+  }, [accessKey]);
 
   useEffect(() => {
     const syncAdminAccess = () => {
       const key = window.sessionStorage.getItem("cdrs-admin-key") || "";
-      const githubAdmin = Boolean(session?.user?.isAdmin);
 
       setAccessKey(key);
-      setUnlocked(Boolean(key) || githubAdmin);
+      setUnlocked(Boolean(key));
     };
 
     syncAdminAccess();
@@ -133,7 +130,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
       window.removeEventListener("cdrs-admin-login", syncAdminAccess);
       window.removeEventListener("cdrs-admin-logout", syncAdminAccess);
     };
-  }, [session?.user?.isAdmin]);
+  }, []);
 
   useEffect(() => {
     return () => {

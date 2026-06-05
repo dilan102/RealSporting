@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
+import type { AdminRole } from "@/lib/admin-profiles";
 
 type AdminPasswordLoginFormProps = {
   callbackUrl?: string;
@@ -26,13 +27,21 @@ export function AdminPasswordLoginForm({ callbackUrl = "/" }: AdminPasswordLogin
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user, password }),
       });
-      const payload = (await response.json()) as { error?: string };
+      const payload = (await response.json()) as {
+        error?: string;
+        role?: AdminRole;
+        label?: string;
+        user?: string;
+      };
 
       if (!response.ok) {
         throw new Error(payload.error || "Credenciales incorrectas.");
       }
 
       window.sessionStorage.setItem("cdrs-admin-key", password);
+      window.sessionStorage.setItem("cdrs-admin-role", payload.role || "content");
+      window.sessionStorage.setItem("cdrs-admin-label", payload.label || "Editor de contenido");
+      window.sessionStorage.setItem("cdrs-admin-user", payload.user || user.trim());
       window.dispatchEvent(new Event("cdrs-admin-login"));
       router.push(callbackUrl);
       router.refresh();

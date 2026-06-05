@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
-import { GitHubSignInButton } from "@/components/auth/GitHubSignInButton";
 import { AdminPasswordLoginForm } from "@/components/auth/AdminPasswordLoginForm";
 
 export const metadata: Metadata = {
@@ -32,22 +31,12 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
         </div>
 
         <p className="mt-4 text-sm leading-relaxed text-muted">
-          Inicia sesión con GitHub para gestionar noticias, equipo y entrenamientos. Solo
-          cuentas autorizadas pueden acceder.
+          Inicia sesión con usuario y contraseña del club. El perfil de contenido
+          gestiona noticias, entrenamientos y jugadores; el perfil total autoriza
+          cambios globales.
         </p>
 
         <div className="mt-6 space-y-4">
-          <GitHubSignInButton callbackUrl={callbackUrl ?? "/"} />
-
-          <div className="relative py-2">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
-            </div>
-            <p className="relative mx-auto w-fit bg-bg-elevated px-3 text-xs font-semibold text-muted">
-              o acceso con contraseña
-            </p>
-          </div>
-
           <AdminPasswordLoginForm callbackUrl={callbackUrl ?? "/"} />
         </div>
 

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 import { getAuthErrorMessage } from "@/lib/auth-errors";
-import { GitHubSignInButton } from "@/components/auth/GitHubSignInButton";
 
 export const metadata: Metadata = {
   title: "Error de acceso",
@@ -37,7 +36,6 @@ export default async function AdminErrorPage({ searchParams }: AdminErrorPagePro
         </div>
 
         <div className="mt-6 space-y-3">
-          <GitHubSignInButton callbackUrl="/" label="Intentar de nuevo con GitHub" />
           <Link
             href="/admin/login"
             className="inline-flex min-h-11 w-full items-center justify-center rounded-lg border border-border bg-bg px-5 text-sm font-black text-text transition-colors hover:border-accent"

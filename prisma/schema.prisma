@@ -61,6 +61,27 @@ model Jugador {
   @@index([categoria])
 }
 
+model Torneo {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  descripcion  String
+  programacion String   @default("")
+  sede         String   @default("")
+  categoria    String   @default("")
+  rival        String   @default("")
+  imagen       String?
+  fechaInicio  DateTime @default(now())
+  fechaFin     DateTime?
+  estado       String   @default("actual")
+  publicado    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  @@index([estado, fechaInicio])
+  @@index([publicado, fechaInicio])
+  @@index([fechaFin])
+}
+
 /// Archivos subidos desde el panel admin (imágenes y videos persistentes en PostgreSQL).
 model ArchivoSubido {
   id        String   @id @default(uuid())

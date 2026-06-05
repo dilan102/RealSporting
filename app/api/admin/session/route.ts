@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { findAdminProfile } from "@/lib/admin-profiles";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const adminUser = process.env.ADMIN_USER || "Real Sporting";
-const adminPassword = process.env.ADMIN_PASSWORD || "RealSporting1985";
 
 export async function POST(request: NextRequest) {
   const body = (await request.json().catch(() => null)) as {
@@ -16,9 +14,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Completa usuario y contraseña." }, { status: 400 });
   }
 
-  if (body.user.trim() !== adminUser || body.password !== adminPassword) {
+  const profile = findAdminProfile(body.user, body.password);
+
+  if (!profile) {
     return NextResponse.json({ error: "Credenciales incorrectas." }, { status: 401 });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({
+    ok: true,
+    role: profile.role,
+    label: profile.label,
+    user: profile.user,
+  });
 }

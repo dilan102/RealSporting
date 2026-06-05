@@ -840,6 +840,7 @@ export const navLinks = [
   { href: "/noticias", label: "Noticias" },
   { href: "/club", label: "Conócenos" },
   { href: "/entrenamientos", label: "Entrenamientos" },
+  { href: "/torneos", label: "Torneos" },
   { href: "/equipo", label: "Categorías" },
   { href: "/contacto", label: "Inscripción" },
 ];

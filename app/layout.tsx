@@ -3,7 +3,6 @@ import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SitePreloader } from "@/components/ui/SitePreloader";
-import { AuthProvider } from "@/components/providers/AuthProvider";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 import { PageTransition } from "@/components/ui/PageTransition";
@@ -55,17 +54,15 @@ export default function RootLayout({
         <SitePreloader />
         <Cursor />
         <ThemeProvider>
-          <AuthProvider>
-            <div id="site-content" className="site-content flex min-h-screen flex-col">
-              <Navbar />
-              <AdminPortal />
-              <WhatsAppFloat />
-              <main className="flex-1">
-                <PageTransition>{children}</PageTransition>
-              </main>
-              <Footer />
-            </div>
-          </AuthProvider>
+          <div id="site-content" className="site-content flex min-h-screen flex-col">
+            <Navbar />
+            <AdminPortal />
+            <WhatsAppFloat />
+            <main className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>

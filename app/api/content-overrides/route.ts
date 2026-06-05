@@ -35,7 +35,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request))) {
+  if (!(await isAdminApiAuthorized(request, { requireOwner: true }))) {
     return NextResponse.json({ error: "Acceso no autorizado." }, { status: 401 });
   }
 
