@@ -131,12 +131,6 @@
     --inscription-band-border: rgba(208, 161, 58, 0.28);
   }
 
-  html[data-scroll-theme="active"] {
-    --scroll-day-progress: 0;
-    --scroll-day-overlay: calc(var(--scroll-day-progress) * 0.22);
-    color-scheme: dark light;
-  }
-
   html {
     scroll-behavior: smooth;
   }
@@ -181,37 +175,16 @@
       var(--bg-primary);
   }
 
-  html[data-scroll-theme="active"] body {
-    background: var(--bg-primary);
-  }
-
-  html[data-scroll-theme="active"] .site-content {
-    position: relative;
-    isolation: isolate;
-  }
-
-  html[data-scroll-theme="active"] .site-content::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(244, 247, 241, 0.72), rgba(255, 253, 247, 0.36) 46%, transparent),
-      radial-gradient(circle at 75% 10%, rgba(184, 137, 36, 0.22), transparent 32rem);
-    opacity: var(--scroll-day-overlay);
-  }
-
-  /* Mantener el cursor nativo evita que se pierda en fondos intermedios. */
+  /* Ocultar cursor nativo cuando el cursor personalizado está activo. */
   body.custom-cursor-active,
   body.custom-cursor-active * {
-    cursor: auto !important;
+    cursor: none !important;
   }
 
   /* Solo activar cursor personalizado en dispositivos no táctiles. */
   @media (hover: hover) and (pointer: fine) {
     body.custom-cursor-active {
-      cursor: auto !important;
+      cursor: none !important;
     }
   }
 
@@ -936,8 +909,20 @@
   }
 }
 
+.day-night-widget {
+  --day-progress: 0;
+  --sun-arc: 0;
+  --sun-height: 0;
+  --moon-arc: 0;
+  --moon-height: 0;
+  position: relative;
+  z-index: 60;
+  display: grid;
+  width: 66px;
+  place-items: center;
+}
+
 .day-night-indicator {
-  --day-progress: var(--scroll-day-progress, 0);
   position: relative;
   width: 52px;
   height: 52px;
@@ -966,21 +951,21 @@
 }
 
 .day-night-sun {
-  left: calc(16% + (var(--day-progress) * 18%));
-  top: calc(74% - (var(--day-progress) * 48%));
+  left: calc(8% + (var(--sun-arc) * 68%));
+  top: calc(72% - (var(--sun-height) * 54%));
   width: 30%;
   height: 30%;
   border-radius: 999px;
   background: #f2ef88;
   box-shadow: 0 0 calc(12px + (var(--day-progress) * 14px)) rgba(242, 239, 136, 0.8);
-  opacity: calc(0.18 + (var(--day-progress) * 0.82));
+  opacity: calc(var(--day-progress) * 1);
   animation: day-night-sun-pulse 5s ease-in-out infinite alternate;
   transition: opacity 0.22s ease;
 }
 
 .day-night-moon {
-  left: calc(62% + (var(--day-progress) * 54%));
-  top: calc(16% - (var(--day-progress) * 58%));
+  left: calc(10% + (var(--moon-arc) * 66%));
+  top: calc(70% - (var(--moon-height) * 52%));
   width: 24%;
   height: 24%;
   overflow: hidden;
@@ -1082,10 +1067,45 @@
     );
 }
 
+.day-night-clock {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  display: grid;
+  min-width: 72px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(5, 8, 5, 0.74);
+  padding: 3px 6px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(10px);
+}
+
+.day-night-clock span:first-child {
+  color: #f3c548;
+  font-size: 11px;
+}
+
 @media (max-width: 480px) {
+  .day-night-widget {
+    width: 58px;
+  }
+
   .day-night-indicator {
     width: 44px;
     height: 44px;
+  }
+
+  .day-night-clock {
+    min-width: 64px;
+    font-size: 8px;
   }
 }
 
