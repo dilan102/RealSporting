@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Trophy, Zap } from "lucide-react";
 import { TournamentCard } from "@/components/tournaments/TournamentCard";
+import { TournamentsList } from "@/components/tournaments/TournamentsList";
 import { CurrentTournamentCard } from "@/components/tournaments/CurrentTournamentCard";
 import { TournamentManager } from "@/components/tournaments/TournamentManager";
 import { CurrentTournamentManager } from "@/components/tournaments/CurrentTournamentManager";
@@ -95,7 +96,23 @@ export default async function TorneosPage() {
 
       <RevealSection>
         <section className="section-shell section-padding">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <a
+              href="#current"
+              className="alive-card rounded-lg border-2 border-accent bg-bg-elevated p-5 relative overflow-hidden hover:bg-bg-elevated/80 transition-colors"
+            >
+              <span className="absolute top-0 right-0 w-1 h-full bg-accent"></span>
+              <span className="grid size-11 place-items-center rounded-lg bg-accent/15 text-accent">
+                <Zap size={21} aria-hidden="true" />
+              </span>
+              <p className="mt-5 text-3xl font-black text-accent">{currentTournament ? 1 : 0}</p>
+              <h2 className="mt-2 text-sm font-black uppercase tracking-normal text-text">
+                Torneo Actual
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                {currentTournament ? "Competencia en disputa" : "Sin competencia actual"}
+              </p>
+            </a>
             {sections.map((section) => (
               <a
                 key={section.status}
@@ -120,28 +137,37 @@ export default async function TorneosPage() {
 
       <TournamentSectionsManager sections={defaultSections} initialValues={overrides} />
 
-      {currentTournament && (
-        <RevealSection>
-          <section className="section-shell scroll-mt-28 py-10">
-            <div className="mb-7 max-w-3xl">
-              <p className="eyebrow flex items-center gap-2">
-                <Zap size={16} className="text-accent" />
-                En vivo
-              </p>
-              <h2 className="font-stadium mt-3 text-4xl font-black sm:text-5xl">
-                Torneo Actual
-              </h2>
-              <p className="mt-3 text-base leading-7 text-muted">
-                Competencia en disputa donde participa el club en este momento.
-              </p>
-            </div>
+      <RevealSection>
+        <section id="current" className="section-shell scroll-mt-28 py-10">
+          <div className="mb-7 max-w-3xl">
+            <p className="eyebrow flex items-center gap-2">
+              <Zap size={16} className="text-accent" />
+              En vivo
+            </p>
+            <h2 className="font-stadium mt-3 text-4xl font-black sm:text-5xl">
+              Torneo Actual
+            </h2>
+            <p className="mt-3 text-base leading-7 text-muted">
+              Competencia en disputa donde participa el club en este momento.
+            </p>
+          </div>
 
+          {currentTournament ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               <CurrentTournamentCard item={currentTournament} />
             </div>
-          </section>
-        </RevealSection>
-      )}
+          ) : (
+            <div className="rounded-lg border border-dashed border-border bg-bg-elevated p-6 text-center">
+              <p className="text-sm font-semibold text-text">
+                No hay torneo actual en este momento.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-muted">
+                Cuando el administrador agregue un torneo actual, aparecerá destacado aquí.
+              </p>
+            </div>
+          )}
+        </section>
+      </RevealSection>
 
       {sections.map((section) => {
         const items = orderedTournaments.filter((item) => item.status === section.status);
@@ -157,22 +183,11 @@ export default async function TorneosPage() {
                 <p className="mt-3 text-base leading-7 text-muted">{section.description}</p>
               </div>
 
-              {items.length > 0 ? (
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {items.map((item) => (
-                    <TournamentCard key={item.id} item={item} />
-                  ))}
-                </div>
-              ) : (
-                <div className="rounded-lg border border-dashed border-border bg-bg-elevated p-6 text-center">
-                  <p className="text-sm font-semibold text-text">
-                    No hay publicaciones en esta sección todavía.
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted">
-                    Cuando el administrador suba programación de esta categoría, aparecerá aquí.
-                  </p>
-                </div>
-              )}
+              <TournamentsList
+                items={items}
+                sectionTitle={section.title}
+                sectionDescription={section.description}
+              />
             </section>
           </RevealSection>
         );
