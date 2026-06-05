@@ -40,7 +40,10 @@ export function AdminPasswordLoginForm({ callbackUrl = "/" }: AdminPasswordLogin
 
       window.sessionStorage.setItem("cdrs-admin-key", password);
       window.sessionStorage.setItem("cdrs-admin-role", payload.role || "content");
-      window.sessionStorage.setItem("cdrs-admin-label", payload.label || "Editor de contenido");
+      window.sessionStorage.setItem(
+        "cdrs-admin-label",
+        payload.label || "Administrador de contenido",
+      );
       window.sessionStorage.setItem("cdrs-admin-user", payload.user || user.trim());
       window.dispatchEvent(new Event("cdrs-admin-login"));
       router.push(callbackUrl);

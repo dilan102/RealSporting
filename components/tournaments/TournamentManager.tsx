@@ -118,10 +118,9 @@ export function TournamentManager({
   useEffect(() => {
     const syncAdminAccess = () => {
       const key = window.sessionStorage.getItem("cdrs-admin-key") || "";
-      const role = window.sessionStorage.getItem("cdrs-admin-role");
 
       setAccessKey(key);
-      setUnlocked(Boolean(key) && role === "owner");
+      setUnlocked(Boolean(key));
     };
 
     syncAdminAccess();

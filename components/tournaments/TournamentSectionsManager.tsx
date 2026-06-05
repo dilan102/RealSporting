@@ -137,7 +137,7 @@ export function TournamentSectionsManager({
     event.preventDefault();
 
     if (!unlocked) {
-      setMessage("Activa el administrador total antes de guardar secciones.");
+      setMessage("Activa el administrador global antes de guardar secciones.");
       return;
     }
 

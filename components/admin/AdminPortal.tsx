@@ -111,11 +111,14 @@ export function AdminPortal() {
 
       setAdminMode(true);
       setAdminRole(payload.role || "content");
-      setAdminLabel(payload.label || "Editor de contenido");
+      setAdminLabel(payload.label || "Administrador de contenido");
       setAdminUser(payload.user || user.trim());
       window.sessionStorage.setItem("cdrs-admin-key", password);
       window.sessionStorage.setItem("cdrs-admin-role", payload.role || "content");
-      window.sessionStorage.setItem("cdrs-admin-label", payload.label || "Editor de contenido");
+      window.sessionStorage.setItem(
+        "cdrs-admin-label",
+        payload.label || "Administrador de contenido",
+      );
       window.sessionStorage.setItem("cdrs-admin-user", payload.user || user.trim());
       window.dispatchEvent(new Event("cdrs-admin-login"));
       setModalOpen(false);
@@ -182,8 +185,9 @@ export function AdminPortal() {
             </div>
 
             <p className="mt-4 text-sm text-muted">
-              Usa el perfil del club. El editor de contenido gestiona noticias,
-              entrenamientos y jugadores; el administrador total puede guardar cambios globales.
+              Usa el perfil del club. El administrador de contenido gestiona noticias,
+              entrenamientos, jugadores y torneos; el administrador global edita títulos
+              y textos de las páginas.
             </p>
 
             <label className="block text-sm font-bold">
@@ -273,41 +277,37 @@ export function AdminPortal() {
             </div>
 
             <div className="max-h-[48vh] space-y-3 overflow-y-auto p-4">
-              {adminActions
-                .filter(
-                  (action) => adminRole === "owner" || action.href !== "/torneos#admin-torneos",
-                )
-                .map((action) => {
-                  const ActionIcon = action.Icon;
+              {adminActions.map((action) => {
+                const ActionIcon = action.Icon;
 
-                  return (
-                    <Link
-                      key={action.href}
-                      href={action.href}
-                      onClick={() => setPanelOpen(false)}
-                      className="group flex items-center gap-3 rounded-lg border border-border bg-bg/65 p-4 transition-colors hover:border-accent hover:bg-bg"
-                    >
-                      <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-[var(--button-text)]">
-                        <ActionIcon size={20} aria-hidden="true" />
+                return (
+                  <Link
+                    key={action.href}
+                    href={action.href}
+                    onClick={() => setPanelOpen(false)}
+                    className="group flex items-center gap-3 rounded-lg border border-border bg-bg/65 p-4 transition-colors hover:border-accent hover:bg-bg"
+                  >
+                    <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent transition-colors group-hover:bg-accent group-hover:text-[var(--button-text)]">
+                      <ActionIcon size={20} aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="flex items-center gap-2 text-sm font-black">
+                        {action.label}
+                        <PlusCircle size={16} className="text-accent" aria-hidden="true" />
                       </span>
-                      <span className="min-w-0">
-                        <span className="flex items-center gap-2 text-sm font-black">
-                          {action.label}
-                          <PlusCircle size={16} className="text-accent" aria-hidden="true" />
-                        </span>
-                        <span className="mt-1 block text-xs font-semibold leading-5 text-muted">
-                          {action.description}
-                        </span>
+                      <span className="mt-1 block text-xs font-semibold leading-5 text-muted">
+                        {action.description}
                       </span>
-                    </Link>
-                  );
-                })}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
 
             <p className="border-t border-border px-4 py-3 text-xs font-semibold text-muted">
               {adminRole === "owner"
                 ? "Perfil total activo: puede autorizar cambios globales del sitio."
-                : "Perfil de contenido activo: solo noticias, entrenamientos y jugadores."}
+                : "Perfil de contenido activo: noticias, entrenamientos, jugadores y torneos."}
             </p>
             {message && (
               <p className="border-t border-border px-4 py-3 text-xs font-semibold text-muted">

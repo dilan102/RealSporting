@@ -42,14 +42,14 @@ async function tournamentInputFromFormData(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   const items = await readTournaments({
-    includeDrafts: await isAdminApiAuthorized(request, { requireOwner: true }),
+    includeDrafts: await isAdminApiAuthorized(request),
   });
 
   return NextResponse.json({ items });
 }
 
 export async function POST(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request, { requireOwner: true }))) {
+  if (!(await isAdminApiAuthorized(request))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request, { requireOwner: true }))) {
+  if (!(await isAdminApiAuthorized(request))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 
@@ -85,7 +85,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request, { requireOwner: true }))) {
+  if (!(await isAdminApiAuthorized(request))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 
