@@ -917,9 +917,10 @@
   --moon-height: 0;
   position: relative;
   z-index: 60;
-  display: grid;
-  width: 66px;
-  place-items: center;
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  gap: 6px;
 }
 
 .day-night-indicator {
@@ -1068,12 +1069,10 @@
 }
 
 .day-night-clock {
-  position: absolute;
-  top: calc(100% + 3px);
-  left: 50%;
+  position: static;
   display: grid;
-  min-width: 72px;
-  transform: translateX(-50%);
+  min-width: 68px;
+  transform: none;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   background: rgba(5, 8, 5, 0.74);
@@ -1095,7 +1094,7 @@
 
 @media (max-width: 480px) {
   .day-night-widget {
-    width: 58px;
+    gap: 4px;
   }
 
   .day-night-indicator {
@@ -1104,8 +1103,13 @@
   }
 
   .day-night-clock {
-    min-width: 64px;
+    min-width: 58px;
+    padding: 3px 5px;
     font-size: 8px;
+  }
+
+  .day-night-clock span:first-child {
+    font-size: 10px;
   }
 }
 

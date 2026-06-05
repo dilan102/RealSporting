@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Trophy } from "lucide-react";
 import { TournamentCard } from "@/components/tournaments/TournamentCard";
 import { TournamentManager } from "@/components/tournaments/TournamentManager";
+import { TournamentSectionsManager } from "@/components/tournaments/TournamentSectionsManager";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { readTournaments, type Tournament, type TournamentStatus } from "@/lib/tournament-store";
 import { pageOpenGraph } from "@/lib/site";
 
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const sections: {
+const defaultSections: {
   status: TournamentStatus;
   title: string;
   description: string;
@@ -51,17 +53,44 @@ function sectionCount(items: Tournament[], status: TournamentStatus) {
 }
 
 export default async function TorneosPage() {
+  const overrides = await readContentOverrides();
   const tournaments = await readTournaments();
   const orderedTournaments = [...tournaments].sort((a, b) =>
     b.startDate.localeCompare(a.startDate),
   );
+  const sections = defaultSections.map((section) => ({
+    ...section,
+    title: contentOverride(
+      overrides,
+      `torneos.sections.${section.status}.title`,
+      section.title,
+    ),
+    description: contentOverride(
+      overrides,
+      `torneos.sections.${section.status}.description`,
+      section.description,
+    ),
+  }));
+  const hero = {
+    eyebrow: contentOverride(overrides, "torneos.hero.eyebrow", "Competencia"),
+    title: contentOverride(overrides, "torneos.hero.title", "Torneos"),
+    subtitle: contentOverride(
+      overrides,
+      "torneos.hero.subtitle",
+      "Programación competitiva, resultados, participaciones y próximos retos del club.",
+    ),
+  };
+  const adminSection = {
+    eyebrow: contentOverride(overrides, "torneos.admin.eyebrow", "Administrador"),
+    title: contentOverride(overrides, "torneos.admin.title", "Subir programación"),
+  };
 
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="Torneos"
-        subtitle="Programación competitiva, resultados, participaciones y próximos retos del club."
-        eyebrow="Competencia"
+        title={hero.title}
+        subtitle={hero.subtitle}
+        eyebrow={hero.eyebrow}
         image="/brand/gallery-team.jpg"
       />
 
@@ -89,6 +118,8 @@ export default async function TorneosPage() {
           </div>
         </section>
       </RevealSection>
+
+      <TournamentSectionsManager sections={defaultSections} initialValues={overrides} />
 
       {sections.map((section) => {
         const items = orderedTournaments.filter((item) => item.status === section.status);
@@ -128,9 +159,9 @@ export default async function TorneosPage() {
       <RevealSection>
         <section className="section-shell pb-24 pt-8">
           <div className="mb-6 max-w-3xl">
-            <p className="eyebrow">Administrador</p>
+            <p className="eyebrow">{adminSection.eyebrow}</p>
             <h2 className="font-stadium mt-3 text-4xl font-black sm:text-5xl">
-              Subir programación
+              {adminSection.title}
             </h2>
           </div>
           <TournamentManager initialItems={orderedTournaments} showList={false} />

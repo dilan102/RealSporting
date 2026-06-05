@@ -102,8 +102,8 @@ export function Navbar() {
         backdropFilter: solidHeader ? "blur(18px)" : "blur(6px)",
       }}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="group flex min-w-0 items-center gap-3" aria-label={club.name}>
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-3 sm:px-4 lg:px-5">
+        <Link href="/" className="group flex min-w-0 items-center gap-2.5" aria-label={club.name}>
           <span className="grid size-11 shrink-0 place-items-center rounded-full border border-white/10 bg-white/10 p-1 backdrop-blur">
             <Image
               src="/logo.png"
@@ -133,7 +133,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        <motion.ul className="hidden items-center gap-1 lg:flex" {...navListMotion}>
+        <motion.ul className="hidden items-center gap-0.5 lg:flex" {...navListMotion}>
           {navLinks.map((link) => {
             const active = isActiveLink(link.href);
             return (
@@ -146,7 +146,7 @@ export function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className={`group relative block overflow-hidden rounded-full px-3.5 py-2 text-sm font-bold transition-colors ${
+                  className={`group relative block overflow-hidden rounded-full px-2.5 py-2 text-[13px] font-bold transition-colors xl:px-3 xl:text-sm ${
                     active ? "text-accent" : linkText
                   }`}
                 >
@@ -166,11 +166,11 @@ export function Navbar() {
           })}
         </motion.ul>
 
-        <div className="flex items-center gap-2">
-          <NavWhatsAppLink className="btn-green alive-lift hidden min-h-10 items-center justify-center rounded-full px-4 text-sm font-black text-white md:inline-flex" />
+        <div className="flex items-center gap-1.5">
+          <NavWhatsAppLink className="btn-green alive-lift hidden min-h-10 items-center justify-center rounded-full px-3 text-[13px] font-black text-white md:inline-flex xl:px-4 xl:text-sm" />
           <Link
             href="/formulario-miembros-2026"
-            className="btn-gold alive-lift hidden min-h-10 items-center justify-center rounded-full px-5 text-sm font-black md:inline-flex"
+            className="btn-gold alive-lift hidden min-h-10 items-center justify-center rounded-full px-3.5 text-[13px] font-black md:inline-flex xl:px-5 xl:text-sm"
           >
             Inscribirme
           </Link>

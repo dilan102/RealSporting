@@ -1,37 +1,12 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminApiAuthorized } from "@/lib/admin-auth";
+import { readContentOverrides, writeContentOverrides } from "@/lib/content-overrides";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const dataDir = path.join(process.cwd(), "data");
-const dataFile = path.join(dataDir, "content-overrides.json");
-
-async function ensureStorage() {
-  await mkdir(dataDir, { recursive: true });
-}
-
-async function readOverrides() {
-  await ensureStorage();
-
-  try {
-    const raw = await readFile(dataFile, "utf8");
-    const parsed = JSON.parse(raw) as unknown;
-
-    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-      return parsed as Record<string, string>;
-    }
-  } catch {
-    // Empty storage starts with no content overrides.
-  }
-
-  return {};
-}
-
 export async function GET() {
-  return NextResponse.json({ items: await readOverrides() });
+  return NextResponse.json({ items: await readContentOverrides() });
 }
 
 export async function POST(request: NextRequest) {
@@ -47,8 +22,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No hay cambios para guardar." }, { status: 400 });
   }
 
-  await ensureStorage();
-  await writeFile(dataFile, JSON.stringify(body.items, null, 2), "utf8");
+  await writeContentOverrides(body.items);
 
   return NextResponse.json({ items: body.items });
 }
