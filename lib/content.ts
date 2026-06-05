@@ -837,9 +837,9 @@ export const trainings: Training[] = [
 
 export const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/club", label: "Conócenos" },
-  { href: "/equipo", label: "Categorías" },
-  { href: "/entrenamientos", label: "Entrenamientos" },
   { href: "/noticias", label: "Noticias" },
+  { href: "/club", label: "Conócenos" },
+  { href: "/entrenamientos", label: "Entrenamientos" },
+  { href: "/equipo", label: "Categorías" },
   { href: "/contacto", label: "Inscripción" },
 ];
