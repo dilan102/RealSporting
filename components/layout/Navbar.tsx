@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
 import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
@@ -14,6 +14,7 @@ import { DayNightScrollIndicator } from "@/components/ui/DayNightScrollIndicator
 export function Navbar() {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [adminActive, setAdminActive] = useState(false);
@@ -68,6 +69,27 @@ export function Navbar() {
   };
 
   const linkText = solidHeader ? "text-muted hover:text-text" : "nav-over-hero text-white/90 hover:text-white";
+  const navListMotion = reduceMotion
+    ? {}
+    : {
+        initial: "hidden",
+        animate: "show",
+        variants: {
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.055,
+              delayChildren: 0.08,
+            },
+          },
+        },
+      };
+  const navItemVariants = {
+    hidden: { opacity: 0, y: -8 },
+    show: { opacity: 1, y: 0 },
+  };
+  const isActiveLink = (href: string) =>
+    href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header
@@ -114,30 +136,38 @@ export function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        <motion.ul className="hidden items-center gap-1 lg:flex" {...navListMotion}>
           {navLinks.map((link) => {
-            const active = pathname === link.href;
+            const active = isActiveLink(link.href);
             return (
-              <li key={link.href}>
+              <motion.li
+                key={link.href}
+                variants={navItemVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={reduceMotion ? undefined : { y: -2 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+              >
                 <Link
                   href={link.href}
-                  className={`relative rounded-full px-3.5 py-2 text-sm font-bold transition-colors ${
+                  className={`group relative block overflow-hidden rounded-full px-3.5 py-2 text-sm font-bold transition-colors ${
                     active ? "text-accent" : linkText
                   }`}
                 >
-                  {link.label}
+                  <span className="absolute inset-0 rounded-full bg-[color-mix(in_srgb,var(--accent-gold)_12%,transparent)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <span className="relative z-10">{link.label}</span>
+                  <span className="absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-current opacity-45 transition-transform duration-300 ease-out group-hover:scale-x-100" />
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-x-3 -bottom-0.5 h-px bg-accent"
+                      className="absolute inset-x-3 bottom-1 h-px bg-accent"
                       transition={{ type: "spring", stiffness: 420, damping: 32 }}
                     />
                   )}
                 </Link>
-              </li>
+              </motion.li>
             );
           })}
-        </ul>
+        </motion.ul>
 
         <div className="flex items-center gap-2">
           <NavWhatsAppLink className="btn-green alive-lift hidden min-h-10 items-center justify-center rounded-full px-4 text-sm font-black text-white md:inline-flex" />
@@ -188,21 +218,35 @@ export function Navbar() {
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className="mx-3 mt-3 overflow-hidden rounded-lg border border-border bg-bg-elevated/96 shadow-2xl backdrop-blur-2xl lg:hidden"
           >
-            <ul className="grid gap-1 p-3">
+            <motion.ul
+              className="grid gap-1 p-3"
+              initial={reduceMotion ? undefined : "hidden"}
+              animate={reduceMotion ? undefined : "show"}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.045, delayChildren: 0.04 } },
+              }}
+            >
               {navLinks.map((link) => (
-                <li key={link.href}>
+                <motion.li
+                  key={link.href}
+                  variants={navItemVariants}
+                  transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                >
                   <Link
                     href={link.href}
-                    className={`block rounded-lg px-4 py-3 text-sm font-black ${
-                      pathname === link.href
+                    className={`group relative block overflow-hidden rounded-lg px-4 py-3 text-sm font-black transition-colors ${
+                      isActiveLink(link.href)
                         ? "bg-accent/10 text-accent"
                         : "text-muted hover:bg-surface hover:text-text"
                     }`}
                     onClick={() => setOpen(false)}
                   >
-                    {link.label}
+                    <span className="absolute inset-y-2 left-0 w-1 origin-y scale-y-0 rounded-r-full bg-accent transition-transform duration-300 group-hover:scale-y-100" />
+                    <span className="relative z-10">{link.label}</span>
                   </Link>
-                </li>
+                </motion.li>
               ))}
               <li className="grid gap-2 pt-2 sm:grid-cols-2">
                 <NavWhatsAppLink className="btn-green alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black text-white" />
@@ -214,7 +258,7 @@ export function Navbar() {
                   Inscribirme
                 </Link>
               </li>
-            </ul>
+            </motion.ul>
           </motion.div>
         )}
       </AnimatePresence>
