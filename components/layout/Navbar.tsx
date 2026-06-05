@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
 import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { DayNightScrollIndicator } from "@/components/ui/DayNightScrollIndicator";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -162,7 +162,7 @@ export function Navbar() {
           >
             <UserRound size={18} aria-hidden="true" />
           </button>
-          <ThemeToggle />
+          <DayNightScrollIndicator />
           <button
             type="button"
             className={`inline-flex h-10 w-10 items-center justify-center rounded-full border lg:hidden ${

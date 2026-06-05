@@ -131,6 +131,38 @@
     --inscription-band-border: rgba(208, 161, 58, 0.28);
   }
 
+  html[data-scroll-theme="active"] {
+    --scroll-day-progress: 0;
+    --bg-primary: color-mix(in srgb, #f4f7f1 calc(var(--scroll-day-progress) * 100%), #080b09);
+    --bg-secondary: color-mix(in srgb, #fffdf7 calc(var(--scroll-day-progress) * 100%), #101612);
+    --text-primary: color-mix(in srgb, #111c16 calc(var(--scroll-day-progress) * 100%), #f5f7f4);
+    --text-secondary: color-mix(in srgb, #4a5d50 calc(var(--scroll-day-progress) * 100%), #c0cac2);
+    --accent-gold: color-mix(in srgb, #b88924 calc(var(--scroll-day-progress) * 100%), #d0a13a);
+    --accent-green: color-mix(in srgb, #154f37 calc(var(--scroll-day-progress) * 100%), #2b7655);
+    --card-bg: color-mix(in srgb, #ffffff calc(var(--scroll-day-progress) * 100%), #121914);
+    --border: color-mix(
+      in srgb,
+      rgba(17, 28, 22, 0.24) calc(var(--scroll-day-progress) * 100%),
+      rgba(245, 247, 244, 0.14)
+    );
+    --nav-bg: color-mix(
+      in srgb,
+      rgba(255, 253, 247, 0.9) calc(var(--scroll-day-progress) * 100%),
+      rgba(10, 10, 10, 0.78)
+    );
+    --cursor-main: color-mix(in srgb, #111c16 calc(var(--scroll-day-progress) * 100%), #f8faf7);
+    --cursor-trail: color-mix(
+      in srgb,
+      rgba(21, 79, 55, 0.78) calc(var(--scroll-day-progress) * 100%),
+      rgba(208, 161, 58, 0.78)
+    );
+    --preloader-surface: color-mix(in srgb, #f4f7f1 calc(var(--scroll-day-progress) * 100%), #050805);
+    --cinematic-fallback: color-mix(in srgb, #121c17 calc(var(--scroll-day-progress) * 100%), #050805);
+    --cinematic-accent: color-mix(in srgb, #b88924 calc(var(--scroll-day-progress) * 100%), #f3c548);
+    --inscription-band-bg: color-mix(in srgb, #121c17 calc(var(--scroll-day-progress) * 100%), #050805);
+    color-scheme: dark light;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -172,6 +204,17 @@
     font-family: var(--font-sans);
     background:
       linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 90%, transparent) 0%, transparent 30rem),
+      var(--bg-primary);
+  }
+
+  html[data-scroll-theme="active"] body {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, #080b09 calc((1 - var(--scroll-day-progress)) * 78%), transparent) 0%,
+        color-mix(in srgb, #f4f7f1 calc(var(--scroll-day-progress) * 74%), transparent) 34rem,
+        transparent 58rem
+      ),
       var(--bg-primary);
   }
 
@@ -906,6 +949,169 @@
 
   .ods-flip-face {
     position: relative;
+  }
+}
+
+.day-night-indicator {
+  --day-progress: 0;
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, #e9e5d5 calc((1 - var(--day-progress)) * 100%), #334155);
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, #f6c60c calc(var(--day-progress) * 100%), #111936),
+      color-mix(in srgb, #be4405 calc(var(--day-progress) * 100%), #285a7b)
+    );
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transform: translateZ(0);
+}
+
+.day-night-sun,
+.day-night-moon,
+.day-night-stars,
+.day-night-water {
+  position: absolute;
+  display: block;
+}
+
+.day-night-sun {
+  left: calc(16% + (var(--day-progress) * 18%));
+  top: calc(74% - (var(--day-progress) * 48%));
+  width: 30%;
+  height: 30%;
+  border-radius: 999px;
+  background: #f2ef88;
+  box-shadow: 0 0 calc(12px + (var(--day-progress) * 14px)) rgba(242, 239, 136, 0.8);
+  opacity: calc(0.18 + (var(--day-progress) * 0.82));
+  animation: day-night-sun-pulse 5s ease-in-out infinite alternate;
+  transition: opacity 0.22s ease;
+}
+
+.day-night-moon {
+  left: calc(62% + (var(--day-progress) * 54%));
+  top: calc(16% - (var(--day-progress) * 58%));
+  width: 24%;
+  height: 24%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #d9d8d0;
+  box-shadow:
+    inset -4px 1px 0 #899098,
+    0 0 10px rgba(255, 255, 255, 0.3);
+  opacity: calc(1 - var(--day-progress));
+}
+
+.day-night-moon span {
+  position: absolute;
+  border-radius: 999px;
+  background: #b9b8b0;
+  box-shadow: inset 2px -1px 0 #535457;
+}
+
+.day-night-moon span:nth-child(1) {
+  left: 15%;
+  top: 28%;
+  width: 25%;
+  height: 25%;
+}
+
+.day-night-moon span:nth-child(2) {
+  left: 62%;
+  top: 18%;
+  width: 16%;
+  height: 16%;
+}
+
+.day-night-moon span:nth-child(3) {
+  left: 48%;
+  top: 62%;
+  width: 16%;
+  height: 16%;
+}
+
+.day-night-stars {
+  inset: 0;
+  opacity: calc(1 - var(--day-progress));
+}
+
+.day-night-stars span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  box-shadow: 0 0 7px rgba(255, 255, 255, 0.95);
+}
+
+.day-night-stars span:nth-child(1) {
+  left: 25%;
+  top: 30%;
+}
+
+.day-night-stars span:nth-child(2) {
+  left: 55%;
+  top: 20%;
+}
+
+.day-night-stars span:nth-child(3) {
+  left: 60%;
+  top: 60%;
+}
+
+.day-night-stars span:nth-child(4) {
+  left: 40%;
+  top: 45%;
+}
+
+.day-night-stars span:nth-child(5) {
+  left: 15%;
+  top: 55%;
+}
+
+.day-night-stars span:nth-child(6) {
+  left: 40%;
+  top: 10%;
+}
+
+.day-night-stars span:nth-child(7) {
+  left: 80%;
+  top: 55%;
+}
+
+.day-night-water {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32%;
+  background:
+    repeating-radial-gradient(
+      ellipse farthest-corner at center -400%,
+      color-mix(in srgb, #f5c30e calc(var(--day-progress) * 100%), #7fa1bb) 30%,
+      color-mix(in srgb, #518eac calc(var(--day-progress) * 100%), #1d425a) 90%
+    );
+}
+
+@media (max-width: 480px) {
+  .day-night-indicator {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@keyframes day-night-sun-pulse {
+  from {
+    box-shadow: 0 0 10px rgba(242, 239, 136, 0.42);
+  }
+
+  to {
+    box-shadow: 0 0 22px rgba(242, 239, 136, 0.95);
   }
 }
 

@@ -137,11 +137,8 @@ export const PRELOADER_BOOT_SCRIPT = `
 
     if (!shouldShow) return;
 
-    var theme = localStorage.getItem("theme");
-    document.documentElement.setAttribute(
-      "data-theme",
-      theme === "dark" ? "dark" : "light"
-    );
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.style.setProperty("--scroll-day-progress", "0");
 
     document.documentElement.classList.add("preloader-pending", "preloader-active");
   } catch (e) {}
