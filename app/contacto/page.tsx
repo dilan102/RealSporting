@@ -11,6 +11,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WHATSAPP_URL } from "@/lib/constants";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { pageOpenGraph } from "@/lib/site";
 import { registrationSteps } from "@/lib/content";
 
@@ -33,13 +34,21 @@ const requirements = [
   "Compromiso con la disciplina, el respeto, la convivencia y la cultura de paz del club.",
 ];
 
-export default function ContactoPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ContactoPage() {
+  const overrides = await readContentOverrides();
+
   return (
     <main className="bg-bg text-text transition-colors">
       <PageHero
-        title="Inscripción"
-        subtitle="Ingreso al proceso deportivo, social y formativo de Real Sporting"
-        eyebrow="Contacto"
+        title={contentOverride(overrides, "contacto.hero.title", "Inscripción")}
+        subtitle={contentOverride(
+          overrides,
+          "contacto.hero.subtitle",
+          "Ingreso al proceso deportivo, social y formativo de Real Sporting",
+        )}
+        eyebrow={contentOverride(overrides, "contacto.hero.eyebrow", "Contacto")}
       />
 
       <section className="relative overflow-hidden border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_10%,var(--bg-primary))_0%,var(--bg-primary)_52%,color-mix(in_srgb,var(--accent-gold)_10%,var(--bg-primary))_100%)]">

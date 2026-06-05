@@ -6,6 +6,7 @@ import { Timeline, ValuesGrid, VisionMission } from "@/components/club/VisionMis
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club, institutionalStats } from "@/lib/content";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -17,13 +18,21 @@ export const metadata: Metadata = {
   ),
 };
 
-export default function ClubPage() {
+export const dynamic = "force-dynamic";
+
+export default async function ClubPage() {
+  const overrides = await readContentOverrides();
+
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="Conócenos"
-        subtitle="Historia, identidad, valores y el camino que recorremos como club formativo en Usme."
-        eyebrow="Institucional"
+        title={contentOverride(overrides, "club.hero.title", "Conócenos")}
+        subtitle={contentOverride(
+          overrides,
+          "club.hero.subtitle",
+          "Historia, identidad, valores y el camino que recorremos como club formativo en Usme.",
+        )}
+        eyebrow={contentOverride(overrides, "club.hero.eyebrow", "Institucional")}
       />
 
       <RevealSection>

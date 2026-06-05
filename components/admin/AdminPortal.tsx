@@ -185,9 +185,8 @@ export function AdminPortal() {
             </div>
 
             <p className="mt-4 text-sm text-muted">
-              Usa el perfil del club. El administrador de contenido gestiona noticias,
-              entrenamientos, jugadores y torneos; el administrador global edita títulos
-              y textos de las páginas.
+              Usa el perfil del club. El administrador de contenido publica y edita
+              publicaciones; el administrador total edita textos y encabezados del sitio.
             </p>
 
             <label className="block text-sm font-bold">
@@ -306,8 +305,8 @@ export function AdminPortal() {
 
             <p className="border-t border-border px-4 py-3 text-xs font-semibold text-muted">
               {adminRole === "owner"
-                ? "Perfil total activo: puede autorizar cambios globales del sitio."
-                : "Perfil de contenido activo: noticias, entrenamientos, jugadores y torneos."}
+                ? "Perfil total activo: puede editar textos, encabezados y publicaciones."
+                : "Perfil de contenido activo: puede publicar y editar publicaciones."}
             </p>
             {message && (
               <p className="border-t border-border px-4 py-3 text-xs font-semibold text-muted">

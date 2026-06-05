@@ -20,7 +20,7 @@ function errorResponse(error: unknown, status = 400) {
 async function tournamentInputFromFormData(request: NextRequest) {
   const formData = await request.formData();
   const image = formData.get("image");
-  const status = String(formData.get("status") || "current") as TournamentStatus;
+  const status = String(formData.get("status") || "future") as TournamentStatus;
 
   return {
     name: String(formData.get("name") || ""),
@@ -85,7 +85,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request))) {
+  if (!(await isAdminApiAuthorized(request, { requireOwner: true }))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 

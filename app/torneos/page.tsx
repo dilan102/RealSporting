@@ -12,10 +12,10 @@ import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Torneos",
-  description: `Torneos ganados, jugados, actuales y próximos de ${club.name}.`,
+  description: `Torneos jugados, ganados y por jugar de ${club.name}.`,
   openGraph: pageOpenGraph(
     `Torneos | ${club.name}`,
-    `Torneos ganados, jugados, actuales y próximos de ${club.name}.`,
+    `Torneos jugados, ganados y por jugar de ${club.name}.`,
   ),
 };
 
@@ -27,24 +27,19 @@ const defaultSections: {
   description: string;
 }[] = [
   {
-    status: "won",
-    title: "Torneo ganado",
-    description: "Logros competitivos y campeonatos que marcan la historia del club.",
-  },
-  {
     status: "played",
     title: "Torneos jugados",
     description: "Participaciones finalizadas que fortalecen experiencia y proceso competitivo.",
   },
   {
-    status: "future",
-    title: "Torneos a futuro",
-    description: "Próximas competencias en planeación o confirmadas por la institución.",
+    status: "won",
+    title: "Torneos ganados",
+    description: "Logros competitivos y campeonatos que marcan la historia del club.",
   },
   {
-    status: "current",
-    title: "Torneos actuales",
-    description: "Competencias en curso con programación activa para jugadores y familias.",
+    status: "future",
+    title: "Torneos por jugar",
+    description: "Próximas competencias en planeación o confirmadas por la institución.",
   },
 ];
 
@@ -96,7 +91,7 @@ export default async function TorneosPage() {
 
       <RevealSection>
         <section className="section-shell section-padding">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {sections.map((section) => (
               <a
                 key={section.status}

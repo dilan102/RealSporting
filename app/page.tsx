@@ -11,6 +11,7 @@ import { NewsCircleShowcase } from "@/components/news/NewsCircleShowcase";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { FloatingSectionArrow } from "@/components/ui/FloatingSectionArrow";
 import { club } from "@/lib/content";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { pageOpenGraph } from "@/lib/site";
 import { readNews } from "@/lib/news-store";
 
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const overrides = await readContentOverrides();
   const news = await readNews();
 
   return (
@@ -42,7 +44,27 @@ export default async function HomePage() {
       />
       <RevealSection>
         <div id="inicio" className="scroll-mt-28">
-          <Hero />
+          <Hero
+            copy={{
+              badge: contentOverride(
+                overrides,
+                "home.hero.badge",
+                "Club Deportivo Real Sporting de Usme",
+              ),
+              title: contentOverride(
+                overrides,
+                "home.hero.title",
+                "Desde Usme,\nCon disciplina,\nHacia el futuro.",
+              ),
+              subtitle: contentOverride(
+                overrides,
+                "home.hero.subtitle",
+                `${club.tagline}. Formamos jugadores con método, valores y sentido de pertenencia territorial.`,
+              ),
+              cta: contentOverride(overrides, "home.hero.cta", "Conocer el club"),
+              location: contentOverride(overrides, "home.hero.location", "Usme · Bogotá D.C."),
+            }}
+          />
         </div>
       </RevealSection>
       <RevealSection>

@@ -8,7 +8,7 @@ import {
 import { removeUpload, saveUpload } from "@/lib/upload-store";
 import { sanitizeText, sanitizeTextOrDefault, validateCleanTextField } from "@/lib/validators";
 
-export type TournamentStatus = "won" | "played" | "future" | "current";
+export type TournamentStatus = "won" | "played" | "future";
 
 export type Tournament = {
   id: string;
@@ -50,11 +50,11 @@ const allowedTypes = new Map([
 const maxImageBytes = 5 * 1024 * 1024;
 
 function normalizeStatus(status: string): TournamentStatus {
-  if (status === "won" || status === "played" || status === "future" || status === "current") {
+  if (status === "won" || status === "played" || status === "future") {
     return status;
   }
 
-  return "current";
+  return "future";
 }
 
 function normalizeInput(input: TournamentInput) {

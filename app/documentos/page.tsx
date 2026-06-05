@@ -8,17 +8,21 @@ import {
   getOfficialDocumentById,
   officialDocuments,
 } from "@/lib/documents";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 
 export const metadata: Metadata = {
   title: "Documentos",
   description: "Visor de documentos oficiales del Club Deportivo Real Sporting.",
 };
 
+export const dynamic = "force-dynamic";
+
 type DocumentPageProps = {
   searchParams: Promise<{ id?: string; archivo?: string }>;
 };
 
 export default async function DocumentPage({ searchParams }: DocumentPageProps) {
+  const overrides = await readContentOverrides();
   const { id, archivo } = await searchParams;
 
   if (archivo) {
@@ -31,9 +35,17 @@ export default async function DocumentPage({ searchParams }: DocumentPageProps) 
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="Documentos"
-        subtitle="Biblioteca institucional, modelo deportivo y proyecto CDRS 2026."
-        eyebrow="Documentación oficial"
+        title={contentOverride(overrides, "documentos.hero.title", "Documentos")}
+        subtitle={contentOverride(
+          overrides,
+          "documentos.hero.subtitle",
+          "Biblioteca institucional, modelo deportivo y proyecto CDRS 2026.",
+        )}
+        eyebrow={contentOverride(
+          overrides,
+          "documentos.hero.eyebrow",
+          "Documentación oficial",
+        )}
       />
 
       <section className="section-band section-ambient border-b border-border">

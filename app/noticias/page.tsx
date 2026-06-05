@@ -7,6 +7,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { PublicationDateText } from "@/components/ui/PublicationDateText";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { readNews } from "@/lib/news-store";
 import {
   NEWS_TEXT_PLACEHOLDER,
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function NoticiasPage() {
+  const overrides = await readContentOverrides();
   const news = await readNews();
   const orderedNews = [...news]
     .sort((a, b) => b.date.localeCompare(a.date))
@@ -37,9 +39,13 @@ export default async function NoticiasPage() {
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="Noticias"
-        subtitle="Comunicados, convocatorias y actualidad del proceso deportivo."
-        eyebrow="Actualidad"
+        title={contentOverride(overrides, "noticias.hero.title", "Noticias")}
+        subtitle={contentOverride(
+          overrides,
+          "noticias.hero.subtitle",
+          "Comunicados, convocatorias y actualidad del proceso deportivo.",
+        )}
+        eyebrow={contentOverride(overrides, "noticias.hero.eyebrow", "Actualidad")}
       />
 
       <RevealSection>
@@ -98,7 +104,7 @@ export default async function NoticiasPage() {
       <RevealSection>
         <section className="section-shell pb-12">
           <h2 className="font-newsroom border-b border-border pb-3 text-4xl font-black sm:text-6xl">
-            Todas las noticias
+            {contentOverride(overrides, "noticias.list.title", "Todas las noticias")}
           </h2>
           {remainingNews.length > 0 ? (
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

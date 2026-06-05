@@ -87,7 +87,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!(await isAdminApiAuthorized(request))) {
+  if (!(await isAdminApiAuthorized(request, { requireOwner: true }))) {
     return errorResponse(new Error("Clave incorrecta."), 401);
   }
 

@@ -13,7 +13,7 @@ export function getAdminProfiles(): AdminProfile[] {
       user: process.env.OWNER_ADMIN_USER || "DilanMM",
       password: process.env.OWNER_ADMIN_PASSWORD || "santifjk",
       role: "owner",
-      label: "Administrador global",
+      label: "Administrador total",
     },
     {
       user: process.env.ADMIN_USER || "RealSporting",

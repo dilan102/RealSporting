@@ -4,10 +4,9 @@ import type { Tournament } from "@/lib/tournament-store";
 import { formatPublicationRange } from "@/lib/publication-dates";
 
 const statusLabel: Record<Tournament["status"], string> = {
-  won: "Torneo ganado",
   played: "Torneo jugado",
-  future: "Torneo a futuro",
-  current: "Torneo actual",
+  won: "Torneo ganado",
+  future: "Torneo por jugar",
 };
 
 export function TournamentCard({

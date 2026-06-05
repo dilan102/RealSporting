@@ -39,7 +39,7 @@ const emptyForm = (): TournamentForm => {
     opponent: "",
     startDate,
     endDate: defaultEndDateFromStart(startDate),
-    status: "current",
+    status: "future",
     visibility: "draft",
     image: "",
     file: null,
@@ -319,7 +319,7 @@ export function TournamentManager({
               </span>
               <h3 className="mt-4 text-xl font-bold">Programación de torneos</h3>
               <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">
-                Sube torneos ganados, jugados, actuales o futuros con fechas,
+                Sube torneos jugados, ganados o por jugar con fechas,
                 sede, categoría y programación.
               </p>
             </div>
@@ -350,10 +350,9 @@ export function TournamentManager({
                 }
                 className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none focus:border-accent"
               >
-                <option value="current">Torneo actual</option>
-                <option value="future">Torneo a futuro</option>
                 <option value="played">Torneo jugado</option>
                 <option value="won">Torneo ganado</option>
+                <option value="future">Torneo por jugar</option>
               </select>
             </label>
 

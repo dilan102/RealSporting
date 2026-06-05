@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GlobalContentManager } from "@/components/admin/GlobalContentManager";
 import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -57,6 +58,7 @@ export default function RootLayout({
           <div id="site-content" className="site-content flex min-h-screen flex-col">
             <Navbar />
             <AdminPortal />
+            <GlobalContentManager />
             <WhatsAppFloat />
             <main className="flex-1">
               <PageTransition>{children}</PageTransition>

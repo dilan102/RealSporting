@@ -32,8 +32,8 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
 
         <p className="mt-4 text-sm leading-relaxed text-muted">
           Inicia sesión con usuario y contraseña del club. El perfil de contenido
-          gestiona noticias, entrenamientos, jugadores y torneos; el perfil global
-          autoriza cambios en títulos y textos de las páginas.
+          publica y edita publicaciones; el perfil total edita textos y encabezados
+          del sitio.
         </p>
 
         <div className="mt-6 space-y-4">

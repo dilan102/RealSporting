@@ -6,8 +6,18 @@ import { useEffect, useState } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
 
-export function Hero() {
+type HeroCopy = {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  cta?: string;
+  location?: string;
+};
+
+export function Hero({ copy = {} }: { copy?: HeroCopy }) {
   const [parallax, setParallax] = useState(0);
+  const title = copy.title || "Desde Usme,\nCon disciplina,\nHacia el futuro.";
+  const titleLines = title.split("\n");
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -55,20 +65,21 @@ export function Hero() {
                 className="object-contain"
                 aria-hidden="true"
               />
-              Club Deportivo Real Sporting de Usme
+              {copy.badge || "Club Deportivo Real Sporting de Usme"}
             </div>
 
             <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1">
-              Desde Usme,
-              <br />
-              Con disciplina,
-              <br />
-              Hacia el futuro.
+              {titleLines.map((line, index) => (
+                <span key={`${line}-${index}`}>
+                  {line}
+                  {index < titleLines.length - 1 && <br />}
+                </span>
+              ))}
             </h1>
 
             <p className="mt-6 max-w-2xl text-base font-semibold leading-8 text-white/88 sm:text-xl mobile-reveal mobile-reveal-delay-2">
-              {club.tagline}. Formamos jugadores con método, valores y sentido
-              de pertenencia territorial.
+              {copy.subtitle ||
+                `${club.tagline}. Formamos jugadores con método, valores y sentido de pertenencia territorial.`}
             </p>
 
             <div className="mt-8 mobile-reveal mobile-reveal-delay-3">
@@ -76,14 +87,14 @@ export function Hero() {
                 href="/club"
                 className="alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-6 text-sm font-black text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[var(--cinematic-accent)] hover:bg-white/16"
               >
-                Conocer el club
+                {copy.cta || "Conocer el club"}
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
 
             <p className="mt-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-normal text-white/76">
               <MapPin size={15} aria-hidden="true" />
-              Usme · Bogotá D.C.
+              {copy.location || "Usme · Bogotá D.C."}
             </p>
           </div>
 

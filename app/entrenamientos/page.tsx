@@ -5,6 +5,7 @@ import { TrainingManager } from "@/components/trainings/TrainingManager";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club, galleryItems } from "@/lib/content";
+import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { readTrainings } from "@/lib/training-store";
 import { pageOpenGraph } from "@/lib/site";
 
@@ -20,14 +21,19 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function EntrenamientosPage() {
+  const overrides = await readContentOverrides();
   const trainings = await readTrainings();
 
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title="Entrenamientos"
-        subtitle="Registro visual de sesiones, comunidad y proceso deportivo."
-        eyebrow="Entrenamientos"
+        title={contentOverride(overrides, "entrenamientos.hero.title", "Entrenamientos")}
+        subtitle={contentOverride(
+          overrides,
+          "entrenamientos.hero.subtitle",
+          "Registro visual de sesiones, comunidad y proceso deportivo.",
+        )}
+        eyebrow={contentOverride(overrides, "entrenamientos.hero.eyebrow", "Entrenamientos")}
       />
 
       <ScmTrainingModelSection />
@@ -36,14 +42,22 @@ export default async function EntrenamientosPage() {
         <section className="section-shell section-padding">
           <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-end">
             <div>
-              <p className="eyebrow">Memoria visual</p>
+              <p className="eyebrow">
+                {contentOverride(overrides, "entrenamientos.gallery.eyebrow", "Memoria visual")}
+              </p>
               <h2 className="font-gallery mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
-                Sesiones que muestran disciplina, trabajo técnico y comunidad.
+                {contentOverride(
+                  overrides,
+                  "entrenamientos.gallery.title",
+                  "Sesiones que muestran disciplina, trabajo técnico y comunidad.",
+                )}
               </h2>
               <p className="mt-5 text-base leading-8 text-muted">
-                Las publicaciones del administrador aparecen debajo como registro
-                público. Las imágenes de apoyo editorial refuerzan la identidad visual
-                mientras el club suma material propio.
+                {contentOverride(
+                  overrides,
+                  "entrenamientos.gallery.description",
+                  "Las publicaciones del administrador aparecen debajo como registro público. Las imágenes de apoyo editorial refuerzan la identidad visual mientras el club suma material propio.",
+                )}
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -76,9 +90,15 @@ export default async function EntrenamientosPage() {
       <RevealSection>
         <section className="section-shell pb-24">
           <div className="mb-8 max-w-2xl">
-            <p className="eyebrow">Entrenamientos publicados</p>
+            <p className="eyebrow">
+              {contentOverride(
+                overrides,
+                "entrenamientos.published.eyebrow",
+                "Entrenamientos publicados",
+              )}
+            </p>
             <h2 className="font-training mt-3 text-4xl font-black sm:text-5xl">
-              Registro de sesiones
+              {contentOverride(overrides, "entrenamientos.published.title", "Registro de sesiones")}
             </h2>
           </div>
           <TrainingManager initialItems={trainings} />
