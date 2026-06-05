@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
-import { Trophy } from "lucide-react";
+import { Trophy, Zap } from "lucide-react";
 import { TournamentCard } from "@/components/tournaments/TournamentCard";
+import { CurrentTournamentCard } from "@/components/tournaments/CurrentTournamentCard";
 import { TournamentManager } from "@/components/tournaments/TournamentManager";
+import { CurrentTournamentManager } from "@/components/tournaments/CurrentTournamentManager";
 import { TournamentSectionsManager } from "@/components/tournaments/TournamentSectionsManager";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { readTournaments, type Tournament, type TournamentStatus } from "@/lib/tournament-store";
+import { readCurrentTournament } from "@/lib/current-tournament-store";
 import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -50,6 +53,7 @@ function sectionCount(items: Tournament[], status: TournamentStatus) {
 export default async function TorneosPage() {
   const overrides = await readContentOverrides();
   const tournaments = await readTournaments();
+  const currentTournament = await readCurrentTournament();
   const orderedTournaments = [...tournaments].sort((a, b) =>
     b.startDate.localeCompare(a.startDate),
   );
@@ -116,6 +120,29 @@ export default async function TorneosPage() {
 
       <TournamentSectionsManager sections={defaultSections} initialValues={overrides} />
 
+      {currentTournament && (
+        <RevealSection>
+          <section className="section-shell scroll-mt-28 py-10">
+            <div className="mb-7 max-w-3xl">
+              <p className="eyebrow flex items-center gap-2">
+                <Zap size={16} className="text-accent" />
+                En vivo
+              </p>
+              <h2 className="font-stadium mt-3 text-4xl font-black sm:text-5xl">
+                Torneo Actual
+              </h2>
+              <p className="mt-3 text-base leading-7 text-muted">
+                Competencia en disputa donde participa el club en este momento.
+              </p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <CurrentTournamentCard item={currentTournament} />
+            </div>
+          </section>
+        </RevealSection>
+      )}
+
       {sections.map((section) => {
         const items = orderedTournaments.filter((item) => item.status === section.status);
 
@@ -159,6 +186,13 @@ export default async function TorneosPage() {
               {adminSection.title}
             </h2>
           </div>
+
+          <div className="mb-10">
+            <h3 className="text-2xl font-bold mb-4">Torneo Actual</h3>
+            <CurrentTournamentManager initialItem={currentTournament} />
+          </div>
+
+          <h3 className="text-2xl font-bold mb-4">Otros Torneos</h3>
           <TournamentManager initialItems={orderedTournaments} showList={false} />
         </section>
       </RevealSection>

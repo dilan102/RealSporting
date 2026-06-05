@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo Visual - Torneo Actual | Real Sporting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #fbbf24;
+            font-size: 2.5rem;
+        }
+
+        .section {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .eyebrow {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #fbbf24;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: #f1f5f9;
+        }
+
+        .description {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(71, 85, 105, 0.3);
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-image {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(30,41,59);stop-opacity:0.5" /><stop offset="100%" style="stop-color:rgb(15,23,42);stop-opacity:0.5" /></linearGradient></defs><rect width="800" height="500" fill="url(%23g)"/><circle cx="400" cy="250" r="150" fill="none" stroke="rgba(251,191,36,0.2)" stroke-width="2"/><path d="M 200 250 L 600 250" stroke="rgba(251,191,36,0.1)" stroke-width="1"/><path d="M 400 100 L 400 400" stroke="rgba(251,191,36,0.1)" stroke-width="1"/></svg>');
+            opacity: 0.8;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: white;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #fbbf24;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #fbbf24;
+            color: #1e293b;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #fbbf24;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+            color: #fbbf24;
+            flex-shrink: 0;
+        }
+
+        .schedule-box {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 16px 0;
+        }
+
+        .schedule-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+
+        .schedule-text {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            white-space: pre-line;
+        }
+
+        .gallery {
+            margin-top: 20px;
+        }
+
+        .gallery-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item::after {
+            content: '📷';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: 2px solid;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background: #fbbf24;
+            border-color: #fbbf24;
+            color: #1e293b;
+        }
+
+        .btn-primary:hover {
+            background: #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: #64748b;
+            color: #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #e2e8f0;
+        }
+
+        .admin-section {
+            background: rgba(251, 191, 36, 0.05);
+            border: 2px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 6px;
+            padding: 10px;
+            color: #e2e8f0;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .form-textarea {
+            grid-column: span 2;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #fbbf24;
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.1);
+        }
+
+        .demo-note {
+            background: rgba(251, 191, 36, 0.1);
+            border-left: 4px solid #fbbf24;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            color: #fde047;
+        }
+
+        .demo-note strong {
+            color: #fbbf24;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-textarea {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Torneo Actual - Ejemplo Visual</h1>
+
+        <div class="demo-note">
+            <strong>📌 Nota:</strong> Este es un ejemplo visual de cómo se vería la nueva sección 
+            "Torneo Actual" en la página de Torneos. Muestra cómo aparece para visitantes 
+            y para administradores.
+        </div>
+
+        <!-- SECCIÓN VISITANTE -->
+        <div class="section">
+            <div class="section-title">
+                <span class="eyebrow">🔴 EN VIVO</span>
+            </div>
+            <h2>Torneo Actual</h2>
+            <p class="description">
+                Competencia en disputa donde participa el club en este momento.
+            </p>
+
+            <div class="card">
+                <div class="card-image">
+                    <div class="card-badge">
+                        <div class="dot"></div>
+                        En juego
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div class="card-title">Copa Regional 2026</div>
+                    <p class="card-description">
+                        Competencia regional donde el club Real Sporting participa con categorías 
+                        U-14 y U-17. Evento de importancia en el calendario competitivo.
+                    </p>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                                <path d="M3 9h18"></path>
+                            </svg>
+                            <span>15 - 28 Junio 2026</span>
+                        </div>
+                        <div class="info-item">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 10c0 7-3 11-10 11S0 17 0 10"></path>
+                            </svg>
+                            <span>U-14 y U-17</span>
+                        </div>
+                        <div class="info-item">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-4.5 10-9 10S3 17 3 10"></path>
+                            </svg>
+                            <span>Estadio El Campín, Bogotá</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Rival: Deportivo Nacional (Próximo)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-box">
+                        <div class="schedule-label">Programación</div>
+                        <div class="schedule-text">Grupo A - 15:00 vs Deportivo Nacional
+Grupo A - 17:30 vs Academia del Valle
+Semifinales - 19:00 vs Clasificado</div>
+                    </div>
+
+                    <div class="gallery">
+                        <div class="gallery-label">Galería (3 imágenes)</div>
+                        <div class="gallery-grid">
+                            <div class="gallery-item"></div>
+                            <div class="gallery-item"></div>
+                            <div class="gallery-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN ADMINISTRADOR -->
+        <div class="section admin-section">
+            <div class="section-title">
+                <span class="eyebrow">👨‍💼 Administrador</span>
+            </div>
+            <h2>Gestionar Torneo Actual</h2>
+
+            <div style="margin: 30px 0; padding: 20px; background: rgba(251, 191, 36, 0.05); border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.2);">
+                <p style="color: #fde047; margin-bottom: 15px;">
+                    <strong>Vista Previa:</strong> El torneo actual se muestra arriba. 
+                    Usa el formulario abajo para editar.
+                </p>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary">Editar</button>
+                    <button class="btn btn-secondary">Borrar</button>
+                </div>
+            </div>
+
+            <h3 style="margin: 30px 0 20px 0; font-size: 1.3rem; color: #e2e8f0;">
+                Formulario de Edición
+            </h3>
+
+            <form style="background: rgba(15, 23, 42, 0.4); padding: 20px; border-radius: 8px;">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Nombre del torneo *</label>
+                        <input type="text" class="form-input" value="Copa Regional 2026" placeholder="Ej: Copa Regional 2026">
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Descripción *</label>
+                        <textarea class="form-textarea">Competencia regional donde el club Real Sporting participa con categorías U-14 y U-17. Evento de importancia en el calendario competitivo.</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoría</label>
+                        <input type="text" class="form-input" value="U-14 y U-17" placeholder="U-14, U-17, etc">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Rival</label>
+                        <input type="text" class="form-input" value="Deportivo Nacional" placeholder="Nombre del rival">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Sede</label>
+                        <input type="text" class="form-input" value="Estadio El Campín, Bogotá" placeholder="Lugar del torneo">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Programación</label>
+                        <input type="text" class="form-input" value="Grupo A - 15:00 vs Deportivo Nacional" placeholder="Horarios de juego">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Fecha Inicio *</label>
+                        <input type="date" class="form-input" value="2026-06-15">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Fecha Fin *</label>
+                        <input type="date" class="form-input" value="2026-06-28">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Visibilidad</label>
+                        <select class="form-select">
+                            <option>Publicado</option>
+                            <option>Borrador</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Imagen Principal</label>
+                        <input type="file" class="form-input" accept="image/*">
+                    </div>
+
+                    <div style="grid-column: span 2; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); aspect-ratio: 16/10; border: 1px dashed rgba(71, 85, 105, 0.5); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                        [Vista previa de imagen]
+                    </div>
+                </div>
+
+                <div class="buttons" style="margin-top: 20px;">
+                    <button type="button" class="btn btn-primary">Guardar Torneo</button>
+                    <button type="button" class="btn btn-secondary">Limpiar</button>
+                </div>
+            </form>
+
+            <div style="margin-top: 20px; padding: 12px; background: rgba(251, 191, 36, 0.1); border-left: 4px solid #fbbf24; border-radius: 4px; color: #fde047; font-size: 0.9rem;">
+                ✅ Estado: Cambios guardados correctamente
+            </div>
+        </div>
+
+        <!-- INFORMACIÓN TÉCNICA -->
+        <div class="section">
+            <h2>ℹ️ Información Técnica</h2>
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 8px; color: #cbd5e1; line-height: 1.8; font-family: 'Courier New', monospace; font-size: 0.9rem;">
+                <p><strong style="color: #fbbf24;">Archivos creados:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>✅ <code>lib/current-tournament-store.ts</code> - Store de datos</li>
+                    <li>✅ <code>components/tournaments/CurrentTournamentCard.tsx</code> - Componente de tarjeta</li>
+                    <li>✅ <code>components/tournaments/CurrentTournamentManager.tsx</code> - Gestor de administración</li>
+                    <li>✅ <code>app/api/current-tournament/route.ts</code> - Endpoint de API</li>
+                    <li>✅ <code>prisma/schema.prisma</code> - Modelo de base de datos</li>
+                </ul>
+
+                <p style="margin-top: 20px;"><strong style="color: #fbbf24;">Pasos siguientes:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>1️⃣ Ejecutar: <code>npx prisma migrate dev --name add_torneo_actual</code></li>
+                    <li>2️⃣ Reiniciar servidor Next.js</li>
+                    <li>3️⃣ Ir a /torneos en modo administrador</li>
+                    <li>4️⃣ Crear un nuevo "Torneo Actual"</li>
+                </ul>
+
+                <p style="margin-top: 20px;"><strong style="color: #fbbf24;">Características:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>🎯 Sección destacada con indicador "En juego"</li>
+                    <li>📸 Soporte para múltiples imágenes en galería</li>
+                    <li>⚙️ Administración completa (CRUD)</li>
+                    <li>📱 Diseño responsive</li>
+                    <li>🔐 Autenticación de administrador</li>
+                    <li>📅 Gestión de fechas</li>
+                    <li>🎨 Estilo visual consistente con el sitio</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; color: #64748b; font-size: 0.9rem;">
+            <p>Ejemplo visual creado para: Real Sporting - Sección de Torneos</p>
+            <p style="margin-top: 10px;">Fecha: 5 de junio de 2026</p>
+        </div>
+    </div>
+</body>
+</html>
