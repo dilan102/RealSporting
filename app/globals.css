@@ -133,33 +133,7 @@
 
   html[data-scroll-theme="active"] {
     --scroll-day-progress: 0;
-    --bg-primary: color-mix(in srgb, #f4f7f1 calc(var(--scroll-day-progress) * 100%), #080b09);
-    --bg-secondary: color-mix(in srgb, #fffdf7 calc(var(--scroll-day-progress) * 100%), #101612);
-    --text-primary: color-mix(in srgb, #111c16 calc(var(--scroll-day-progress) * 100%), #f5f7f4);
-    --text-secondary: color-mix(in srgb, #4a5d50 calc(var(--scroll-day-progress) * 100%), #c0cac2);
-    --accent-gold: color-mix(in srgb, #b88924 calc(var(--scroll-day-progress) * 100%), #d0a13a);
-    --accent-green: color-mix(in srgb, #154f37 calc(var(--scroll-day-progress) * 100%), #2b7655);
-    --card-bg: color-mix(in srgb, #ffffff calc(var(--scroll-day-progress) * 100%), #121914);
-    --border: color-mix(
-      in srgb,
-      rgba(17, 28, 22, 0.24) calc(var(--scroll-day-progress) * 100%),
-      rgba(245, 247, 244, 0.14)
-    );
-    --nav-bg: color-mix(
-      in srgb,
-      rgba(255, 253, 247, 0.9) calc(var(--scroll-day-progress) * 100%),
-      rgba(10, 10, 10, 0.78)
-    );
-    --cursor-main: color-mix(in srgb, #111c16 calc(var(--scroll-day-progress) * 100%), #f8faf7);
-    --cursor-trail: color-mix(
-      in srgb,
-      rgba(21, 79, 55, 0.78) calc(var(--scroll-day-progress) * 100%),
-      rgba(208, 161, 58, 0.78)
-    );
-    --preloader-surface: color-mix(in srgb, #f4f7f1 calc(var(--scroll-day-progress) * 100%), #050805);
-    --cinematic-fallback: color-mix(in srgb, #121c17 calc(var(--scroll-day-progress) * 100%), #050805);
-    --cinematic-accent: color-mix(in srgb, #b88924 calc(var(--scroll-day-progress) * 100%), #f3c548);
-    --inscription-band-bg: color-mix(in srgb, #121c17 calc(var(--scroll-day-progress) * 100%), #050805);
+    --scroll-day-overlay: calc(var(--scroll-day-progress) * 0.22);
     color-scheme: dark light;
   }
 
@@ -208,26 +182,36 @@
   }
 
   html[data-scroll-theme="active"] body {
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, #080b09 calc((1 - var(--scroll-day-progress)) * 78%), transparent) 0%,
-        color-mix(in srgb, #f4f7f1 calc(var(--scroll-day-progress) * 74%), transparent) 34rem,
-        transparent 58rem
-      ),
-      var(--bg-primary);
+    background: var(--bg-primary);
   }
 
-  /* Ocultar cursor nativo cuando el cursor personalizado está activo */
+  html[data-scroll-theme="active"] .site-content {
+    position: relative;
+    isolation: isolate;
+  }
+
+  html[data-scroll-theme="active"] .site-content::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(244, 247, 241, 0.72), rgba(255, 253, 247, 0.36) 46%, transparent),
+      radial-gradient(circle at 75% 10%, rgba(184, 137, 36, 0.22), transparent 32rem);
+    opacity: var(--scroll-day-overlay);
+  }
+
+  /* Mantener el cursor nativo evita que se pierda en fondos intermedios. */
   body.custom-cursor-active,
   body.custom-cursor-active * {
-    cursor: none !important;
+    cursor: auto !important;
   }
 
-  /* Solo activar cursor personalizado en dispositivos no táctiles */
+  /* Solo activar cursor personalizado en dispositivos no táctiles. */
   @media (hover: hover) and (pointer: fine) {
     body.custom-cursor-active {
-      cursor: none !important;
+      cursor: auto !important;
     }
   }
 
@@ -339,10 +323,10 @@
 
   [data-theme="light"] .premium-card {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(255, 253, 248, 0.95));
-    border-color: color-mix(in srgb, var(--accent-green) 28%, var(--border));
+    border-color: color-mix(in srgb, var(--accent-green) 36%, var(--border));
     box-shadow:
-      0 20px 48px rgba(18, 42, 29, 0.12),
-      0 6px 16px rgba(184, 137, 36, 0.1),
+      0 24px 56px rgba(18, 42, 29, 0.16),
+      0 8px 20px rgba(184, 137, 36, 0.13),
       inset 0 1px 0 rgba(255, 255, 255, 0.85);
   }
 
@@ -353,8 +337,8 @@
 
   [data-theme="light"] .premium-card-hover {
     box-shadow:
-      0 20px 48px rgba(18, 42, 29, 0.12),
-      0 6px 16px rgba(184, 137, 36, 0.1);
+      0 22px 54px rgba(18, 42, 29, 0.16),
+      0 8px 20px rgba(184, 137, 36, 0.13);
   }
 
   .premium-card-hover:hover {
@@ -363,8 +347,8 @@
 
   [data-theme="light"] .premium-card-hover:hover {
     box-shadow:
-      0 28px 68px rgba(31, 93, 67, 0.16),
-      0 10px 26px rgba(184, 137, 36, 0.14);
+      0 30px 76px rgba(31, 93, 67, 0.22),
+      0 12px 30px rgba(184, 137, 36, 0.18);
   }
 
   .grid-overlay {
@@ -441,10 +425,10 @@
 
   [data-theme="light"] .alive-card {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 252, 245, 0.96));
-    border-color: color-mix(in srgb, var(--accent-green) 32%, var(--border));
+    border-color: color-mix(in srgb, var(--accent-green) 40%, var(--border));
     box-shadow:
-      0 18px 42px rgba(18, 42, 29, 0.14),
-      0 6px 18px rgba(184, 137, 36, 0.12),
+      0 22px 56px rgba(18, 42, 29, 0.18),
+      0 8px 22px rgba(184, 137, 36, 0.14),
       inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
@@ -478,8 +462,8 @@
   [data-theme="light"] .alive-card:focus-within {
     border-color: color-mix(in srgb, var(--accent-gold) 68%, var(--accent-green) 18%);
     box-shadow:
-      0 26px 72px rgba(31, 93, 67, 0.18),
-      0 10px 28px rgba(184, 137, 36, 0.18);
+      0 32px 82px rgba(31, 93, 67, 0.24),
+      0 12px 34px rgba(184, 137, 36, 0.22);
     filter: saturate(1.03);
   }
 
@@ -953,7 +937,7 @@
 }
 
 .day-night-indicator {
-  --day-progress: 0;
+  --day-progress: var(--scroll-day-progress, 0);
   position: relative;
   width: 52px;
   height: 52px;

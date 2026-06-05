@@ -9,19 +9,22 @@
 }
 
 .cursorMain {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background-color: var(--cursor-main, rgba(17, 28, 22, 0.85));
   border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--cursor-ring, rgba(17, 28, 22, 0.12));
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.72),
+    0 0 0 4px rgba(0, 0, 0, 0.16),
+    0 0 14px var(--cursor-glow, rgba(21, 79, 55, 0.24));
 }
 
 .cursorTrail {
   width: 22px;
   height: 22px;
-  border: 1px solid var(--cursor-trail, rgba(21, 79, 55, 0.35));
+  border: 2px solid var(--cursor-trail, rgba(21, 79, 55, 0.35));
   background-color: transparent;
-  opacity: 0.55;
+  opacity: 0.78;
   transition:
     width 0.12s ease,
     height 0.12s ease,
@@ -35,14 +38,14 @@
   height: 32px;
   border-color: var(--cursor-hover, rgba(184, 137, 36, 0.55));
   background-color: var(--cursor-hover-fill, rgba(184, 137, 36, 0.06));
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .cursorImageHover {
   width: 28px;
   height: 28px;
   border-color: var(--cursor-image, rgba(17, 28, 22, 0.28));
-  opacity: 0.65;
+  opacity: 0.86;
 }
 
 @media (hover: none) and (pointer: coarse) {

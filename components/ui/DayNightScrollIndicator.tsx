@@ -1,14 +1,12 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const clamp = (value: number) => Math.min(1, Math.max(0, value));
 
 export function DayNightScrollIndicator() {
   const { setTheme } = useTheme();
-  const [progress, setProgress] = useState(0);
   const activeTheme = useRef<"dark" | "light" | null>(null);
   const frame = useRef<number | null>(null);
 
@@ -21,10 +19,9 @@ export function DayNightScrollIndicator() {
       const transitionDistance = Math.max(scrollable * 0.5, 1);
       const nextProgress = clamp(window.scrollY / transitionDistance);
       const roundedProgress = Number(nextProgress.toFixed(3));
-      const nextTheme = nextProgress >= 0.5 ? "light" : "dark";
+      const nextTheme = nextProgress >= 1 ? "light" : "dark";
 
       root.style.setProperty("--scroll-day-progress", String(roundedProgress));
-      setProgress(roundedProgress);
 
       if (activeTheme.current !== nextTheme) {
         activeTheme.current = nextTheme;
@@ -57,11 +54,7 @@ export function DayNightScrollIndicator() {
   }, [setTheme]);
 
   return (
-    <div
-      className="day-night-indicator"
-      style={{ "--day-progress": progress } as CSSProperties}
-      aria-hidden="true"
-    >
+    <div className="day-night-indicator" aria-hidden="true">
       <span className="day-night-sun" />
       <span className="day-night-moon">
         <span />
