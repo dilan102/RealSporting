@@ -3,14 +3,12 @@ import { GlobalContentManager } from "@/components/admin/GlobalContentManager";
 import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import Preloader from "@/components/ui/Preloader";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
 import Cursor from "@/components/ui/Cursor";
 import { club } from "@/lib/content";
-import "/public/preloader.css";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
 
@@ -48,11 +46,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <head>
-        <script src="/preloader.js" defer></script>
-      </head>
+      <head></head>
       <body className="min-h-screen flex flex-col">
-        <Preloader logoSrc="/logo.png" duration={8000} />
         <Cursor />
         <ThemeProvider>
           <div id="site-content" className="site-content flex min-h-screen flex-col">

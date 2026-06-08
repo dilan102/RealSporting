@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Club Deportivo Real Sporting USME</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-mid: #1e3a8a;
+      --accent: #3b82f6;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --red: #ef4444;
+      --orange: #f97316;
+      --white: #f8fafc;
+      --green-dark: #164e63;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Amatic SC', cursive;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    /* PRELOADER */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      opacity: 1;
+      transition: opacity 0.6s ease forwards;
+    }
+
+    #preloader.exit {
+      animation: exitPreloader 0.6s ease forwards;
+    }
+
+    @keyframes exitPreloader {
+      0% { opacity: 1; transform: scale(1); }
+      60% { opacity: 1; transform: scale(1.04); }
+      100% { opacity: 0; transform: scale(1.04); }
+    }
+
+    /* Logo watermark */
+    #preloader::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 220px;
+      height: 220px;
+      background-image: url('./logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.06;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .preloader-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Title */
+    #preloader h1 {
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      color: var(--text);
+      letter-spacing: 5px;
+      text-align: center;
+      margin-bottom: 20px;
+      animation: titlePulse 2.5s linear infinite;
+      font-weight: 700;
+    }
+
+    @keyframes titlePulse {
+      0% { opacity: 0.25; transform: scaleX(1); }
+      50% { opacity: 1; transform: scaleX(1.05); }
+      100% { opacity: 0.25; transform: scaleX(1); }
+    }
+
+    /* Canvas */
+    canvas {
+      display: block;
+      margin: 20px 0;
+      border: 2px solid var(--green-dark);
+      border-radius: 8px;
+      background: radial-gradient(circle at 50% 40%, rgba(22, 78, 99, 0.15), #000000);
+    }
+
+    /* Button */
+    #cta {
+      font-family: 'Amatic SC', cursive;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      border-radius: 50px;
+      padding: 14px 48px;
+      margin-top: 28px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      opacity: 0;
+      animation: fadeSlideUp 0.7s ease forwards;
+      animation-delay: 0.4s;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #cta:hover {
+      background: #2563eb;
+      transform: scale(1.05);
+    }
+
+    #cta:active {
+      transform: scale(0.97);
+    }
+
+    /* MAIN PAGE */
+    #main-page {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #main-page.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #main-page::before {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background-image: url('./logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.06;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .main-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    #main-page h1 {
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(3rem, 8vw, 5rem);
+      color: var(--text);
+      letter-spacing: 8px;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    #main-page p {
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      margin-bottom: 3rem;
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      font-family: 'Amatic SC', cursive;
+    }
+
+    .nav-links a {
+      font-size: 1.4rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 2px;
+      transition: all 0.3s ease;
+      padding: 10px 20px;
+      border: 2px solid var(--accent);
+      border-radius: 25px;
+    }
+
+    .nav-links a:hover {
+      background: var(--accent);
+      color: var(--bg);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      #preloader h1 {
+        font-size: 1.8rem;
+        letter-spacing: 3px;
+      }
+
+      #cta {
+        font-size: 1.4rem;
+        padding: 12px 36px;
+      }
+
+      #main-page h1 {
+        font-size: 2.5rem;
+        letter-spacing: 4px;
+      }
+
+      #main-page p {
+        font-size: 1.2rem;
+      }
+
+      .nav-links a {
+        font-size: 1.1rem;
+      }
+
+      canvas {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="preloader">
+    <div class="preloader-content">
+      <h1>Cargando el partido...</h1>
+      <canvas id="canvas" width="360" height="340"></canvas>
+      <button id="cta">¿Iniciar partido?</button>
+    </div>
+  </div>
+
+  <div id="main-page">
+    <div class="main-content">
+      <h1>Club Deportivo Real Sporting USME</h1>
+      <p>¡Bienvenido a nuestro mundo!</p>
+      <div class="nav-links">
+        <a href="#noticias">Noticias</a>
+        <a href="#torneos">Torneos</a>
+        <a href="#equipo">Equipo</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 360;
+    const H = 340;
+    const GROUND = H - 20;
+    const CX = W / 2;
+    const BALL_R = 26;
+    const ANKLE_BASE_Y = GROUND - 55;
+    const ANKLE_KICK_Y = GROUND - 120;
+    const BALL_PEAK_Y = GROUND - 270;
+    const BALL_REST_Y = ANKLE_KICK_Y - 85 - BALL_R;
+    const CYCLE = 2200;
+    
+    const startTime = Date.now();
+    const MIN_PRELOADER_TIME = 3000; // Mínimo 3 segundos
+
+    // Helpers
+    const ease = {
+      outCubic: (t) => 1 - Math.pow(1 - t, 3),
+      inCubic: (t) => t * t * t,
+      lerp: (a, b, t) => a + (b - a) * t,
+      clamp: (v, mn, mx) => Math.max(mn, Math.min(mx, v))
+    };
+
+    function getAnkle(p) {
+      let y = ANKLE_BASE_Y, rot = 0;
+      if (p < 0.12) {
+        const t = p / 0.12;
+        y = ease.lerp(ANKLE_BASE_Y, ANKLE_KICK_Y, ease.outCubic(t));
+        rot = ease.lerp(0, -0.45, ease.outCubic(t));
+      } else if (p < 0.32) {
+        const t = (p - 0.12) / 0.2;
+        y = ease.lerp(ANKLE_KICK_Y, ANKLE_BASE_Y + 10, ease.outCubic(t));
+        rot = ease.lerp(-0.45, 0.05, ease.outCubic(t));
+      } else if (p < 0.88) {
+        const sway = Math.sin((p - 0.32) * Math.PI * 2) * 3;
+        y = ANKLE_BASE_Y + 10 + sway;
+        rot = 0.05;
+      } else {
+        const t = (p - 0.88) / 0.12;
+        y = ease.lerp(ANKLE_BASE_Y + 10, ANKLE_BASE_Y, ease.outCubic(t));
+        rot = ease.lerp(0.05, 0, ease.outCubic(t));
+      }
+      return { y, rot };
+    }
+
+    function getBall(p) {
+      const ankle = getAnkle(p);
+      let y = ankle.y - 85 - BALL_R, rot = 0, sq = 1, sqx = 1;
+      
+      if (p < 0.12) {
+        rot = 0;
+      } else if (p < 0.32) {
+        const t = (p - 0.12) / 0.2;
+        y = ease.lerp(ANKLE_KICK_Y - 85 - BALL_R, BALL_PEAK_Y, ease.outCubic(t));
+        rot = Math.PI * 1.4 * t;
+      } else if (p < 0.54) {
+        const t = p - 0.32;
+        y = BALL_PEAK_Y + Math.sin(t * Math.PI) * 7;
+        rot = Math.PI * 1.4;
+      } else if (p < 0.88) {
+        const t = (p - 0.54) / 0.34;
+        y = ease.lerp(BALL_PEAK_Y, BALL_REST_Y, ease.inCubic(t));
+        rot = Math.PI * 1.4 + Math.PI * t;
+      } else {
+        const t = (p - 0.88) / 0.12;
+        y = ease.lerp(BALL_REST_Y, BALL_REST_Y - 3, Math.sin(t * Math.PI));
+        sq = 1 - 0.16 * Math.sin(t * Math.PI);
+        sqx = 1 + 0.16 * Math.sin(t * Math.PI);
+        rot = Math.PI * 2;
+      }
+      return { y, rot, sq, sqx };
+    }
+
+    function drawGround() {
+      const gr = ctx.createLinearGradient(0, GROUND, W, GROUND);
+      gr.addColorStop(0, 'rgba(30, 58, 138, 0)');
+      gr.addColorStop(0.25, '#1e3a8a');
+      gr.addColorStop(0.5, '#3b82f6');
+      gr.addColorStop(0.75, '#1e3a8a');
+      gr.addColorStop(1, 'rgba(30, 58, 138, 0)');
+      ctx.strokeStyle = gr;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, GROUND);
+      ctx.lineTo(W, GROUND);
+      ctx.stroke();
+    }
+
+    function drawShadow(ballY) {
+      const norm = ease.clamp((ballY - BALL_PEAK_Y) / (BALL_REST_Y - BALL_PEAK_Y), 0, 1);
+      ctx.fillStyle = `rgba(0, 0, 0, ${0.05 + norm * 0.3})`;
+      ctx.beginPath();
+      ctx.ellipse(CX, GROUND + 1, 12 + norm * 22, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawBall(x, y, rot, sq, sqx) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(sqx, sq);
+      ctx.rotate(rot);
+      
+      ctx.fillStyle = '#f1f5f9';
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.arc(0, 0, BALL_R, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#0f172a';
+      const patches = [[0, -BALL_R * 0.4, BALL_R * 0.3], [BALL_R * 0.36, BALL_R * 0.2, BALL_R * 0.28], [-BALL_R * 0.36, BALL_R * 0.2, BALL_R * 0.28], [BALL_R * 0.22, -BALL_R * 0.24, BALL_R * 0.2], [-BALL_R * 0.22, -BALL_R * 0.24, BALL_R * 0.2]];
+      patches.forEach(([px, py, pr]) => {
+        ctx.beginPath();
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.beginPath();
+      ctx.arc(-BALL_R * 0.26, -BALL_R * 0.28, BALL_R * 0.16, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawBoot(ax, ay, rot) {
+      ctx.save();
+      ctx.translate(ax, ay);
+      ctx.rotate(rot);
+
+      // Leg
+      ctx.fillStyle = '#1e3a8a';
+      ctx.fillRect(-9, -100, 18, 88);
+
+      // Sock
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-9, -22, 18, 10);
+
+      // Shoe upper
+      ctx.fillStyle = '#f8fafc';
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-11, -12);
+      ctx.lineTo(-13, 2);
+      ctx.quadraticCurveTo(-13, 12, -3, 14);
+      ctx.lineTo(30, 14);
+      ctx.quadraticCurveTo(44, 12, 44, 2);
+      ctx.quadraticCurveTo(44, -8, 30, -10);
+      ctx.lineTo(9, -12);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Heel
+      ctx.fillStyle = '#e2e8f0';
+      ctx.beginPath();
+      ctx.moveTo(-11, -12);
+      ctx.quadraticCurveTo(-21, -8, -21, 2);
+      ctx.quadraticCurveTo(-21, 12, -11, 14);
+      ctx.lineTo(-3, 14);
+      ctx.quadraticCurveTo(-13, 12, -13, 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Sole
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.moveTo(-21, 12);
+      ctx.quadraticCurveTo(-22, 17, -11, 18);
+      ctx.lineTo(30, 18);
+      ctx.quadraticCurveTo(46, 17, 46, 8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Stripes
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(-21, -12, 68, 26);
+      ctx.clip();
+      ['#ef4444', '#3b82f6', '#ffffff'].forEach((color, i) => {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3.5;
+        const ox = 4 + i * 9;
+        ctx.beginPath();
+        ctx.moveTo(ox + 5, -13);
+        ctx.lineTo(ox - 5, 15);
+        ctx.stroke();
+      });
+      ctx.restore();
+
+      // Laces
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < 4; i++) {
+        ctx.beginPath();
+        ctx.moveTo(-1 + i * 7, -11);
+        ctx.lineTo(-1 + i * 7, -2);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawImpactParticles(p) {
+      if (p >= 0.1) return;
+      const t = p / 0.1;
+      const alpha = Math.sin(t * Math.PI);
+      const colors = ['#f97316', '#3b82f6', '#22c55e', '#ef4444', '#fbbf24', '#ffffff'];
+      const centerY = ANKLE_KICK_Y - 85 - BALL_R;
+
+      colors.forEach((color, i) => {
+        const angle = (i / colors.length) * Math.PI * 2;
+        const dist = t * 28;
+        const r = 2.8 - t * 1.8;
+        const px = CX + Math.cos(angle) * dist;
+        const py = centerY + Math.sin(angle) * dist * 0.5;
+
+        ctx.fillStyle = color;
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+    }
+
+    function animate() {
+      const now = Date.now();
+      const p = (now % CYCLE) / CYCLE;
+
+      // Gradient background
+      const bgGradient = ctx.createRadialGradient(CX, H * 0.4, 50, CX, H * 0.4, W);
+      bgGradient.addColorStop(0, 'rgba(22, 78, 99, 0.3)');
+      bgGradient.addColorStop(0.3, 'rgba(15, 23, 42, 0.5)');
+      bgGradient.addColorStop(1, '#000000');
+      ctx.fillStyle = bgGradient;
+      ctx.fillRect(0, 0, W, H);
+
+      const ankle = getAnkle(p);
+      const ball = getBall(p);
+
+      drawGround();
+      drawShadow(ball.y);
+      drawBoot(CX, ankle.y, ankle.rot);
+      drawImpactParticles(p);
+      drawBall(CX, ball.y, ball.rot, ball.sq, ball.sqx);
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Button interaction - con protección de tiempo mínimo
+    const ctaButton = document.getElementById('cta');
+    let buttonClickable = false;
+    
+    // El botón se puede clickear después de 1 segundo
+    setTimeout(() => {
+      buttonClickable = true;
+      console.log('Button is now clickable');
+    }, 1000);
+
+    ctaButton.addEventListener('click', () => {
+      if (!buttonClickable) {
+        console.log('Button click ignored - too early');
+        return;
+      }
+      
+      console.log('Exit preloader triggered');
+      const preloader = document.getElementById('preloader');
+      const mainPage = document.getElementById('main-page');
+      
+      preloader.classList.add('exit');
+      
+      setTimeout(() => {
+        preloader.style.display = 'none';
+        mainPage.classList.add('show');
+        console.log('Main page shown');
+      }, 600);
+    });
+  </script>
+</body>
+</html>
