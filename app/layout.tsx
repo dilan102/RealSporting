@@ -5,7 +5,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SitePreloader } from "@/components/ui/SitePreloader";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
-import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
+import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
+import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
 import Cursor from "@/components/ui/Cursor";
 import { club } from "@/lib/content";
@@ -59,7 +60,8 @@ export default function RootLayout({
             <Navbar />
             <AdminPortal />
             <GlobalContentManager />
-            <WhatsAppFloat />
+            <AIAssistantWidget />
+            <AIAssistantFloatingButton />
             <main className="flex-1">
               <PageTransition>{children}</PageTransition>
             </main>

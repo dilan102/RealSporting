@@ -7,12 +7,8 @@ import { TournamentEditModal } from "./TournamentEditModal";
 
 export function TournamentsList({
   items,
-  sectionTitle,
-  sectionDescription,
 }: {
   items: Tournament[];
-  sectionTitle: string;
-  sectionDescription: string;
 }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [accessKey, setAccessKey] = useState("");

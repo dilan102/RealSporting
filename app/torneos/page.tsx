@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Trophy, Zap } from "lucide-react";
-import { TournamentCard } from "@/components/tournaments/TournamentCard";
 import { TournamentsList } from "@/components/tournaments/TournamentsList";
 import { CurrentTournamentCard } from "@/components/tournaments/CurrentTournamentCard";
 import { TournamentManager } from "@/components/tournaments/TournamentManager";
@@ -183,11 +182,7 @@ export default async function TorneosPage() {
                 <p className="mt-3 text-base leading-7 text-muted">{section.description}</p>
               </div>
 
-              <TournamentsList
-                items={items}
-                sectionTitle={section.title}
-                sectionDescription={section.description}
-              />
+              <TournamentsList items={items} />
             </section>
           </RevealSection>
         );

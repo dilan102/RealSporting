@@ -121,14 +121,21 @@ export function OdsFlipCard({ item, variant = "club", onOpenInfographic }: Props
             >
               «{item.clubObjective}»
             </p>
-            <button
-              type="button"
+            <div
               onClick={openDocument}
-              className="btn-green alive-lift mt-auto inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openDocument(e as any);
+                }
+              }}
+              className="btn-green alive-lift mt-auto inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white cursor-pointer"
             >
               <FileText size={16} aria-hidden="true" />
               Abrir PDF
-            </button>
+            </div>
           </div>
         </div>
       </button>
