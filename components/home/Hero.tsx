@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
+import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
 
 type HeroCopy = {
   badge?: string;
@@ -53,7 +54,8 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
       <div className="hero-radial-vignette absolute inset-0" />
       <div className="pointer-events-none absolute inset-0 grid-overlay opacity-[0.14]" />
 
-      <div className="section-shell relative flex min-h-[94svh] items-end pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
+      <HeroScrollEffect />
+      <div className="section-shell relative z-10 flex min-h-[94svh] items-end pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
         <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.55fr)] lg:items-end">
           <div className="max-w-5xl">
             <div className="mobile-reveal cinematic-accent inline-flex items-center gap-3 rounded-lg border border-white/18 bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-normal shadow-sm backdrop-blur-md">

@@ -23,7 +23,7 @@ export function HomeGallerySection() {
             <Link
               key={item.title}
               href="/entrenamientos"
-              className={`cinematic-card alive-card premium-card-hover group relative min-h-[280px] overflow-hidden rounded-lg border border-border shadow-sm ${
+              className={`cinematic-card alive-card premium-card-hover hero-card-glow group relative min-h-[280px] overflow-hidden rounded-lg border border-border shadow-sm ${
                 index === 0 ? "lg:row-span-2 lg:min-h-[580px]" : ""
               }`}
             >
