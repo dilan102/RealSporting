@@ -8,6 +8,7 @@ import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
 import Cursor from "@/components/ui/Cursor";
+import Preloader from "@/components/Preloader";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
@@ -45,10 +46,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es" className="preloader-pending preloader-active" suppressHydrationWarning>
       <head></head>
-      <body className="min-h-screen flex flex-col">
+      <body className="preloader-active min-h-screen flex flex-col">
         <Cursor />
+        <Preloader logoSrc="/logo.png" duration={5000} />
         <ThemeProvider>
           <div id="site-content" className="site-content flex min-h-screen flex-col">
             <Navbar />
