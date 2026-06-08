@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useState, type MouseEvent } from "react";
+import { useCallback, useState, type MouseEvent, type KeyboardEvent } from "react";
 import { FileText, RotateCcw } from "lucide-react";
 import type { OdsItem } from "@/lib/content";
 import { odsIcons } from "@/components/club/ods-icons";
@@ -22,7 +22,7 @@ export function OdsFlipCard({ item, variant = "club", onOpenInfographic }: Props
   }, []);
 
   const openDocument = useCallback(
-    (event: MouseEvent) => {
+    (event: MouseEvent | KeyboardEvent) => {
       event.stopPropagation();
       onOpenInfographic(item);
     },
@@ -128,7 +128,7 @@ export function OdsFlipCard({ item, variant = "club", onOpenInfographic }: Props
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  openDocument(e as any);
+                  openDocument(e);
                 }
               }}
               className="btn-green alive-lift mt-auto inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black text-white cursor-pointer"

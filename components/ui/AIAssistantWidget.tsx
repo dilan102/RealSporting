@@ -2,6 +2,18 @@
 
 import { useEffect, useRef } from "react";
 
+declare global {
+  interface Window {
+    dealismConfig?: {
+      agentId: string;
+      position: string;
+      primaryColor: string;
+      greeting: string;
+      hideWidget: boolean;
+    };
+  }
+}
+
 export function AIAssistantWidget() {
   const scriptLoadedRef = useRef(false);
 
@@ -15,7 +27,7 @@ export function AIAssistantWidget() {
     }
 
     // Configurar Dealism antes de cargar el script
-    (window as any).dealismConfig = {
+    window.dealismConfig = {
       agentId: "38413",
       position: "bottom-right",
       primaryColor: "#4C9F38",
