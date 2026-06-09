@@ -49,9 +49,11 @@ export default function RootLayout({
   return (
     <html lang="es" className="preloader-pending preloader-active" suppressHydrationWarning>
       <head></head>
-      <body className="preloader-active min-h-screen flex flex-col">
+      <body className="preloader-active relative min-h-screen flex flex-col overflow-x-hidden">
         <Cursor />
-        <AnimatedGrid />
+        <div className="pointer-events-none fixed inset-0 z-0">
+          <AnimatedGrid />
+        </div>
         <Preloader logoSrc="/logo.png" duration={5000} />
         <ThemeProvider>
           <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">

@@ -21,7 +21,7 @@ export function ValuePillarsStrip() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1, duration: 0.4, ease: PRELOADER_EASE }}
-            className={`mobile-card-lift bg-bg-elevated transition-all duration-300 motion-reduce:transform-none ${
+            className={`valor-item mobile-card-lift bg-bg-elevated transition-all duration-300 motion-reduce:transform-none ${
               open
                 ? "ring-2 ring-inset ring-accent shadow-lg shadow-[var(--accent-gold)]/12"
                 : "hover:bg-bg hover:shadow-md"

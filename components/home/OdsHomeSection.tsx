@@ -30,7 +30,7 @@ export function OdsHomeSection() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {odsItems.map((item) => (
-                <div key={item.id} className="card-ods card-ods-wrap">
+                <div key={item.id} className="ods-card-outer card-ods card-ods-wrap">
                   <OdsFlipCard
                     item={item}
                     variant="home"

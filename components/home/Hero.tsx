@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
 import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
-import ScrambleText from "@/components/ScrambleText";
+import GlitchText from "@/components/GlitchText";
 import CountUp from "@/components/CountUp";
 
 type HeroCopy = {
@@ -72,12 +72,13 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
             </div>
 
             <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1">
-              <ScrambleText
+              <GlitchText
                 text={title}
-                tag="span"
+                as="span"
                 className="block"
                 delay={120}
                 duration={1500}
+                triggerOnView={false}
               />
             </h1>
 
@@ -89,7 +90,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
             <div className="mt-8 mobile-reveal mobile-reveal-delay-3">
               <Link
                 href="/club"
-                className="alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-6 text-sm font-black text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[var(--cinematic-accent)] hover:bg-white/16"
+                className="cta-btn alive-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-white/35 bg-white/10 px-6 text-sm font-black text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-[var(--cinematic-accent)] hover:bg-white/16"
               >
                 {copy.cta || "Conocer el club"}
                 <ArrowRight size={16} aria-hidden="true" />
