@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
 import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
+import ScrambleText from "@/components/ScrambleText";
+import AnimatedCounter from "@/components/AnimatedCounter";
 
 type HeroCopy = {
   badge?: string;
@@ -17,8 +19,7 @@ type HeroCopy = {
 
 export function Hero({ copy = {} }: { copy?: HeroCopy }) {
   const [parallax, setParallax] = useState(0);
-  const title = copy.title || "Desde Usme,\nCon disciplina,\nHacia el futuro.";
-  const titleLines = title.split("\n");
+  const title = copy.title || "Desde Usme, Con disciplina, Hacia el futuro.";
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -71,12 +72,13 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
             </div>
 
             <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1">
-              {titleLines.map((line, index) => (
-                <span key={`${line}-${index}`}>
-                  {line}
-                  {index < titleLines.length - 1 && <br />}
-                </span>
-              ))}
+              <ScrambleText
+                text={title}
+                tag="span"
+                className="block"
+                delay={120}
+                duration={1500}
+              />
             </h1>
 
             <p className="mt-6 max-w-2xl text-base font-semibold leading-8 text-white/88 sm:text-xl mobile-reveal mobile-reveal-delay-2">
@@ -111,7 +113,9 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
             </div>
             {institutionalStats.map((stat) => (
               <div key={stat.label} className="alive-card rounded-lg border border-white/12 bg-white/8 p-4">
-                <p className="font-training cinematic-accent text-5xl font-black leading-none">{stat.value}</p>
+                <p className="font-training cinematic-accent text-5xl font-black leading-none">
+                  <AnimatedCounter target={Number(stat.value.replace(/\D/g, "")) || 0} suffix={stat.value.replace(/\d/g, "") || ""} />
+                </p>
                 <p className="mt-2 text-sm font-black text-white">{stat.label}</p>
                 <p className="mt-1 text-xs leading-5 text-white/68">{stat.detail}</p>
               </div>

@@ -9,6 +9,8 @@ import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingBu
 import { PageTransition } from "@/components/ui/PageTransition";
 import Cursor from "@/components/ui/Cursor";
 import Preloader from "@/components/Preloader";
+import VoidSquare from "@/components/ui/VoidSquare";
+import AnimatedGrid from "@/components/AnimatedGrid";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
@@ -50,9 +52,11 @@ export default function RootLayout({
       <head></head>
       <body className="preloader-active min-h-screen flex flex-col">
         <Cursor />
+        <AnimatedGrid />
         <Preloader logoSrc="/logo.png" duration={5000} />
         <ThemeProvider>
-          <div id="site-content" className="site-content flex min-h-screen flex-col">
+          <VoidSquare />
+          <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
             <Navbar />
             <AdminPortal />
             <GlobalContentManager />

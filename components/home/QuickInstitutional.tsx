@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Trophy, UsersRound } from "lucide-react";
 import { ValuePillarsStrip } from "@/components/home/ValuePillarsStrip";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 const institutionalIntro =
   "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y adolescentes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.";
 
@@ -33,10 +36,13 @@ const programCards = [
 ];
 
 export function QuickInstitutional() {
+  const introRef = useScrollReveal<HTMLDivElement>();
+  const cardsRef = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="section-band section-ambient overflow-hidden text-text">
       <div className="section-shell section-padding">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-end">
+        <div ref={introRef} className="reveal grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-end">
           <div>
             <p className="eyebrow">Proyecto institucional</p>
             <h2 className="font-institutional kinetic-heading mt-5 max-w-3xl text-balance text-4xl font-black leading-[1.02] sm:text-5xl lg:text-6xl">
@@ -59,12 +65,12 @@ export function QuickInstitutional() {
               </h2>
             </div>
 
-            <div className="grid gap-4">
+            <div ref={cardsRef} className="reveal reveal-delay-1 grid gap-4">
               {programCards.map(({ title, description, href, cta, icon: Icon }) => (
                 <Link
                   key={title}
                   href={href}
-                  className="alive-card premium-card premium-card-hover hero-card-glow group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
+                  className="card-glow alive-card premium-card premium-card-hover hero-card-glow group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
                 >
                   <span className="grid size-14 place-items-center rounded-lg bg-accent text-[var(--button-text)]">
                     <Icon size={24} aria-hidden="true" />

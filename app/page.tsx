@@ -5,6 +5,7 @@ import { RecentTrainings } from "@/components/home/RecentTrainings";
 import { OdsHomeSection } from "@/components/home/OdsHomeSection";
 import { HomeContactBand } from "@/components/home/HomeContactBand";
 import { SocialStrip } from "@/components/home/SocialStrip";
+import SectionDivider from "@/components/SectionDivider";
 import { club } from "@/lib/content";
 
 export default async function HomePage() {
@@ -19,8 +20,11 @@ export default async function HomePage() {
         }}
       />
       <QuickInstitutional />
+      <SectionDivider label="ruta formativa" />
       <HomeGallerySection />
+      <SectionDivider label="entrenamientos" />
       <RecentTrainings />
+      <SectionDivider label="impacto social" />
       <OdsHomeSection />
       <HomeContactBand />
       <SocialStrip />

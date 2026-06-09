@@ -7,13 +7,15 @@ import type { OdsItem } from "@/lib/content";
 import { odsItems } from "@/lib/content";
 import { OdsFlipCard } from "@/components/club/OdsFlipCard";
 import { OdsInfographicModal } from "@/components/club/OdsInfographicModal";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export function OdsHomeSection() {
   const [infographicItem, setInfographicItem] = useState<OdsItem | null>(null);
+  const sectionRef = useScrollReveal();
 
   return (
     <>
-      <section className="section-ambient bg-bg text-text">
+      <section ref={sectionRef} className="reveal section-ambient bg-bg text-text">
         <div className="section-shell section-padding">
           <div className="grid gap-10 lg:grid-cols-[minmax(260px,0.68fr)_minmax(0,1.32fr)]">
             <div>
@@ -28,12 +30,13 @@ export function OdsHomeSection() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {odsItems.map((item) => (
-                <OdsFlipCard
-                  key={item.id}
-                  item={item}
-                  variant="home"
-                  onOpenInfographic={setInfographicItem}
-                />
+                <div key={item.id} className="card-ods">
+                  <OdsFlipCard
+                    item={item}
+                    variant="home"
+                    onOpenInfographic={setInfographicItem}
+                  />
+                </div>
               ))}
               <Link
                 href="/club#compromiso-ods"

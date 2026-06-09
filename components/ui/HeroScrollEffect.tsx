@@ -11,36 +11,43 @@ export function HeroScrollEffect() {
       return;
     }
 
-    let frame = 0;
+    let rafId: number | null = null;
+    let target = window.scrollY;
+    let current = target;
 
-    const updateScroll = () => {
-      setScrollY(window.scrollY);
-      frame = 0;
+    const lerp = (a: number, b: number, n: number) => a + (b - a) * n;
+
+    const update = () => {
+      current = lerp(current, target, 0.12);
+      setScrollY(Math.round(current));
+      rafId = requestAnimationFrame(update);
     };
 
     const onScroll = () => {
-      if (frame) {
-        return;
+      target = window.scrollY;
+      if (rafId == null) {
+        rafId = requestAnimationFrame(update);
       }
-      frame = requestAnimationFrame(updateScroll);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    updateScroll();
+    // initialise
+    target = window.scrollY;
+    current = target;
+    setScrollY(target);
+    rafId = requestAnimationFrame(update);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      if (frame) {
-        cancelAnimationFrame(frame);
-      }
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
     };
   }, []);
 
   const style = useMemo(
-    () =>
-      ({
-        "--scroll-y": `${scrollY}px`,
-      } as CSSProperties),
+    () => ({
+      "--scroll-y": `${scrollY}px`,
+    } as CSSProperties),
     [scrollY],
   );
 
