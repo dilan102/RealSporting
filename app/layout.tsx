@@ -49,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head></head>
-      <body className="relative min-h-screen flex flex-col overflow-x-hidden">
+      <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
         <Preloader logoSrc="/logo.png" duration={3500} />
         <Cursor />
         <div className="pointer-events-none fixed inset-0 z-0">

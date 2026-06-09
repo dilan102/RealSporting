@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState, type PointerEvent } from 'react';
+import { useState, type PointerEvent, useEffect } from 'react';
 import { usePreloader } from '@/hooks/usePreloader';
 
 interface PreloaderProps {
@@ -28,6 +28,12 @@ const shimmer = {
 export default function Preloader({ logoSrc = '/logo.png', duration = 5000 }: PreloaderProps) {
   const { isVisible, isExiting, prefersReducedMotion } = usePreloader({ duration });
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Solo renderizar después de que el componente esté montado
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -38,6 +44,10 @@ export default function Preloader({ logoSrc = '/logo.png', duration = 5000 }: Pr
 
   const handlePointerLeave = () => setPointer({ x: 0, y: 0 });
   const titleLetters = 'REAL SPORTING'.split('');
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <AnimatePresence>

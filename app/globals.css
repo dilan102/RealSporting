@@ -135,6 +135,14 @@
     scroll-behavior: smooth;
   }
 
+  /* Por defecto, el contenido es visible (para SSR) y el preloader está oculto */
+  #site-content {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Cuando el preloader está pendiente */
   html.preloader-pending {
     overflow: hidden;
     background: var(--preloader-surface);
@@ -146,9 +154,12 @@
     pointer-events: none;
   }
 
+  /* Cuando el preloader está activo */
   html.preloader-active .site-preloader-root {
-    visibility: visible;
-    opacity: 1;
+    display: flex !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
   }
 
   html.preloader-active #site-content {
@@ -157,10 +168,12 @@
     pointer-events: none;
   }
 
+  /* Cuando el preloader se ha completado */
   html.preloader-done .site-preloader-root {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
+    opacity: 0 !important;
   }
 
   html.preloader-done #site-content {
