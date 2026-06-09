@@ -36,6 +36,7 @@ const programCards = [
 ];
 
 export function QuickInstitutional() {
+  console.log("[QUICK INSTITUTIONAL] Component mounted");
 
   return (
     <section className="section-band section-ambient overflow-hidden text-text">

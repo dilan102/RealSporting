@@ -68,7 +68,10 @@ export function TrainingLoopShowcase({ items }: Props) {
     setExpanded(null);
   }, []);
 
+  console.log("[TRAINING LOOP] Rendering with", orderedItems.length, "items");
+
   if (!activeTraining) {
+    console.log("[TRAINING LOOP] No active training, showing placeholder");
     return (
       <section className="relative isolate overflow-hidden px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-6xl rounded-lg border border-dashed border-border bg-bg-elevated p-6 sm:p-8">

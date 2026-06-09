@@ -11,6 +11,8 @@ import SectionDivider from "@/components/SectionDivider";
 import { club } from "@/lib/content";
 
 export default async function HomePage() {
+  console.log("[HOME PAGE] Rendering home page...");
+  
   return (
     <>
       <SectionCard variant="full" className="relative overflow-hidden">

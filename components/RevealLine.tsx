@@ -24,9 +24,12 @@ export default function RevealLine({ label, className = "" }: RevealLineProps) {
       textRef.current.style.transition = "opacity 0.4s ease 0.6s";
     }
 
+    let hasAnimated = false;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasAnimated) {
+          hasAnimated = true;
           el.style.transform = "scaleX(1)";
           if (textRef.current) textRef.current.style.opacity = "1";
           observer.disconnect();
@@ -37,7 +40,20 @@ export default function RevealLine({ label, className = "" }: RevealLineProps) {
 
     observer.observe(el);
 
-    return () => observer.disconnect();
+    // Safety timeout to ensure animation runs
+    const safetyTimeout = setTimeout(() => {
+      if (!hasAnimated) {
+        hasAnimated = true;
+        el.style.transform = "scaleX(1)";
+        if (textRef.current) textRef.current.style.opacity = "1";
+        observer.disconnect();
+      }
+    }, 6000);
+
+    return () => {
+      clearTimeout(safetyTimeout);
+      observer.disconnect();
+    };
   }, []);
 
   return (

@@ -48,7 +48,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <head></head>
+      <head>
+        {/* Critical: Ensure content is visible even if JS fails */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+if (document.documentElement.classList.contains('preloader-active')) {
+  console.log('[SSR] Preloader active on load');
+} else {
+  document.documentElement.classList.add('preloader-done');
+  document.body.classList.add('preloader-done');
+  console.log('[SSR] Applied preloader-done as fallback');
+}
+          `
+        }} />
+      </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
         <Preloader logoSrc="/logo.png" duration={3500} />
         <Cursor />

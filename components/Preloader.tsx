@@ -46,8 +46,11 @@ export default function Preloader({ logoSrc = '/logo.png', duration = 5000 }: Pr
   const titleLetters = 'REAL SPORTING'.split('');
 
   if (!isMounted) {
+    console.log("[Preloader] Not mounted yet, returning null");
     return null;
   }
+
+  console.log("[Preloader] Rendering, isVisible:", isVisible, "isExiting:", isExiting);
 
   return (
     <AnimatePresence>

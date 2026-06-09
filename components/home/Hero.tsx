@@ -22,6 +22,8 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
   const title = copy.title || "Desde Usme, Con disciplina, Hacia el futuro.";
 
   useEffect(() => {
+    console.log("[HERO] Hero component mounted");
+    
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
       return;

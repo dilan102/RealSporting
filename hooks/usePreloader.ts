@@ -107,6 +107,14 @@ export function usePreloader({ duration = 3500 }: UsePreloaderOptions = {}) {
       document.documentElement.classList.add(doneClass);
       document.body.classList.remove('preloader-active');
       document.body.classList.add(doneClass);
+      
+      // Log to confirm classes were applied
+      if (typeof window !== 'undefined') {
+        console.log('[Preloader] Classes updated:', {
+          htmlClasses: document.documentElement.className,
+          bodyClasses: document.body.className,
+        });
+      }
     }, exitDuration);
 
     return () => window.clearTimeout(timer);
