@@ -52,13 +52,36 @@ export default function RootLayout({
         {/* Critical: Ensure content is visible even if JS fails */}
         <script dangerouslySetInnerHTML={{
           __html: `
-if (document.documentElement.classList.contains('preloader-active')) {
-  console.log('[SSR] Preloader active on load');
-} else {
-  document.documentElement.classList.add('preloader-done');
-  document.body.classList.add('preloader-done');
-  console.log('[SSR] Applied preloader-done as fallback');
-}
+(function() {
+  try {
+    const html = document.documentElement;
+    const body = document.body;
+    
+    // Force add done class immediately as ultimate fallback
+    html.classList.add('preloader-done');
+    body.classList.add('preloader-done');
+    html.classList.remove('preloader-active', 'preloader-pending');
+    body.classList.remove('preloader-active');
+    
+    console.log('[SSR] Applied preloader-done fallback');
+    
+    // Double-check: if content is still hidden after 100ms, force show it
+    setTimeout(() => {
+      const siteContent = document.getElementById('site-content');
+      if (siteContent) {
+        const style = window.getComputedStyle(siteContent);
+        if (style.visibility === 'hidden' || style.opacity === '0') {
+          siteContent.style.visibility = 'visible !important';
+          siteContent.style.opacity = '1 !important';
+          siteContent.style.pointerEvents = 'auto !important';
+          console.warn('[SSR] Force-showing hidden content');
+        }
+      }
+    }, 100);
+  } catch (e) {
+    console.error('[SSR] Error in preloader fallback:', e);
+  }
+})()
           `
         }} />
       </head>

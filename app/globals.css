@@ -135,11 +135,11 @@
     scroll-behavior: smooth;
   }
 
-  /* Por defecto, el contenido es visible (para SSR) y el preloader está oculto */
+  /* Por defecto, el contenido es SIEMPRE visible (para SSR y fallbacks) */
   #site-content {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     transition: visibility 0.3s ease, opacity 0.3s ease;
   }
 
@@ -147,6 +147,12 @@
   html.preloader-pending {
     overflow: hidden;
     background: var(--preloader-surface);
+  }
+  
+  html.preloader-pending #site-content {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
   html.preloader-pending #site-content {
@@ -180,9 +186,15 @@
   }
 
   html.preloader-done #site-content {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Ultimate fallback: if no preloader classes are applied, content is still visible */
+  html #site-content {
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   *,

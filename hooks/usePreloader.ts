@@ -21,13 +21,22 @@ export function usePreloader({ duration = 3500 }: UsePreloaderOptions = {}) {
     const element = document.documentElement;
     const body = document.body;
 
-    // Agregar clases iniciales
-    element.classList.add(pendingClass, activeClass);
-    body.classList.add(activeClass);
+    try {
+      // Agregar clases iniciales
+      element.classList.add(pendingClass, activeClass);
+      body.classList.add(activeClass);
+      console.log('[Preloader] Initial classes added:', { pendingClass, activeClass, htmlClasses: element.className });
+    } catch (error) {
+      console.error('[Preloader] Error adding initial classes:', error);
+    }
 
     return () => {
-      element.classList.remove(pendingClass, activeClass);
-      body.classList.remove(activeClass);
+      try {
+        element.classList.remove(pendingClass, activeClass);
+        body.classList.remove(activeClass);
+      } catch (error) {
+        console.error('[Preloader] Error removing initial classes:', error);
+      }
     };
   }, []);
 
@@ -55,7 +64,7 @@ export function usePreloader({ duration = 3500 }: UsePreloaderOptions = {}) {
 
       // Usar la duración especificada siempre
       timer = window.setTimeout(() => {
-        console.log('[Preloader] Starting exit animation');
+        console.log('[Preloader] Starting exit animation', { duration });
         setIsExiting(true);
       }, duration);
     };
@@ -79,7 +88,7 @@ export function usePreloader({ duration = 3500 }: UsePreloaderOptions = {}) {
     
     // También iniciar después de un corto delay como fallback
     const fallbackTimer = window.setTimeout(() => {
-      console.log('[Preloader] Fallback timeout triggered');
+      console.log('[Preloader] Fallback timeout triggered (500ms)');
       if (!isExiting) {
         startExit();
       }
@@ -99,21 +108,40 @@ export function usePreloader({ duration = 3500 }: UsePreloaderOptions = {}) {
 
     const exitDuration = prefersReducedMotion ? 300 : 900;
     const timer = window.setTimeout(() => {
-      console.log('[Preloader] Completing exit, setting preloader-done');
-      setIsVisible(false);
-      const doneClass = 'preloader-done';
+      try {
+        console.log('[Preloader] Completing exit, setting preloader-done');
+        setIsVisible(false);
+        const doneClass = 'preloader-done';
 
-      document.documentElement.classList.remove('preloader-pending', 'preloader-active');
-      document.documentElement.classList.add(doneClass);
-      document.body.classList.remove('preloader-active');
-      document.body.classList.add(doneClass);
-      
-      // Log to confirm classes were applied
-      if (typeof window !== 'undefined') {
-        console.log('[Preloader] Classes updated:', {
-          htmlClasses: document.documentElement.className,
-          bodyClasses: document.body.className,
-        });
+        document.documentElement.classList.remove('preloader-pending', 'preloader-active');
+        document.documentElement.classList.add(doneClass);
+        document.body.classList.remove('preloader-active');
+        document.body.classList.add(doneClass);
+        
+        // Ensure content is visible
+        const siteContent = document.getElementById('site-content');
+        if (siteContent) {
+          siteContent.style.visibility = 'visible';
+          siteContent.style.opacity = '1';
+          siteContent.style.pointerEvents = 'auto';
+        }
+        
+        // Log to confirm classes were applied
+        if (typeof window !== 'undefined') {
+          console.log('[Preloader] Classes updated:', {
+            htmlClasses: document.documentElement.className,
+            bodyClasses: document.body.className,
+            siteContentVisible: siteContent ? window.getComputedStyle(siteContent).visibility : 'N/A',
+          });
+        }
+      } catch (error) {
+        console.error('[Preloader] Error during exit:', error);
+        // Force show content as fallback
+        const siteContent = document.getElementById('site-content');
+        if (siteContent) {
+          siteContent.style.visibility = 'visible !important';
+          siteContent.style.opacity = '1 !important';
+        }
       }
     }, exitDuration);
 
