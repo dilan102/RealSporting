@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Dumbbell } from "lucide-react";
+import ScrollReveal from "@/components/ScrollReveal";
 import { galleryItems } from "@/lib/content";
 
 export function HomeGallerySection() {
   return (
-    <section className="section-band section-ambient text-text">
+    <ScrollReveal>
+      <section className="section-band section-ambient text-text">
       <div className="section-shell section-padding">
         <div className="max-w-3xl">
           <p className="eyebrow">Entrenamiento</p>
@@ -57,5 +59,6 @@ export function HomeGallerySection() {
         </Link>
       </div>
     </section>
+    </ScrollReveal>
   );
 }

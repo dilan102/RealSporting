@@ -1197,6 +1197,32 @@
     text-wrap: balance;
   }
 
+  /* ── hover glow tarjetas ruta formativa ── */
+  .card-glow {
+    transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .card-glow:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 12px 40px rgba(59, 130, 246, 0.2),
+      0 0 0 1px rgba(59, 130, 246, 0.35);
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+
+  /* ── hover glow leve para tarjetas ODS ── */
+  .card-ods-wrap {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card-ods-wrap:hover {
+    box-shadow: 0 6px 28px rgba(59, 130, 246, 0.25);
+  }
+
 }
 
 @media (max-width: 767px) {

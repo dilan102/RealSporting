@@ -7,15 +7,15 @@ import type { OdsItem } from "@/lib/content";
 import { odsItems } from "@/lib/content";
 import { OdsFlipCard } from "@/components/club/OdsFlipCard";
 import { OdsInfographicModal } from "@/components/club/OdsInfographicModal";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export function OdsHomeSection() {
   const [infographicItem, setInfographicItem] = useState<OdsItem | null>(null);
-  const sectionRef = useScrollReveal();
 
   return (
     <>
-      <section ref={sectionRef} className="reveal section-ambient bg-bg text-text">
+      <ScrollReveal>
+      <section className="section-ambient bg-bg text-text">
         <div className="section-shell section-padding">
           <div className="grid gap-10 lg:grid-cols-[minmax(260px,0.68fr)_minmax(0,1.32fr)]">
             <div>
@@ -30,7 +30,7 @@ export function OdsHomeSection() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {odsItems.map((item) => (
-                <div key={item.id} className="card-ods">
+                <div key={item.id} className="card-ods card-ods-wrap">
                   <OdsFlipCard
                     item={item}
                     variant="home"
@@ -51,6 +51,7 @@ export function OdsHomeSection() {
           </div>
         </div>
       </section>
+      </ScrollReveal>
 
       <OdsInfographicModal
         item={infographicItem}

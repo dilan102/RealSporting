@@ -7,7 +7,7 @@ import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
 import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
 import ScrambleText from "@/components/ScrambleText";
-import AnimatedCounter from "@/components/AnimatedCounter";
+import CountUp from "@/components/CountUp";
 
 type HeroCopy = {
   badge?: string;
@@ -114,7 +114,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
             {institutionalStats.map((stat) => (
               <div key={stat.label} className="alive-card rounded-lg border border-white/12 bg-white/8 p-4">
                 <p className="font-training cinematic-accent text-5xl font-black leading-none">
-                  <AnimatedCounter target={Number(stat.value.replace(/\D/g, "")) || 0} suffix={stat.value.replace(/\d/g, "") || ""} />
+                  <CountUp to={Number(stat.value.replace(/\D/g, "")) || 0} suffix={stat.value.replace(/\d/g, "") || ""} />
                 </p>
                 <p className="mt-2 text-sm font-black text-white">{stat.label}</p>
                 <p className="mt-1 text-xs leading-5 text-white/68">{stat.detail}</p>
