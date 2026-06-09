@@ -2,13 +2,14 @@
 
 import { useEffect, useRef } from "react";
 
-interface Cell {
+interface Star {
   x: number;
   y: number;
+  size: number;
   alpha: number;
-  target: number;
   speed: number;
-  timeoutId?: ReturnType<typeof setTimeout>;
+  twinkle: number;
+  depth: number;
 }
 
 export default function AnimatedGrid() {
@@ -21,104 +22,91 @@ export default function AnimatedGrid() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const COLOR_R = 59;
-    const COLOR_G = 130;
-    const COLOR_B = 246;
-    const MAX_ALPHA = 0.13;
-    const ACTIVE_RATIO = 0.025;
-
-    const getCellSize = () => {
-      const width = window.innerWidth;
-      if (width < 640) return 36;
-      if (width < 1024) return 44;
-      return 52;
-    };
-
-    let cells: Cell[] = [];
+    let stars: Star[] = [];
     let raf = 0;
-    let cellSize = getCellSize();
-    const gap = 1;
+    let mouseX = 0;
+    let mouseY = 0;
 
-    const build = () => {
-      cellSize = getCellSize();
-      canvas.width = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight || window.innerHeight;
+    const createStars = () => {
+      const width = window.innerWidth;
+      const height = document.documentElement.scrollHeight || window.innerHeight;
+      const count = Math.max(120, Math.floor((width * height) / 9500));
 
-      cells.forEach((cell) => {
-        if (cell.timeoutId) clearTimeout(cell.timeoutId);
-      });
+      canvas.width = width;
+      canvas.height = height;
 
-      cells = [];
-      const cols = Math.ceil(canvas.width / cellSize) + 1;
-      const rows = Math.ceil(canvas.height / cellSize) + 1;
-
-      for (let row = 0; row < rows; row += 1) {
-        for (let col = 0; col < cols; col += 1) {
-          cells.push({
-            x: col * cellSize,
-            y: row * cellSize,
-            alpha: 0,
-            target: Math.random() < ACTIVE_RATIO ? MAX_ALPHA : 0,
-            speed: 0.02 + Math.random() * 0.035,
-          });
-        }
-      }
+      stars = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 1.8 + 0.4,
+        alpha: Math.random() * 0.55 + 0.15,
+        speed: Math.random() * 0.02 + 0.01,
+        twinkle: Math.random() * 0.02 + 0.01,
+        depth: Math.random() * 0.9 + 0.1,
+      }));
     };
 
-    const scheduleOff = (cell: Cell) => {
-      if (cell.timeoutId) clearTimeout(cell.timeoutId);
-      cell.timeoutId = setTimeout(() => {
-        cell.target = 0;
-        cell.timeoutId = undefined;
-      }, 700 + Math.random() * 2200);
-    };
-
-    const tick = () => {
+    const draw = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      cells.forEach((cell) => {
-        const diff = cell.target - cell.alpha;
-        cell.alpha += diff * cell.speed * 5;
+      const scrollY = window.scrollY || 0;
+      const width = canvas.width;
+      const height = canvas.height;
 
-        if (Math.abs(diff) < 0.003) {
-          cell.alpha = cell.target;
+      const gradient = ctx.createRadialGradient(width * 0.5, height * 0.18, 0, width * 0.5, height * 0.18, width * 0.9);
+      gradient.addColorStop(0, "rgba(16, 24, 39, 0.28)");
+      gradient.addColorStop(0.45, "rgba(7, 9, 14, 0.18)");
+      gradient.addColorStop(1, "rgba(3, 5, 8, 0.95)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      stars.forEach((star) => {
+        const drift = Math.sin(time * star.twinkle + star.x * 0.01) * 0.25;
+        const pulse = 0.65 + Math.abs(drift) * 0.45;
+        const glowAlpha = Math.min(1, star.alpha * pulse * (0.8 + star.depth * 0.4));
+        const parallax = (scrollY * 0.04 * star.depth) + (mouseY - height * 0.5) * 0.003 * star.depth;
+        const x = star.x + (mouseX - width * 0.5) * 0.01 * star.depth;
+        const y = (star.y + parallax) % (height + 60);
+
+        if (y < -20) {
+          star.y = height + 20;
         }
 
-        if (cell.target > 0 && Math.random() < 0.004 && !cell.timeoutId) {
-          scheduleOff(cell);
-        }
-
-        if (cell.alpha > 0.02) {
-          ctx.fillStyle = `rgba(${COLOR_R}, ${COLOR_G}, ${COLOR_B}, ${cell.alpha})`;
-          ctx.fillRect(cell.x + gap, cell.y + gap, cellSize - gap * 2, cellSize - gap * 2);
-        }
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        ctx.fillStyle = `rgba(180, 210, 255, ${glowAlpha})`;
+        ctx.shadowBlur = 8 + star.size * 12;
+        ctx.shadowColor = `rgba(96, 165, 250, ${glowAlpha * 0.8})`;
+        ctx.beginPath();
+        ctx.arc(x, y, star.size + drift * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       });
 
-      raf = window.requestAnimationFrame(tick);
+      raf = window.requestAnimationFrame(draw);
     };
 
-    build();
-    tick();
+    createStars();
+    draw(0);
 
-    let resizeTimer: ReturnType<typeof setTimeout>;
-    const onResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        window.cancelAnimationFrame(raf);
-        build();
-        tick();
-      }, 150);
+    const handleResize = () => {
+      window.cancelAnimationFrame(raf);
+      createStars();
+      draw(0);
     };
 
-    window.addEventListener("resize", onResize);
+    const handleMove = (event: MouseEvent) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", handleMove, { passive: true });
 
     return () => {
       window.cancelAnimationFrame(raf);
-      clearTimeout(resizeTimer);
-      cells.forEach((cell) => {
-        if (cell.timeoutId) clearTimeout(cell.timeoutId);
-      });
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMove);
     };
   }, []);
 
