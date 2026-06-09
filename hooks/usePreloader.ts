@@ -39,8 +39,32 @@ export function usePreloader({ duration = 5000 }: UsePreloaderOptions = {}) {
   }, []);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setIsExiting(true), duration);
-    return () => window.clearTimeout(timer);
+    let timer: number | undefined;
+
+    const startExit = () => {
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+
+      const visibleDelay = document.readyState === 'complete' ? 300 : duration;
+      timer = window.setTimeout(() => setIsExiting(true), visibleDelay);
+    };
+
+    if (document.readyState === 'complete') {
+      startExit();
+      return () => {
+        if (timer) window.clearTimeout(timer);
+      };
+    }
+
+    const handleLoad = () => startExit();
+    window.addEventListener('load', handleLoad, { once: true });
+    startExit();
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+      if (timer) window.clearTimeout(timer);
+    };
   }, [duration]);
 
   useEffect(() => {
