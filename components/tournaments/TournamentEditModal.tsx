@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ImagePlus, RotateCcw, Save, X } from "lucide-react";
@@ -374,11 +375,13 @@ export function TournamentEditModal({
             </label>
 
             {form.image && (
-              <div className="relative w-full h-32 rounded-lg overflow-hidden bg-surface border border-border">
-                <img
+              <div className="relative h-32 w-full overflow-hidden rounded-lg border border-border bg-surface">
+                <Image
                   src={form.image}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 768px) 50vw, 100vw"
                 />
               </div>
             )}

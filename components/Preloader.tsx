@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, type PointerEvent } from 'react';
 import { usePreloader } from '@/hooks/usePreloader';
@@ -63,7 +64,14 @@ export default function Preloader({ logoSrc = '/logo.png', duration = 5000 }: Pr
           </div>
 
           <div className="site-preloader-watermark" aria-hidden="true">
-            <img src={logoSrc} alt="" className="site-preloader-watermark-image" />
+            <Image
+              src={logoSrc}
+              alt=""
+              fill
+              sizes="160px"
+              className="site-preloader-watermark-image"
+              priority
+            />
           </div>
 
           <div className="site-preloader-welcome" aria-hidden={isExiting ? 'true' : 'false'}>
@@ -133,9 +141,11 @@ export default function Preloader({ logoSrc = '/logo.png', duration = 5000 }: Pr
               animate={prefersReducedMotion ? undefined : { rotate: [0, 360] }}
               transition={{ duration: 5.8, ease: 'linear' as const, repeat: Infinity }}
             >
-              <img
+              <Image
                 src="/balon.png"
                 alt="Balón de fútbol Real Sporting"
+                fill
+                sizes="120px"
                 className="site-preloader-ball-image"
                 draggable="false"
               />

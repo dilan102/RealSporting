@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ImagePlus, RotateCcw, Save, X } from "lucide-react";
+import { RotateCcw, Save } from "lucide-react";
 import type { CurrentTournament } from "@/lib/current-tournament-store";
 import { defaultEndDateFromStart } from "@/lib/publication-dates";
 import { CurrentTournamentCard } from "./CurrentTournamentCard";
@@ -98,12 +99,10 @@ export function CurrentTournamentManager({
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
 
-    setLoading(true);
     fetchCurrentTournament(accessKey)
       .then((nextItem) => {
         if (active) {
@@ -113,11 +112,6 @@ export function CurrentTournamentManager({
       .catch(() => {
         if (active) {
           setMessage("No se pudo cargar el torneo actual.");
-        }
-      })
-      .finally(() => {
-        if (active) {
-          setLoading(false);
         }
       });
 
@@ -460,10 +454,12 @@ export function CurrentTournamentManager({
 
               {form.image && (
                 <div className="relative aspect-[16/10] overflow-hidden rounded-lg">
-                  <img
+                  <Image
                     src={form.image}
                     alt="Preview"
-                    className="h-full w-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
                   />
                 </div>
               )}
