@@ -157,6 +157,12 @@
     pointer-events: none;
   }
 
+  html.preloader-done .site-preloader-root {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   html.preloader-done #site-content {
     visibility: visible;
     opacity: 1;

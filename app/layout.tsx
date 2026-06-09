@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
+import Preloader from "@/components/Preloader";
 import Cursor from "@/components/ui/Cursor";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import { club } from "@/lib/content";
@@ -49,6 +50,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head></head>
       <body className="relative min-h-screen flex flex-col overflow-x-hidden">
+        <Preloader logoSrc="/logo.png" duration={3500} />
         <Cursor />
         <div className="pointer-events-none fixed inset-0 z-0">
           <AnimatedGrid />
