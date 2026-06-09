@@ -8,7 +8,6 @@ import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
 import Cursor from "@/components/ui/Cursor";
-import Preloader from "@/components/Preloader";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
@@ -47,14 +46,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="preloader-pending preloader-active" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head></head>
-      <body className="preloader-active relative min-h-screen flex flex-col overflow-x-hidden">
+      <body className="relative min-h-screen flex flex-col overflow-x-hidden">
         <Cursor />
         <div className="pointer-events-none fixed inset-0 z-0">
           <AnimatedGrid />
         </div>
-        <Preloader logoSrc="/logo.png" duration={5000} />
         <ThemeProvider>
           <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
             <Navbar />
