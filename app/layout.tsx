@@ -9,7 +9,6 @@ import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingBu
 import { PageTransition } from "@/components/ui/PageTransition";
 import Cursor from "@/components/ui/Cursor";
 import Preloader from "@/components/Preloader";
-import VoidSquare from "@/components/ui/VoidSquare";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
@@ -55,7 +54,6 @@ export default function RootLayout({
         <AnimatedGrid />
         <Preloader logoSrc="/logo.png" duration={5000} />
         <ThemeProvider>
-          <VoidSquare />
           <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
             <Navbar />
             <AdminPortal />
