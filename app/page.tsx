@@ -33,8 +33,6 @@ const SocialStrip = dynamic(
 );
 
 export default async function HomePage() {
-  console.log("[HOME PAGE] Rendering home page...");
-  
   return (
     <>
       <SectionCard variant="full" className="glass-card relative overflow-hidden">

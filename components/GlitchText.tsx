@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#_-+=<>";
 
@@ -23,77 +23,73 @@ export default function GlitchText({
   scrambleDuration = 350,
   triggerOnView = true,
 }: GlitchTextProps) {
-  const [chars, setChars] = useState<string[]>(() => text.split("").map((char) => (char === " " ? " " : "█")));
-  const [hasStarted, setHasStarted] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
-  const rafs = useRef<number[]>([]);
-  const timeouts = useRef<number[]>([]);
+  const started = useRef(false);
 
-  const runAnimation = useMemo(() => {
-    return () => {
-      if (hasStarted) return;
-      setHasStarted(true);
+  // Render inicial estático — sin estado
+  const letters = text.split("");
 
-      const letters = text.split("");
-      const totalLetters = letters.filter((char) => char !== " ").length;
-      const perLetter = (duration - scrambleDuration) / Math.max(totalLetters, 1);
-
-      letters.forEach((char, index) => {
-        if (char === " ") return;
-
-        const letterDelay = delay + index * perLetter;
-        const startAt = window.setTimeout(() => {
-          const startTime = performance.now();
-
-          const scramble = (start: number) => {
-            const elapsed = performance.now() - start;
-            if (elapsed >= scrambleDuration) {
-              setChars((prev) => {
-                const next = [...prev];
-                next[index] = char;
-                return next;
-              });
-              return;
-            }
-
-            setChars((prev) => {
-              const next = [...prev];
-              next[index] = CHARS[Math.floor(Math.random() * CHARS.length)];
-              return next;
-            });
-
-            const frame = window.requestAnimationFrame(() => scramble(start));
-            rafs.current.push(frame);
-          };
-
-          scramble(startTime);
-        }, letterDelay);
-
-        timeouts.current.push(startAt);
+  useEffect(() => {
+    // Reducir motion: mostrar texto inmediatamente
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const el = ref.current;
+      if (!el) return;
+      const spans = Array.from(el.querySelectorAll("[data-char]"));
+      spans.forEach((span, i) => {
+        (span as HTMLElement).textContent = letters[i] ?? "";
       });
-    };
-  }, [delay, duration, hasStarted, scrambleDuration, text]);
-
-  useEffect(() => {
-    return () => {
-      rafs.current.forEach((frame) => window.cancelAnimationFrame(frame));
-      rafs.current = [];
-      timeouts.current.forEach((timer) => window.clearTimeout(timer));
-      timeouts.current = [];
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!triggerOnView) {
-      const timer = window.setTimeout(runAnimation, delay);
-      timeouts.current.push(timer);
-      return () => {
-        window.clearTimeout(timer);
-      };
+      return;
     }
 
-    const node = ref.current;
-    if (!node) return;
+    const el = ref.current;
+    if (!el || started.current) return;
+
+    // Obtener referencias directas a los spans del DOM
+    const spans = Array.from(el.querySelectorAll("[data-char]")) as HTMLElement[];
+
+    const runAnimation = () => {
+      started.current = true;
+
+      const nonSpace = letters.filter((c) => c !== " ").length;
+      const perLetter = (duration - scrambleDuration) / Math.max(nonSpace, 1);
+      const rafs: number[] = [];
+      const timers: number[] = [];
+
+      letters.forEach((char, i) => {
+        if (char === " ") return;
+        const span = spans[i];
+        if (!span) return;
+
+        const timer = window.setTimeout(() => {
+          const start = performance.now();
+
+          const scramble = () => {
+            const elapsed = performance.now() - start;
+            if (elapsed >= scrambleDuration) {
+              span.textContent = char; // restaurar carácter final
+              return;
+            }
+            // Escribir directo al DOM — cero renders de React
+            span.textContent = CHARS[Math.floor(Math.random() * CHARS.length)];
+            rafs.push(requestAnimationFrame(scramble));
+          };
+
+          rafs.push(requestAnimationFrame(scramble));
+        }, delay + i * perLetter);
+
+        timers.push(timer);
+      });
+
+      return () => {
+        rafs.forEach(cancelAnimationFrame);
+        timers.forEach(clearTimeout);
+      };
+    };
+
+    if (!triggerOnView) {
+      const cleanup = runAnimation();
+      return cleanup;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -102,18 +98,19 @@ export default function GlitchText({
           observer.disconnect();
         }
       },
-      { threshold: 0.25 },
+      { threshold: 0.25 }
     );
 
-    observer.observe(node);
-
+    observer.observe(el);
     return () => observer.disconnect();
-  }, [delay, runAnimation, triggerOnView]);
+  }, [delay, duration, letters, scrambleDuration, text, triggerOnView]);
 
   return (
     <Tag ref={ref as never} className={className}>
-      {chars.map((char, index) => (
-        <span key={`${text}-${index}`} className="whitespace-pre-wrap">{char}</span>
+      {letters.map((char, i) => (
+        <span key={`${text}-${i}`} data-char>
+          {char === " " ? " " : "█"}
+        </span>
       ))}
     </Tag>
   );

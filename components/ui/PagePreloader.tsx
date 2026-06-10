@@ -1,36 +1,36 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const PRELOADER_MIN_DURATION = 2500; // 2.5 segundos - optimizado para performance
-
 export default function PagePreloader() {
   const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    const startTime = Date.now();
 
     const hide = () => {
-      const elapsed = Date.now() - startTime;
-      const delay = Math.max(0, PRELOADER_MIN_DURATION - elapsed);
-
+      setFading(true);
       setTimeout(() => {
-        setFading(true);
-        setTimeout(() => {
-          setVisible(false);
-          document.body.style.overflow = '';
-        }, 400);
-      }, delay);
+        setVisible(false);
+        document.body.style.overflow = '';
+      }, 500);
+    };
+
+    // Disparar al cargar, con un mínimo de 800ms para la animación
+    const start = Date.now();
+    const onLoad = () => {
+      const elapsed = Date.now() - start;
+      const wait = Math.max(0, 800 - elapsed);
+      setTimeout(hide, wait);
     };
 
     if (document.readyState === 'complete') {
-      hide();
+      onLoad();
     } else {
-      window.addEventListener('load', hide, { once: true });
+      window.addEventListener('load', onLoad, { once: true });
     }
 
-    return () => window.removeEventListener('load', hide);
+    return () => window.removeEventListener('load', onLoad);
   }, []);
 
   if (!visible) return null;

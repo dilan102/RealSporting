@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
 import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
+import { useScrollValue } from "@/hooks/useScrollValue";
 import GlitchText from "@/components/GlitchText";
 import CountUp from "@/components/CountUp";
 
@@ -18,46 +19,22 @@ type HeroCopy = {
 };
 
 export function Hero({ copy = {} }: { copy?: HeroCopy }) {
-  const [parallax, setParallax] = useState(0);
+  const imageRef = useRef<HTMLDivElement | null>(null);
   const title = copy.title || "Desde Usme, Con disciplina, Hacia el futuro.";
 
-  useEffect(() => {
-    console.log("[HERO] Hero component mounted");
-    
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) {
-      return;
+  useScrollValue((scrollY) => {
+    if (imageRef.current) {
+      const value = Math.min(scrollY * 0.16, 92);
+      // Escribir directo al DOM, cero re-renders
+      imageRef.current.style.transform = `translate3d(0, ${value}px, 0) scale(1.04)`;
     }
-
-    let rafId: number;
-    let lastScrollY = 0;
-    
-    const onScroll = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      
-      rafId = requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        // Only update if scroll change is significant (> 2px)
-        if (Math.abs(scrollY - lastScrollY) > 2) {
-          lastScrollY = scrollY;
-          setParallax(Math.min(scrollY * 0.16, 92));
-        }
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, []);
+  });
 
   return (
     <section className="cinematic-section relative isolate min-h-[94svh] overflow-hidden">
       <div
+        ref={imageRef}
         className="absolute inset-0 scale-[1.04]"
-        style={{ transform: `translate3d(0, ${parallax}px, 0) scale(1.04)` }}
       >
         <Image
           src="/brand/hero-training.jpg"

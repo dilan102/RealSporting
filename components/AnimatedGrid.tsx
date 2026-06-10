@@ -10,7 +10,15 @@ interface Star {
   speed: number;
   twinkle: number;
   depth: number;
+  color: readonly [number, number, number]; // RGB - readonly tuple
 }
+
+const STAR_COLORS = [
+  [255, 255, 255],    // blanco tenue
+  [0, 255, 120],      // verde neón (#00FF78)
+  [0, 196, 90],       // verde medio (#00C45A)
+  [180, 255, 220],    // verde casi blanco
+] as const;
 
 export default function AnimatedGrid() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -26,16 +34,23 @@ export default function AnimatedGrid() {
     let raf = 0;
     let mouseX = 0;
     let mouseY = 0;
+    let cachedScrollY = 0;
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
     const createStars = () => {
+      // Usar solo viewport, no scrollHeight
       const width = window.innerWidth;
-      const height = document.documentElement.scrollHeight || window.innerHeight;
-      const count = Math.max(120, Math.floor((width * height) / 9500));
-
+      const height = window.innerHeight;
+      
       canvas.width = width;
       canvas.height = height;
 
-      stars = Array.from({ length: count }, () => ({
+      // Reducir cantidad de estrellas en mobile (mitad)
+      const count = isMobile
+        ? Math.floor((width * height) / 18000)
+        : Math.floor((width * height) / 9500);
+
+      stars = Array.from({ length: Math.max(60, count) }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
         size: Math.random() * 1.8 + 0.4,
@@ -43,16 +58,17 @@ export default function AnimatedGrid() {
         speed: Math.random() * 0.02 + 0.01,
         twinkle: Math.random() * 0.02 + 0.01,
         depth: Math.random() * 0.9 + 0.1,
+        color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
       }));
     };
 
     const draw = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const scrollY = window.scrollY || 0;
       const width = canvas.width;
       const height = canvas.height;
 
+      // Gradiente con colores del club
       const gradient = ctx.createRadialGradient(width * 0.5, height * 0.18, 0, width * 0.5, height * 0.18, width * 0.9);
       gradient.addColorStop(0, "rgba(16, 24, 39, 0.28)");
       gradient.addColorStop(0.45, "rgba(7, 9, 14, 0.18)");
@@ -64,7 +80,9 @@ export default function AnimatedGrid() {
         const drift = Math.sin(time * star.twinkle + star.x * 0.01) * 0.25;
         const pulse = 0.65 + Math.abs(drift) * 0.45;
         const glowAlpha = Math.min(1, star.alpha * pulse * (0.8 + star.depth * 0.4));
-        const parallax = (scrollY * 0.04 * star.depth) + (mouseY - height * 0.5) * 0.003 * star.depth;
+        
+        // Usar cachedScrollY en lugar de leer window.scrollY en cada frame
+        const parallax = (cachedScrollY * 0.04 * star.depth) + (mouseY - height * 0.5) * 0.003 * star.depth;
         const x = star.x + (mouseX - width * 0.5) * 0.01 * star.depth;
         const y = (star.y + parallax) % (height + 60);
 
@@ -74,9 +92,13 @@ export default function AnimatedGrid() {
 
         ctx.save();
         ctx.globalCompositeOperation = "lighter";
-        ctx.fillStyle = `rgba(180, 210, 255, ${glowAlpha})`;
+        
+        // Usar color asignado (colores del club)
+        const [r, g, b] = star.color;
+        ctx.fillStyle = `rgba(${r},${g},${b},${glowAlpha})`;
         ctx.shadowBlur = 8 + star.size * 12;
-        ctx.shadowColor = `rgba(96, 165, 250, ${glowAlpha * 0.8})`;
+        ctx.shadowColor = `rgba(${r},${g},${b},${glowAlpha * 0.8})`;
+        
         ctx.beginPath();
         ctx.arc(x, y, star.size + drift * 0.4, 0, Math.PI * 2);
         ctx.fill();
@@ -100,13 +122,24 @@ export default function AnimatedGrid() {
       mouseY = event.clientY;
     };
 
+    const handleScroll = () => {
+      cachedScrollY = window.scrollY;
+    };
+
     window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMove, { passive: true });
+    
+    // Solo agregar mousemove en desktop (no en móviles táctiles)
+    if (!isMobile) {
+      window.addEventListener("mousemove", handleMove, { passive: true });
+    }
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.cancelAnimationFrame(raf);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 

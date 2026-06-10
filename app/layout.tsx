@@ -12,6 +12,7 @@ import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
+import { allFonts } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -47,7 +48,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html
+      lang="es"
+      suppressHydrationWarning
+      className={`${allFonts.map((font) => font.variable).join(" ")}`}
+    >
       <head>
       </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
