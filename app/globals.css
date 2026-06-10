@@ -22,6 +22,17 @@
 
 @layer base {
   :root {
+    /* Institutional palette */
+    --color-primary:     #0C1C12;
+    --color-accent:      #00FF78;
+    --color-accent-dim:  #00C45A;
+    --color-surface:     #102418;
+    --color-white:       #FFFFFF;
+    --color-black:       #070D09;
+    --color-glass-bg:    rgba(12, 28, 18, 0.55);
+    --color-glass-border: rgba(0, 255, 120, 0.08);
+    
+    /* Legacy variables (preserved for compatibility) */
     --bg-primary: #0a0f1a;
     --bg-secondary: #0d1220;
     --text-primary: #e8f0eb;
@@ -592,6 +603,107 @@
 
   .alive-card:hover img {
     transform: scale(1.055);
+  }
+
+  .alive-lift {
+    transition:
+      transform 0.24s ease,
+      box-shadow 0.24s ease,
+      border-color 0.24s ease;
+  }
+
+  /* ============ GLASS CARD UTILITY ============ */
+  .glass-card {
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 16px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      0 0 30px rgba(0, 255, 120, 0.06);
+    transition: box-shadow 0.3s cubic-bezier(.22,1,.36,1),
+                transform  0.3s cubic-bezier(.22,1,.36,1);
+  }
+
+  .glass-card:hover {
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.45),
+      0 0 40px rgba(0, 255, 120, 0.10);
+  }
+
+  /* ============ MINI CARD UTILITY ============ */
+  .mini-card {
+    background: #102418;
+    border: 1px solid rgba(0, 255, 120, 0.10);
+    border-radius: 12px;
+    transition:
+      transform  0.35s cubic-bezier(.22,1,.36,1),
+      box-shadow 0.35s cubic-bezier(.22,1,.36,1);
+  }
+
+  .mini-card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(0, 255, 120, 0.10);
+  }
+
+  /* ============ PRELOADER ANIMATIONS ============ */
+  .preloader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: radial-gradient(ellipse at center,
+      rgba(12, 28, 18, 0) 40%,
+      rgba(7, 13, 9, 0.95) 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+  }
+
+  .preloader-overlay.fading {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .preloader-box {
+    display: flex;
+    gap: 12px;
+    perspective: 200px;
+  }
+
+  .preloader-box > div {
+    width: 36px;
+    height: 36px;
+    background: #102418;
+    border: 1px solid rgba(0, 255, 120, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading, 'Verdana', sans-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    border-radius: 4px;
+  }
+
+  @keyframes letterBounce {
+    from {
+      transform: scale(1.0) translateY(0px) rotateX(0deg);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+      background: #102418;
+    }
+    to {
+      transform: scale(1.5) translateY(-25px) rotateX(45deg);
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5),
+                  0 0 20px rgba(0, 255, 120, 0.25);
+      background: #00C45A;
+      color: #ffffff;
+    }
   }
 
   .alive-lift {

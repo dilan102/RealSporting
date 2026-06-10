@@ -69,7 +69,7 @@ export function QuickInstitutional() {
                 <Link
                   key={title}
                   href={href}
-                  className="route-card card-glow alive-card premium-card premium-card-hover hero-card-glow group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
+                  className="mini-card route-card card-glow alive-card premium-card premium-card-hover hero-card-glow group grid gap-5 p-5 sm:grid-cols-[56px_minmax(0,1fr)_auto] sm:items-center"
                 >
                   <span className="grid size-14 place-items-center rounded-lg bg-accent text-[var(--button-text)]">
                     <Icon size={24} aria-hidden="true" />

@@ -8,6 +8,9 @@ import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
 import { ScrollDecorator } from "@/components/ui/ScrollDecorator";
+import PagePreloader from "@/components/ui/PagePreloader";
+import StarField from "@/components/ui/StarField";
+import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
@@ -50,6 +53,9 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
         <ThemeProvider>
+          <SmoothScrollProvider />
+          <StarField />
+          <PagePreloader />
           <ScrollDecorator />
           <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
             <Navbar />

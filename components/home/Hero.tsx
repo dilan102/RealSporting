@@ -58,6 +58,21 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
       <div className="pointer-events-none absolute inset-0 grid-overlay opacity-[0.14]" />
 
       <HeroScrollEffect />
+      {/* Watermark escudo (shield) as background */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-[0.08] pointer-events-none">
+        <Image
+          src="/logo.png"
+          alt=""
+          width={600}
+          height={600}
+          className="object-contain"
+          aria-hidden="true"
+        />
+      </div>
+      {/* Glow verde suave detrás del escudo */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="absolute w-[800px] h-[800px] rounded-full blur-[120px] bg-gradient-to-r from-transparent via-[#00FF78] to-transparent opacity-[0.05]" />
+      </div>
       <div className="section-shell relative z-10 flex min-h-[94svh] items-end pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
         <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.55fr)] lg:items-end">
           <div className="max-w-5xl">
