@@ -144,6 +144,7 @@
 
   html {
     scroll-behavior: smooth;
+    overflow-y: auto;
   }
 
   /* Por defecto, el contenido es SIEMPRE visible (para SSR y fallbacks) */
@@ -161,12 +162,6 @@
   }
   
   html.preloader-pending #site-content {
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-
-  html.preloader-pending #site-content {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
@@ -174,6 +169,10 @@
   }
 
   /* Cuando el preloader está activo */
+  html.preloader-active {
+    overflow: hidden;
+  }
+
   html.preloader-active .site-preloader-root {
     display: flex !important;
     visibility: visible !important;
@@ -189,6 +188,10 @@
   }
 
   /* Cuando el preloader se ha completado */
+  html.preloader-done {
+    overflow-y: auto;
+  }
+
   html.preloader-done .site-preloader-root {
     display: none !important;
     visibility: hidden !important;
