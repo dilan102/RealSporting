@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
-import AnimatedGrid from "@/components/AnimatedGrid";
+import { ScrollDecorator } from "@/components/ui/ScrollDecorator";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
@@ -49,10 +49,8 @@ export default function RootLayout({
       <head>
       </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
-        <div className="pointer-events-none fixed inset-0 z-0">
-          <AnimatedGrid />
-        </div>
         <ThemeProvider>
+          <ScrollDecorator />
           <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
             <Navbar />
             <AdminPortal />
