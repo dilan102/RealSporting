@@ -34,11 +34,21 @@ export function CategoryShowcase() {
   }, []);
 
   useEffect(() => {
-    const update = () => setItemsPerPage(getItemsPerPage());
+    let timeoutId: NodeJS.Timeout;
+    
+    const update = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setItemsPerPage(getItemsPerPage());
+      }, 150); // Debounce resize events
+    };
 
     window.addEventListener("resize", update);
 
-    return () => window.removeEventListener("resize", update);
+    return () => {
+      window.removeEventListener("resize", update);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const clampedStart = Math.min(start, maxStart);

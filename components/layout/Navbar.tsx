@@ -20,10 +20,22 @@ export function Navbar() {
   const solidHeader = !onHomeHero;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let rafId: number;
+    
+    const onScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      
+      rafId = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24);
+      });
+    };
+    
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   useEffect(() => {

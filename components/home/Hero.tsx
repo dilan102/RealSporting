@@ -29,12 +29,28 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
       return;
     }
 
-    const onScroll = () => setParallax(Math.min(window.scrollY * 0.16, 92));
+    let rafId: number;
+    let lastScrollY = 0;
+    
+    const onScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      
+      rafId = requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        // Only update if scroll change is significant (> 2px)
+        if (Math.abs(scrollY - lastScrollY) > 2) {
+          lastScrollY = scrollY;
+          setParallax(Math.min(scrollY * 0.16, 92));
+        }
+      });
+    };
 
-    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (

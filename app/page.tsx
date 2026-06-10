@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import { Hero } from "@/components/home/Hero";
 import { QuickInstitutional } from "@/components/home/QuickInstitutional";
 import { HomeGallerySection } from "@/components/home/HomeGallerySection";
-import { OdsHomeSection } from "@/components/home/OdsHomeSection";
 import { HomeContactBand } from "@/components/home/HomeContactBand";
 import { SocialStrip } from "@/components/home/SocialStrip";
 import SectionCard from "@/components/SectionCard";

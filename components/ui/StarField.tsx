@@ -19,15 +19,17 @@ const STAR_COLORS = [
   'rgba(180,255,220,',
 ];
 
-const STAR_COUNT = 180;
+const STAR_COUNT = 100; // Reducido de 180
+const FRAME_SKIP = 2; // Renderizar cada 2 frames (30fps en lugar de 60)
 
 export default function StarField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const frameCountRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     let animId: number;
@@ -43,15 +45,23 @@ export default function StarField() {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         z: Math.random(),
-        size: Math.random() * 1.8 + 0.3,
-        opacity: Math.random() * 0.6 + 0.15,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: (Math.random() - 0.5) * 0.08,
+        size: Math.random() * 1.5 + 0.2,
+        opacity: Math.random() * 0.5 + 0.1,
+        vx: (Math.random() - 0.5) * 0.08,
+        vy: (Math.random() - 0.5) * 0.05,
         color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
       }));
     };
 
     const draw = () => {
+      frameCountRef.current++;
+      
+      // Skip frames para reducir carga
+      if (frameCountRef.current % FRAME_SKIP !== 0) {
+        animId = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       stars.forEach(star => {
@@ -63,23 +73,25 @@ export default function StarField() {
         if (star.y < 0) star.y = canvas.height;
         if (star.y > canvas.height) star.y = 0;
 
-        const glowSize = star.size * (1 + star.z * 2);
-        if (star.z > 0.6) {
+        // Solo dibujar glow para estrellas brillantes
+        if (star.z > 0.7) {
+          const glowSize = star.size * (1 + star.z);
           const grd = ctx.createRadialGradient(
             star.x, star.y, 0,
-            star.x, star.y, glowSize * 3
+            star.x, star.y, glowSize * 2
           );
-          grd.addColorStop(0, `${star.color}${star.opacity})`);
+          grd.addColorStop(0, `${star.color}${(star.opacity * 0.8).toFixed(2)})`);
           grd.addColorStop(1, `${star.color}0)`);
           ctx.fillStyle = grd;
           ctx.beginPath();
-          ctx.arc(star.x, star.y, glowSize * 3, 0, Math.PI * 2);
+          ctx.arc(star.x, star.y, glowSize * 2, 0, Math.PI * 2);
           ctx.fill();
         }
 
+        // Estrella principal
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size * (0.5 + star.z * 0.5), 0, Math.PI * 2);
-        ctx.fillStyle = `${star.color}${star.opacity})`;
+        ctx.arc(star.x, star.y, star.size * (0.5 + star.z * 0.4), 0, Math.PI * 2);
+        ctx.fillStyle = `${star.color}${star.opacity.toFixed(2)})`;
         ctx.fill();
       });
 
