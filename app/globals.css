@@ -748,10 +748,8 @@
     background: radial-gradient(circle at center, rgba(45, 143, 95, 0.18), rgba(26, 92, 63, 0.12) 38%, transparent 58%);
     filter: blur(2.4px);
     opacity: 0.82;
-    transform: translate3d(0, 0, 0);
-    will-change: transform, opacity;
-    mix-blend-mode: screen;
-    animation: hero-shape-float 18s ease-in-out infinite;
+    /* Eliminado: will-change, mix-blend-mode: screen, animation float infinita */
+    /* Cada una crea una capa de composición separada — costoso en GPU */
   }
 
   .hero-scroll-shape.shape-1 {
@@ -779,15 +777,6 @@
     left: 24%;
     transform: translate3d(calc(var(--scroll-y) * 0.06), calc(var(--scroll-y) * -0.06), 0);
     opacity: 0.36;
-  }
-
-  @keyframes hero-shape-float {
-    0%, 100% {
-      transform: translate3d(0, 0, 0);
-    }
-    50% {
-      transform: translate3d(0, -6px, 0);
-    }
   }
 
   .hero-card-glow {

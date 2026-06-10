@@ -32,6 +32,7 @@ export default function AnimatedGrid() {
 
     let stars: Star[] = [];
     let raf = 0;
+    let isVisible = true;
     let mouseX = 0;
     let mouseY = 0;
     let cachedScrollY = 0;
@@ -90,29 +91,33 @@ export default function AnimatedGrid() {
           star.y = height + 20;
         }
 
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-        
-        // Usar color asignado (colores del club)
+        // Sin shadowBlur — era la operación más costosa en GPU
         const [r, g, b] = star.color;
+        ctx.globalCompositeOperation = "lighter";
         ctx.fillStyle = `rgba(${r},${g},${b},${glowAlpha})`;
-        ctx.shadowBlur = 8 + star.size * 12;
-        ctx.shadowColor = `rgba(${r},${g},${b},${glowAlpha * 0.8})`;
-        
         ctx.beginPath();
         ctx.arc(x, y, star.size + drift * 0.4, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
+        ctx.globalCompositeOperation = "source-over";
       });
 
-      raf = window.requestAnimationFrame(draw);
+      if (isVisible) raf = window.requestAnimationFrame(draw);
     };
 
     createStars();
     draw(0);
 
+    // Pausar el loop cuando el canvas no está en pantalla
+    const io = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible && raf === 0) draw(0);
+      if (!isVisible) { window.cancelAnimationFrame(raf); raf = 0; }
+    });
+    io.observe(canvas);
+
     const handleResize = () => {
       window.cancelAnimationFrame(raf);
+      raf = 0;
       createStars();
       draw(0);
     };
@@ -137,6 +142,7 @@ export default function AnimatedGrid() {
 
     return () => {
       window.cancelAnimationFrame(raf);
+      io.disconnect();
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMove);
       window.removeEventListener("scroll", handleScroll);
