@@ -7,8 +7,6 @@ import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
-import Preloader from "@/components/Preloader";
-import Cursor from "@/components/ui/Cursor";
 import AnimatedGrid from "@/components/AnimatedGrid";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
@@ -49,45 +47,8 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        {/* Critical: Ensure content is visible even if JS fails */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-(function() {
-  try {
-    const html = document.documentElement;
-    const body = document.body;
-    
-    // Force add done class immediately as ultimate fallback
-    html.classList.add('preloader-done');
-    body.classList.add('preloader-done');
-    html.classList.remove('preloader-active', 'preloader-pending');
-    body.classList.remove('preloader-active');
-    
-    console.log('[SSR] Applied preloader-done fallback');
-    
-    // Double-check: if content is still hidden after 100ms, force show it
-    setTimeout(() => {
-      const siteContent = document.getElementById('site-content');
-      if (siteContent) {
-        const style = window.getComputedStyle(siteContent);
-        if (style.visibility === 'hidden' || style.opacity === '0') {
-          siteContent.style.visibility = 'visible !important';
-          siteContent.style.opacity = '1 !important';
-          siteContent.style.pointerEvents = 'auto !important';
-          console.warn('[SSR] Force-showing hidden content');
-        }
-      }
-    }, 100);
-  } catch (e) {
-    console.error('[SSR] Error in preloader fallback:', e);
-  }
-})()
-          `
-        }} />
       </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
-        <Preloader logoSrc="/logo.png" duration={3500} />
-        <Cursor />
         <div className="pointer-events-none fixed inset-0 z-0">
           <AnimatedGrid />
         </div>
