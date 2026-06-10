@@ -1,21 +1,35 @@
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/home/Hero";
 import { QuickInstitutional } from "@/components/home/QuickInstitutional";
-import { HomeGallerySection } from "@/components/home/HomeGallerySection";
-import { HomeContactBand } from "@/components/home/HomeContactBand";
-import { SocialStrip } from "@/components/home/SocialStrip";
 import SectionCard from "@/components/SectionCard";
 import RevealLine from "@/components/RevealLine";
 import SectionDivider from "@/components/SectionDivider";
 import { club } from "@/lib/content";
 
-// Lazy load heavy components
+// Lazy load ALL non-critical components with loading placeholders
+const HomeGallerySection = dynamic(
+  () => import("@/components/home/HomeGallerySection").then(mod => ({ default: mod.HomeGallerySection })),
+  { loading: () => <div className="h-96" /> }
+);
+
 const RecentTrainings = dynamic(
-  () => import("@/components/home/RecentTrainings").then(mod => ({ default: mod.RecentTrainings }))
+  () => import("@/components/home/RecentTrainings").then(mod => ({ default: mod.RecentTrainings })),
+  { loading: () => <div className="h-96" /> }
 );
 
 const LazyOdsHomeSection = dynamic(
-  () => import("@/components/home/OdsHomeSection").then(mod => ({ default: mod.OdsHomeSection }))
+  () => import("@/components/home/OdsHomeSection").then(mod => ({ default: mod.OdsHomeSection })),
+  { loading: () => <div className="h-96" /> }
+);
+
+const HomeContactBand = dynamic(
+  () => import("@/components/home/HomeContactBand").then(mod => ({ default: mod.HomeContactBand })),
+  { loading: () => <div className="h-96" /> }
+);
+
+const SocialStrip = dynamic(
+  () => import("@/components/home/SocialStrip").then(mod => ({ default: mod.SocialStrip })),
+  { loading: () => <div className="h-48" /> }
 );
 
 export default async function HomePage() {

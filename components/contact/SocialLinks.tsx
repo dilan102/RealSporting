@@ -1,9 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { social } from "@/lib/content";
-import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { PHONE_TEL, VENUE_NAME, WHATSAPP_URL } from "@/lib/constants";
 
 const links: Array<{
@@ -56,15 +54,11 @@ type SocialLinksProps = {
 
 export function SocialLinks({ showVenue = false }: SocialLinksProps) {
   return (
-    <motion.div
-      className="grid gap-4 sm:grid-cols-2"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+    <div
+      className="stagger-container grid gap-4 sm:grid-cols-2"
     >
       {links.map(({ label, href, icon: Icon, description, ariaLabel, accent }) => (
-        <motion.a
+        <a
           key={label}
           href={href}
           target={href.startsWith("http") ? "_blank" : undefined}
@@ -77,8 +71,7 @@ export function SocialLinks({ showVenue = false }: SocialLinksProps) {
                 ? "Seguir a Real Sporting en Facebook"
                 : label)
           }
-          variants={fadeUpItem}
-          className={`group flex min-h-40 flex-col justify-between rounded-lg border p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg ${
+          className={`animate-fade-in group flex min-h-40 flex-col justify-between rounded-lg border p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg ${
             accent
               ? "border-[#25D366]/40 bg-[#25D366] text-white hover:border-[#25D366] hover:bg-[#1ebe5d]"
               : "light-panel border-border bg-bg hover:border-[var(--accent-gold)]"
@@ -103,13 +96,12 @@ export function SocialLinks({ showVenue = false }: SocialLinksProps) {
               {description}
             </p>
           </div>
-        </motion.a>
+        </a>
       ))}
 
       {showVenue && (
-        <motion.div
-          variants={fadeUpItem}
-          className="light-panel group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
+        <div
+          className="animate-fade-in light-panel group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-bg p-6 text-text shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:border-[var(--accent-gold)] hover:shadow-lg"
         >
           <span className="grid size-12 place-items-center rounded-lg bg-[var(--accent-green)] text-white transition-all duration-300 ease-in-out group-hover:bg-[var(--accent-gold)] group-hover:text-[var(--button-text)]">
             <MapPin size={24} aria-hidden="true" />
@@ -118,8 +110,8 @@ export function SocialLinks({ showVenue = false }: SocialLinksProps) {
             <p className="font-black">Sede</p>
             <p className="mt-1 text-sm leading-relaxed text-muted">{VENUE_NAME}</p>
           </div>
-        </motion.div>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -1,8 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
 import type { News } from "@/lib/content";
-import { staggerContainer } from "@/lib/motion";
 import { NewsCard } from "./NewsCard";
 
 type Props = {
@@ -27,13 +25,7 @@ export function NewsGrid({ items, canManage = false, onEdit, onDelete }: Props) 
   }
 
   return (
-    <motion.div
-      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-40px" }}
-    >
+    <div className="stagger-container grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <NewsCard
           key={item.id}
@@ -43,6 +35,6 @@ export function NewsGrid({ items, canManage = false, onEdit, onDelete }: Props) 
           onDelete={onDelete}
         />
       ))}
-    </motion.div>
+    </div>
   );
 }

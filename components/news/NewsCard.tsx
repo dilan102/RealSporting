@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, Pencil, Trash2 } from "lucide-react";
 import type { News } from "@/lib/content";
-import { fadeUpItem } from "@/lib/motion";
 import {
   NEWS_TEXT_PLACEHOLDER,
   NEWS_TITLE_PLACEHOLDER,
@@ -25,9 +23,7 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
   const summary = sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER);
 
   return (
-    <motion.article
-      variants={fadeUpItem}
-      className="mini-card alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
+    <article className="mini-card alive-card mobile-card-lift animate-fade-in group overflow-hidden rounded-lg border border-border bg-bg-elevated text-text shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
     >
       <Link href={`/noticias/${item.id}`} className="block">
         <div className="relative aspect-[16/10] min-h-64 overflow-hidden">
@@ -73,6 +69,6 @@ export function NewsCard({ item, canManage = false, onEdit, onDelete }: Props) {
           </button>
         </div>
       )}
-    </motion.article>
+    </article>
   );
 }

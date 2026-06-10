@@ -9,7 +9,7 @@ import { club, navLinks } from "@/lib/content";
 import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
 import { DayNightScrollIndicator } from "@/components/ui/DayNightScrollIndicator";
 
-export function Navbar() {
+export function NavbarOptimized() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -124,6 +124,7 @@ export function Navbar() {
           </span>
         </Link>
 
+        {/* Desktop Menu - CSS only, no Framer Motion */}
         <ul className="hidden items-center gap-0.5 lg:flex">
           {navLinks.map((link) => {
             const active = isActiveLink(link.href);
@@ -131,7 +132,7 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`group relative block overflow-hidden rounded-full px-2.5 py-2 text-[13px] font-bold transition-colors xl:px-3 xl:text-sm ${
+                  className={`group relative block overflow-hidden rounded-full px-2.5 py-2 text-[13px] font-bold transition-colors duration-200 xl:px-3 xl:text-sm ${
                     active ? "text-accent" : linkText
                   }`}
                 >
@@ -158,7 +159,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggleAdmin}
-            className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 ${
+            className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors ${
               adminActive
                 ? "border-accent bg-accent text-[var(--button-text)]"
                 : solidHeader
@@ -168,60 +169,50 @@ export function Navbar() {
             aria-label={adminActive ? "Abrir panel de administrador" : "Abrir modo administrador"}
             title={adminActive ? "Panel administrador" : "Modo administrador"}
           >
-            <UserRound size={18} aria-hidden="true" />
+            {adminActive ? <UserRound size={18} /> : <UserRound size={18} />}
           </button>
           <DayNightScrollIndicator />
           <button
             type="button"
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 lg:hidden ${
+            onClick={() => setOpen(!open)}
+            className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border lg:hidden ${
               solidHeader
-                ? "border-border bg-bg-elevated text-text"
-                : "border-white/20 bg-black/20 text-white backdrop-blur"
+                ? "border-border bg-bg-elevated"
+                : "border-white/20 bg-black/20 backdrop-blur"
             }`}
-            onClick={() => setOpen((value) => !value)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={open}
           >
-            {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu - CSS based animation */}
-      <div
-        className={`mx-3 mt-3 overflow-hidden rounded-lg border border-border bg-bg-elevated/96 shadow-2xl backdrop-blur-2xl lg:hidden transition-all duration-200 ${
-          open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
-        }`}
-      >
-        <ul className="grid gap-1 p-3">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={`group relative block overflow-hidden rounded-lg px-4 py-3 text-sm font-black transition-colors ${
-                  isActiveLink(link.href)
-                    ? "bg-accent/10 text-accent"
-                    : "text-muted hover:bg-surface hover:text-text"
-                }`}
-                onClick={() => setOpen(false)}
-              >
-                <span className="absolute inset-y-2 left-0 w-1 origin-y scale-y-0 rounded-r-full bg-accent transition-transform duration-300 group-hover:scale-y-100" />
-                <span className="relative z-10">{link.label}</span>
-              </Link>
-            </li>
-          ))}
-          <li className="grid gap-2 pt-2 sm:grid-cols-2">
-            <NavWhatsAppLink className="btn-green alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black text-white" />
-            <Link
-              href="/formulario-miembros-2026"
-              className="btn-gold alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black"
-              onClick={() => setOpen(false)}
-            >
-              Inscribirme
-            </Link>
-          </li>
-        </ul>
-      </div>
+      {/* Mobile Menu - Simple toggle, no animations */}
+      {open && (
+        <div className="border-t border-border/50 bg-bg-primary/95 backdrop-blur-xl lg:hidden">
+          <div className="mx-auto max-w-7xl px-4 py-4">
+            <ul className="space-y-2">
+              {navLinks.map((link) => {
+                const active = isActiveLink(link.href);
+                return (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={`block rounded-lg px-4 py-2.5 text-sm font-bold transition-colors ${
+                        active
+                          ? "bg-accent/15 text-accent"
+                          : "text-text hover:bg-bg-elevated"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

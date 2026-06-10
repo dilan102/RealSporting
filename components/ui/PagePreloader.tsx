@@ -1,19 +1,27 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+const PRELOADER_MIN_DURATION = 2500; // 2.5 segundos - optimizado para performance
+
 export default function PagePreloader() {
   const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    const startTime = Date.now();
 
     const hide = () => {
-      setFading(true);
+      const elapsed = Date.now() - startTime;
+      const delay = Math.max(0, PRELOADER_MIN_DURATION - elapsed);
+
       setTimeout(() => {
-        setVisible(false);
-        document.body.style.overflow = '';
-      }, 400);
+        setFading(true);
+        setTimeout(() => {
+          setVisible(false);
+          document.body.style.overflow = '';
+        }, 400);
+      }, delay);
     };
 
     if (document.readyState === 'complete') {

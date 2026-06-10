@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,7 +12,6 @@ import {
 } from "lucide-react";
 import type { Training } from "@/lib/content";
 import { PublicationDateText } from "@/components/ui/PublicationDateText";
-import { fadeUpItem } from "@/lib/motion";
 import { TrainingModalShell } from "./TrainingModalShell";
 import {
   TRAINING_TEXT_PLACEHOLDER,
@@ -99,9 +97,8 @@ export function TrainingCard({
 
   return (
     <>
-      <motion.article
-        variants={fadeUpItem}
-        className="alive-card glass mobile-card-lift group overflow-hidden rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
+      <article
+        className="alive-card animate-fade-in glass mobile-card-lift group overflow-hidden rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl hover:shadow-[var(--accent-gold)]/15"
       >
         <button
           type="button"
@@ -179,7 +176,7 @@ export function TrainingCard({
             </div>
           )}
         </div>
-      </motion.article>
+      </article>
 
       <TrainingModalShell
         open={open}

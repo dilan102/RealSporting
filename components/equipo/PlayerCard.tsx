@@ -2,10 +2,8 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { Player } from "@/lib/content";
-import { fadeUpItem } from "@/lib/motion";
 
 type PlayerCardProps = {
   player: Player;
@@ -24,9 +22,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
   const isConvocado = player.convocado === "SI";
 
   return (
-    <motion.article
-      variants={fadeUpItem}
-      className={`alive-card overflow-hidden rounded-lg border bg-bg-elevated/80 transition-all duration-300 ${
+    <article className={`alive-card animate-fade-in overflow-hidden rounded-lg border bg-bg-elevated/80 transition-all duration-300 ${
         expanded
           ? "border-accent shadow-lg shadow-[var(--accent-gold)]/10"
           : "border-border hover:border-accent/35"
@@ -96,6 +92,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
           </div>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

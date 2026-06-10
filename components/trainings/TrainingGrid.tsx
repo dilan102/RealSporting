@@ -1,8 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
 import type { Training } from "@/lib/content";
-import { staggerContainer } from "@/lib/motion";
 import { TrainingCard } from "./TrainingCard";
 
 type TrainingGridProps = {
@@ -32,13 +30,7 @@ export function TrainingGrid({
   }
 
   return (
-    <motion.div
-      className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-40px" }}
-    >
+    <div className="stagger-container grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((training) => (
         <TrainingCard
           key={training.id}
@@ -48,6 +40,6 @@ export function TrainingGrid({
           onDelete={onDelete}
         />
       ))}
-    </motion.div>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, UserRound, X } from "lucide-react";
 import { club, navLinks } from "@/lib/content";
 import { NavWhatsAppLink } from "@/components/layout/NavWhatsAppLink";
@@ -11,6 +12,7 @@ import { DayNightScrollIndicator } from "@/components/ui/DayNightScrollIndicator
 
 export function Navbar() {
   const pathname = usePathname();
+  const reduceMotion = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [adminActive, setAdminActive] = useState(false);
@@ -76,6 +78,25 @@ export function Navbar() {
   };
 
   const linkText = solidHeader ? "text-muted hover:text-text" : "nav-over-hero text-white/90 hover:text-white";
+  const navListMotion = reduceMotion
+    ? {}
+    : {
+        initial: "hidden",
+        animate: "show",
+        variants: {
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.055,
+              delayChildren: 0.08,
+            },
+          },
+        },
+      };
+  const navItemVariants = {
+    hidden: { opacity: 0, y: -8 },
+    show: { opacity: 1, y: 0 },
+  };
   const isActiveLink = (href: string) =>
     href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
@@ -124,11 +145,17 @@ export function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden items-center gap-0.5 lg:flex">
+        <motion.ul className="hidden items-center gap-0.5 lg:flex" {...navListMotion}>
           {navLinks.map((link) => {
             const active = isActiveLink(link.href);
             return (
-              <li key={link.href}>
+              <motion.li
+                key={link.href}
+                variants={navItemVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={reduceMotion ? undefined : { y: -2 }}
+                whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+              >
                 <Link
                   href={link.href}
                   className={`group relative block overflow-hidden rounded-full px-2.5 py-2 text-[13px] font-bold transition-colors xl:px-3 xl:text-sm ${
@@ -139,13 +166,17 @@ export function Navbar() {
                   <span className="relative z-10">{link.label}</span>
                   <span className="absolute inset-x-3 bottom-1 h-px origin-left scale-x-0 bg-current opacity-45 transition-transform duration-300 ease-out group-hover:scale-x-100" />
                   {active && (
-                    <span className="absolute inset-x-3 bottom-1 h-px bg-accent" />
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-x-3 bottom-1 h-px bg-accent"
+                      transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                    />
                   )}
                 </Link>
-              </li>
+              </motion.li>
             );
           })}
-        </ul>
+        </motion.ul>
 
         <div className="flex items-center gap-1.5">
           <NavWhatsAppLink className="btn-green alive-lift hidden min-h-10 items-center justify-center rounded-full px-3 text-[13px] font-black text-white md:inline-flex xl:px-4 xl:text-sm" />
@@ -158,7 +189,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={toggleAdmin}
-            className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition-colors duration-200 ${
+            className={`relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border shadow-sm ${
               adminActive
                 ? "border-accent bg-accent text-[var(--button-text)]"
                 : solidHeader
@@ -173,7 +204,7 @@ export function Navbar() {
           <DayNightScrollIndicator />
           <button
             type="button"
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 lg:hidden ${
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border lg:hidden ${
               solidHeader
                 ? "border-border bg-bg-elevated text-text"
                 : "border-white/20 bg-black/20 text-white backdrop-blur"
@@ -187,41 +218,59 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu - CSS based animation */}
-      <div
-        className={`mx-3 mt-3 overflow-hidden rounded-lg border border-border bg-bg-elevated/96 shadow-2xl backdrop-blur-2xl lg:hidden transition-all duration-200 ${
-          open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-2 pointer-events-none"
-        }`}
-      >
-        <ul className="grid gap-1 p-3">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={`group relative block overflow-hidden rounded-lg px-4 py-3 text-sm font-black transition-colors ${
-                  isActiveLink(link.href)
-                    ? "bg-accent/10 text-accent"
-                    : "text-muted hover:bg-surface hover:text-text"
-                }`}
-                onClick={() => setOpen(false)}
-              >
-                <span className="absolute inset-y-2 left-0 w-1 origin-y scale-y-0 rounded-r-full bg-accent transition-transform duration-300 group-hover:scale-y-100" />
-                <span className="relative z-10">{link.label}</span>
-              </Link>
-            </li>
-          ))}
-          <li className="grid gap-2 pt-2 sm:grid-cols-2">
-            <NavWhatsAppLink className="btn-green alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black text-white" />
-            <Link
-              href="/formulario-miembros-2026"
-              className="btn-gold alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black"
-              onClick={() => setOpen(false)}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-3 mt-3 overflow-hidden rounded-lg border border-border bg-bg-elevated/96 shadow-2xl backdrop-blur-2xl lg:hidden"
+          >
+            <motion.ul
+              className="grid gap-1 p-3"
+              initial={reduceMotion ? undefined : "hidden"}
+              animate={reduceMotion ? undefined : "show"}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.045, delayChildren: 0.04 } },
+              }}
             >
-              Inscribirme
-            </Link>
-          </li>
-        </ul>
-      </div>
+              {navLinks.map((link) => (
+                <motion.li
+                  key={link.href}
+                  variants={navItemVariants}
+                  transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                >
+                  <Link
+                    href={link.href}
+                    className={`group relative block overflow-hidden rounded-lg px-4 py-3 text-sm font-black transition-colors ${
+                      isActiveLink(link.href)
+                        ? "bg-accent/10 text-accent"
+                        : "text-muted hover:bg-surface hover:text-text"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="absolute inset-y-2 left-0 w-1 origin-y scale-y-0 rounded-r-full bg-accent transition-transform duration-300 group-hover:scale-y-100" />
+                    <span className="relative z-10">{link.label}</span>
+                  </Link>
+                </motion.li>
+              ))}
+              <li className="grid gap-2 pt-2 sm:grid-cols-2">
+                <NavWhatsAppLink className="btn-green alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black text-white" />
+                <Link
+                  href="/formulario-miembros-2026"
+                  className="btn-gold alive-lift flex min-h-11 items-center justify-center rounded-full px-4 text-sm font-black"
+                  onClick={() => setOpen(false)}
+                >
+                  Inscribirme
+                </Link>
+              </li>
+            </motion.ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
