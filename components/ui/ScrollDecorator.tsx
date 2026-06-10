@@ -25,7 +25,7 @@ export function ScrollDecorator() {
       <div 
         className="scroll-progress-indicator"
         style={{
-          scaleY: scrollProgress / 100,
+          transform: `scaleY(${scrollProgress / 100})`,
         }}
       />
       
