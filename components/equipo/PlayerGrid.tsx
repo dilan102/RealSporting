@@ -1,10 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import type { Player, TeamCategoryId, TeamSection } from "@/lib/content";
-import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { CategoryRosterContent, playersFromSection } from "./CategoryRosterContent";
 
 type PlayerGridProps = {
@@ -48,12 +46,8 @@ export function PlayerGrid({
   };
 
   return (
-    <motion.div
-      className="space-y-8"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: false, margin: "-40px" }}
+    <div
+      className="stagger-container space-y-8"
     >
       {sections
         .filter((section) => {
@@ -69,10 +63,9 @@ export function PlayerGrid({
           const players = sectionPlayers[section.id] ?? [];
 
           return (
-            <motion.section
+            <section
               key={section.id}
-              variants={fadeUpItem}
-              className="glass mobile-card-lift overflow-hidden rounded-lg"
+              className="animate-fade-in glass mobile-card-lift overflow-hidden rounded-lg"
             >
               {section.id !== "entrenadores" ? (
                 <>
@@ -128,9 +121,9 @@ export function PlayerGrid({
                   />
                 </>
               )}
-            </motion.section>
+            </section>
           );
         })}
-    </motion.div>
+    </div>
   );
 }

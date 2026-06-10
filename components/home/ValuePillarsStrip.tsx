@@ -1,10 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { club } from "@/lib/content";
-import { PRELOADER_EASE } from "@/lib/preloader";
 
 export function ValuePillarsStrip() {
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -15,13 +13,9 @@ export function ValuePillarsStrip() {
         const open = expanded === value.title;
 
         return (
-          <motion.article
+          <article
             key={value.title}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.4, ease: PRELOADER_EASE }}
-            className={`valor-item mobile-card-lift bg-bg-elevated transition-all duration-300 motion-reduce:transform-none ${
+            className={`animate-fade-in valor-item mobile-card-lift bg-bg-elevated transition-all duration-300 motion-reduce:transform-none ${
               open
                 ? "ring-2 ring-inset ring-accent shadow-lg shadow-[var(--accent-gold)]/12"
                 : "hover:bg-bg hover:shadow-md"
@@ -46,22 +40,15 @@ export function ValuePillarsStrip() {
                 />
               </div>
               <h3 className="mt-2 text-2xl font-black">{value.title}</h3>
-              <AnimatePresence initial={false}>
-                {open && (
-                  <motion.p
-                    key="detail"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.28, ease: PRELOADER_EASE }}
-                    className="mt-3 overflow-hidden text-sm leading-7 text-muted"
-                  >
-                    {value.description}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              {open && (
+                <p
+                  className="mt-3 overflow-hidden text-sm leading-7 text-muted"
+                >
+                  {value.description}
+                </p>
+              )}
             </button>
-          </motion.article>
+          </article>
         );
       })}
     </div>

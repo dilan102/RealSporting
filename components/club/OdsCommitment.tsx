@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+// Framer Motion removed - using CSS animations instead
 import type { OdsItem } from "@/lib/content";
 import { odsClosingPhrase, odsItems } from "@/lib/content";
-import { PRELOADER_EASE } from "@/lib/preloader";
 import { OdsFlipCard } from "@/components/club/OdsFlipCard";
 import { OdsInfographicModal } from "@/components/club/OdsInfographicModal";
 
@@ -21,28 +20,21 @@ export function OdsCommitment() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {odsItems.map((item, index) => (
-            <motion.div
+            <div
               key={item.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-4%" }}
-              transition={{ delay: index * 0.05, duration: 0.4, ease: PRELOADER_EASE }}
+              className="animate-fade-in"
             >
               <OdsFlipCard
                 item={item}
                 variant="club"
                 onOpenInfographic={setInfographicItem}
               />
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.blockquote
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, ease: PRELOADER_EASE }}
-          className="rounded-lg border border-accent/30 bg-[color-mix(in_srgb,var(--accent-gold)_10%,var(--bg-elevated))] px-6 py-8 text-center sm:px-10"
+        <blockquote
+          className="animate-fade-in rounded-lg border border-accent/30 bg-[color-mix(in_srgb,var(--accent-gold)_10%,var(--bg-elevated))] px-6 py-8 text-center sm:px-10"
         >
           <p className="font-social-impact text-balance text-2xl font-black leading-snug text-text sm:text-3xl">
             {odsClosingPhrase}
@@ -50,7 +42,7 @@ export function OdsCommitment() {
           <p className="mt-3 text-xs font-black uppercase tracking-normal text-muted">
             Club Deportivo Real Sporting · Compromiso con los ODS
           </p>
-        </motion.blockquote>
+        </blockquote>
       </div>
 
       <OdsInfographicModal

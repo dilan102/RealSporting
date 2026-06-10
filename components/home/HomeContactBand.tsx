@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+// Framer Motion removed - using CSS animations instead
 import { ArrowRight, FileText, MessageCircle } from "lucide-react";
 import { registrationSteps } from "@/lib/content";
 import { buildWhatsAppUrl } from "@/lib/constants";
@@ -11,12 +11,8 @@ export function HomeContactBand() {
   return (
     <section className="bg-bg text-text">
       <div className="section-shell pb-20 pt-8 sm:pb-24">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, ease: PRELOADER_EASE }}
-          className="home-inscription-band cinematic-section relative overflow-hidden rounded-lg border text-white shadow-2xl shadow-[var(--accent-green)]/10"
+        <div
+          className="animate-fade-in home-inscription-band cinematic-section relative overflow-hidden rounded-lg border text-white shadow-2xl shadow-[var(--accent-green)]/10"
         >
           <div
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_18%,rgba(208,161,58,0.22),transparent_38%),radial-gradient(circle_at_88%_82%,rgba(43,118,85,0.28),transparent_42%)]"
@@ -59,23 +55,18 @@ export function HomeContactBand() {
               </div>
             </div>
 
-            <div className="grid gap-3">
+            <div className="stagger-container grid gap-3">
               {registrationSteps.map((step, index) => (
-                <motion.article
+                <article
                   key={step.step}
-                  initial={{ opacity: 0, x: 16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.08 * index, duration: 0.4, ease: PRELOADER_EASE }}
-                  whileHover={{ y: -3, scale: 1.01 }}
-                  className="alive-card rounded-lg border border-white/14 bg-white/10 p-4 backdrop-blur-sm transition-shadow hover:border-[color-mix(in_srgb,var(--cinematic-accent)_45%,transparent)] hover:shadow-lg hover:shadow-[var(--accent-gold)]/10"
+                  className="animate-fade-in alive-card rounded-lg border border-white/14 bg-white/10 p-4 backdrop-blur-sm transition-shadow hover:border-[color-mix(in_srgb,var(--cinematic-accent)_45%,transparent)] hover:shadow-lg hover:shadow-[var(--accent-gold)]/10"
                 >
                   <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
                     {step.step}
                   </p>
                   <h3 className="mt-2 text-lg font-black">{step.title}</h3>
                   <p className="mt-1 text-sm leading-6 text-white/72">{step.text}</p>
-                </motion.article>
+                </article>
               ))}
               <Link
                 href="/contacto#documentos"
@@ -86,7 +77,7 @@ export function HomeContactBand() {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

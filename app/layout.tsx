@@ -8,7 +8,6 @@ import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { PageTransition } from "@/components/ui/PageTransition";
 import PagePreloader from "@/components/ui/PagePreloader";
 import StarField from "@/components/ui/StarField";
-import { ScrollDecorator } from "@/components/ui/ScrollDecorator";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { club } from "@/lib/content";
@@ -56,7 +55,6 @@ export default function RootLayout({
           <SmoothScrollProvider />
           <StarField />
           <PagePreloader />
-          <ScrollDecorator />
           <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
             <Navbar />
             <AdminPortal />

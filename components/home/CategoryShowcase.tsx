@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+// Framer Motion removed - using CSS animations instead
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { sportCategoryCards } from "@/lib/content";
@@ -114,18 +114,13 @@ export function CategoryShowcase() {
             <ChevronRight size={22} aria-hidden="true" />
           </button>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${clampedStart}-${itemsPerPage}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.32, ease: PRELOADER_EASE }}
-              className={`grid gap-4 ${
-                isPartialPage
-                  ? "justify-items-center md:grid-cols-2 xl:flex xl:flex-wrap xl:justify-center"
-                  : "md:grid-cols-2 xl:grid-cols-4"
-              }`}
+          <div
+            key={`${clampedStart}-${itemsPerPage}`}
+            className={`animate-fade-in grid gap-4 ${
+              isPartialPage
+                ? "justify-items-center md:grid-cols-2 xl:flex xl:flex-wrap xl:justify-center"
+                : "md:grid-cols-2 xl:grid-cols-4"
+            }`}
             >
               {visibleCategories.map((category) => (
                 <Link
@@ -156,8 +151,7 @@ export function CategoryShowcase() {
                   </div>
                 </Link>
               ))}
-            </motion.div>
-          </AnimatePresence>
+            </div>
 
           <p className="mt-4 text-center text-xs font-black uppercase tracking-normal text-muted">
             {clampedStart + 1}–{clampedStart + visibleCategories.length} de{" "}

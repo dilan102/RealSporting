@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+// Framer Motion removed - using CSS animations instead
 import Image from "next/image";
 import { useState } from "react";
 import {
@@ -12,7 +12,6 @@ import {
   Users,
 } from "lucide-react";
 import { club } from "@/lib/content";
-import { PRELOADER_EASE } from "@/lib/preloader";
 
 const cards = [
   {
@@ -35,13 +34,9 @@ export function VisionMission() {
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {cards.map(({ icon: Icon, title, text, image }, index) => (
-        <motion.article
+        <article
           key={title}
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: index * 0.15, duration: 0.4, ease: PRELOADER_EASE }}
-          className="alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
+          className="animate-fade-in alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"
         >
           <div className="relative aspect-[16/9] bg-surface">
             <Image
@@ -60,7 +55,7 @@ export function VisionMission() {
             <h3 className="font-institutional text-3xl font-black">{title}</h3>
             <p className="mt-3 text-sm leading-7 text-muted">{text}</p>
           </div>
-        </motion.article>
+        </article>
       ))}
     </div>
   );
@@ -73,13 +68,9 @@ export function ValuesGrid() {
         const Icon = valueIcons[index] || Flag;
 
         return (
-          <motion.article
+          <article
             key={value.title}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.15, duration: 0.4, ease: PRELOADER_EASE }}
-            className="alive-card mobile-card-lift group relative overflow-hidden rounded-lg border border-border bg-bg-elevated p-7 transition-all duration-300 hover:border-accent hover:bg-[color-mix(in_srgb,var(--accent-green)_9%,var(--card-bg))]"
+            className="animate-fade-in alive-card mobile-card-lift group relative overflow-hidden rounded-lg border border-border bg-bg-elevated p-7 transition-all duration-300 hover:border-accent hover:bg-[color-mix(in_srgb,var(--accent-green)_9%,var(--card-bg))]"
           >
             <span className="pointer-events-none absolute right-5 top-3 font-display text-7xl leading-none text-[color-mix(in_srgb,var(--accent-gold)_20%,transparent)]">
               {String(index + 1).padStart(2, "0")}
@@ -89,7 +80,7 @@ export function ValuesGrid() {
             </div>
             <h3 className="font-social-impact relative text-3xl font-black">{value.title}</h3>
             <p className="relative mt-3 text-sm leading-7 text-muted">{value.description}</p>
-          </motion.article>
+          </article>
         );
       })}
     </div>
@@ -97,20 +88,12 @@ export function ValuesGrid() {
 }
 
 export function Timeline() {
-  const reducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const lastIndex = club.milestones.length - 1;
 
   return (
     <div className="relative">
-      <motion.div
-        aria-hidden="true"
-        className="absolute bottom-0 left-[1.35rem] top-0 w-0.5 origin-top rounded-full bg-[color-mix(in_srgb,var(--accent-green)_35%,var(--border))]"
-        initial={{ scaleY: reducedMotion ? 1 : 0 }}
-        whileInView={{ scaleY: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: reducedMotion ? 0.1 : 1, ease: PRELOADER_EASE }}
-      />
+      <div aria-hidden="true" className="absolute bottom-0 left-[1.35rem] top-0 w-0.5 origin-top rounded-full bg-[color-mix(in_srgb,var(--accent-green)_35%,var(--border))]" />
 
       <ol className="space-y-5 sm:space-y-6">
         {club.milestones.map((milestone, index) => {
@@ -118,43 +101,23 @@ export function Timeline() {
           const isLatest = index === lastIndex;
 
           return (
-            <motion.li
+            <li
               key={`${milestone.period}-${milestone.title}`}
-              initial={{ opacity: 0, x: reducedMotion ? 0 : -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                delay: reducedMotion ? 0 : index * 0.12,
-                duration: 0.45,
-                ease: PRELOADER_EASE,
-              }}
               className="relative pl-12 sm:pl-14"
               onMouseEnter={() => setActiveIndex(index)}
               onMouseLeave={() => setActiveIndex(null)}
               onFocus={() => setActiveIndex(index)}
               onBlur={() => setActiveIndex(null)}
             >
-              <motion.span
+              <span
                 aria-hidden="true"
-                animate={{
-                  scale: isActive ? 1.15 : 1,
-                  backgroundColor: isActive || isLatest
-                    ? "var(--accent-gold)"
-                    : "var(--bg-elevated)",
-                  borderColor: isActive || isLatest
-                    ? "var(--accent-gold)"
-                    : "var(--accent-green)",
-                }}
-                transition={{ duration: 0.25, ease: PRELOADER_EASE }}
-                className="absolute left-0 top-5 z-10 size-[1.125rem] rounded-full border-[3px] shadow-sm"
+                className="absolute left-0 top-5 z-10 size-[1.125rem] rounded-full border-[3px] border-[var(--accent-green)] shadow-sm"
+                style={isActive || isLatest ? { backgroundColor: "var(--accent-gold)", borderColor: "var(--accent-gold)" } : {}}
               />
 
-              <motion.article
+              <article
                 tabIndex={0}
-                animate={{ y: isActive ? -2 : 0 }}
-                whileHover={reducedMotion ? undefined : { y: -2 }}
-                transition={{ duration: 0.25, ease: PRELOADER_EASE }}
-                className={`alive-card mobile-card-lift rounded-lg border bg-bg-elevated p-5 shadow-sm transition-[border-color,box-shadow] sm:p-6 ${
+                className={`alive-card mobile-card-lift rounded-lg border bg-bg-elevated p-5 shadow-sm transition-[border-color,box-shadow] hover:shadow-md sm:p-6 ${
                   isActive
                     ? "border-[color-mix(in_srgb,var(--accent-gold)_55%,var(--border))] shadow-lg shadow-[color-mix(in_srgb,var(--accent-gold)_18%,transparent)]"
                     : "border-border"
@@ -182,8 +145,8 @@ export function Timeline() {
                   {milestone.title}
                 </h3>
                 <p className="mt-2 text-sm leading-7 text-muted sm:text-base">{milestone.event}</p>
-              </motion.article>
-            </motion.li>
+              </article>
+            </li>
           );
         })}
       </ol>

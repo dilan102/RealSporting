@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+// Framer Motion removed - using CSS animations instead
 import { ArrowRight, Dumbbell } from "lucide-react";
 import { TrainingModalShell } from "@/components/trainings/TrainingModalShell";
 import { PublicationDateText } from "@/components/ui/PublicationDateText";
@@ -187,17 +187,12 @@ export function TrainingLoopShowcase({ items }: Props) {
           </div>
 
           <div className="order-1 overflow-hidden lg:order-2">
-            <AnimatePresence mode="wait">
-              <motion.button
-                key={activeTraining.id}
-                type="button"
-                onClick={() => setExpanded(activeTraining)}
-                className="alive-card mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-lg border border-accent/40 bg-bg text-left text-white shadow-2xl sm:min-h-[410px]"
-                initial={{ opacity: 0, x: -54, scale: 0.96 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 64, scale: 0.97 }}
-                transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
-                aria-label={`Expandir entrenamiento: ${sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}`}
+            <button
+              key={activeTraining.id}
+              type="button"
+              onClick={() => setExpanded(activeTraining)}
+              className="animate-fade-in alive-card mobile-card-lift group relative min-h-[500px] w-full overflow-hidden rounded-lg border border-accent/40 bg-bg text-left text-white shadow-2xl sm:min-h-[410px]"
+              aria-label={`Expandir entrenamiento: ${sanitizeVisibleTextOrDefault(activeTraining.title, "Entrenamiento Real Sporting")}`}
               >
                 <Image
                   src={activeImage}
@@ -231,8 +226,7 @@ export function TrainingLoopShowcase({ items }: Props) {
                     <ArrowRight size={16} aria-hidden="true" />
                   </span>
                 </span>
-              </motion.button>
-            </AnimatePresence>
+              </button>
           </div>
         </div>
       </div>
