@@ -265,7 +265,7 @@
   }
 
   .section-padding {
-    @apply py-16 sm:py-20 lg:py-24;
+    @apply py-20 sm:py-28 lg:py-32;
   }
 
   .eyebrow {
@@ -310,8 +310,8 @@
   .premium-card {
     @apply rounded-lg border shadow-sm;
     border-color: rgba(45, 143, 95, 0.4);
-    background: color-mix(in srgb, var(--card-bg) 15%, transparent);
-    backdrop-filter: blur(12px) saturate(1.1);
+    background: rgba(15, 25, 18, 0.80);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 0 8px 32px rgba(45, 143, 95, 0.12), inset 0 1px 0 rgba(45, 143, 95, 0.15);
     position: relative;
   }
@@ -348,9 +348,7 @@
   }
 
   .grid-overlay {
-    background-image:
-      linear-gradient(rgba(45, 143, 95, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(45, 143, 95, 0.06) 1px, transparent 1px);
+    background-image: none;
     background-size: 72px 72px;
   }
 
@@ -409,17 +407,15 @@
   }
 
   .readable-panel {
-    background: color-mix(in srgb, var(--card-bg) 20%, transparent);
-    border: 1px solid rgba(45, 143, 95, 0.3);
+    background: rgba(15, 25, 18, 0.80);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 0 8px 32px rgba(45, 143, 95, 0.1);
-    backdrop-filter: blur(12px);
   }
 
   [data-theme="dark"] .readable-panel {
-    background: color-mix(in srgb, var(--card-bg) 20%, transparent);
-    border-color: rgba(45, 143, 95, 0.3);
+    background: rgba(15, 25, 18, 0.80);
+    border-color: rgba(255, 255, 255, 0.06);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
   }
 
   .nav-over-hero {
@@ -431,8 +427,7 @@
   .light-panel {
     box-shadow: 0 8px 32px rgba(45, 143, 95, 0.12);
     border: 1px solid rgba(45, 143, 95, 0.3);
-    background: color-mix(in srgb, var(--card-bg) 15%, transparent);
-    backdrop-filter: blur(12px);
+    background: rgba(15, 25, 18, 0.80);
   }
 
   [data-theme="light"] .light-panel {
@@ -477,9 +472,9 @@
       border-color 0.34s cubic-bezier(.16,.84,.28,1),
       box-shadow 0.28s ease,
       filter 0.28s ease;
-    background: color-mix(in srgb, var(--card-bg) 15%, transparent);
-    backdrop-filter: blur(12px) saturate(1.1);
-    border: 1px solid rgba(45, 143, 95, 0.35);
+    background: rgba(15, 25, 18, 0.80);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: inherit;
   }
 
   [data-theme="light"] .alive-card {
@@ -728,7 +723,7 @@
   }
 
   .hero-radial-vignette {
-    background: var(--cinematic-vignette);
+    background: none;
   }
 
   .hero-scroll-effect {
@@ -1468,19 +1463,23 @@
   }
 
   .mobile-reveal-delay-1 {
-    animation-delay: 90ms;
+    animation-delay: 200ms;
   }
 
   .mobile-reveal-delay-2 {
-    animation-delay: 180ms;
+    animation-delay: 400ms;
   }
 
   .mobile-reveal-delay-3 {
-    animation-delay: 270ms;
+    animation-delay: 600ms;
   }
 
   .mobile-float {
     animation: mobile-float 5.5s ease-in-out infinite;
+  }
+
+  .hero-title-enter {
+    animation: hero-title-in 0.9s cubic-bezier(.22,1,.36,1) both;
   }
 
   .mobile-card-lift {
@@ -1832,6 +1831,19 @@
 
   to {
     box-shadow: 0 0 22px rgba(242, 239, 136, 0.95);
+  }
+}
+
+@keyframes hero-title-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
   }
 }
 

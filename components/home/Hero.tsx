@@ -8,7 +8,6 @@ import { club, institutionalStats } from "@/lib/content";
 import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
 import { useScrollValue } from "@/hooks/useScrollValue";
 import { useHeroReady, useCriticalImage } from "@/hooks/useLoading";
-import GlitchText from "@/components/GlitchText";
 import CountUp from "@/components/CountUp";
 
 type HeroCopy = {
@@ -31,7 +30,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
 
   useScrollValue((scrollY) => {
     if (imageRef.current) {
-      const value = Math.min(scrollY * 0.16, 92);
+      const value = Math.min(scrollY * 0.06, 32);
       // Escribir directo al DOM, cero re-renders
       imageRef.current.style.transform = `translate3d(0, ${value}px, 0) scale(1.04)`;
     }
@@ -55,8 +54,6 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
       </div>
       <div className="hero-overlay-h absolute inset-0" />
       <div className="hero-overlay-v absolute inset-0" />
-      <div className="hero-radial-vignette absolute inset-0" />
-      <div className="pointer-events-none absolute inset-0 grid-overlay opacity-[0.14]" />
 
       <HeroScrollEffect />
       {/* Watermark escudo (shield) as background */}
@@ -72,7 +69,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
       </div>
       {/* Glow verde suave detrás del escudo */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="absolute w-[800px] h-[800px] rounded-full blur-[120px] bg-gradient-to-r from-transparent via-[#00FF78] to-transparent opacity-[0.05]" />
+        <div className="absolute w-[450px] h-[450px] rounded-full blur-[60px] bg-gradient-to-r from-transparent via-[#00FF78] to-transparent opacity-[0.06]" />
       </div>
       <div className="section-shell relative z-10 flex min-h-[94svh] items-end pb-10 pt-28 sm:pb-14 sm:pt-32 lg:pb-16">
         <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.55fr)] lg:items-end">
@@ -89,15 +86,8 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
               {copy.badge || "Club Deportivo Real Sporting de Usme"}
             </div>
 
-            <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1">
-              <GlitchText
-                text={title}
-                as="span"
-                className="block"
-                delay={120}
-                duration={1500}
-                triggerOnView={false}
-              />
+            <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1 hero-title-enter">
+              {title}
             </h1>
 
             <p className="mt-6 max-w-2xl text-base font-semibold leading-8 text-white/88 sm:text-xl mobile-reveal mobile-reveal-delay-2">
