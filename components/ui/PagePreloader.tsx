@@ -1,44 +1,44 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useLoading } from '@/contexts/LoadingContext';
 
+/**
+ * Preloader profesional que solo se renderiza durante la carga inicial.
+ * Se desvanece suavemente cuando todos los recursos están listos.
+ */
 export default function PagePreloader() {
-  const [visible, setVisible] = useState(true);
-  const [fading, setFading] = useState(false);
+  const { isPreloaderVisible, isPreloaderFading } = useLoading();
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-
-    const hide = () => {
-      setFading(true);
-      setTimeout(() => {
-        setVisible(false);
-        document.body.style.overflow = '';
-      }, 500);
-    };
-
-    // Disparar al cargar, con un mínimo de 800ms para la animación
-    const start = Date.now();
-    const onLoad = () => {
-      const elapsed = Date.now() - start;
-      const wait = Math.max(0, 800 - elapsed);
-      setTimeout(hide, wait);
-    };
-
-    if (document.readyState === 'complete') {
-      onLoad();
-    } else {
-      window.addEventListener('load', onLoad, { once: true });
-    }
-
-    return () => window.removeEventListener('load', onLoad);
-  }, []);
-
-  if (!visible) return null;
+  // No renderizar nada si el preloader no está visible
+  if (!isPreloaderVisible) return null;
 
   return (
-    <div className={`preloader-overlay ${fading ? 'fading' : ''}`}>
-      <div className="preloader-box">
-        {/* Render SPORTING letters */}
+    <div
+      className={`preloader-overlay ${isPreloaderFading ? 'fading' : ''}`}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 999999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000000',
+        willChange: 'opacity',
+      }}
+    >
+      <div
+        className="preloader-box"
+        style={{
+          display: 'flex',
+          gap: '12px',
+          fontSize: '48px',
+          fontWeight: 900,
+          letterSpacing: '4px',
+          color: '#ffffff',
+        }}
+      >
+        {/* Render SPORTING letters con animación */}
         {'SPORTING'.split('').map((char, i) => (
           <div
             key={i}
@@ -51,6 +51,28 @@ export default function PagePreloader() {
           </div>
         ))}
       </div>
+
+      <style jsx>{`
+        @keyframes letterBounce {
+          from {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          to {
+            transform: translateY(-12px);
+            opacity: 0.6;
+          }
+        }
+
+        :global(.preloader-overlay) {
+          transition: opacity 500ms ease-out;
+          opacity: 1;
+        }
+
+        :global(.preloader-overlay.fading) {
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 }

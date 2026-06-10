@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { LoadingProvider } from "@/contexts/LoadingContext";
+import { LoadingInitializer } from "@/components/providers/LoadingInitializer";
+import { MainContentRenderer } from "@/components/providers/MainContentRenderer";
 import { GlobalContentManager } from "@/components/admin/GlobalContentManager";
 import { AdminPortal } from "@/components/admin/AdminPortal";
 import { Navbar } from "@/components/layout/Navbar";
@@ -56,24 +59,34 @@ export default function RootLayout({
       <head>
       </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
-        <ThemeProvider>
-          <SmoothScrollProvider />
-          <StarField />
+        <LoadingProvider>
+          {/* Preloader - siempre renderizado, pero se oculta cuando isPreloaderVisible es false */}
           <PagePreloader />
-          <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
-            <Navbar />
-            <AdminPortal />
-            <GlobalContentManager />
-            <AIAssistantWidget />
-            <AIAssistantFloatingButton />
-            <main className="flex-1">
-              <PageTransition>
-                {children}
-              </PageTransition>
-            </main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+
+          {/* Inicializador que monitoriza fuentes e imágenes críticas */}
+          <LoadingInitializer />
+
+          {/* Contenido principal - solo se renderiza cuando el preloader no está visible */}
+          <MainContentRenderer>
+            <ThemeProvider>
+              <SmoothScrollProvider />
+              <StarField />
+              <div id="site-content" className="site-content relative z-10 flex min-h-screen flex-col">
+                <Navbar />
+                <AdminPortal />
+                <GlobalContentManager />
+                <AIAssistantWidget />
+                <AIAssistantFloatingButton />
+                <main className="flex-1">
+                  <PageTransition>
+                    {children}
+                  </PageTransition>
+                </main>
+                <Footer />
+              </div>
+            </ThemeProvider>
+          </MainContentRenderer>
+        </LoadingProvider>
       </body>
     </html>
   );

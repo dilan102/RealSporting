@@ -7,6 +7,7 @@ import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
 import { club, institutionalStats } from "@/lib/content";
 import { HeroScrollEffect } from "@/components/ui/HeroScrollEffect";
 import { useScrollValue } from "@/hooks/useScrollValue";
+import { useHeroReady, useCriticalImage } from "@/hooks/useLoading";
 import GlitchText from "@/components/GlitchText";
 import CountUp from "@/components/CountUp";
 
@@ -21,6 +22,12 @@ type HeroCopy = {
 export function Hero({ copy = {} }: { copy?: HeroCopy }) {
   const imageRef = useRef<HTMLDivElement | null>(null);
   const title = copy.title || "Desde Usme, Con disciplina, Hacia el futuro.";
+
+  // Marcar Hero como listo cuando esté renderizado
+  useHeroReady();
+
+  // Monitorizar la carga de la imagen crítica
+  useCriticalImage('hero-image');
 
   useScrollValue((scrollY) => {
     if (imageRef.current) {
@@ -42,6 +49,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
           fill
           priority
           sizes="100vw"
+          data-critical-image="hero-image"
           className="hero-photo object-cover object-[center_38%]"
         />
       </div>
