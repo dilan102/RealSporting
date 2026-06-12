@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { sportCategoryCards } from "@/lib/content";
 import type { Player, TeamCategoryId, TeamSection } from "@/lib/content";
 import { CategoryRosterContent, playersFromSection } from "./CategoryRosterContent";
@@ -73,7 +74,7 @@ export function EquipoCategories({
   };
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-8">
       {sportCategoryCards.map((category) => {
         const section = sectionById.get(category.id);
         const isExpanded = expandedId === category.id;
@@ -83,52 +84,79 @@ export function EquipoCategories({
           <article
             key={category.id}
             id={`categoria-${category.id}`}
-            className={`category-anchor-target alive-card premium-card scroll-mt-32 overflow-hidden transition-[grid-column] ${
-              isExpanded ? "sm:col-span-2" : ""
-            }`}
+            className="category-anchor-target scroll-mt-32 overflow-hidden border-t border-border pt-8 first:border-t-0 first:pt-0"
           >
-            <button
-              type="button"
-              className="group block w-full text-left"
-              onClick={() => handleToggle(category.id)}
-              aria-expanded={isExpanded}
-              aria-controls={`roster-${category.id}`}
-            >
-              <div className="relative aspect-[16/9] bg-surface">
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:items-stretch">
+              <button
+                type="button"
+                className="group relative min-h-[320px] overflow-hidden rounded-lg border border-border bg-surface text-left"
+                onClick={() => handleToggle(category.id)}
+                aria-expanded={isExpanded}
+                aria-controls={`roster-${category.id}`}
+              >
                 <Image
                   src={category.image}
-                  alt={`Categoría ${category.name} (${category.range})`}
+                  alt={`Entrenamiento categoría ${category.name} (${category.range})`}
                   fill
-                  className="interactive-image object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                  sizes="(min-width: 1024px) 32vw, (min-width: 640px) 50vw, 100vw"
+                  className="interactive-image object-cover transition-transform duration-700 group-hover:scale-[1.035]"
+                  sizes="(min-width: 1024px) 44vw, 100vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                <p className="cinematic-accent absolute bottom-3 left-4 text-xs font-black uppercase tracking-normal">
-                  {category.range}
-                </p>
-                <span className="absolute right-3 top-3 rounded-md bg-bg/80 px-2 py-1 text-xs font-bold text-text backdrop-blur-sm">
-                  {playerCount} integrantes
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.72))]" />
+                <span className="absolute left-4 top-4 rounded-lg border border-white/20 bg-black/40 px-3 py-1 text-xs font-black uppercase text-white backdrop-blur">
+                  {category.ages}
                 </span>
-              </div>
-              <div className="flex items-start justify-between gap-3 p-5">
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-categories text-3xl font-black leading-none">
+                <span className="absolute bottom-4 left-4 right-4">
+                  <span className="block font-categories text-5xl font-black leading-none text-white sm:text-6xl">
+                    {category.name}
+                  </span>
+                  <span className="mt-2 block text-xs font-black uppercase tracking-normal text-white/72">
+                    Nacidos {category.range} · {playerCount} integrantes
+                  </span>
+                </span>
+              </button>
+
+              <div className="flex flex-col justify-between rounded-lg border border-border bg-bg-elevated p-5 sm:p-6">
+                <div>
+                  <p className="eyebrow">Categoría formativa</p>
+                  <h3 className="font-categories mt-3 text-4xl font-black leading-none sm:text-5xl">
                     {category.name}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-muted">{category.description}</p>
-                  <p className="mt-2 text-xs font-semibold uppercase tracking-normal text-accent">
-                    {isExpanded ? "Ocultar plantilla" : "Ver plantilla y convocatorias"}
-                  </p>
+                  <p className="mt-4 text-base leading-8 text-muted">{category.description}</p>
+                  <div className="mt-6 grid gap-2 sm:grid-cols-3">
+                    {category.objectives.map((objective) => (
+                      <span
+                        key={objective}
+                        className="rounded-lg border border-border bg-bg px-3 py-3 text-sm font-bold text-text"
+                      >
+                        {objective}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <ChevronDown
-                  size={22}
-                  className={`mt-1 shrink-0 text-muted transition-transform duration-300 ${
-                    isExpanded ? "rotate-180 text-accent" : ""
-                  }`}
-                  aria-hidden="true"
-                />
+
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => handleToggle(category.id)}
+                    className="alive-lift inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-accent/45 bg-accent/10 px-4 text-sm font-black text-accent hover:bg-accent hover:text-[var(--button-text)]"
+                  >
+                    {isExpanded ? "Ocultar convocados" : "Ver convocados"}
+                    <ChevronDown
+                      size={17}
+                      className={`transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  <Link
+                    href="/formulario-miembros-2026"
+                    className="btn-gold alive-lift inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-black"
+                  >
+                    Inscripción
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                </div>
               </div>
-            </button>
+            </div>
 
             <div
               id={`roster-${category.id}`}

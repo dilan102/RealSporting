@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/home/Hero";
 import { QuickInstitutional } from "@/components/home/QuickInstitutional";
-import SectionCard from "@/components/SectionCard";
 import RevealLine from "@/components/RevealLine";
 import SectionDivider from "@/components/SectionDivider";
 import { club } from "@/lib/content";
@@ -35,40 +34,38 @@ const SocialStrip = dynamic(
 export default async function HomePage() {
   return (
     <>
-      <SectionCard variant="full" className="glass-card relative overflow-hidden">
-        <Hero
-          copy={{
-            badge: club.name,
-            subtitle: club.tagline,
-            cta: "Conocer el club",
-            location: "Usme · Bogotá D.C.",
-          }}
-        />
-      </SectionCard>
+      <Hero
+        copy={{
+          badge: club.name,
+          subtitle: club.tagline,
+          cta: "Conocer el club",
+          location: "Usme · Bogotá D.C.",
+        }}
+      />
       <RevealLine label="// proyecto institucional" />
-      <SectionCard className="mx-4 mt-4 mb-8 glass-card rounded-[32px]">
+      <section className="section-shell py-10 sm:py-14">
         <QuickInstitutional />
-      </SectionCard>
+      </section>
       <SectionDivider label="ruta formativa" />
       <RevealLine label="// ruta formativa" />
-      <div className="glass-card mx-4 my-8 rounded-[32px]">
+      <section className="section-shell py-10 sm:py-14">
         <HomeGallerySection />
-      </div>
+      </section>
       <SectionDivider label="entrenamientos" />
-      <div className="glass-card mx-4 my-8 rounded-[32px]">
+      <section className="section-shell py-10 sm:py-14">
         <RecentTrainings />
-      </div>
+      </section>
       <SectionDivider label="impacto social" />
       <RevealLine label="// impacto social" />
-      <div className="glass-card mx-4 my-8 rounded-[32px]">
+      <section className="section-shell py-10 sm:py-14">
         <LazyOdsHomeSection />
-      </div>
-      <div className="glass-card mx-4 my-8 rounded-[32px]">
+      </section>
+      <section className="section-shell py-10 sm:py-14">
         <HomeContactBand />
-      </div>
-      <div className="glass-card mx-4 my-8 rounded-[32px]">
+      </section>
+      <section className="section-shell py-10 sm:py-14">
         <SocialStrip />
-      </div>
+      </section>
     </>
   );
 }

@@ -41,6 +41,12 @@ const adminActions = [
   },
 ];
 
+const adminMetrics = [
+  { label: "Módulos", value: "4" },
+  { label: "Publicación", value: "Activa" },
+  { label: "Acceso", value: "Seguro" },
+];
+
 export function AdminPortal() {
   const [modalOpen, setModalOpen] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
@@ -248,7 +254,7 @@ export function AdminPortal() {
                 <p className="text-xs font-black uppercase tracking-normal text-accent">
                   {adminLabel || "Administrador"}
                 </p>
-                <h2 className="text-lg font-black">Añadir contenido</h2>
+                <h2 className="text-lg font-black">Centro administrativo</h2>
                 <p className="mt-1 truncate text-xs text-muted">
                   {adminUser || (adminRole === "owner" ? "Perfil total" : "Perfil de contenido")}
                 </p>
@@ -273,6 +279,15 @@ export function AdminPortal() {
                   <LogOut size={18} />
                 </button>
               </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 border-b border-border p-4">
+              {adminMetrics.map((metric) => (
+                <div key={metric.label} className="rounded-lg border border-border bg-bg/65 p-3">
+                  <p className="text-lg font-black text-accent">{metric.value}</p>
+                  <p className="mt-1 text-[11px] font-bold uppercase text-muted">{metric.label}</p>
+                </div>
+              ))}
             </div>
 
             <div className="max-h-[48vh] space-y-3 overflow-y-auto p-4">

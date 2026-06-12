@@ -28,7 +28,7 @@ export function LoadingInitializer() {
     // 2. Esperar a que las imágenes críticas (especialmente Hero) estén cargadas
     const checkCriticalImages = () => {
       // Buscar la imagen del Hero
-      const heroImage = document.querySelector('[data-hero-image]') as HTMLImageElement;
+      const heroImage = document.querySelector('[data-critical-image="hero-image"] img, img[data-critical-image="hero-image"]') as HTMLImageElement | null;
       
       if (!heroImage) {
         // Si no hay imagen crítica, marcar como lista inmediatamente

@@ -254,7 +254,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
         {
           method: editingId ? "PUT" : "POST",
           credentials: "include",
-          headers: accessKey ? { "x-training-key": accessKey } : undefined,
+          headers: accessKey ? { "x-admin-key": accessKey } : undefined,
           body,
         },
       );
@@ -282,7 +282,7 @@ export function PlayerManager({ initialItems }: { initialItems: Player[] }) {
       const response = await fetch(`/api/players?id=${encodeURIComponent(editingId)}`, {
         method: "DELETE",
         credentials: "include",
-        headers: accessKey ? { "x-training-key": accessKey } : undefined,
+        headers: accessKey ? { "x-admin-key": accessKey } : undefined,
       });
       await parsePlayersResponse(response);
       setItems(await fetchPlayers(accessKey));

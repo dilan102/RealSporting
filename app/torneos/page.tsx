@@ -31,18 +31,18 @@ const defaultSections: {
 }[] = [
   {
     status: "played",
-    title: "Torneos jugados",
-    description: "Participaciones finalizadas que fortalecen experiencia y proceso competitivo.",
+    title: "Históricos",
+    description: "Participaciones finalizadas que documentan experiencia, resultados y evolución competitiva.",
   },
   {
     status: "won",
-    title: "Torneos ganados",
-    description: "Logros competitivos y campeonatos que marcan la historia del club.",
+    title: "Torneos Ganados",
+    description: "Logros competitivos y campeonatos que marcan la historia deportiva del club.",
   },
   {
     status: "future",
-    title: "Torneos por jugar",
-    description: "Próximas competencias en planeación o confirmadas por la institución.",
+    title: "Próximos Torneos",
+    description: "Competencias en planeación o confirmadas por la institución.",
   },
 ];
 
@@ -106,7 +106,7 @@ export default async function TorneosPage() {
               </span>
               <p className="mt-5 text-3xl font-black text-accent">{currentTournament ? 1 : 0}</p>
               <h2 className="mt-2 text-sm font-black uppercase tracking-normal text-text">
-                Torneo Actual
+                Torneos Activos
               </h2>
               <p className="mt-2 text-sm leading-6 text-muted">
                 {currentTournament ? "Competencia en disputa" : "Sin competencia actual"}

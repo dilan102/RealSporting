@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { CalendarDays, MapPin, Shield, Zap } from "lucide-react";
+import Link from "next/link";
+import { CalendarDays, MapPin, Shield, UsersRound, Zap } from "lucide-react";
 import type { CurrentTournament } from "@/lib/current-tournament-store";
 import { formatPublicationRange } from "@/lib/publication-dates";
 
@@ -99,6 +100,14 @@ export function CurrentTournamentCard({
             </div>
           </div>
         )}
+
+        <Link
+          href={`/equipo#categoria-${encodeURIComponent(item.category)}`}
+          className="mt-5 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-accent/35 bg-accent/10 px-4 text-xs font-black text-accent transition-colors hover:bg-accent hover:text-[var(--button-text)]"
+        >
+          <UsersRound size={15} aria-hidden="true" />
+          Ver convocados de {item.category || "la categoría"}
+        </Link>
 
         {canManage && (
           <div className="mt-6 flex flex-wrap gap-2">

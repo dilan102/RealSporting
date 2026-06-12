@@ -14,7 +14,7 @@ import StarField from "@/components/ui/StarField";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { club } from "@/lib/content";
-import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
+import { CONTACT_EMAIL, OG_IMAGE_URL, PHONE_DISPLAY, SITE_URL, siteMetadata } from "@/lib/site";
 import { allFonts } from "@/lib/fonts";
 import "./globals.css";
 
@@ -50,6 +50,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SportsClub",
+    name: club.name,
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
+    image: OG_IMAGE_URL,
+    email: CONTACT_EMAIL,
+    telephone: PHONE_DISPLAY,
+    sport: "Fútbol sala",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Usme",
+      addressRegion: "Bogotá D.C.",
+      addressCountry: "CO",
+    },
+  };
+
   return (
     <html
       lang="es"
@@ -57,16 +75,15 @@ export default function RootLayout({
       className={`${allFonts.map((font) => font.variable).join(" ")}`}
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body suppressHydrationWarning className="relative min-h-screen flex flex-col overflow-x-hidden">
         <LoadingProvider>
-          {/* Preloader - siempre renderizado, pero se oculta cuando isPreloaderVisible es false */}
           <PagePreloader />
-
-          {/* Inicializador que monitoriza fuentes e imágenes críticas */}
           <LoadingInitializer />
-
-          {/* Contenido principal - solo se renderiza cuando el preloader no está visible */}
           <MainContentRenderer>
             <ThemeProvider>
               <SmoothScrollProvider />

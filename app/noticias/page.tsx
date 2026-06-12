@@ -34,6 +34,7 @@ export default async function NoticiasPage() {
     .sort((a, b) => b.date.localeCompare(a.date))
     .filter((item, index, list) => list.findIndex((candidate) => candidate.id === item.id) === index);
   const leadNews = orderedNews[0];
+  const featuredNews = orderedNews.slice(0, 4);
   const remainingNews = orderedNews.slice(1);
 
   return (
@@ -49,8 +50,17 @@ export default async function NoticiasPage() {
       />
 
       <RevealSection>
-        <section className="section-shell py-8">
-          <div className="flex flex-wrap items-center justify-end gap-3">
+        <section className="section-shell py-10">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="eyebrow">Sala de prensa</p>
+              <h2 className="font-newsroom mt-3 text-4xl font-black leading-none sm:text-5xl">
+                Actualidad del proceso deportivo
+              </h2>
+              <p className="mt-4 text-base leading-8 text-muted">
+                Comunicados, convocatorias, entrenamientos y resultados publicados por el club para familias, jugadores y comunidad.
+              </p>
+            </div>
             <Link
               href="/formulario-miembros-2026"
               className="btn-gold alive-lift inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-black"
@@ -61,6 +71,49 @@ export default async function NoticiasPage() {
           </div>
         </section>
       </RevealSection>
+
+      {featuredNews.length > 0 && (
+        <RevealSection>
+          <section className="section-shell py-8">
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="eyebrow">Destacadas</p>
+                <h2 className="font-newsroom mt-2 text-4xl font-black sm:text-5xl">
+                  Historias recientes
+                </h2>
+              </div>
+            </div>
+            <div className="flex snap-x gap-5 overflow-x-auto pb-4 [scrollbar-width:thin]">
+              {featuredNews.map((item) => (
+                <Link
+                  key={item.id}
+                  href={`/noticias/${item.id}`}
+                  className="alive-card group relative min-h-[420px] w-[min(84vw,390px)] shrink-0 snap-start overflow-hidden rounded-lg border border-border bg-surface"
+                >
+                  <NewsVisual item={item} sizes="390px" priority={item.id === leadNews?.id} />
+                  <span className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.78))]" />
+                  <span className="absolute left-4 top-4">
+                    <NewsBadge category={item.category} />
+                  </span>
+                  <span className="absolute bottom-0 left-0 right-0 block p-5">
+                    <PublicationDateText
+                      startDate={item.date}
+                      endDate={item.endDate}
+                      className="text-xs font-bold uppercase tracking-normal text-white/70"
+                    />
+                    <span className="font-newsroom mt-3 line-clamp-3 block text-3xl font-black leading-none text-white">
+                      {sanitizeVisibleTextOrDefault(item.title, NEWS_TITLE_PLACEHOLDER)}
+                    </span>
+                    <span className="mt-3 line-clamp-2 block text-sm leading-6 text-white/74">
+                      {sanitizeVisibleTextOrDefault(item.summary, NEWS_TEXT_PLACEHOLDER)}
+                    </span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+      )}
 
       {leadNews && (
         <RevealSection>

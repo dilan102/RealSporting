@@ -38,8 +38,8 @@ export default async function EquipoPage() {
 
       <RevealSection>
         <section className="section-shell section-padding pb-24">
-          <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-start">
-            <div>
+          <div className="grid gap-10">
+            <div className="max-w-4xl">
               <p className="eyebrow">
                 {contentOverride(overrides, "equipo.intro.eyebrow", "Proceso por edades")}
               </p>

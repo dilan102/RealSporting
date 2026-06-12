@@ -1,5 +1,6 @@
-'use client';
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+"use client";
+
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 interface LoadingContextType {
   isLoading: boolean;
@@ -15,60 +16,82 @@ interface LoadingContextType {
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
 export function LoadingProvider({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isPreloaderVisible, setIsPreloaderVisible] = useState(true);
+  const shouldShowInitialPreloader = () =>
+    typeof window === "undefined" ||
+    window.sessionStorage.getItem("cdrs-preloader-seen") !== "true";
+
+  const [isLoading, setIsLoading] = useState(shouldShowInitialPreloader);
+  const [isPreloaderVisible, setIsPreloaderVisible] = useState(shouldShowInitialPreloader);
   const [isPreloaderFading, setIsPreloaderFading] = useState(false);
   
   const [fontsReady, setFontsReady] = useState(false);
   const [criticalImagesReady, setCriticalImagesReady] = useState(false);
   const [heroReady, setHeroReady] = useState(false);
   
-  // Calcular si todos los recursos están listos
   const allResourcesReady = fontsReady && criticalImagesReady && heroReady;
 
-  // Marcar fuentes como listas
   const markFontsReady = useCallback(() => {
     setFontsReady(true);
   }, []);
 
-  // Marcar imágenes críticas como listas
   const markCriticalImagesReady = useCallback(() => {
     setCriticalImagesReady(true);
   }, []);
 
-  // Marcar Hero como listo
   const markHeroReady = useCallback(() => {
     setHeroReady(true);
   }, []);
 
-  // Efecto para manejar cuando todos los recursos están listos
   useEffect(() => {
-    if (allResourcesReady && isLoading) {
-      // Esperar un poco más para asegurar que todo está renderizado
-      const timer = setTimeout(() => {
+    const alreadySeen = window.sessionStorage.getItem("cdrs-preloader-seen") === "true";
+
+    setFontsReady(false);
+    setCriticalImagesReady(false);
+    setHeroReady(false);
+
+    if (alreadySeen) {
+      setIsLoading(false);
+      setIsPreloaderVisible(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setIsPreloaderVisible(true);
+    document.documentElement.classList.add("preloader-active");
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      return;
+    }
+
+    if (allResourcesReady) {
+      const timer = window.setTimeout(() => {
         setIsPreloaderFading(true);
-        // Esperar a que termine la animación de fade
-        setTimeout(() => {
+        window.setTimeout(() => {
           setIsPreloaderVisible(false);
           setIsLoading(false);
-          // Restaurar scroll
+          window.sessionStorage.setItem("cdrs-preloader-seen", "true");
+          document.documentElement.classList.remove("preloader-active");
+          document.documentElement.classList.add("preloader-done");
           document.body.style.overflow = '';
           document.documentElement.style.overflow = '';
-        }, 500);
-      }, 300);
+        }, 640);
+      }, 420);
       return () => clearTimeout(timer);
     }
   }, [allResourcesReady, isLoading]);
 
-  // Bloquear scroll mientras el preloader esté visible
   useEffect(() => {
     if (isPreloaderVisible) {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
+      document.documentElement.classList.add("preloader-active");
     }
     return () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
+      document.documentElement.classList.remove("preloader-active");
     };
   }, [isPreloaderVisible]);
 

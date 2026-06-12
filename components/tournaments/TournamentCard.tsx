@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { CalendarDays, MapPin, Shield, Trophy } from "lucide-react";
+import Link from "next/link";
+import { CalendarDays, MapPin, Shield, Trophy, UsersRound } from "lucide-react";
 import type { Tournament } from "@/lib/tournament-store";
 import { formatPublicationRange } from "@/lib/publication-dates";
 
@@ -70,6 +71,14 @@ export function TournamentCard({
             <p className="mt-2 whitespace-pre-line text-sm leading-6 text-muted">{item.schedule}</p>
           </div>
         )}
+
+        <Link
+          href={`/equipo#categoria-${encodeURIComponent(item.category)}`}
+          className="mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-border bg-bg px-4 text-xs font-black text-text transition-colors hover:border-accent hover:text-accent"
+        >
+          <UsersRound size={15} aria-hidden="true" />
+          Ver convocados de {item.category || "la categoría"}
+        </Link>
 
         {canManage && (
           <div className="mt-5 flex flex-wrap gap-2">

@@ -8,6 +8,8 @@ import { club, navLinks, social } from "@/lib/content";
 import { PHONE_TEL, VENUE_NAME } from "@/lib/constants";
 import MapEmbed from "@/components/MapEmbed";
 
+const partners = ["Familias Real Sporting", "Comunidad Usme", "Aliados deportivos"];
+
 export function Footer() {
   const pathname = usePathname();
   const year = new Date().getFullYear();
@@ -17,7 +19,7 @@ export function Footer() {
     <footer className="section-ambient border-t border-border bg-bg-elevated">
       <div className="h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0A0A0A)]" />
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-[1fr_0.75fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-[1fr_0.75fr_1fr_0.85fr]">
           <div>
             <div className="flex items-center gap-3">
               <Image
@@ -100,6 +102,28 @@ export function Footer() {
                 </a>
               </li>
             </ul>
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-normal text-accent">
+              Patrocinadores
+            </p>
+            <div className="mt-4 grid gap-2">
+              {partners.map((partner) => (
+                <span
+                  key={partner}
+                  className="rounded-lg border border-border bg-bg px-3 py-2 text-xs font-black uppercase text-muted"
+                >
+                  {partner}
+                </span>
+              ))}
+            </div>
+            <Link
+              href="/contacto"
+              className="alive-lift mt-4 inline-flex min-h-10 items-center rounded-lg border border-border px-4 text-xs font-black text-text hover:border-accent hover:text-accent"
+            >
+              Vincular alianza
+            </Link>
           </div>
         </div>
 

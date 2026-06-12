@@ -15,8 +15,9 @@ function isAllowedAdminEmail(email?: string | null) {
     return false;
   }
 
+  // Si no hay emails configurados, denegar acceso por seguridad
   if (allowed.length === 0) {
-    return true;
+    return false;
   }
 
   return allowed.includes(email.trim().toLowerCase());
