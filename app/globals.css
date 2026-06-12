@@ -249,12 +249,45 @@
       0 22px 54px rgba(0, 0, 0, 0.36),
       0 0 40px rgba(0, 255, 120, 0.16);
     backdrop-filter: blur(16px);
+    will-change: transform;
   }
 
+  /* Contenedor de animación Lottie */
+  .site-preloader-animation {
+    position: relative;
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Spinner de fallback minimalista */
+  .preloader-spinner {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spinner-dot {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(0, 255, 120, 0.2);
+    border-top-color: rgba(0, 255, 120, 0.8);
+    border-radius: 50%;
+    will-change: transform;
+  }
+
+  /* Estilos legados para compatibilidad */
   .lottie-json-signal {
     position: relative;
     width: min(62vw, 220px);
     height: 44px;
+    display: none; /* Ocultar el indicador antiguo */
   }
 
   .lottie-json-signal span {
@@ -271,16 +304,23 @@
     animation-delay: var(--delay, 0s);
   }
 
+  .site-preloader-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .site-preloader-copy p {
     font-family: var(--font-hero);
     font-size: clamp(1.45rem, 6vw, 2.65rem);
     font-weight: 900;
     line-height: 0.92;
     color: white;
+    margin: 0;
   }
 
   .site-preloader-copy span {
-    margin-top: 10px;
+    margin: 0;
     display: block;
     font-size: 0.72rem;
     font-weight: 900;
@@ -305,6 +345,31 @@
     100% {
       opacity: 0;
       transform: translate(108px, -50%) scale(0.55);
+    }
+  }
+
+  /* Optimización mobile para preloader */
+  @media (max-width: 640px) {
+    .site-preloader-panel {
+      width: min(90vw, 320px);
+      gap: 18px;
+    }
+
+    .site-preloader-logo {
+      width: 96px;
+      height: 96px;
+    }
+
+    .site-preloader-copy p {
+      font-size: clamp(1.25rem, 5vw, 2rem);
+    }
+
+    .site-preloader-copy span {
+      font-size: 0.65rem;
+    }
+
+    .site-preloader-animation {
+      max-width: 180px;
     }
   }
 }

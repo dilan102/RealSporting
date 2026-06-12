@@ -33,7 +33,7 @@ const valueIcons = [ShieldCheck, Users, Target, HeartHandshake, Flag];
 export function VisionMission() {
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      {cards.map(({ icon: Icon, title, text, image }, index) => (
+      {cards.map(({ icon: Icon, title, text, image }) => (
         <article
           key={title}
           className="animate-fade-in alive-card mobile-card-lift group overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-sm transition-colors duration-300 hover:border-accent/40"

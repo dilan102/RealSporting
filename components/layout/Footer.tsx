@@ -2,52 +2,89 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Facebook, Instagram, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
 import { PHONE_TEL, VENUE_NAME } from "@/lib/constants";
-import MapEmbed from "@/components/MapEmbed";
 
-const partners = ["Familias Real Sporting", "Comunidad Usme", "Aliados deportivos"];
+const MapEmbed = dynamic(() => import("@/components/MapEmbed"), {
+  loading: () => <div className="h-64 bg-bg-elevated" />,
+  ssr: false,
+});
 
 export function Footer() {
-  const pathname = usePathname();
   const year = new Date().getFullYear();
-  const visibleNavLinks = navLinks.filter((link) => link.href !== pathname);
 
   return (
-    <footer className="section-ambient border-t border-border bg-bg-elevated">
-      <div className="h-2 bg-[linear-gradient(90deg,var(--accent-green),var(--accent-gold),#0A0A0A)]" />
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-[1fr_0.75fr_1fr_0.85fr]">
-          <div>
-            <div className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="Logotipo Club Deportivo Real Sporting"
-                width={40}
-                height={40}
-                className="object-contain"
-              />
-              <p className="font-categories text-2xl font-black leading-none">{club.name}</p>
+    <footer className="border-t border-border bg-bg">
+      {/* Gradient accent line */}
+      <div className="h-1.5 bg-gradient-to-r from-accent to-accent-gold" />
+
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr_1.2fr] lg:gap-16">
+          {/* Brand Section */}
+          <div className="max-w-sm">
+            <Link href="/" className="inline-flex items-center gap-3">
+              <span className="grid size-12 place-items-center rounded-lg border border-white/10 bg-white/5">
+                <Image
+                  src="/logo.png"
+                  alt="Logotipo Real Sporting"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-black leading-none text-text">{club.name}</p>
+                <p className="mt-1 text-xs font-bold uppercase tracking-wider text-muted">Usme</p>
+              </div>
+            </Link>
+
+            <p className="mt-6 text-sm leading-relaxed text-text/80">{club.tagline}</p>
+
+            <div className="mt-6 flex items-start gap-2 text-sm text-text/80">
+              <MapPin size={16} className="shrink-0 text-accent" aria-hidden="true" />
+              <span>{VENUE_NAME}</span>
             </div>
-            <p className="mt-4 text-sm leading-relaxed text-muted">{club.tagline}</p>
-            <p className="mt-3 flex items-center gap-2 text-sm text-muted">
-              <MapPin size={14} className="text-accent" />
-              {VENUE_NAME}
-            </p>
+
+            <div className="mt-6 flex flex-wrap gap-2">
+              <a
+                href={social.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="grid size-10 place-items-center rounded-lg border border-border hover:border-accent hover:bg-accent/5 transition-colors"
+              >
+                <Instagram size={18} />
+              </a>
+              <a
+                href={social.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="grid size-10 place-items-center rounded-lg border border-border hover:border-accent hover:bg-accent/5 transition-colors"
+              >
+                <Facebook size={18} />
+              </a>
+              <a
+                href={`mailto:${social.email}`}
+                aria-label="Email"
+                className="grid size-10 place-items-center rounded-lg border border-border hover:border-accent hover:bg-accent/5 transition-colors"
+              >
+                <Mail size={18} />
+              </a>
+            </div>
           </div>
 
-          <div className="border-y border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] py-6 md:border-x md:border-y-0 md:px-8 md:py-0">
-            <p className="text-xs font-semibold uppercase tracking-normal text-accent">
-              Navegación
-            </p>
-            <ul className="mt-4 space-y-2">
-              {visibleNavLinks.map((link) => (
+          {/* Navigation */}
+          <div>
+            <p className="text-xs font-black uppercase tracking-wider text-accent">Navegación</p>
+            <ul className="mt-6 space-y-3">
+              {navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="alive-underline text-sm text-muted transition-colors hover:text-text"
+                    className="text-sm text-text/80 hover:text-accent transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -56,86 +93,67 @@ export function Footer() {
             </ul>
           </div>
 
+          {/* Contacto */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-normal text-accent">
-              Contacto
-            </p>
-            <ul className="mt-4 space-y-3">
-              <li>
-                <a
-                  href={social.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Seguir a Real Sporting en Instagram"
-                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
-                >
-                  <Instagram size={16} /> Instagram
-                </a>
-              </li>
-              <li>
-                <a
-                  href={social.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Seguir a Real Sporting en Facebook"
-                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
-                >
-                  <Facebook size={16} /> Facebook
-                </a>
-              </li>
+            <p className="text-xs font-black uppercase tracking-wider text-accent">Contacto</p>
+            <ul className="mt-6 space-y-4">
               <li>
                 <a
                   href={`mailto:${social.email}`}
-                  aria-label="Enviar correo a Real Sporting"
-                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
+                  className="inline-flex items-center gap-2 text-sm text-text/80 hover:text-accent transition-colors"
                 >
-                  <Mail size={16} /> {social.email}
+                  <Mail size={16} />
+                  {social.email}
                 </a>
               </li>
               <li>
                 <a
                   href={PHONE_TEL}
-                  aria-label="Llamar a Real Sporting"
-                  className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-text"
+                  className="inline-flex items-center gap-2 text-sm text-text/80 hover:text-accent transition-colors"
                 >
-                  <Phone size={16} /> {social.phone}
+                  <Phone size={16} />
+                  {social.phone}
                 </a>
               </li>
             </ul>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-normal text-accent">
-              Patrocinadores
-            </p>
-            <div className="mt-4 grid gap-2">
-              {partners.map((partner) => (
-                <span
-                  key={partner}
-                  className="rounded-lg border border-border bg-bg px-3 py-2 text-xs font-black uppercase text-muted"
-                >
-                  {partner}
-                </span>
-              ))}
+            <p className="text-xs font-black uppercase tracking-wider text-accent">Acciones</p>
+            <div className="mt-6 grid gap-3">
+              <Link
+                href="/formulario-miembros-2026"
+                className="group inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-bold text-text/80 hover:border-accent hover:text-accent transition-colors"
+              >
+                Inscribirse
+                <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              </Link>
+              <Link
+                href="/contacto"
+                className="group inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-bold text-text/80 hover:border-accent hover:text-accent transition-colors"
+              >
+                Contactar
+                <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+              </Link>
             </div>
-            <Link
-              href="/contacto"
-              className="alive-lift mt-4 inline-flex min-h-10 items-center rounded-lg border border-border px-4 text-xs font-black text-text hover:border-accent hover:text-accent"
-            >
-              Vincular alianza
-            </Link>
           </div>
         </div>
 
-        <div className="alive-card mt-10 overflow-hidden rounded-lg border border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] bg-bg">
-          <p className="border-b border-border px-4 py-2 text-xs font-black uppercase tracking-normal text-accent">
-            Sede — {VENUE_NAME}
-          </p>
+        {/* Map Section */}
+        <div className="alive-card mt-12 overflow-hidden rounded-lg border border-border">
+          <div className="border-b border-border px-6 py-4">
+            <p className="text-sm font-bold uppercase tracking-wider text-accent">
+              Ubicación — {VENUE_NAME}
+            </p>
+          </div>
           <MapEmbed compact />
         </div>
 
-        <div className="mt-12 border-t border-[color-mix(in_srgb,var(--accent-gold)_30%,transparent)] pt-6 text-center text-xs text-muted">
-          © {year} {club.name}. Todos los derechos reservados.
+        {/* Copyright */}
+        <div className="mt-12 border-t border-border pt-8 text-center text-xs font-medium text-muted">
+          <p>© {year} {club.name}. Todos los derechos reservados.</p>
+          <p className="mt-2 text-xs text-muted/70">Hecho con ❤️ para Usme</p>
         </div>
       </div>
     </footer>

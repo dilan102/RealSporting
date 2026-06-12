@@ -6,7 +6,6 @@ import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { sportCategoryCards } from "@/lib/content";
-import { PRELOADER_EASE } from "@/lib/preloader";
 
 function getItemsPerPage() {
   if (typeof window === "undefined") {

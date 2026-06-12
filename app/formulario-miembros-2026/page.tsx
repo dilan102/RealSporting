@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { ClipboardList, LockKeyhole, MailCheck } from "lucide-react";
 import { MemberInfoForm } from "@/components/contact/MemberInfoForm";
 import { PageHero } from "@/components/ui/PageHero";
-import { RevealSection } from "@/components/ui/RevealSection";
 import { pageOpenGraph } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -48,42 +47,38 @@ export default function FormularioMiembros2026Page() {
         eyebrow="Real Sporting de Usme"
       />
 
-      <section className="section-ambient border-b border-[color-mix(in_srgb,var(--accent-green)_18%,var(--border))] bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent-green)_9%,var(--bg-primary))_0%,var(--bg-primary)_55%,color-mix(in_srgb,var(--accent-gold)_8%,var(--bg-primary))_100%)]">
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-          <RevealSection>
-            <div className="alive-card rounded-lg border border-[color-mix(in_srgb,var(--accent-green)_22%,var(--border))] bg-bg-elevated/92 p-5 shadow-xl shadow-[color-mix(in_srgb,var(--accent-green)_12%,transparent)] backdrop-blur sm:p-6">
-              <p className="text-xs font-black uppercase tracking-normal text-[var(--accent-green)]">
-                Club Deportivo Real Sporting 2026
-              </p>
-              <h2 className="font-institutional mt-2 text-3xl font-black tracking-normal sm:text-4xl">
-                Se solicita a todos los miembros del Club diligenciar toda la información aquí solicitada.
-              </h2>
-              <p className="mt-3 max-w-4xl text-sm leading-7 text-muted sm:text-base">
-                La información suministrada será usada para la gestión de recursos, acompañamiento integral y programas deportivos adaptados a la realidad de la comunidad.
-              </p>
+      <section className="border-b border-border bg-gradient-to-b from-accent/10 via-bg to-bg">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="rounded-xl border border-border bg-bg-elevated/50 p-8 backdrop-blur-sm sm:p-12">
+            <div className="mb-8 inline-block rounded-lg bg-accent/20 px-4 py-2">
+              <p className="text-sm font-bold uppercase tracking-wider text-accent">Real Sporting 2026</p>
             </div>
+            <h2 className="text-3xl font-black leading-tight sm:text-4xl">
+              Actualización de información institucional
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text/80">
+              Completa el formulario con todos tus datos. La información es privada y se utiliza únicamente para mejorar nuestro proceso deportivo y administrativo.
+            </p>
 
-            <div className="mt-5 grid gap-3 lg:grid-cols-3">
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {summaryItems.map(({ title, text, icon: Icon }) => (
-                <article
+                <div
                   key={title}
-                  className="alive-card rounded-lg border border-border bg-bg-elevated/90 p-4 shadow-sm"
+                  className="rounded-lg border border-border/50 bg-bg/50 p-4"
                 >
-                  <Icon className="text-[var(--accent-green)]" size={22} aria-hidden="true" />
-                  <h3 className="font-social-impact mt-3 text-base font-black">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
-                </article>
+                  <Icon className="text-accent" size={24} aria-hidden="true" />
+                  <h3 className="mt-3 font-bold">{title}</h3>
+                  <p className="mt-2 text-sm text-text/70">{text}</p>
+                </div>
               ))}
             </div>
-          </RevealSection>
+          </div>
         </div>
       </section>
 
       <section className="bg-bg">
         <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-          <RevealSection>
-            <MemberInfoForm />
-          </RevealSection>
+          <MemberInfoForm />
         </div>
       </section>
     </main>

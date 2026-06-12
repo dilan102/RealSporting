@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowRight, FileText, MessageCircle } from "lucide-react";
 import { registrationSteps } from "@/lib/content";
 import { buildWhatsAppUrl } from "@/lib/constants";
-import { PRELOADER_EASE } from "@/lib/preloader";
 
 export function HomeContactBand() {
   return (
@@ -56,7 +55,7 @@ export function HomeContactBand() {
             </div>
 
             <div className="stagger-container grid gap-3">
-              {registrationSteps.map((step, index) => (
+              {registrationSteps.map((step) => (
                 <article
                   key={step.step}
                   className="animate-fade-in alive-card rounded-lg border border-white/14 bg-white/10 p-4 backdrop-blur-sm transition-shadow hover:border-[color-mix(in_srgb,var(--cinematic-accent)_45%,transparent)] hover:shadow-lg hover:shadow-[var(--accent-gold)]/10"

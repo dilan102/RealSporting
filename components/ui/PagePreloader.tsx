@@ -1,96 +1,187 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Lottie from "lottie-react";
 import Image from "next/image";
-import { type CSSProperties, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoading } from "@/contexts/LoadingContext";
 
-type LottieMetadata = {
-  nm?: string;
-  fr?: number;
-  op?: number;
-  w?: number;
-  h?: number;
-};
+// Easing cinematic profesional
+const PRELOADER_EASE = [0.22, 1, 0.36, 1] as const;
 
-type CssVars = CSSProperties & Record<`--${string}`, string>;
+/**
+ * Preloader profesional con animación Lottie integrada.
+ * Características:
+ * - Entrada suave (fade in + scale up)
+ * - Salida suave (fade out + scale down + slide up)
+ * - Transición elegante sin bloqueos visuales
+ * - Compatible con móviles
+ * - Aparece solo en la primera carga
+ */
+export default function PagePreloader() {
+  const { isPreloaderVisible, isPreloaderFading } = useLoading();
+  const [lottieData, setLottieData] = useState<Record<string, unknown> | null>(null);
+  const [isLottieLoaded, setIsLottieLoaded] = useState(false);
 
-function LottieJsonSignal() {
-  const [metadata, setMetadata] = useState<LottieMetadata | null>(null);
-
+  // Cargar animación Lottie
   useEffect(() => {
     let active = true;
 
-    fetch("/Preloader.json")
-      .then((response) => response.json() as Promise<LottieMetadata>)
-      .then((payload) => {
+    const loadLottie = async () => {
+      try {
+        const response = await fetch("/Preloader.json");
+        const data = await response.json();
         if (active) {
-          setMetadata(payload);
+          setLottieData(data);
+          setIsLottieLoaded(true);
         }
-      })
-      .catch(() => {
+      } catch {
+        // Fallback: si falla, mostrar preloader sin Lottie
         if (active) {
-          setMetadata({ nm: "Real Sporting preloader", fr: 30, op: 46, w: 1920, h: 1080 });
+          setIsLottieLoaded(true);
         }
-      });
+      }
+    };
 
+    loadLottie();
     return () => {
       active = false;
     };
   }, []);
 
-  const duration = useMemo(() => {
-    if (!metadata?.fr || !metadata?.op) {
-      return "1.5s";
-    }
-
-    return `${Math.max(metadata.op / metadata.fr, 1).toFixed(2)}s`;
-  }, [metadata]);
-
-  return (
-    <div
-      className="lottie-json-signal"
-      aria-label={metadata?.nm || "Animación de carga Real Sporting"}
-      style={{ "--lottie-duration": duration } as CssVars}
-    >
-      {Array.from({ length: 4 }).map((_, index) => (
-        <span key={index} style={{ "--delay": `${index * 0.13}s` } as CssVars} />
-      ))}
-    </div>
-  );
-}
-
-/**
- * Preloader profesional que solo se renderiza durante la carga inicial.
- * Se desvanece suavemente cuando todos los recursos están listos.
- */
-export default function PagePreloader() {
-  const { isPreloaderVisible, isPreloaderFading } = useLoading();
-
   if (!isPreloaderVisible) return null;
 
   return (
-    <motion.div
-      className="site-preloader-root"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: isPreloaderFading ? 0 : 1 }}
-      transition={{ duration: isPreloaderFading ? 0.62 : 0.42, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <motion.div
-        className="site-preloader-panel"
-        initial={{ y: 18, scale: 0.98, opacity: 0 }}
-        animate={{ y: isPreloaderFading ? -16 : 0, scale: isPreloaderFading ? 0.98 : 1, opacity: isPreloaderFading ? 0 : 1 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <span className="site-preloader-logo">
-          <Image src="/logo.png" alt="" width={88} height={88} priority aria-hidden="true" />
-        </span>
-        <LottieJsonSignal />
-        <div className="site-preloader-copy">
-          <p>Club Deportivo Real Sporting</p>
-          <span>Usme · formación · disciplina</span>
-        </div>
-      </motion.div>
-    </motion.div>
+    <AnimatePresence mode="wait">
+      {isPreloaderVisible && (
+        <motion.div
+          key="preloader-root"
+          className="site-preloader-root"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: 0.5,
+            ease: PRELOADER_EASE,
+          }}
+        >
+          <motion.div
+            className="site-preloader-panel"
+            initial={{
+              opacity: 0,
+              y: 20,
+              scale: 0.95,
+            }}
+            animate={{
+              opacity: isPreloaderFading ? 0 : 1,
+              y: isPreloaderFading ? -30 : 0,
+              scale: isPreloaderFading ? 0.9 : 1,
+            }}
+            transition={{
+              duration: isPreloaderFading ? 0.6 : 0.7,
+              ease: PRELOADER_EASE,
+              delay: isPreloaderFading ? 0 : 0.15,
+            }}
+          >
+            {/* Logo con entrada elegante */}
+            <motion.div
+              className="site-preloader-logo"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 0.6,
+                ease: PRELOADER_EASE,
+                delay: 0.1,
+              }}
+            >
+              <Image
+                src="/logo.png"
+                alt=""
+                width={88}
+                height={88}
+                priority
+                aria-hidden="true"
+                className="will-change-transform"
+              />
+            </motion.div>
+
+            {/* Animación Lottie con fallback */}
+            <motion.div
+              className="site-preloader-animation"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                ease: PRELOADER_EASE,
+                delay: 0.25,
+              }}
+            >
+              {lottieData && isLottieLoaded ? (
+                <Lottie
+                  animationData={lottieData}
+                  loop={true}
+                  autoplay={true}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    maxWidth: "200px",
+                    margin: "0 auto",
+                  }}
+                  aria-label="Animación de carga"
+                />
+              ) : (
+                // Fallback: indicador de carga minimalista
+                <div className="preloader-spinner">
+                  <motion.div
+                    className="spinner-dot"
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                </div>
+              )}
+            </motion.div>
+
+            {/* Texto con entrada en cascada */}
+            <motion.div
+              className="site-preloader-copy"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                ease: PRELOADER_EASE,
+                delay: 0.4,
+              }}
+            >
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: PRELOADER_EASE,
+                  delay: 0.5,
+                }}
+              >
+                Club Deportivo Real Sporting
+              </motion.p>
+              <motion.span
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  ease: PRELOADER_EASE,
+                  delay: 0.65,
+                }}
+              >
+                Usme · formación · disciplina
+              </motion.span>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

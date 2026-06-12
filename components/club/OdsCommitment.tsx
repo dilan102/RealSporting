@@ -19,7 +19,7 @@ export function OdsCommitment() {
         </p>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {odsItems.map((item, index) => (
+          {odsItems.map((item) => (
             <div
               key={item.id}
               className="animate-fade-in"
