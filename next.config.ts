@@ -127,11 +127,6 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Optimizaciones experimentales
-  experimental: {
-    // Optimizar el tamaño del bundle
-    optimizePackageImports: ['@prisma/client', 'lucide-react'],
-  },
 };
 
 export default nextConfig;
