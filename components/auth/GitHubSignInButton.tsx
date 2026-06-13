@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { Github } from "lucide-react";
+import { FaGithub as Github } from "react-icons/fa";
 import { useState } from "react";
 
 type GitHubSignInButtonProps = {

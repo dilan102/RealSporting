@@ -1,13 +1,15 @@
 "use client";
 
-import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import type { IconType } from "react-icons";
 import { social } from "@/lib/content";
 import { PHONE_TEL, VENUE_NAME, WHATSAPP_URL } from "@/lib/constants";
 
 const links: Array<{
   label: string;
   href: string;
-  icon: typeof Instagram;
+  icon: typeof Mail | IconType;
   description: string;
   ariaLabel?: string;
   accent?: boolean;
@@ -15,13 +17,13 @@ const links: Array<{
   {
     label: "Instagram",
     href: social.instagram,
-    icon: Instagram,
+    icon: FaInstagram,
     description: "Síguenos y mira los momentos del club",
   },
   {
     label: "Facebook",
     href: social.facebook,
-    icon: Facebook,
+    icon: FaFacebook,
     description: "Noticias, eventos y comunidad",
   },
   {

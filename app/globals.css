@@ -180,12 +180,6 @@
     position: relative;
     overflow-x: hidden;
   }
-  
-  /* Estrellas de fondo eliminadas — ya las maneja el componente StarField */
-  
-  [data-theme="light"] body {
-    background: var(--bg-primary);
-  }
 
   h1,
   h2,
@@ -607,8 +601,8 @@
 
   .image-readable-dark {
     background:
-      linear-gradient(90deg, rgba(10, 15, 26, 0.92), rgba(10, 15, 26, 0.6) 48%, rgba(10, 15, 26, 0.28)),
-      linear-gradient(0deg, rgba(10, 15, 26, 0.5), rgba(10, 15, 26, 0.5));
+      linear-gradient(90deg, rgba(0, 0, 0, 0.92), rgba(10, 15, 26, 0.6) 48%, rgba(10, 15, 26, 0.28)),
+      linear-gradient(0deg, rgba(10, 26, 16, 0.5), rgba(15, 46, 26, 0.5));
   }
 
   .hero-photo {

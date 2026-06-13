@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Facebook, Instagram, Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { club, navLinks, social } from "@/lib/content";
 import { PHONE_TEL, VENUE_NAME } from "@/lib/constants";
 
@@ -55,7 +56,7 @@ export function Footer() {
                 aria-label="Instagram"
                 className="grid size-10 place-items-center rounded-lg border border-border hover:border-accent hover:bg-accent/5 transition-colors"
               >
-                <Instagram size={18} />
+                <FaInstagram size={18} />
               </a>
               <a
                 href={social.facebook}
@@ -64,7 +65,7 @@ export function Footer() {
                 aria-label="Facebook"
                 className="grid size-10 place-items-center rounded-lg border border-border hover:border-accent hover:bg-accent/5 transition-colors"
               >
-                <Facebook size={18} />
+                <FaFacebook size={18} />
               </a>
               <a
                 href={`mailto:${social.email}`}
