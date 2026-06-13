@@ -37,14 +37,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
-  compress: true,
-
-  experimental: {
-    optimizePackageImports: [],
-  },
-
-  // ...resto igual (images, webpack, headers)
-
+  compress: true, // Habilitar compresión Gzip
   
   // Optimizaciones de imágenes
   images: {
