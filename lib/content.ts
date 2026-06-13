@@ -96,7 +96,7 @@ export const institutionalStats = [
 export const sportCategoryCards = [
   {
     id: "2020-2019",
-    name: "Sub-7",
+    name: "Pre-Benjamin",
     range: "2020-2019",
     ages: "6 a 7 años",
     description: "Iniciación motriz, juego guiado, confianza y vínculo positivo con el balón.",
@@ -105,7 +105,7 @@ export const sportCategoryCards = [
   },
   {
     id: "2018-2017",
-    name: "Sub-9",
+    name: "Benjamin",
     range: "2018-2017",
     ages: "8 a 9 años",
     description: "Fundamentos técnicos, cooperación, lectura básica del juego y hábitos de equipo.",
@@ -114,7 +114,7 @@ export const sportCategoryCards = [
   },
   {
     id: "2016-2015",
-    name: "Sub-11",
+    name: "Pre-Infantil",
     range: "2016-2015",
     ages: "10 a 11 años",
     description: "Perfeccionamiento técnico, toma de decisiones y comunicación en cancha.",
@@ -123,7 +123,7 @@ export const sportCategoryCards = [
   },
   {
     id: "2014-2013",
-    name: "Sub-13",
+    name: "Infantil",
     range: "2014-2013",
     ages: "12 a 13 años",
     description: "Consolidación táctica, preparación física general y responsabilidad competitiva.",
@@ -132,7 +132,7 @@ export const sportCategoryCards = [
   },
   {
     id: "2012-2011",
-    name: "Sub-15",
+    name: "Pre-Juvenil",
     range: "2012-2011",
     ages: "14 a 15 años",
     description: "Especialización inicial, seguimiento por posición y rendimiento formativo.",
@@ -141,7 +141,7 @@ export const sportCategoryCards = [
   },
   {
     id: "2010-2009",
-    name: "Sub-17",
+    name: "Juvenil",
     range: "2010-2009",
     ages: "16 a 17 años",
     description: "Alta exigencia formativa, lectura de juego y preparación para competencia.",
@@ -150,7 +150,7 @@ export const sportCategoryCards = [
   },
   {
     id: "2008-2007",
-    name: "Sub-20",
+    name: "Unica",
     range: "2008-2007",
     ages: "18 a 20 años",
     description: "Proyección competitiva, liderazgo y madurez deportiva dentro del proceso.",
@@ -629,20 +629,20 @@ const categorySection = (
   id,
   title,
   description:
-    "Categoría organizada por año de nacimiento para seguimiento formativo, convocatorias y torneos.",
+    "Categorias del Club deportivo Real Sporting de Usme",
   groups: [
     {
       id: `${id}-convocados`,
       title: "Convocados",
       description:
-        "Lista corta para entrenamientos, competencias y llamados recientes del cuerpo técnico.",
+        "Lita de convocados a partidos del club deportivo Real Sporting de Usme, con base en rendimiento, compromiso y seguimiento técnico.",
       slots: fillSlots(`${id}-convocados`, convocados, 10),
     },
     {
       id: `${id}-jugadores`,
       title: "Jugadores",
       description:
-        "Registro completo de integrantes disponibles dentro del proceso de la categoría.",
+        "Registro completo de integrantes del club deportivo Real Sporting de Usme por categoría, con información actualizada sobre su participación, rendimiento y seguimiento formativo.",
       slots: fillSlots(`${id}-jugadores`, jugadores, 20),
     },
   ],
@@ -852,7 +852,6 @@ export const trainings: Training[] = [
 export const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/noticias", label: "Noticias" },
-  { href: "/club", label: "Conócenos" },
   { href: "/entrenamientos", label: "Entrenamientos" },
   { href: "/torneos", label: "Torneos" },
   { href: "/equipo", label: "Categorías" },
