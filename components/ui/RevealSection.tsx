@@ -2,56 +2,44 @@
 
 import { useRef, useEffect } from "react";
 
-interface RevealLineProps {
-  label?: string;
+type Props = {
+  children: React.ReactNode;
   className?: string;
-}
+  delay?: number;
+};
 
-export default function RevealLine({ label, className = "" }: RevealLineProps) {
-  const lineRef = useRef<HTMLDivElement | null>(null);
-  const textRef = useRef<HTMLSpanElement | null>(null);
+export function RevealSection({ children, className, delay = 0 }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (textRef.current) {
-      textRef.current.style.opacity = "0";
-      textRef.current.style.transition = "opacity 0.4s ease 0.6s";
-    }
-
-    let hasAnimated = false;
+    const el = ref.current;
+    if (!el) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          hasAnimated = true;
-          if (textRef.current) textRef.current.style.opacity = "1";
-          observer.disconnect();
+        if (entry.isIntersecting) {
+          el.dataset.visible = "true";
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.45 },
+      { rootMargin: "-6% 0px -6% 0px", threshold: 0.16 },
     );
 
-    if (lineRef.current) observer.observe(lineRef.current);
+    observer.observe(el);
 
-    // Safety timeout to ensure animation runs
-    const safetyTimeout = setTimeout(() => {
-      if (!hasAnimated) {
-        hasAnimated = true;
-        if (textRef.current) textRef.current.style.opacity = "1";
-        observer.disconnect();
-      }
-    }, 6000);
-
-    return () => {
-      clearTimeout(safetyTimeout);
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div className={`section-shell py-4 sm:py-6 ${className}`}>
-      <div className="flex items-center gap-3">
-        <div ref={lineRef} className="h-px flex-1 bg-gradient-to-r from-accent/40 via-white/10 to-transparent" />
-        {label ? <span ref={textRef} className="section-label">{label}</span> : null}
+    <div
+      ref={ref}
+      className={`${className || ""} group/reveal`}
+    >
+      <div
+        className="translate-y-6 scale-[0.985] opacity-0 transition-all duration-700 ease-out group-data-[visible=true]/reveal:translate-y-0 group-data-[visible=true]/reveal:scale-100 group-data-[visible=true]/reveal:opacity-100"
+        style={{ transitionDelay: `${delay}s` }}
+      >
+        {children}
       </div>
     </div>
   );
