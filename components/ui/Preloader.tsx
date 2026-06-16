@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 /**
  * Preloader Component
@@ -24,6 +25,8 @@ export default function Preloader({
   duration = 8000,
   onComplete
 }: PreloaderProps) {
+  const [imgError, setImgError] = useState(false);
+
   useEffect(() => {
     const preloader = document.getElementById('preloader');
     if (!preloader) return;
@@ -69,17 +72,25 @@ export default function Preloader({
       </div>
 
       {/* Logo image */}
-      <img
-        id="preloader-logo"
-        src={logoSrc}
-        alt="Club Logo"
-        onError={(e) => {
-          // Fallback: show a placeholder if image fails to load
-          const img = e.target as HTMLImageElement;
-          img.src =
-            'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%2280%22 fill=%22%2300FFFF%22 opacity=%220.5%22/%3E%3Ctext x=%22100%22 y=%22110%22 text-anchor=%22middle%22 font-size=%2224%22 fill=%22white%22%3ELOGO%3C/text%3E%3C/svg%3E';
-        }}
-      />
+      {imgError ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          id="preloader-logo"
+          src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%2280%22 fill=%22%2300FFFF%22 opacity=%220.5%22/%3E%3Ctext x=%22100%22 y=%22110%22 text-anchor=%22middle%22 font-size=%2224%22 fill=%22white%22%3ELOGO%3C/text%3E%3C/svg%3E"
+          alt="Club Logo"
+          className="w-24 h-24"
+        />
+      ) : (
+        <Image
+          id="preloader-logo"
+          src={logoSrc}
+          alt="Club Logo"
+          width={96}
+          height={96}
+          onError={() => setImgError(true)}
+          priority
+        />
+      )}
 
       {/* Club name - appears with scanner effect */}
       <div id="preloader-name">Club Deportivo Real Sporting</div>
