@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { Github } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import { useState } from "react";
 
 type GitHubSignInButtonProps = {
@@ -34,7 +34,7 @@ export function GitHubSignInButton({
       className={`inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg border border-border bg-bg px-5 text-sm font-black text-text transition-colors hover:border-accent hover:bg-bg-elevated disabled:cursor-not-allowed disabled:opacity-60 ${className}`}
       aria-label="Iniciar sesión con GitHub para administrar el sitio"
     >
-      <Github size={18} aria-hidden="true" />
+      <FaGithub size={18} aria-hidden="true" />
       {loading ? "Conectando con GitHub..." : label}
     </button>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Facebook, Instagram, Mail, Phone } from "lucide-react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { Mail, Phone } from "lucide-react";
 import { social } from "@/lib/content";
 import { PHONE_TEL } from "@/lib/constants";
 
@@ -13,7 +14,7 @@ export function SocialStrip() {
           rel="noopener noreferrer"
           className="alive-lift flex shrink-0 items-center gap-2 rounded-full border border-border bg-bg px-4 py-2 text-sm font-semibold text-muted transition-colors hover:text-accent sm:border-0 sm:bg-transparent sm:px-0 sm:py-0"
         >
-          <Instagram size={18} /> Instagram
+          <FaInstagram size={18} /> Instagram
         </a>
         <a
           href={social.facebook}
@@ -21,7 +22,7 @@ export function SocialStrip() {
           rel="noopener noreferrer"
           className="alive-lift flex shrink-0 items-center gap-2 rounded-full border border-border bg-bg px-4 py-2 text-sm font-semibold text-muted transition-colors hover:text-accent-secondary sm:border-0 sm:bg-transparent sm:px-0 sm:py-0"
         >
-          <Facebook size={18} /> Facebook
+          <FaFacebook size={18} /> Facebook
         </a>
         <a
           href={`mailto:${social.email}`}

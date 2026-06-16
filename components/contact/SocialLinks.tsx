@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { social } from "@/lib/content";
 import { fadeUpItem, staggerContainer } from "@/lib/motion";
 import { PHONE_TEL, VENUE_NAME, WHATSAPP_URL } from "@/lib/constants";
@@ -9,7 +10,7 @@ import { PHONE_TEL, VENUE_NAME, WHATSAPP_URL } from "@/lib/constants";
 const links: Array<{
   label: string;
   href: string;
-  icon: typeof Instagram;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
   description: string;
   ariaLabel?: string;
   accent?: boolean;
@@ -17,13 +18,13 @@ const links: Array<{
   {
     label: "Instagram",
     href: social.instagram,
-    icon: Instagram,
+    icon: FaInstagram,
     description: "Síguenos y mira los momentos del club",
   },
   {
     label: "Facebook",
     href: social.facebook,
-    icon: Facebook,
+    icon: FaFacebook,
     description: "Noticias, eventos y comunidad",
   },
   {

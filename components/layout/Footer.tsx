@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { club, navLinks, social } from "@/lib/content";
 import { PHONE_TEL, VENUE_NAME } from "@/lib/constants";
 import MapEmbed from "@/components/MapEmbed";
@@ -67,7 +68,7 @@ export function Footer() {
                   aria-label="Seguir a Real Sporting en Instagram"
                   className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
-                  <Instagram size={16} /> Instagram
+                  <FaInstagram size={16} /> Instagram
                 </a>
               </li>
               <li>
@@ -78,7 +79,7 @@ export function Footer() {
                   aria-label="Seguir a Real Sporting en Facebook"
                   className="alive-lift flex items-center gap-2 text-sm text-muted transition-colors hover:text-accent"
                 >
-                  <Facebook size={16} /> Facebook
+                  <FaFacebook size={16} /> Facebook
                 </a>
               </li>
               <li>
