@@ -167,7 +167,6 @@ export function Navbar() {
         </motion.ul>
 
         <div className="flex items-center gap-1.5">
-          <NavWhatsAppLink className="btn-green alive-lift hidden min-h-10 items-center justify-center rounded-full px-3 text-[13px] font-black text-white md:inline-flex xl:px-4 xl:text-sm" />
           <Link
             href="/formulario-miembros-2026"
             className="btn-gold alive-lift hidden min-h-10 items-center justify-center rounded-full px-3.5 text-[13px] font-black md:inline-flex xl:px-5 xl:text-sm"

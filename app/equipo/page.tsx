@@ -67,13 +67,6 @@ export default async function EquipoPage() {
                 </a>
               ))}
             </nav>
-            <Link
-              href="/formulario-miembros-2026"
-              className="btn-gold alive-lift mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-black"
-            >
-              {contentOverride(overrides, "equipo.intro.cta", "Inscribirme")}
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
           </div>
 
           <PlayerManager initialItems={players} />
