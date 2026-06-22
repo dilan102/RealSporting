@@ -1,62 +1,171 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-/**
- * Preloader Component
- * A full-screen preloader with club values animation
- * 
- * Usage:
- * 1. Import in your root layout: import Preloader from '@/components/ui/Preloader'
- * 2. Add to layout: <Preloader />
- */
 interface PreloaderProps {
-  /** Optional callback when preloader finishes */
   onComplete?: () => void;
 }
 
-export default function Preloader({
-  onComplete
-}: PreloaderProps) {
-  useEffect(() => {
-    const preloader = document.getElementById('preloader');
-    if (!preloader) return;
+const NINOS = '/brand/preloader-ninos.jpg';
+const NINAS = '/brand/preloader-ninas.jpg';
 
-    // Add body class to hide page content
+const VALUES = [
+  { word: 'RESPETO', bg: NINOS, tagline: 'Fundamento del juego' },
+  { word: 'DISCIPLINA', bg: NINAS, tagline: 'El camino al éxito' },
+  { word: 'EMPATÍA', bg: NINOS, tagline: 'Unidos como equipo' },
+  { word: 'PASIÓN', bg: NINAS, tagline: 'Corazón Real Sporting' },
+  { word: 'LIDERAZGO', bg: NINOS, tagline: 'Formamos campeones' },
+];
+
+const TOTAL_MS = 5000;
+const SLIDE_MS = TOTAL_MS / VALUES.length;
+
+export default function Preloader({ onComplete }: PreloaderProps) {
+  const [visible, setVisible] = useState(true);
+  const [done, setDone] = useState(false);
+
+  const panelRef = useRef<HTMLDivElement>(null);
+  const valueWordRef = useRef<HTMLDivElement>(null);
+  const goldBarRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLDivElement>(null);
+  const bgPhotoRef = useRef<HTMLDivElement>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
     document.body.classList.add('preloader-active');
 
-    // Listen for preloader complete event from JS
-    const handleComplete = () => {
-      if (onComplete) {
-        onComplete();
-      }
+    const panel = panelRef.current;
+    const valueWord = valueWordRef.current;
+    const goldBar = goldBarRef.current;
+    const tagline = taglineRef.current;
+    const bgPhoto = bgPhotoRef.current;
+    const progressFill = progressFillRef.current;
+    const dotsEl = dotsRef.current;
+
+    if (!panel || !valueWord || !goldBar || !tagline || !bgPhoto || !progressFill || !dotsEl) {
+      return;
+    }
+
+    let cancelled = false;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    let rafId: number | null = null;
+
+    const setTimeoutTracked = (fn: () => void, ms: number) => {
+      const id = setTimeout(fn, ms);
+      timeouts.push(id);
+      return id;
     };
 
-    document.addEventListener('preloaderComplete', handleComplete);
+    const dots = VALUES.map((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.id = 'dot-' + i;
+      dotsEl.appendChild(d);
+      return d;
+    });
+
+    function reflow(el: HTMLElement) {
+      void el.offsetWidth;
+    }
+
+    function resetAnim() {
+      panel!.classList.remove('expand', 'collapse');
+      valueWord!.classList.remove('appear');
+      goldBar!.classList.remove('appear');
+      tagline!.classList.remove('appear');
+      reflow(panel!);
+      reflow(valueWord!);
+    }
+
+    function showSlide(idx: number) {
+      const v = VALUES[idx];
+      bgPhoto!.classList.remove('active');
+      bgPhoto!.style.backgroundImage = `url(${v.bg})`;
+      setTimeoutTracked(() => bgPhoto!.classList.add('active'), 40);
+
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+
+      valueWord!.textContent = v.word;
+      tagline!.textContent = v.tagline;
+
+      resetAnim();
+      panel!.classList.add('expand');
+      setTimeoutTracked(() => {
+        valueWord!.classList.add('appear');
+        goldBar!.classList.add('appear');
+        tagline!.classList.add('appear');
+      }, 30);
+    }
+
+    let current = 0;
+    let startTime: number | null = null;
+
+    function nextSlide() {
+      resetAnim();
+      panel!.classList.add('collapse');
+      setTimeoutTracked(() => {
+        current++;
+        showSlide(current);
+      }, 360);
+    }
+
+    function finish() {
+      document.dispatchEvent(new CustomEvent('preloaderComplete'));
+      onComplete?.();
+      document.body.classList.remove('preloader-active');
+      setDone(true);
+      setTimeoutTracked(() => setVisible(false), 600);
+    }
+
+    function tick(ts: number) {
+      if (cancelled) return;
+      if (!startTime) startTime = ts;
+      const elapsed = ts - startTime;
+      progressFill!.style.width = Math.min(100, (elapsed / TOTAL_MS) * 100) + '%';
+
+      const target = Math.floor(elapsed / SLIDE_MS);
+      if (target > current && current < VALUES.length - 1) nextSlide();
+
+      if (elapsed < TOTAL_MS) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        progressFill!.style.width = '100%';
+        setTimeoutTracked(finish, 200);
+      }
+    }
+
+    showSlide(0);
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      document.removeEventListener('preloaderComplete', handleComplete);
+      cancelled = true;
+      timeouts.forEach(clearTimeout);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      dots.forEach((d) => d.remove());
     };
-  }, [onComplete]);
+  }, []);
+
+  if (!visible) return null;
 
   return (
-    <div id="preloader">
-      <div className="bg-photo" id="bgPhoto"></div>
+    <div id="preloader" className={done ? 'done' : undefined}>
+      <div className="bg-photo" id="bgPhoto" ref={bgPhotoRef}></div>
       <div className="bg-overlay"></div>
       <div className="vignette"></div>
       <div className="center-rule"></div>
-      <div className="dots" id="dots"></div>
-      <div className="panel" id="panel">
-        <div className="value-word" id="valueWord"></div>
-        <div className="gold-bar" id="goldBar"></div>
-        <div className="tagline" id="tagline"></div>
+      <div className="dots" id="dots" ref={dotsRef}></div>
+      <div className="panel" id="panel" ref={panelRef}>
+        <div className="value-word" id="valueWord" ref={valueWordRef}></div>
+        <div className="gold-bar" id="goldBar" ref={goldBarRef}></div>
+        <div className="tagline" id="tagline" ref={taglineRef}></div>
       </div>
       <div className="brand-strip">
         <img src="/logo.png" alt="RS" />
         <span>Disciplina · Trabajo · Éxito</span>
       </div>
       <div className="progress-track">
-        <div className="progress-fill" id="progressFill"></div>
+        <div className="progress-fill" id="progressFill" ref={progressFillRef}></div>
       </div>
     </div>
   );

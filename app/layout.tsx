@@ -49,7 +49,6 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="/preloader.css" />
-        <script src="/preloader.js" async></script>
       </head>
       <body className="min-h-screen flex flex-col">
         <Preloader />
