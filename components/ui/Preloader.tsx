@@ -106,7 +106,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     let startTime: number | null = null;
 
     function nextSlide() {
-      if (isTransitioning) return;
+      if (isTransitioning || current >= VALUES.length - 1) return;
       isTransitioning = true;
       resetAnim();
       panel!.classList.add('collapse');
@@ -125,25 +125,41 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       setTimeoutTracked(() => setVisible(false), 600);
     }
 
-    function tick(ts: number) {
+    // Simple timeout-based approach for each slide
+    function runSlideSequence() {
+      showSlide(0);
+      
+      for (let i = 1; i < VALUES.length; i++) {
+        setTimeoutTracked(() => {
+          if (!cancelled) {
+            nextSlide();
+          }
+        }, i * SLIDE_MS);
+      }
+      
+      setTimeoutTracked(() => {
+        if (!cancelled) {
+          finish();
+        }
+      }, TOTAL_MS);
+    }
+
+    // Progress bar animation
+    function updateProgress() {
       if (cancelled) return;
-      if (!startTime) startTime = ts;
-      const elapsed = ts - startTime;
+      if (!startTime) startTime = Date.now();
+      const elapsed = Date.now() - startTime;
       progressFill!.style.width = Math.min(100, (elapsed / TOTAL_MS) * 100) + '%';
 
-      const target = Math.floor(elapsed / SLIDE_MS);
-      if (target > current && current < VALUES.length) nextSlide();
-
       if (elapsed < TOTAL_MS) {
-        rafId = requestAnimationFrame(tick);
+        rafId = requestAnimationFrame(updateProgress);
       } else {
         progressFill!.style.width = '100%';
-        setTimeoutTracked(finish, 200);
       }
     }
 
-    showSlide(0);
-    rafId = requestAnimationFrame(tick);
+    runSlideSequence();
+    rafId = requestAnimationFrame(updateProgress);
 
     return () => {
       cancelled = true;
