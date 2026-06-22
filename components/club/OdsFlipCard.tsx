@@ -46,12 +46,12 @@ export function OdsFlipCard({ item, variant = "club", onOpenInfographic }: Props
         className={`ods-flip-inner group w-full rounded-lg border border-border bg-bg-elevated text-left shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${minHeight} ${flipped ? "is-flipped" : ""}`}
       >
         <div className="ods-flip-face flex flex-col">
-          <div className="relative h-full shrink-0">
+          <div className="relative h-full shrink-0 overflow-hidden">
             <Image
               src={item.image}
               alt={item.title}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-110"
               sizes="(min-width: 768px) 50vw, 100vw"
             />
             <div className="image-card-overlay absolute inset-0" />
