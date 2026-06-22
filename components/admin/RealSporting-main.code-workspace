@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "RealSporting-main",
+			"path": "../.."
+		},
+		{
+			"path": "../../../tienda-catalogo"
+		}
+	],
+	"settings": {},
+	"workbenchMode": "windsurf-agent-window"
+}

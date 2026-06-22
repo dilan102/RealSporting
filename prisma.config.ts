@@ -33,7 +33,7 @@ if (!migrationUrl) {
 
 if (!databaseUrl && fallbackUrl?.includes("-pooler")) {
   console.warn(
-    "[prisma] Usando DATABASE_URL con pooler para db:push. En Neon es mejor definir DIRECT_URL (connection string sin -pooler).",
+    "[prisma] Usando DATABASE_URL con pooler para db:push. En Neon es mejor definir DIRECT_URL .",
   );
 }
 

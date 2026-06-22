@@ -68,7 +68,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
               {copy.badge || "Club Deportivo Real Sporting de Usme"}
             </div>
 
-            <h1 className="font-hero mt-6 max-w-5xl text-6xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-7xl lg:text-9xl mobile-reveal mobile-reveal-delay-1">
+            <h1 className="font-hero mt-6 max-w-5xl text-5xl font-black leading-[0.88] tracking-normal text-white drop-shadow-xl sm:text-6xl lg:text-7xl mobile-reveal mobile-reveal-delay-1">
               {titleLines.map((line, index) => (
                 <span key={`${line}-${index}`}>
                   {line}

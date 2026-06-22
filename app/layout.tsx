@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { AIAssistantWidget } from "@/components/ui/AIAssistantWidget";
 import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingButton";
 import { PageTransition } from "@/components/ui/PageTransition";
+import Preloader from "@/components/ui/Preloader";
 import Cursor from "@/components/ui/Cursor";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
@@ -46,8 +47,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <head></head>
+      <head>
+        <link rel="stylesheet" href="/preloader.css" />
+        <script src="/preloader.js" async></script>
+      </head>
       <body className="min-h-screen flex flex-col">
+        <Preloader />
         <Cursor />
         <ThemeProvider>
           <div id="site-content" className="site-content flex min-h-screen flex-col">
