@@ -125,77 +125,7 @@ export function GlobalContentManager() {
     }
   };
 
-  const resetActidilan@dilan:~/RealSporting-main
-$ git push
-Enumerando objetos: 12, listo.
-Contando objetos: 100% (12/12), listo.
-Compresión delta usando hasta 4 hilos
-Comprimiendo objetos: 100% (9/9), listo.
-Escribiendo objetos: 100% (9/9), 33.84 KiB | 4.83 MiB/s, listo.
-Total 9 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
-remote: This repository moved. Please use the new location:
-remote:   https://github.com/dilan102/RealSporting.git
-remote: error: GH013: Repository rule violations found for refs/heads/main.
-remote: 
-remote: - GITHUB PUSH PROTECTION
-remote:   —————————————————————————————————————————
-remote:     Resolve the following violations before pushing again
-remote: 
-remote:     - Push cannot contain secrets
-remote: 
-remote:     
-remote:      (?) Learn how to resolve a blocked push
-remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
-remote:     
-remote:     
-remote:       —— OpenAI API Key ————————————————————————————————————
-remote:        locations:
-remote:          - commit: 
-remote:            path: :10
-remote:     
-remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
-remote:        https://github.com/dilan102/RealSporting/security/secret-scanning/unblock-secret/3FDsP6kSa9VZC4jk492LWCaceje
-remote:     
-remote:     
-remote:       —— OpenAI API Key ————————————————————————————————————
-remote:        locations:
-remote:          - commit: 
-remote:            path: :64
-remote:     
-remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
-remote:        https://github.com/dilan102/RealSporting/security/secret-scanning/unblock-secret/3FDsP1t7y7HQ1udcutrk9tbpZV7
-remote:     
-remote: 
-remote: 
-To https://github.com/dilan102/realsporting.git
- ! [remote rejected] main -> main (push declined due to repository rule violations)
-error: falló el empuje de algunas referencias a 'https://github.com/dilan102/realsporting.git'
-dilan@dilan:~/RealSporting-main
-$ git push origin maste:main
-error: src refspec maste no concuerda con ninguno
-error: falló el empuje de algunas referencias a 'https://github.com/dilan102/realsporting.git'
-dilan@dilan:~/RealSporting-main
-$ git push origin master:main
-To https://github.com/dilan102/realsporting.git
- ! [rejected]        master -> main (non-fast-forward)
-error: falló el empuje de algunas referencias a 'https://github.com/dilan102/realsporting.git'
-hint: Updates were rejected because the tip of your current branch is behind
-hint: its remote counterpart. If you want to integrate the remote changes,
-hint: use 'git pull' before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-dilan@dilan:~/RealSporting-main
-$ git push origin main
-Enumerando objetos: 12, listo.
-Contando objetos: 100% (12/12), listo.
-Compresión delta usando hasta 4 hilos
-Comprimiendo objetos: 100% (9/9), listo.
-Escribiendo objetos: 100% (9/9), 33.84 KiB | 5.64 MiB/s, listo.
-Total 9 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
-remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
-remote: This repository moved. Please use the new location:
-remote:   https://github.com/dilan102/RealSporting.git
-remote: error: GH013: Repository ruveGroup = () => {
+  const resetActiveGroup = () => {
     setValues((current) => {
       const next = { ...current };
 
