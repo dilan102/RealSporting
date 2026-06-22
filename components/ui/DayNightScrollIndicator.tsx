@@ -65,10 +65,24 @@ export function DayNightScrollIndicator() {
   );
 
   return (
-    <div className="day-night-widget group" style={clockStyle}>
+    <div className="day-night-widget" style={clockStyle}>
+      <div className="day-night-indicator" aria-hidden="true">
+        <span className="day-night-sun" />
+        <span className="day-night-moon">
+          <span />
+          <span />
+          <span />
+        </span>
+        <span className="day-night-stars">
+          {Array.from({ length: 7 }).map((_, index) => (
+            <span key={index} />
+          ))}
+        </span>
+        <span className="day-night-water" />
+      </div>
       <time className="day-night-clock" dateTime={now?.toISOString()}>
         <span>{timeLabel}</span>
-        <span className="day-night-calendar opacity-0 group-hover:opacity-100 transition-opacity duration-300">{dateLabel}</span>
+        <span>{dateLabel}</span>
       </time>
     </div>
   );
