@@ -20,7 +20,7 @@ const VALUES = [
   { word: 'LIDERAZGO', bg: GALLERY_YOUTH, tagline: 'Formamos campeones' },
 ];
 
-const TOTAL_MS = 10000;
+const TOTAL_MS = 8000;
 const SLIDE_MS = TOTAL_MS / VALUES.length;
 
 export default function Preloader({ onComplete }: PreloaderProps) {
@@ -99,7 +99,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         valueWord!.classList.add('appear');
         goldBar!.classList.add('appear');
         tagline!.classList.add('appear');
-      }, 30);
+      }, 400);
     }
 
     let current = 0;
@@ -114,7 +114,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         current++;
         showSlide(current);
         isTransitioning = false;
-      }, 360);
+      }, 600);
     }
 
     function finish() {
