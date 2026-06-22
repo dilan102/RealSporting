@@ -20,7 +20,7 @@ const VALUES = [
   { word: 'LIDERAZGO', bg: GALLERY_YOUTH, tagline: 'Formamos campeones' },
 ];
 
-const TOTAL_MS = 8000;
+const TOTAL_MS = 6000;
 const SLIDE_MS = TOTAL_MS / VALUES.length;
 
 export default function Preloader({ onComplete }: PreloaderProps) {
@@ -99,7 +99,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         valueWord!.classList.add('appear');
         goldBar!.classList.add('appear');
         tagline!.classList.add('appear');
-      }, 400);
+      }, 200);
     }
 
     let current = 0;
@@ -110,11 +110,12 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       isTransitioning = true;
       resetAnim();
       panel!.classList.add('collapse');
+      // Cross-fade: start new slide 200ms before collapse completes (420ms - 200ms = 220ms)
       setTimeoutTracked(() => {
         current++;
         showSlide(current);
         isTransitioning = false;
-      }, 600);
+      }, 220);
     }
 
     function finish() {
