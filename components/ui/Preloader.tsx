@@ -20,7 +20,7 @@ const VALUES = [
   { word: 'LIDERAZGO', bg: GALLERY_YOUTH, tagline: 'Formamos campeones' },
 ];
 
-const TOTAL_MS = 7000;
+const TOTAL_MS = 10000;
 const SLIDE_MS = TOTAL_MS / VALUES.length;
 
 export default function Preloader({ onComplete }: PreloaderProps) {
@@ -53,6 +53,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     let cancelled = false;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     let rafId: number | null = null;
+    let isTransitioning = false;
 
     const setTimeoutTracked = (fn: () => void, ms: number) => {
       const id = setTimeout(fn, ms);
@@ -105,11 +106,14 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     let startTime: number | null = null;
 
     function nextSlide() {
+      if (isTransitioning) return;
+      isTransitioning = true;
       resetAnim();
       panel!.classList.add('collapse');
       setTimeoutTracked(() => {
         current++;
         showSlide(current);
+        isTransitioning = false;
       }, 360);
     }
 
