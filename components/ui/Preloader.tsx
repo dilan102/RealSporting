@@ -8,16 +8,19 @@ interface PreloaderProps {
 
 const NINOS = '/brand/preloader-ninos.jpg';
 const NINAS = '/brand/preloader-ninas.jpg';
+const HERO = '/brand/hero-training.jpg';
+const GALLERY_TEAM = '/brand/gallery-team.jpg';
+const GALLERY_YOUTH = '/brand/gallery-youth.jpg';
 
 const VALUES = [
   { word: 'RESPETO', bg: NINOS, tagline: 'Fundamento del juego' },
   { word: 'DISCIPLINA', bg: NINAS, tagline: 'El camino al éxito' },
-  { word: 'EMPATÍA', bg: NINOS, tagline: 'Unidos como equipo' },
-  { word: 'PASIÓN', bg: NINAS, tagline: 'Corazón Real Sporting' },
-  { word: 'LIDERAZGO', bg: NINOS, tagline: 'Formamos campeones' },
+  { word: 'EMPATÍA', bg: HERO, tagline: 'Unidos como equipo' },
+  { word: 'PASIÓN', bg: GALLERY_TEAM, tagline: 'Corazón Real Sporting' },
+  { word: 'LIDERAZGO', bg: GALLERY_YOUTH, tagline: 'Formamos campeones' },
 ];
 
-const TOTAL_MS = 5000;
+const TOTAL_MS = 7000;
 const SLIDE_MS = TOTAL_MS / VALUES.length;
 
 export default function Preloader({ onComplete }: PreloaderProps) {
@@ -125,7 +128,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       progressFill!.style.width = Math.min(100, (elapsed / TOTAL_MS) * 100) + '%';
 
       const target = Math.floor(elapsed / SLIDE_MS);
-      if (target > current && current < VALUES.length - 1) nextSlide();
+      if (target > current && current < VALUES.length) nextSlide();
 
       if (elapsed < TOTAL_MS) {
         rafId = requestAnimationFrame(tick);
