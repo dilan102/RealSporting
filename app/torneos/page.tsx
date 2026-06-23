@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Trophy, Zap } from "lucide-react";
 import { TournamentsList } from "@/components/tournaments/TournamentsList";
 import { CurrentTournamentCard } from "@/components/tournaments/CurrentTournamentCard";
-import { TournamentManager } from "@/components/tournaments/TournamentManager";
-import { CurrentTournamentManager } from "@/components/tournaments/CurrentTournamentManager";
-import { TournamentSectionsManager } from "@/components/tournaments/TournamentSectionsManager";
+import { TournamentsAdminPanel } from "@/components/tournaments/TournamentsAdminPanel";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
@@ -79,10 +77,6 @@ export default async function TorneosPage() {
       "Programación competitiva, resultados, participaciones y próximos retos del club.",
     ),
   };
-  const adminSection = {
-    eyebrow: contentOverride(overrides, "torneos.admin.eyebrow", "Administrador"),
-    title: contentOverride(overrides, "torneos.admin.title", "Subir programación"),
-  };
 
   return (
     <main className="bg-bg text-text">
@@ -133,7 +127,12 @@ export default async function TorneosPage() {
         </section>
       </RevealSection>
 
-      <TournamentSectionsManager sections={defaultSections} initialValues={overrides} />
+      <TournamentsAdminPanel
+        currentTournament={currentTournament}
+        tournaments={orderedTournaments}
+        sections={defaultSections}
+        sectionOverrides={overrides}
+      />
 
       <RevealSection>
         <section id="current" className="section-shell scroll-mt-28 py-10">
@@ -186,25 +185,6 @@ export default async function TorneosPage() {
           </RevealSection>
         );
       })}
-
-      <RevealSection>
-        <section className="section-shell pb-24 pt-8">
-          <div className="mb-6 max-w-3xl">
-            <p className="eyebrow">{adminSection.eyebrow}</p>
-            <h2 className="font-stadium mt-3 text-4xl font-black sm:text-5xl">
-              {adminSection.title}
-            </h2>
-          </div>
-
-          <div className="mb-10">
-            <h3 className="text-2xl font-bold mb-4">Torneo Actual</h3>
-            <CurrentTournamentManager initialItem={currentTournament} />
-          </div>
-
-          <h3 className="text-2xl font-bold mb-4">Otros Torneos</h3>
-          <TournamentManager initialItems={orderedTournaments} showList={false} />
-        </section>
-      </RevealSection>
     </main>
   );
 }

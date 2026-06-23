@@ -71,8 +71,10 @@ async function fetchCurrentTournament(accessKey = "") {
 
 export function CurrentTournamentManager({
   initialItem,
+  showPreview = true,
 }: {
   initialItem: CurrentTournament | null;
+  showPreview?: boolean;
 }) {
   const router = useRouter();
   const [item, setItem] = useState(initialItem);
@@ -280,7 +282,7 @@ export function CurrentTournamentManager({
 
   return (
     <>
-      {item && (
+      {showPreview && item && (
         <div className="mb-10">
           <div className="mb-6 max-w-3xl">
             <p className="eyebrow">Vista previa</p>

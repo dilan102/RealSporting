@@ -27,7 +27,7 @@ type ApiResponse = {
   items?: Tournament[];
 };
 
-const emptyForm = (): TournamentForm => {
+const emptyForm = (defaultStatus: TournamentStatus = "future"): TournamentForm => {
   const startDate = new Date().toISOString().slice(0, 10);
 
   return {
@@ -39,7 +39,7 @@ const emptyForm = (): TournamentForm => {
     opponent: "",
     startDate,
     endDate: defaultEndDateFromStart(startDate),
-    status: "future",
+    status: defaultStatus,
     visibility: "draft",
     image: "",
     file: null,
@@ -70,13 +70,21 @@ async function fetchTournaments(accessKey = "") {
 export function TournamentManager({
   initialItems,
   showList = true,
+  statusFilter,
+  hideStatusSelector = false,
+  title,
+  description,
 }: {
   initialItems: Tournament[];
   showList?: boolean;
+  statusFilter?: TournamentStatus;
+  hideStatusSelector?: boolean;
+  title?: string;
+  description?: string;
 }) {
   const router = useRouter();
   const [items, setItems] = useState(initialItems);
-  const [form, setForm] = useState<TournamentForm>(() => emptyForm());
+  const [form, setForm] = useState<TournamentForm>(() => emptyForm(statusFilter));
   const [editingId, setEditingId] = useState<string | null>(null);
   const [accessKey, setAccessKey] = useState("");
   const [unlocked, setUnlocked] = useState(false);
@@ -141,13 +149,18 @@ export function TournamentManager({
     };
   }, [form.image]);
 
+  const filteredItems = useMemo(
+    () => (statusFilter ? items.filter((item) => item.status === statusFilter) : items),
+    [items, statusFilter],
+  );
+
   const orderedItems = useMemo(
-    () => [...items].sort((a, b) => b.startDate.localeCompare(a.startDate)),
-    [items],
+    () => [...filteredItems].sort((a, b) => b.startDate.localeCompare(a.startDate)),
+    [filteredItems],
   );
 
   const resetForm = () => {
-    setForm(emptyForm());
+    setForm(emptyForm(statusFilter));
     setEditingId(null);
     setFileName("");
   };
@@ -317,10 +330,9 @@ export function TournamentManager({
               <span className="inline-flex items-center gap-2 rounded-lg bg-accent/15 px-3 py-1 text-xs font-semibold text-accent">
                 Panel activo
               </span>
-              <h3 className="mt-4 text-xl font-bold">Programación de torneos</h3>
+              <h3 className="mt-4 text-xl font-bold">{title || "Programación de torneos"}</h3>
               <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted">
-                Sube torneos jugados, ganados o por jugar con fechas,
-                sede, categoría y programación.
+                {description || "Sube torneos jugados, ganados o por jugar con fechas, sede, categoría y programación."}
               </p>
             </div>
             <Trophy className="text-accent/50" size={32} aria-hidden="true" />
@@ -338,23 +350,27 @@ export function TournamentManager({
               />
             </label>
 
-            <label className="text-xs font-medium uppercase tracking-normal text-muted">
-              Estado
-              <select
-                value={form.status}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    status: event.target.value as TournamentStatus,
-                  }))
-                }
-                className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none focus:border-accent"
-              >
-                <option value="played">Torneo jugado</option>
-                <option value="won">Torneo ganado</option>
-                <option value="future">Torneo por jugar</option>
-              </select>
-            </label>
+            {!hideStatusSelector && (
+              <label className="text-xs font-medium uppercase tracking-normal text-muted">
+                Estado
+                <select
+                  value={form.status}
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      status: event.target.value as TournamentStatus,
+                    }))
+                  }
+                  className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-sm text-text outline-none focus:border-accent"
+                >
+                  <option value="played">Torneo jugado</option>
+                  <option value="won">Torneo ganado</option>
+                  <option value="future">Torneo por jugar</option>
+                  <option value="upcoming">Próximo encuentro</option>
+                  <option value="scheduled">Programación</option>
+                </select>
+              </label>
+            )}
 
             <label className="text-xs font-medium uppercase tracking-normal text-muted">
               Fecha inicio
