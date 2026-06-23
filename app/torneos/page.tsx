@@ -98,9 +98,8 @@ export default async function TorneosPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <a
               href="#current"
-              className="alive-card rounded-lg border-2 border-accent bg-bg-elevated p-5 relative overflow-hidden hover:bg-bg-elevated/80 transition-colors"
+              className="alive-card rounded-lg border border-border bg-bg-elevated p-5"
             >
-              <span className="absolute top-0 right-0 w-1 h-full bg-accent"></span>
               <span className="grid size-11 place-items-center rounded-lg bg-accent/15 text-accent">
                 <Zap size={21} aria-hidden="true" />
               </span>
