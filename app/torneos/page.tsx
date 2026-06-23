@@ -38,9 +38,14 @@ const defaultSections: {
     description: "Logros competitivos y campeonatos que marcan la historia del club.",
   },
   {
-    status: "future",
-    title: "Torneos por jugar",
-    description: "Próximas competencias en planeación o confirmadas por la institución.",
+    status: "upcoming",
+    title: "Próximos encuentros",
+    description: "Partidos y competencias confirmadas en el calendario inmediato.",
+  },
+  {
+    status: "scheduled",
+    title: "Programación",
+    description: "Agenda competitiva planificada para la temporada.",
   },
 ];
 
