@@ -27,7 +27,7 @@ type ApiResponse = {
   items?: Tournament[];
 };
 
-const emptyForm = (defaultStatus: TournamentStatus = "future"): TournamentForm => {
+const emptyForm = (defaultStatus: TournamentStatus = "future", defaultVisibility: "published" | "draft" = "published"): TournamentForm => {
   const startDate = new Date().toISOString().slice(0, 10);
 
   return {
@@ -40,7 +40,7 @@ const emptyForm = (defaultStatus: TournamentStatus = "future"): TournamentForm =
     startDate,
     endDate: defaultEndDateFromStart(startDate),
     status: defaultStatus,
-    visibility: "draft",
+    visibility: defaultVisibility,
     image: "",
     file: null,
   };
@@ -74,6 +74,9 @@ export function TournamentManager({
   hideStatusSelector = false,
   title,
   description,
+  defaultVisibility = "published",
+  externalAccessKey,
+  externalUnlocked,
 }: {
   initialItems: Tournament[];
   showList?: boolean;
@@ -81,13 +84,16 @@ export function TournamentManager({
   hideStatusSelector?: boolean;
   title?: string;
   description?: string;
+  defaultVisibility?: "published" | "draft";
+  externalAccessKey?: string;
+  externalUnlocked?: boolean;
 }) {
   const router = useRouter();
   const [items, setItems] = useState(initialItems);
-  const [form, setForm] = useState<TournamentForm>(() => emptyForm(statusFilter));
+  const [form, setForm] = useState<TournamentForm>(() => emptyForm(statusFilter, defaultVisibility));
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [accessKey, setAccessKey] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
+  const [accessKey, setAccessKey] = useState(externalAccessKey || "");
+  const [unlocked, setUnlocked] = useState(externalUnlocked || false);
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
   const [saving, setSaving] = useState(false);
@@ -160,7 +166,7 @@ export function TournamentManager({
   );
 
   const resetForm = () => {
-    setForm(emptyForm(statusFilter));
+    setForm(emptyForm(statusFilter, defaultVisibility));
     setEditingId(null);
     setFileName("");
   };

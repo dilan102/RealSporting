@@ -61,11 +61,13 @@ export function TournamentsAdminPanel({
 }: Props) {
   const [activePanel, setActivePanel] = useState<AdminPanel>("current");
   const [unlocked, setUnlocked] = useState(false);
+  const [accessKey, setAccessKey] = useState("");
   const [showTextEditor, setShowTextEditor] = useState(false);
 
   useEffect(() => {
     const syncAdminAccess = () => {
       const key = window.sessionStorage.getItem("cdrs-admin-key");
+      setAccessKey(key || "");
       setUnlocked(Boolean(key));
     };
 
@@ -90,6 +92,8 @@ export function TournamentsAdminPanel({
           <CurrentTournamentManager
             initialItem={currentTournament}
             showPreview={false}
+            externalAccessKey={accessKey}
+            externalUnlocked={unlocked}
           />
         );
       case "played":
@@ -101,6 +105,9 @@ export function TournamentsAdminPanel({
             hideStatusSelector={true}
             title="Torneos jugados"
             description="Administra los torneos y partidos ya disputados."
+            defaultVisibility="published"
+            externalAccessKey={accessKey}
+            externalUnlocked={unlocked}
           />
         );
       case "won":
@@ -112,6 +119,9 @@ export function TournamentsAdminPanel({
             hideStatusSelector={true}
             title="Torneos ganados"
             description="Administra los campeonatos y victorias del club."
+            defaultVisibility="published"
+            externalAccessKey={accessKey}
+            externalUnlocked={unlocked}
           />
         );
       case "upcoming":
@@ -123,6 +133,9 @@ export function TournamentsAdminPanel({
             hideStatusSelector={true}
             title="Próximos encuentros"
             description="Administra los partidos y torneos por jugar."
+            defaultVisibility="published"
+            externalAccessKey={accessKey}
+            externalUnlocked={unlocked}
           />
         );
       case "scheduled":
@@ -134,6 +147,9 @@ export function TournamentsAdminPanel({
             hideStatusSelector={true}
             title="Programación"
             description="Administra la agenda competitiva del club."
+            defaultVisibility="published"
+            externalAccessKey={accessKey}
+            externalUnlocked={unlocked}
           />
         );
       default:

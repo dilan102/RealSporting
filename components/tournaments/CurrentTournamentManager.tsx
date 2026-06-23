@@ -72,9 +72,13 @@ async function fetchCurrentTournament(accessKey = "") {
 export function CurrentTournamentManager({
   initialItem,
   showPreview = true,
+  externalAccessKey,
+  externalUnlocked,
 }: {
   initialItem: CurrentTournament | null;
   showPreview?: boolean;
+  externalAccessKey?: string;
+  externalUnlocked?: boolean;
 }) {
   const router = useRouter();
   const [item, setItem] = useState(initialItem);
@@ -96,8 +100,8 @@ export function CurrentTournamentManager({
         }
       : emptyForm(),
   );
-  const [accessKey, setAccessKey] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
+  const [accessKey, setAccessKey] = useState(externalAccessKey || "");
+  const [unlocked, setUnlocked] = useState(externalUnlocked || false);
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
   const [saving, setSaving] = useState(false);
