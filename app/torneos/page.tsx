@@ -51,6 +51,7 @@ function sectionCount(items: Tournament[], status: TournamentStatus) {
 export default async function TorneosPage() {
   const overrides = await readContentOverrides();
   const tournaments = await readTournaments();
+  const allTournaments = await readTournaments({ includeDrafts: true });
   const currentTournament = await readCurrentTournament();
   const orderedTournaments = [...tournaments].sort((a, b) =>
     b.startDate.localeCompare(a.startDate),
@@ -129,7 +130,7 @@ export default async function TorneosPage() {
 
       <TournamentsAdminPanel
         currentTournament={currentTournament}
-        tournaments={orderedTournaments}
+        tournaments={allTournaments}
         sections={defaultSections}
         sectionOverrides={overrides}
       />
