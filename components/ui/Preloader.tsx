@@ -6,13 +6,19 @@ interface PreloaderProps {
   onComplete?: () => void;
 }
 
+interface SlideData {
+  word: string;
+  bg: string;
+  tagline: string;
+}
+
 const NINOS = '/brand/preloader-ninos.jpg';
 const NINAS = '/brand/preloader-ninas.jpg';
 const HERO = '/brand/hero-training.jpg';
 const GALLERY_TEAM = '/brand/gallery-team.jpg';
 const GALLERY_YOUTH = '/brand/gallery-youth.jpg';
 
-const VALUES = [
+const VALUES: SlideData[] = [
   { word: 'RESPETO', bg: NINOS, tagline: 'Fundamento del juego' },
   { word: 'DISCIPLINA', bg: NINAS, tagline: 'El camino al éxito' },
   { word: 'EMPATÍA', bg: HERO, tagline: 'Unidos como equipo' },
@@ -20,40 +26,56 @@ const VALUES = [
   { word: 'LIDERAZGO', bg: GALLERY_YOUTH, tagline: 'Formamos campeones' },
 ];
 
-const TOTAL_MS = 6000;
-const SLIDE_MS = TOTAL_MS / VALUES.length;
+// Timing configuration
+const SLIDE_VISIBLE_MS = 1000; // Time slide stays visible
+const SLIDE_TRANSITION_MS = 500; // Time for horizontal drag transition
+const SLIDE_TOTAL_MS = SLIDE_VISIBLE_MS + SLIDE_TRANSITION_MS;
+const TOTAL_MS = SLIDE_TOTAL_MS * VALUES.length;
+
+// Internal slide component
+interface PreloaderSlideProps {
+  slide: SlideData;
+  state: 'active' | 'enter' | 'exit';
+  index: number;
+}
+
+function PreloaderSlide({ slide, state, index }: PreloaderSlideProps) {
+  const stateClass = `preloader-slide--${state}`;
+  
+  return (
+    <div className={`preloader-slide ${stateClass}`} data-index={index}>
+      <div 
+        className="preloader-slide-bg"
+        style={{ backgroundImage: `url(${slide.bg})` }}
+      />
+      <div className="preloader-slide-content">
+        <div className="preloader-slide-word">{slide.word}</div>
+        <div className="preloader-slide-bar" />
+        <div className="preloader-slide-tagline">{slide.tagline}</div>
+      </div>
+    </div>
+  );
+}
 
 export default function Preloader({ onComplete }: PreloaderProps) {
   const [visible, setVisible] = useState(true);
   const [done, setDone] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [incomingIndex, setIncomingIndex] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  const isTransitioningRef = useRef(false);
+  const currentIndexRef = useRef(0);
 
-  const panelRef = useRef<HTMLDivElement>(null);
-  const valueWordRef = useRef<HTMLDivElement>(null);
-  const goldBarRef = useRef<HTMLDivElement>(null);
-  const taglineRef = useRef<HTMLDivElement>(null);
-  const bgPhotoRef = useRef<HTMLDivElement>(null);
   const progressFillRef = useRef<HTMLDivElement>(null);
-  const dotsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.body.classList.add('preloader-active');
 
-    const panel = panelRef.current;
-    const valueWord = valueWordRef.current;
-    const goldBar = goldBarRef.current;
-    const tagline = taglineRef.current;
-    const bgPhoto = bgPhotoRef.current;
-    const progressFill = progressFillRef.current;
-    const dotsEl = dotsRef.current;
-
-    if (!panel || !valueWord || !goldBar || !tagline || !bgPhoto || !progressFill || !dotsEl) {
-      return;
-    }
-
     let cancelled = false;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     let rafId: number | null = null;
-    let isTransitioning = false;
+    let startTime: number | null = null;
 
     const setTimeoutTracked = (fn: () => void, ms: number) => {
       const id = setTimeout(fn, ms);
@@ -61,103 +83,76 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       return id;
     };
 
-    const dots = VALUES.map((_, i) => {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === 0 ? ' active' : '');
-      d.id = 'dot-' + i;
-      dotsEl.appendChild(d);
-      return d;
-    });
+    const updateDots = (activeIdx: number) => {
+      const dots = document.querySelectorAll('.dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeIdx);
+      });
+    };
 
-    function reflow(el: HTMLElement) {
-      void el.offsetWidth;
-    }
+    const startTransition = (nextIndex: number) => {
+      if (isTransitioningRef.current || cancelled) return;
+      isTransitioningRef.current = true;
+      setIsTransitioning(true);
+      setIncomingIndex(nextIndex);
+      updateDots(nextIndex);
 
-    function resetAnim() {
-      panel!.classList.remove('expand', 'collapse');
-      valueWord!.classList.remove('appear');
-      goldBar!.classList.remove('appear');
-      tagline!.classList.remove('appear');
-      reflow(panel!);
-      reflow(valueWord!);
-    }
-
-    function showSlide(idx: number) {
-      const v = VALUES[idx];
-      bgPhoto!.classList.remove('active');
-      bgPhoto!.style.backgroundImage = `url(${v.bg})`;
-      setTimeoutTracked(() => bgPhoto!.classList.add('active'), 40);
-
-      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-
-      valueWord!.textContent = v.word;
-      tagline!.textContent = v.tagline;
-
-      resetAnim();
-      panel!.classList.add('expand');
+      // After transition completes, make the incoming slide the new active
       setTimeoutTracked(() => {
-        valueWord!.classList.add('appear');
-        goldBar!.classList.add('appear');
-        tagline!.classList.add('appear');
-      }, 200);
-    }
+        if (!cancelled) {
+          setActiveIndex(nextIndex);
+          setIncomingIndex(null);
+          setIsTransitioning(false);
+          isTransitioningRef.current = false;
+          currentIndexRef.current = nextIndex;
+        }
+      }, SLIDE_TRANSITION_MS);
+    };
 
-    let current = 0;
-    let startTime: number | null = null;
-
-    function nextSlide() {
-      if (isTransitioning || current >= VALUES.length - 1) return;
-      isTransitioning = true;
-      resetAnim();
-      panel!.classList.add('collapse');
-      // Cross-fade: start new slide 200ms before collapse completes (420ms - 200ms = 220ms)
-      setTimeoutTracked(() => {
-        current++;
-        showSlide(current);
-        isTransitioning = false;
-      }, 220);
-    }
-
-    function finish() {
+    const finish = () => {
       document.dispatchEvent(new CustomEvent('preloaderComplete'));
       onComplete?.();
       document.body.classList.remove('preloader-active');
       setDone(true);
       setTimeoutTracked(() => setVisible(false), 600);
-    }
+    };
 
-    // Simple timeout-based approach for each slide
-    function runSlideSequence() {
-      showSlide(0);
+    const runSlideSequence = () => {
+      // Initial slide
+      updateDots(0);
       
+      // Schedule transitions for remaining slides
       for (let i = 1; i < VALUES.length; i++) {
         setTimeoutTracked(() => {
-          if (!cancelled) {
-            nextSlide();
+          if (!cancelled && !isTransitioningRef.current) {
+            startTransition(i);
           }
-        }, i * SLIDE_MS);
+        }, i * SLIDE_TOTAL_MS);
       }
       
+      // Schedule finish
       setTimeoutTracked(() => {
         if (!cancelled) {
           finish();
         }
       }, TOTAL_MS);
-    }
+    };
 
-    // Progress bar animation
-    function updateProgress() {
+    const updateProgress = () => {
       if (cancelled) return;
       if (!startTime) startTime = Date.now();
       const elapsed = Date.now() - startTime;
-      progressFill!.style.width = Math.min(100, (elapsed / TOTAL_MS) * 100) + '%';
+      const progressFill = progressFillRef.current;
+      if (progressFill) {
+        progressFill.style.width = Math.min(100, (elapsed / TOTAL_MS) * 100) + '%';
+      }
 
       if (elapsed < TOTAL_MS) {
         rafId = requestAnimationFrame(updateProgress);
-      } else {
-        progressFill!.style.width = '100%';
+      } else if (progressFill) {
+        progressFill.style.width = '100%';
       }
-    }
+    };
 
     runSlideSequence();
     rafId = requestAnimationFrame(updateProgress);
@@ -166,30 +161,41 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       cancelled = true;
       timeouts.forEach(clearTimeout);
       if (rafId !== null) cancelAnimationFrame(rafId);
-      dots.forEach((d) => d.remove());
     };
   }, []);
 
   if (!visible) return null;
 
+  // Determine which slides to render
+  const slidesToRender: Array<{ slide: SlideData; state: 'active' | 'enter' | 'exit'; index: number }> = [];
+  
+  slidesToRender.push({ slide: VALUES[activeIndex], state: isTransitioning ? 'exit' : 'active', index: activeIndex });
+  
+  if (incomingIndex !== null) {
+    slidesToRender.push({ slide: VALUES[incomingIndex], state: 'enter', index: incomingIndex });
+  }
+
   return (
     <div id="preloader" className={done ? 'done' : undefined}>
-      <div className="bg-photo" id="bgPhoto" ref={bgPhotoRef}></div>
+      <div className="preloader-stage">
+        {slidesToRender.map(({ slide, state, index }) => (
+          <PreloaderSlide key={`${state}-${index}`} slide={slide} state={state} index={index} />
+        ))}
+      </div>
       <div className="bg-overlay"></div>
       <div className="vignette"></div>
       <div className="center-rule"></div>
-      <div className="dots" id="dots" ref={dotsRef}></div>
-      <div className="panel" id="panel" ref={panelRef}>
-        <div className="value-word" id="valueWord" ref={valueWordRef}></div>
-        <div className="gold-bar" id="goldBar" ref={goldBarRef}></div>
-        <div className="tagline" id="tagline" ref={taglineRef}></div>
+      <div className="dots">
+        {VALUES.map((_, i) => (
+          <div key={i} className={`dot ${i === (incomingIndex ?? activeIndex) ? 'active' : ''}`} />
+        ))}
       </div>
       <div className="brand-strip">
         <img src="/logo.png" alt="RS" />
         <span>Disciplina · Trabajo · Éxito</span>
       </div>
       <div className="progress-track">
-        <div className="progress-fill" id="progressFill" ref={progressFillRef}></div>
+        <div className="progress-fill" ref={progressFillRef}></div>
       </div>
     </div>
   );
