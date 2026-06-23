@@ -7,6 +7,8 @@ const statusLabel: Record<Tournament["status"], string> = {
   played: "Torneo jugado",
   won: "Torneo ganado",
   future: "Torneo por jugar",
+  upcoming: "Próximo encuentro",
+  scheduled: "Programación",
 };
 
 export function TournamentCard({
