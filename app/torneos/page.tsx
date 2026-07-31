@@ -7,7 +7,11 @@ import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
 import { club } from "@/lib/content";
 import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
-import { readTournaments, type Tournament, type TournamentStatus } from "@/lib/tournament-store";
+import {
+  readTournaments,
+  type Tournament,
+  type TournamentStatus,
+} from "@/lib/tournament-store";
 import { readCurrentTournament } from "@/lib/current-tournament-store";
 import { pageOpenGraph } from "@/lib/site";
 
@@ -30,17 +34,20 @@ const defaultSections: {
   {
     status: "played",
     title: "Torneos jugados",
-    description: "Participaciones finalizadas que fortalecen experiencia y proceso competitivo.",
+    description:
+      "Participaciones finalizadas que fortalecen experiencia y proceso competitivo.",
   },
   {
     status: "won",
     title: "Torneos ganados",
-    description: "Logros competitivos y campeonatos que marcan la historia del club.",
+    description:
+      "Logros competitivos y campeonatos que marcan la historia del club.",
   },
   {
     status: "upcoming",
     title: "Próximos encuentros",
-    description: "Partidos y competencias confirmadas en el calendario inmediato.",
+    description:
+      "Partidos y competencias confirmadas en el calendario inmediato.",
   },
   {
     status: "scheduled",
@@ -90,7 +97,6 @@ export default async function TorneosPage() {
         title={hero.title}
         subtitle={hero.subtitle}
         eyebrow={hero.eyebrow}
-        image="/brand/gallery-team.jpg"
       />
 
       <RevealSection>
@@ -103,12 +109,16 @@ export default async function TorneosPage() {
               <span className="grid size-11 place-items-center rounded-lg bg-accent/15 text-accent">
                 <Zap size={21} aria-hidden="true" />
               </span>
-              <p className="mt-5 text-3xl font-black text-accent">{currentTournament ? 1 : 0}</p>
+              <p className="mt-5 text-3xl font-black text-accent">
+                {currentTournament ? 1 : 0}
+              </p>
               <h2 className="mt-2 text-sm font-black uppercase tracking-normal text-text">
                 Torneo Actual
               </h2>
               <p className="mt-2 text-sm leading-6 text-muted">
-                {currentTournament ? "Competencia en disputa" : "Sin competencia actual"}
+                {currentTournament
+                  ? "Competencia en disputa"
+                  : "Sin competencia actual"}
               </p>
             </a>
             {sections.map((section) => (
@@ -126,7 +136,9 @@ export default async function TorneosPage() {
                 <h2 className="mt-2 text-sm font-black uppercase tracking-normal text-text">
                   {section.title}
                 </h2>
-                <p className="mt-2 text-sm leading-6 text-muted">{section.description}</p>
+                <p className="mt-2 text-sm leading-6 text-muted">
+                  {section.description}
+                </p>
               </a>
             ))}
           </div>
@@ -165,7 +177,8 @@ export default async function TorneosPage() {
                 No hay torneo actual en este momento.
               </p>
               <p className="mt-2 text-sm leading-6 text-muted">
-                Cuando el administrador agregue un torneo actual, aparecerá destacado aquí.
+                Cuando el administrador agregue un torneo actual, aparecerá
+                destacado aquí.
               </p>
             </div>
           )}
@@ -173,17 +186,24 @@ export default async function TorneosPage() {
       </RevealSection>
 
       {sections.map((section) => {
-        const items = orderedTournaments.filter((item) => item.status === section.status);
+        const items = orderedTournaments.filter(
+          (item) => item.status === section.status,
+        );
 
         return (
           <RevealSection key={section.status}>
-            <section id={section.status} className="section-shell scroll-mt-28 py-10">
+            <section
+              id={section.status}
+              className="section-shell scroll-mt-28 py-10"
+            >
               <div className="mb-7 max-w-3xl">
                 <p className="eyebrow">Torneos</p>
                 <h2 className="font-stadium mt-3 text-4xl font-black sm:text-5xl">
                   {section.title}
                 </h2>
-                <p className="mt-3 text-base leading-7 text-muted">{section.description}</p>
+                <p className="mt-3 text-base leading-7 text-muted">
+                  {section.description}
+                </p>
               </div>
 
               <TournamentsList items={items} />
