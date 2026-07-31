@@ -9,6 +9,7 @@ import { AIAssistantFloatingButton } from "@/components/ui/AIAssistantFloatingBu
 import { PageTransition } from "@/components/ui/PageTransition";
 import Preloader from "@/components/ui/Preloader";
 import Cursor from "@/components/ui/Cursor";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { club } from "@/lib/content";
 import { OG_IMAGE_URL, siteMetadata } from "@/lib/site";
 import "./globals.css";
@@ -66,6 +67,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
