@@ -97,6 +97,7 @@ export default async function TorneosPage() {
         title={hero.title}
         subtitle={hero.subtitle}
         eyebrow={hero.eyebrow}
+        image="/banner claro.png"
       />
 
       <RevealSection>
