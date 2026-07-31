@@ -20,7 +20,9 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
   const titleLines = title.split("\n");
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduceMotion) {
       return;
     }
@@ -40,7 +42,7 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
         style={{ transform: `translate3d(0, ${parallax}px, 0) scale(1.04)` }}
       >
         <Image
-          src="/brand/hero-training.jpg"
+          src="/Fondo-Hero.jpeg"
           alt="Entrenamiento del Club Deportivo Real Sporting en Usme"
           fill
           priority
@@ -108,10 +110,19 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
               </p>
             </div>
             {institutionalStats.map((stat) => (
-              <div key={stat.label} className="alive-card rounded-lg border border-white/12 bg-white/8 p-4">
-                <p className="font-training cinematic-accent text-5xl font-black leading-none">{stat.value}</p>
-                <p className="mt-2 text-sm font-black text-white">{stat.label}</p>
-                <p className="mt-1 text-xs leading-5 text-white/68">{stat.detail}</p>
+              <div
+                key={stat.label}
+                className="alive-card rounded-lg border border-white/12 bg-white/8 p-4"
+              >
+                <p className="font-training cinematic-accent text-5xl font-black leading-none">
+                  {stat.value}
+                </p>
+                <p className="mt-2 text-sm font-black text-white">
+                  {stat.label}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-white/68">
+                  {stat.detail}
+                </p>
               </div>
             ))}
           </aside>

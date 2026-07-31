@@ -7,8 +7,7 @@ export const club = {
   vision:
     "Ser un club deportivo reconocido a nivel distrital y nacional por su excelencia formativa, impacto social y proyección competitiva, consolidándose como una institución referente en el desarrollo deportivo y humano de nuevas generaciones.",
   about: {
-    lead:
-      "Desde Usme, el Club Deportivo Real Sporting articula fútbol sala, formación humana y pertenencia territorial para niños, niñas y jóvenes que buscan crecer con método, acompañamiento y proyección.",
+    lead: "Desde Usme, el Club Deportivo Real Sporting articula fútbol sala, formación humana y pertenencia territorial para niños, niñas y jóvenes que buscan crecer con método, acompañamiento y proyección.",
     paragraphs: [
       "Nacimos en 2022 con la convicción de que el deporte puede ser un espacio seguro de aprendizaje, convivencia y oportunidades. Cada proceso combina planificación técnica, seguimiento por categorías y trabajo cercano con familias, cuerpo técnico y comunidad.",
       "Nuestro modelo integra la metodología SCM (Sinergia Cognitivo-Motriz), valores institucionales y un proyecto deportivo alineado con el desarrollo sostenible. No solo entrenamos para competir: formamos hábitos, liderazgo, resiliencia y sentido de pertenencia que acompañan el proyecto de vida de cada integrante.",
@@ -87,10 +86,22 @@ export const social = {
 };
 
 export const institutionalStats = [
-  { value: "2022", label: "Inicio del proceso", detail: "Trabajo formativo desde Usme" },
+  {
+    value: "2022",
+    label: "Inicio del proceso",
+    detail: "Trabajo formativo desde Usme",
+  },
   { value: "7", label: "Categorías", detail: "Rangos por año de nacimiento" },
-  { value: "6", label: "ODS priorizados", detail: "Salud, educación, igualdad e inclusión" },
-  { value: "2026", label: "Proyección", detail: "Renovación metodológica y digital" },
+  {
+    value: "6",
+    label: "ODS priorizados",
+    detail: "Salud, educación, igualdad e inclusión",
+  },
+  {
+    value: "2026",
+    label: "Proyección",
+    detail: "Renovación metodológica y digital",
+  },
 ];
 
 export const sportCategoryCards = [
@@ -98,49 +109,56 @@ export const sportCategoryCards = [
     id: "2020-2019",
     name: "Pre-Benjamín",
     range: "2020-2019",
-    description: "Iniciación motriz, juego guiado, confianza y vínculo positivo con el balón.",
+    description:
+      "Iniciación motriz, juego guiado, confianza y vínculo positivo con el balón.",
     image: "/brand/gallery-youth.jpg",
   },
   {
     id: "2018-2017",
     name: "Benjamín",
     range: "2018-2017",
-    description: "Fundamentos técnicos, cooperación, lectura básica del juego y hábitos de equipo.",
+    description:
+      "Fundamentos técnicos, cooperación, lectura básica del juego y hábitos de equipo.",
     image: "/brand/gallery-team.jpg",
   },
   {
     id: "2016-2015",
     name: "Alevín",
     range: "2016-2015",
-    description: "Perfeccionamiento técnico, toma de decisiones y comunicación en cancha.",
+    description:
+      "Perfeccionamiento técnico, toma de decisiones y comunicación en cancha.",
     image: "/brand/hero-training.jpg",
   },
   {
     id: "2014-2013",
     name: "Infantil",
     range: "2014-2013",
-    description: "Consolidación táctica, preparación física general y responsabilidad competitiva.",
+    description:
+      "Consolidación táctica, preparación física general y responsabilidad competitiva.",
     image: "/brand/gallery-night.jpg",
   },
   {
     id: "2012-2011",
     name: "Cadete",
     range: "2012-2011",
-    description: "Especialización inicial, seguimiento por posición y rendimiento formativo.",
+    description:
+      "Especialización inicial, seguimiento por posición y rendimiento formativo.",
     image: "/brand/gallery-team.jpg",
   },
   {
     id: "2010-2009",
     name: "Juvenil",
     range: "2010-2009",
-    description: "Alta exigencia formativa, lectura de juego y preparación para competencia.",
+    description:
+      "Alta exigencia formativa, lectura de juego y preparación para competencia.",
     image: "/brand/gallery-night.jpg",
   },
   {
     id: "2008-2007",
     name: "Sub-20",
     range: "2008-2007",
-    description: "Proyección competitiva, liderazgo y madurez deportiva dentro del proceso.",
+    description:
+      "Proyección competitiva, liderazgo y madurez deportiva dentro del proceso.",
     image: "/brand/hero-training.jpg",
   },
 ];
@@ -195,7 +213,10 @@ export const odsItems: OdsItem[] = [
       { icon: "❤️", text: "Promoción de hábitos saludables" },
       { icon: "🧠", text: "Bienestar emocional y confianza personal" },
       { icon: "🏃", text: "Desarrollo físico integral" },
-      { icon: "🤝", text: "Prevención de riesgos sociales mediante el deporte" },
+      {
+        icon: "🤝",
+        text: "Prevención de riesgos sociales mediante el deporte",
+      },
     ],
     clubObjective: "Formar deportistas sanos física y emocionalmente",
     stats: [
@@ -299,7 +320,8 @@ export const odsItems: OdsItem[] = [
       { icon: "⭐", text: "Desarrollo de talentos diversos" },
       { icon: "🎯", text: "Igualdad de oportunidades" },
     ],
-    clubObjective: "Abrir el deporte a niños y jóvenes de distintos contextos en Usme",
+    clubObjective:
+      "Abrir el deporte a niños y jóvenes de distintos contextos en Usme",
     stats: [
       { value: "Usme", label: "Enfoque territorial" },
       { value: "7", label: "Categorías por edad" },
@@ -333,7 +355,8 @@ export const odsItems: OdsItem[] = [
       { icon: "📍", text: "Identidad territorial en Usme" },
       { icon: "🌱", text: "Construcción de comunidad" },
     ],
-    clubObjective: "Consolidar comunidad, familia y territorio alrededor del deporte",
+    clubObjective:
+      "Consolidar comunidad, familia y territorio alrededor del deporte",
     stats: [
       { value: "Usme", label: "Sede y pertenencia local" },
       { value: "Familias", label: "Vinculación activa" },
@@ -419,22 +442,22 @@ export const galleryItems = [
   {
     title: "Disciplina diaria",
     category: "Entrenamiento",
-    image: "/brand/hero-training.jpg",
+    image: "Entrenamiento-Inicio.jpeg",
   },
   {
     title: "Formación de base",
     category: "Cantera",
-    image: "/brand/gallery-youth.jpg",
+    image: "Equipo-Inicio.jpeg",
   },
   {
     title: "Trabajo en equipo",
     category: "Comunidad",
-    image: "/brand/gallery-team.jpg",
+    image: "Comunidad-Inicio.jpeg",
   },
   {
     title: "Competencia con carácter",
     category: "Proyección",
-    image: "/brand/gallery-night.jpg",
+    image: "Competicion-Inicio.jpeg",
   },
 ];
 
@@ -478,7 +501,10 @@ export type TeamCategoryId =
   | "2010-2009"
   | "2008-2007";
 
-export type PlayerCategory = TeamCategoryId | TeamBirthYear | `${TeamBirthYear}`;
+export type PlayerCategory =
+  | TeamCategoryId
+  | TeamBirthYear
+  | `${TeamBirthYear}`;
 
 export const teamCategories: TeamCategoryId[] = [
   "2020-2019",
@@ -491,7 +517,7 @@ export const teamCategories: TeamCategoryId[] = [
 ];
 
 export const getPlayerCategory = (
-  category: PlayerCategory
+  category: PlayerCategory,
 ): TeamCategoryId | undefined => {
   if (teamCategories.includes(category as TeamCategoryId)) {
     return category as TeamCategoryId;
@@ -500,10 +526,7 @@ export const getPlayerCategory = (
   const birthYear = Number(category);
 
   return teamCategories.find((teamCategory) =>
-    teamCategory
-      .split("-")
-      .map(Number)
-      .includes(birthYear)
+    teamCategory.split("-").map(Number).includes(birthYear),
   );
 };
 
@@ -610,7 +633,7 @@ const categorySection = (
   id: string,
   title: string,
   convocados: TeamSlot[] = [],
-  jugadores: TeamSlot[] = []
+  jugadores: TeamSlot[] = [],
 ): TeamSection => ({
   id,
   title,
@@ -637,12 +660,12 @@ const categorySection = (
 const fillSlots = (
   prefix: string,
   occupiedSlots: TeamSlot[],
-  minimumAmount: number
+  minimumAmount: number,
 ): TeamSlot[] => [
   ...occupiedSlots,
   ...emptySlots(
     `${prefix}-disponible`,
-    Math.max(minimumAmount - occupiedSlots.length, 0)
+    Math.max(minimumAmount - occupiedSlots.length, 0),
   ),
 ];
 
@@ -654,13 +677,13 @@ const playerSlot = (groupId: string, player: Player): TeamSlot => ({
 export const buildTeamSections = (items: Player[]): TeamSection[] => [
   ...teamCategories.map((category) => {
     const categoryPlayers = items.filter(
-      (player) => getPlayerCategory(player.category) === category
+      (player) => getPlayerCategory(player.category) === category,
     );
     const convocados = categoryPlayers
       .filter((player) => player.convocado === "SI")
       .map((player) => playerSlot(`${category}-convocado`, player));
     const jugadores = categoryPlayers.map((player) =>
-      playerSlot(`${category}-jugador`, player)
+      playerSlot(`${category}-jugador`, player),
     );
 
     return categorySection(category, category, convocados, jugadores);
@@ -720,8 +743,7 @@ export const news: News[] = [
     category: "Cantera",
     summary:
       "El club abre espacios de observación para niños, niñas y jóvenes de Usme interesados en iniciar un proceso deportivo estructurado.",
-    body:
-      "El Club Deportivo Real Sporting invita a las familias de la localidad a participar en jornadas de observación para nuevos talentos. El proceso prioriza disciplina, asistencia, actitud, compromiso familiar y seguimiento técnico por categorías.",
+    body: "El Club Deportivo Real Sporting invita a las familias de la localidad a participar en jornadas de observación para nuevos talentos. El proceso prioriza disciplina, asistencia, actitud, compromiso familiar y seguimiento técnico por categorías.",
     image: "/brand/gallery-youth.jpg",
     status: "published",
   },
@@ -733,8 +755,7 @@ export const news: News[] = [
     category: "Entrenamiento",
     summary:
       "Las categorías formativas trabajaron recuperación rápida, cierres coordinados y salida limpia tras robo.",
-    body:
-      "Durante la semana se desarrolló un microciclo dedicado a la presión alta. Los jugadores practicaron basculaciones, coberturas y decisiones de primer pase para transformar recuperaciones en ataques organizados. El objetivo es sostener intensidad sin perder orden.",
+    body: "Durante la semana se desarrolló un microciclo dedicado a la presión alta. Los jugadores practicaron basculaciones, coberturas y decisiones de primer pase para transformar recuperaciones en ataques organizados. El objetivo es sostener intensidad sin perder orden.",
     image: "/brand/hero-training.jpg",
     status: "published",
   },
@@ -746,8 +767,7 @@ export const news: News[] = [
     category: "Comunidad",
     summary:
       "La comunidad del club acompañó una jornada de integración alrededor del deporte y los valores.",
-    body:
-      "El encuentro reunió a jugadores, familias y cuerpo técnico en una jornada pensada para reforzar pertenencia, respeto y trabajo en equipo. Estos espacios sostienen la identidad del club y recuerdan que el proceso deportivo también se construye fuera de la cancha.",
+    body: "El encuentro reunió a jugadores, familias y cuerpo técnico en una jornada pensada para reforzar pertenencia, respeto y trabajo en equipo. Estos espacios sostienen la identidad del club y recuerdan que el proceso deportivo también se construye fuera de la cancha.",
     image: "/brand/gallery-team.jpg",
     status: "published",
   },
@@ -759,8 +779,7 @@ export const news: News[] = [
     category: "Competencia",
     summary:
       "El equipo ajusta detalles tácticos y físicos antes de los próximos compromisos competitivos.",
-    body:
-      "El Club Deportivo Real Sporting prepara sus próximas presentaciones con énfasis en pelota quieta, repliegue defensivo y definición. El cuerpo técnico evalúa convocatorias por asistencia, rendimiento y comportamiento para representar a la institución con responsabilidad.",
+    body: "El Club Deportivo Real Sporting prepara sus próximas presentaciones con énfasis en pelota quieta, repliegue defensivo y definición. El cuerpo técnico evalúa convocatorias por asistencia, rendimiento y comportamiento para representar a la institución con responsabilidad.",
     image: "/brand/gallery-night.jpg",
     status: "published",
   },
