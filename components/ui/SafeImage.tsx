@@ -9,7 +9,16 @@ type Props = Omit<ImageProps, "src"> & {
   fallbackSrc?: ImageProps["src"];
 };
 
-export function SafeImage({ src, fallbackSrc, alt, onError, ...props }: Props) {
+export function SafeImage({
+  src,
+  fallbackSrc,
+  alt,
+  onError,
+  fill,
+  className,
+  style,
+  ...props
+}: Props) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
 
@@ -28,5 +37,43 @@ export function SafeImage({ src, fallbackSrc, alt, onError, ...props }: Props) {
     onError?.(event);
   };
 
-  return <Image {...props} src={currentSrc} alt={alt} onError={handleError} />;
+  const isPublicPath =
+    typeof currentSrc === "string" && currentSrc.startsWith("/");
+
+  if (isPublicPath) {
+    return (
+      <img
+        {...props}
+        src={currentSrc}
+        alt={alt}
+        onError={handleError}
+        className={className}
+        style={
+          fill
+            ? {
+                ...style,
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }
+            : style
+        }
+      />
+    );
+  }
+
+  return (
+    <Image
+      {...props}
+      src={currentSrc}
+      alt={alt}
+      onError={handleError}
+      unoptimized
+      fill={fill}
+      className={className}
+      style={style}
+    />
+  );
 }
