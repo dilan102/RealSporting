@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowRight, MapPin, ShieldCheck } from "lucide-react";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { club, institutionalStats } from "@/lib/content";
 
 type HeroCopy = {
@@ -41,14 +42,28 @@ export function Hero({ copy = {} }: { copy?: HeroCopy }) {
         className="absolute inset-0 scale-[1.04]"
         style={{ transform: `translate3d(0, ${parallax}px, 0) scale(1.04)` }}
       >
-        <Image
-          src="/Fondo-Hero.jpeg"
-          alt="Entrenamiento del Club Deportivo Real Sporting en Usme"
-          fill
-          priority
-          sizes="100vw"
-          className="hero-photo object-cover object-[center_38%]"
-        />
+        <div className="block md:hidden">
+          <SafeImage
+            src="/Fondo-Hero-Mobil.png"
+            fallbackSrc="/Fondo-Hero.jpeg"
+            alt="Entrenamiento del Club Deportivo Real Sporting en Usme"
+            fill
+            priority
+            sizes="100vw"
+            className="hero-photo object-cover object-[center_38%]"
+          />
+        </div>
+        <div className="hidden md:block">
+          <SafeImage
+            src="/Fondo-Hero.jpeg"
+            fallbackSrc="/Fondo-Hero-Mobil.png"
+            alt="Entrenamiento del Club Deportivo Real Sporting en Usme"
+            fill
+            priority
+            sizes="100vw"
+            className="hero-photo object-cover object-[center_38%]"
+          />
+        </div>
       </div>
       <div className="hero-overlay-h absolute inset-0" />
       <div className="hero-overlay-v absolute inset-0" />

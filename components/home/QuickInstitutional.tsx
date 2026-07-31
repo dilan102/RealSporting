@@ -7,6 +7,7 @@ import {
   Trophy,
   UsersRound,
 } from "lucide-react";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { ValuePillarsStrip } from "@/components/home/ValuePillarsStrip";
 const institutionalIntro =
   "El Club Deportivo Real Sporting impulsa procesos formativos para niños, niñas y adolescentes de Usme, integrando metodología deportiva, acompañamiento humano y sentido de pertenencia territorial. El fútbol es nuestra plataforma para formar carácter, hábitos, liderazgo y proyecto de vida.";
@@ -98,8 +99,9 @@ export function QuickInstitutional() {
 
           <div className="mt-16 grid gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)] lg:items-center">
             <div className="cinematic-card alive-card group relative min-h-[420px] overflow-hidden rounded-lg border border-border shadow-2xl">
-              <Image
-                src="Gallery-Team.jpeg"
+              <SafeImage
+                src="/Gallery-Team.jpeg"
+                fallbackSrc="/Fondo-Hero.jpeg"
                 alt="Equipo del Club Deportivo Real Sporting en sesión de entrenamiento"
                 fill
                 className="interactive-image object-cover object-center"

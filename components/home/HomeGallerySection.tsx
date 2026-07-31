@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Dumbbell } from "lucide-react";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { galleryItems } from "@/lib/content";
 
 export function HomeGallerySection() {
@@ -13,8 +14,8 @@ export function HomeGallerySection() {
             Sesiones con método, intensidad y trabajo en equipo cada semana.
           </h2>
           <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
-            Vista visual del trabajo en cancha. Más abajo encontrarás el registro de las últimas
-            sesiones publicadas.
+            Vista visual del trabajo en cancha. Más abajo encontrarás el
+            registro de las últimas sesiones publicadas.
           </p>
         </div>
 
@@ -27,12 +28,17 @@ export function HomeGallerySection() {
                 index === 0 ? "lg:row-span-2 lg:min-h-[580px]" : ""
               }`}
             >
-              <Image
+              <SafeImage
                 src={item.image}
+                fallbackSrc="/Fondo-Hero.jpeg"
                 alt={item.title}
                 fill
                 className="interactive-image object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes={index === 0 ? "(min-width: 1024px) 58vw, 100vw" : "(min-width: 1024px) 38vw, 100vw"}
+                sizes={
+                  index === 0
+                    ? "(min-width: 1024px) 58vw, 100vw"
+                    : "(min-width: 1024px) 38vw, 100vw"
+                }
               />
               <div className="image-card-overlay absolute inset-0" />
               <div className="absolute bottom-0 left-0 p-5">
@@ -40,7 +46,9 @@ export function HomeGallerySection() {
                   <Dumbbell size={15} aria-hidden="true" />
                   {item.category}
                 </p>
-                <h3 className="font-gallery mt-2 text-3xl font-black sm:text-4xl">{item.title}</h3>
+                <h3 className="font-gallery mt-2 text-3xl font-black sm:text-4xl">
+                  {item.title}
+                </h3>
               </div>
             </Link>
           ))}
