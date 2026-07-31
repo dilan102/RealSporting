@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
 import { club, social } from "@/lib/content";
+import { prisma } from "@/lib/prisma";
 
 type RegistrationPayload = {
   aspirante?: string;
@@ -10,6 +12,7 @@ type RegistrationPayload = {
   telefono?: string;
   mensaje?: string;
   correo?: string;
+  datos?: Record<string, unknown> | null;
 };
 
 const requiredFields: Array<keyof RegistrationPayload> = [
@@ -59,7 +62,8 @@ async function sendWithResend(payload: RegistrationPayload) {
 async function sendWithSmtp(payload: RegistrationPayload) {
   const gmailUser = process.env.GMAIL_USER;
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
-  const smtpHost = process.env.SMTP_HOST ?? (gmailUser ? "smtp.gmail.com" : undefined);
+  const smtpHost =
+    process.env.SMTP_HOST ?? (gmailUser ? "smtp.gmail.com" : undefined);
   const smtpPort = Number(process.env.SMTP_PORT ?? (gmailUser ? 465 : 587));
   const smtpUser = process.env.SMTP_USER ?? gmailUser;
   const smtpPass = process.env.SMTP_PASS ?? gmailPass;
@@ -89,7 +93,10 @@ async function sendWithSmtp(payload: RegistrationPayload) {
 
 export async function POST(request: Request) {
   const payload = (await request.json()) as RegistrationPayload;
-  const missingField = requiredFields.find((field) => !payload[field]?.trim());
+  const missingField = requiredFields.find((field) => {
+    const value = payload[field];
+    return typeof value !== "string" || !value.trim();
+  });
 
   if (missingField) {
     return NextResponse.json(
@@ -99,21 +106,35 @@ export async function POST(request: Request) {
   }
 
   try {
-    const sent = (await sendWithResend(payload)) || (await sendWithSmtp(payload));
+    const registro = await prisma.inscripcion.create({
+      data: {
+        aspirante: payload.aspirante?.trim() || "Sin nombre",
+        edad: payload.edad?.trim() || null,
+        acudiente: payload.acudiente?.trim() || null,
+        telefono: payload.telefono?.trim() || null,
+        correo: payload.correo?.trim() || null,
+        mensaje: payload.mensaje?.trim() || null,
+        datos: payload.datos
+          ? (payload.datos as Prisma.InputJsonValue)
+          : undefined,
+      },
+    });
 
-    if (!sent) {
-      return NextResponse.json(
-        { message: "No se pudo enviar la solicitud en este momento." },
-        { status: 503 },
-      );
-    }
+    const sent =
+      (await sendWithResend(payload)) || (await sendWithSmtp(payload));
 
     return NextResponse.json({
-      message: "Solicitud enviada correctamente. Te contactaremos pronto.",
+      message: sent
+        ? "Solicitud guardada correctamente y enviada al club."
+        : "Solicitud guardada correctamente en la base de datos del club.",
+      recordId: registro.id,
     });
   } catch {
     return NextResponse.json(
-      { message: "No se pudo enviar la solicitud. Intenta de nuevo o escríbenos por WhatsApp." },
+      {
+        message:
+          "No se pudo enviar la solicitud. Intenta de nuevo o escríbenos por WhatsApp.",
+      },
       { status: 500 },
     );
   }

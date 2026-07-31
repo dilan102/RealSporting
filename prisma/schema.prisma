@@ -102,6 +102,21 @@ model TorneoActual {
   @@index([fechaFin])
 }
 
+model Inscripcion {
+  id         Int      @id @default(autoincrement())
+  aspirante  String
+  edad       String?
+  acudiente  String?
+  telefono   String?
+  correo     String?
+  mensaje    String?
+  datos      Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@index([createdAt])
+}
+
 /// Archivos subidos desde el panel admin (imágenes y videos persistentes en PostgreSQL).
 model ArchivoSubido {
   id        String   @id @default(uuid())
