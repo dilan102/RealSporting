@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -33,7 +33,10 @@ function getTrainingImages(training: Training) {
 
 function getTrainingMedia(training: Training) {
   return [
-    ...getTrainingImages(training).map((src) => ({ type: "image" as const, src })),
+    ...getTrainingImages(training).map((src) => ({
+      type: "image" as const,
+      src,
+    })),
     ...(training.videos || []).map((src) => ({ type: "video" as const, src })),
   ];
 }
@@ -42,7 +45,7 @@ function TrainingPlaceholder() {
   return (
     <div className="absolute inset-0 grid place-items-center bg-[linear-gradient(135deg,var(--accent-green),var(--accent-gold),#111111)]">
       <div className="grid size-24 place-items-center rounded-lg border border-white/25 bg-black/20 p-4 shadow-2xl backdrop-blur-md">
-        <Image
+        <SafeImage
           src="/logo.png"
           alt=""
           width={68}
@@ -76,7 +79,10 @@ export function TrainingCard({
     mediaCount === 0 ? 0 : Math.min(activeMedia, mediaCount - 1);
   const currentMedia = media[safeMediaIndex];
   const mainMedia = media[0];
-  const title = sanitizeVisibleTextOrDefault(training.title, "Entrenamiento Real Sporting");
+  const title = sanitizeVisibleTextOrDefault(
+    training.title,
+    "Entrenamiento Real Sporting",
+  );
   const imageAlt = `Sesión de entrenamiento - ${training.date}`;
   const description = sanitizeVisibleTextOrDefault(
     training.description,
@@ -115,7 +121,7 @@ export function TrainingCard({
           {!mainMedia ? (
             <TrainingPlaceholder />
           ) : mainMedia.type === "image" ? (
-            <Image
+            <SafeImage
               src={mainMedia.src}
               alt={imageAlt}
               fill
@@ -154,7 +160,9 @@ export function TrainingCard({
         </button>
 
         <div className="p-6">
-          <h3 className="font-training line-clamp-2 overflow-wrap-anywhere text-2xl font-bold leading-none">{title}</h3>
+          <h3 className="font-training line-clamp-2 overflow-wrap-anywhere text-2xl font-bold leading-none">
+            {title}
+          </h3>
           <p className="mt-2 line-clamp-3 overflow-wrap-anywhere text-sm leading-relaxed text-muted">
             {description}
           </p>
@@ -211,7 +219,7 @@ export function TrainingCard({
                 </div>
               </>
             ) : currentMedia?.type === "image" ? (
-              <Image
+              <SafeImage
                 src={currentMedia.src}
                 alt={`${title} ${safeMediaIndex + 1}`}
                 fill
@@ -253,7 +261,9 @@ export function TrainingCard({
           </div>
 
           <aside className="p-5 sm:p-6">
-            <p className="overflow-wrap-anywhere text-sm leading-7 text-muted">{description}</p>
+            <p className="overflow-wrap-anywhere text-sm leading-7 text-muted">
+              {description}
+            </p>
             {mediaCount > 1 && (
               <div className="mt-6 grid grid-cols-4 gap-2">
                 {media.map((item, index) => (
@@ -269,7 +279,7 @@ export function TrainingCard({
                     aria-label={`Ver medio ${index + 1}`}
                   >
                     {item.type === "image" ? (
-                      <Image
+                      <SafeImage
                         src={item.src}
                         alt=""
                         fill

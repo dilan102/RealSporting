@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ScmTrainingModelSection } from "@/components/trainings/ScmTrainingModelSection";
 import { TrainingManager } from "@/components/trainings/TrainingManager";
 import { PageHero } from "@/components/ui/PageHero";
 import { RevealSection } from "@/components/ui/RevealSection";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { club, galleryItems } from "@/lib/content";
 import { contentOverride, readContentOverrides } from "@/lib/content-overrides";
 import { readTrainings } from "@/lib/training-store";
@@ -27,13 +27,21 @@ export default async function EntrenamientosPage() {
   return (
     <main className="bg-bg text-text">
       <PageHero
-        title={contentOverride(overrides, "entrenamientos.hero.title", "Entrenamientos")}
+        title={contentOverride(
+          overrides,
+          "entrenamientos.hero.title",
+          "Entrenamientos",
+        )}
         subtitle={contentOverride(
           overrides,
           "entrenamientos.hero.subtitle",
           "Registro visual de sesiones, comunidad y proceso deportivo.",
         )}
-        eyebrow={contentOverride(overrides, "entrenamientos.hero.eyebrow", "Entrenamientos")}
+        eyebrow={contentOverride(
+          overrides,
+          "entrenamientos.hero.eyebrow",
+          "Entrenamientos",
+        )}
       />
 
       <ScmTrainingModelSection />
@@ -43,7 +51,11 @@ export default async function EntrenamientosPage() {
           <div className="grid gap-8 lg:grid-cols-[minmax(260px,0.7fr)_minmax(0,1.3fr)] lg:items-end">
             <div>
               <p className="eyebrow">
-                {contentOverride(overrides, "entrenamientos.gallery.eyebrow", "Memoria visual")}
+                {contentOverride(
+                  overrides,
+                  "entrenamientos.gallery.eyebrow",
+                  "Memoria visual",
+                )}
               </p>
               <h2 className="font-gallery mt-4 text-balance text-3xl font-black leading-[1.05] sm:text-4xl lg:text-5xl">
                 {contentOverride(
@@ -66,7 +78,7 @@ export default async function EntrenamientosPage() {
                   key={item.title}
                   className="cinematic-card alive-card group relative min-h-[220px] overflow-hidden rounded-lg border border-border"
                 >
-                  <Image
+                  <SafeImage
                     src={item.image}
                     alt={item.title}
                     fill
@@ -78,7 +90,9 @@ export default async function EntrenamientosPage() {
                     <p className="cinematic-accent text-xs font-black uppercase tracking-normal">
                       {item.category}
                     </p>
-                    <h3 className="font-gallery mt-1 text-2xl font-black">{item.title}</h3>
+                    <h3 className="font-gallery mt-1 text-2xl font-black">
+                      {item.title}
+                    </h3>
                   </div>
                 </article>
               ))}
@@ -98,7 +112,11 @@ export default async function EntrenamientosPage() {
               )}
             </p>
             <h2 className="font-training mt-3 text-4xl font-black sm:text-5xl">
-              {contentOverride(overrides, "entrenamientos.published.title", "Registro de sesiones")}
+              {contentOverride(
+                overrides,
+                "entrenamientos.published.title",
+                "Registro de sesiones",
+              )}
             </h2>
           </div>
           <TrainingManager initialItems={trainings} />
