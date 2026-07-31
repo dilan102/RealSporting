@@ -442,22 +442,22 @@ export const galleryItems = [
   {
     title: "Disciplina diaria",
     category: "Entrenamiento",
-    image: "/Entrenamiento-Inicio.jpeg",
+    image: "/Disciplina-Diaria-Entrenamiento.jpg",
   },
   {
     title: "Formación de base",
     category: "Cantera",
-    image: "/Equipo-Inicio.jpeg",
+    image: "/Formacion-Base-Entrenamiento.jpg",
   },
   {
     title: "Trabajo en equipo",
     category: "Comunidad",
-    image: "/Comunidad-Inicio.jpeg",
+    image: "/Trabajo-En-Equipo-Entrenamiento.jpeg",
   },
   {
     title: "Competencia con carácter",
     category: "Proyección",
-    image: "/Competicion-Inicio.jpeg",
+    image: "/Competencia-Con-Caracter-Entrenamiento.jpeg",
   },
 ];
 

@@ -333,9 +333,10 @@ export function MemberInfoForm() {
       }
       case "documentNumber":
       case "representativeId": {
-        if (!/^\d{5,15}$/.test(rawValue)) {
+        const numericValue = rawValue.replace(/[^\d]/g, "");
+        if (!/^\d{5,15}$/.test(numericValue)) {
           setValidationMessage(
-            `Tipo de dato incorrecto. Ingrese un dato válido, por ejemplo: ${currentQuestion.example}`,
+            `Tipo de dato incorrecto. Ingrese un número válido, por ejemplo: ${currentQuestion.example}`,
           );
           return false;
         }
@@ -559,19 +560,16 @@ export function MemberInfoForm() {
             <div className="mt-5">
               <input
                 className={fieldClass}
-                type={
-                  currentQuestion.kind === "number"
-                    ? "number"
-                    : currentQuestion.kind === "tel"
-                      ? "tel"
-                      : "text"
-                }
+                type={currentQuestion.kind === "tel" ? "tel" : "text"}
                 inputMode={
                   currentQuestion.kind === "number"
                     ? "numeric"
                     : currentQuestion.kind === "tel"
                       ? "tel"
                       : "text"
+                }
+                pattern={
+                  currentQuestion.kind === "number" ? "[0-9]*" : undefined
                 }
                 placeholder={currentQuestion.placeholder}
                 value={fields[currentQuestion.key]}
